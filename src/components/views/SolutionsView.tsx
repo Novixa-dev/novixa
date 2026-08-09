@@ -1,4 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { SOLUTIONS } from '../../content/data';
 import { ViewType } from '../../types';
@@ -8,11 +11,11 @@ import {
 } from 'lucide-react';
 
 interface SolutionsViewProps {
-  onNavigate: (view: ViewType) => void;
+  onNavigate?: (view: ViewType) => void;
 }
 
 export const SolutionsView: React.FC<SolutionsViewProps> = ({ onNavigate }) => {
-  const { isRtl, t } = useLanguage();
+  const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -122,12 +125,12 @@ export const SolutionsView: React.FC<SolutionsViewProps> = ({ onNavigate }) => {
 
                 <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
                   <span className="text-xs text-teal-300 font-arabic">{t(sol.businessImpact.ar, sol.businessImpact.en)}</span>
-                  <button
-                    onClick={() => onNavigate('start')}
+                  <Link
+                    href={`/${language}/start-project`}
                     className="p-2 rounded-xl bg-slate-900 hover:bg-blue-600 text-slate-300 hover:text-white transition-all"
                   >
                     <ArrowUpRight className="w-4 h-4" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             );
@@ -144,12 +147,12 @@ export const SolutionsView: React.FC<SolutionsViewProps> = ({ onNavigate }) => {
               {t('مهندسو نوڤيكسا جاهزون لمراجعة المتطلبات وتقديم مخطط الملاءمة الهندسية.', 'Our architects are ready to review your requirements.')}
             </p>
           </div>
-          <button
-            onClick={() => onNavigate('start')}
+          <Link
+            href={`/${language}/start-project`}
             className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-blue-600/30 transition-all shrink-0"
           >
             {t('طلب مخطط المعمارية', 'Request Specs Consultation')}
-          </button>
+          </Link>
         </div>
 
       </div>

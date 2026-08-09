@@ -1,4 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { INSIGHTS } from '../../content/data';
 import { InsightArticle, ViewType } from '../../types';
@@ -6,12 +9,12 @@ import { BookOpen, ArrowLeft, ArrowRight, Clock, User, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface InsightsSectionProps {
-  onNavigate: (view: ViewType) => void;
+  onNavigate?: (view: ViewType) => void;
   onSelectInsight?: (article: InsightArticle) => void;
 }
 
 export const InsightsSection: React.FC<InsightsSectionProps> = ({ onNavigate, onSelectInsight }) => {
-  const { isRtl, t } = useLanguage();
+  const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const [activeArticle, setActiveArticle] = useState<InsightArticle | null>(null);
@@ -43,13 +46,13 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ onNavigate, on
             </p>
           </div>
 
-          <button
-            onClick={() => onNavigate('insights')}
+          <Link
+            href={`/${language}/insights`}
             className="inline-flex items-center gap-2 text-sm font-semibold text-teal-400 hover:text-teal-300 transition-colors self-start md:self-auto"
           >
             <span>{t('تصفح مكتبة المقالات بالكامل', 'Browse All Articles')}</span>
             <ArrowIcon className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
 
         {/* Articles Grid */}
@@ -71,7 +74,9 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ onNavigate, on
                 </div>
 
                 <h3 className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-teal-400 transition-colors">
-                  {art.title[isRtl ? 'ar' : 'en']}
+                  <Link href={`/${language}/insights/${art.id}`}>
+                    {art.title[isRtl ? 'ar' : 'en']}
+                  </Link>
                 </h3>
 
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-arabic line-clamp-3">
@@ -82,13 +87,13 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ onNavigate, on
               <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
                 <span className="text-xs text-slate-400 font-mono">{art.date}</span>
 
-                <button
-                  onClick={() => handleOpenArticle(art)}
+                <Link
+                  href={`/${language}/insights/${art.id}`}
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-teal-400 hover:text-white transition-colors"
                 >
                   <span>{t('قراءة المقال', 'Read Essay')}</span>
                   <ArrowIcon className="w-3.5 h-3.5" />
-                </button>
+                </Link>
               </div>
             </div>
           ))}

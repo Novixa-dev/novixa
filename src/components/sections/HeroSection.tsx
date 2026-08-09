@@ -1,4 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { ViewType } from '../../types';
 import { 
@@ -9,11 +12,11 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 
 interface HeroSectionProps {
-  onNavigate: (view: ViewType) => void;
+  onNavigate?: (view: ViewType) => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
-  const { isRtl, t } = useLanguage();
+  const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   // State for interactive architecture visual demo
@@ -64,22 +67,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
 
             {/* CTA Buttons */}
             <div className="pt-2 flex flex-wrap items-center gap-4">
-              <button
-                onClick={() => onNavigate('start')}
+              <Link
+                href={`/${language}/start-project`}
                 className="group inline-flex items-center gap-2.5 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 hover:from-blue-500 hover:to-blue-600 text-white font-semibold text-sm sm:text-base px-6 py-3.5 rounded-xl shadow-xl shadow-blue-600/30 transition-all duration-300 hover:shadow-blue-600/50 hover:-translate-y-0.5 active:translate-y-0"
               >
                 <Sparkles className="w-4 h-4 text-blue-200" />
                 <span>{t('ابدأ مشروعك معنا', 'Start Your Project')}</span>
                 <ArrowIcon className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
-              </button>
+              </Link>
 
-              <button
-                onClick={() => onNavigate('products')}
+              <Link
+                href={`/${language}/products`}
                 className="inline-flex items-center gap-2 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 text-slate-200 font-medium text-sm sm:text-base px-5 py-3.5 rounded-xl transition-all duration-200"
               >
                 <Layers className="w-4 h-4 text-teal-400" />
                 <span>{t('اكتشف ما نبنيه', 'Explore Our Products')}</span>
-              </button>
+              </Link>
             </div>
 
             {/* Proof Points Bar */}
@@ -89,8 +92,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
                 <div className="text-xs text-slate-400 font-arabic">{t('معمارية مخصصة', 'Custom Architecture')}</div>
               </div>
               <div>
-                <div className="text-xl sm:text-2xl font-bold font-display text-blue-400">SOC2</div>
-                <div className="text-xs text-slate-400 font-arabic">{t('جاهزية وأمان', 'Security Standards')}</div>
+                <div className="text-xl sm:text-2xl font-bold font-display text-blue-400">High Standard</div>
+                <div className="text-xs text-slate-400 font-arabic">{t('معايير أمان موثوقة', 'Security Standards')}</div>
               </div>
               <div>
                 <div className="text-xl sm:text-2xl font-bold font-display text-teal-400">99.9%</div>

@@ -1,4 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { CASE_STUDIES } from '../../content/data';
 import { CaseStudy, ViewType } from '../../types';
@@ -9,12 +12,12 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 
 interface CaseStudiesSectionProps {
-  onNavigate: (view: ViewType) => void;
+  onNavigate?: (view: ViewType) => void;
   onSelectCaseStudy?: (caseStudy: CaseStudy) => void;
 }
 
 export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ onNavigate, onSelectCaseStudy }) => {
-  const { isRtl, t } = useLanguage();
+  const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const [activeModalCase, setActiveModalCase] = useState<CaseStudy | null>(null);
@@ -35,26 +38,26 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ onNaviga
           <div className="space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950 border border-blue-800 text-blue-400 text-xs font-semibold">
               <Briefcase className="w-3.5 h-3.5" />
-              <span>{t('أعمالنا المختارة', 'Selected Case Studies')}</span>
+              <span>{t('أعمالنا المختارة والمعمارية', 'Selected Work Architecture')}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight">
               {t('ما نبنيه يصبح واقعًا تشغيليًا.', 'What we build becomes operational reality.')}
             </h2>
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
               {t(
-                'دراسات حالة واقعية توضح كيف حولنا المشاكل المعقدة في قطاعات متعددة إلى أنظمة سريعة تحقق عوائد حقيقية.',
+                'دراسات حالة ونماذج معمارية توضح كيف حولنا المشاكل المعقدة في قطاعات متعددة إلى أنظمة سريعة تحقق عوائد حقيقية.',
                 'Real-world case studies detailing how we converted complex operational bottlenecks into sleek, high-margin software.'
               )}
             </p>
           </div>
 
-          <button
-            onClick={() => onNavigate('work')}
+          <Link
+            href={`/${language}/work`}
             className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors self-start md:self-auto"
           >
-            <span>{t('عرض جميع قراءات المشاريع', 'Explore All Case Studies')}</span>
+            <span>{t('عرض جميع الأعمال المختارة', 'Explore All Selected Work')}</span>
             <ArrowIcon className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
 
         {/* Case Studies Cards Grid */}
@@ -77,7 +80,9 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ onNaviga
 
                 {/* Title */}
                 <h3 className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-blue-400 transition-colors">
-                  {cs.title[isRtl ? 'ar' : 'en']}
+                  <Link href={`/${language}/work/${cs.id}`}>
+                    {cs.title[isRtl ? 'ar' : 'en']}
+                  </Link>
                 </h3>
 
                 {/* Challenge Excerpt */}
@@ -109,13 +114,13 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ onNaviga
               <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
                 <span className="text-xs text-slate-400 font-mono">{cs.location[isRtl ? 'ar' : 'en']}</span>
 
-                <button
-                  onClick={() => handleOpenDetail(cs)}
+                <Link
+                  href={`/${language}/work/${cs.id}`}
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-white transition-colors"
                 >
-                  <span>{t('قراءة الدراسة الكاملة', 'Read Full Case Study')}</span>
+                  <span>{t('عرض التفاصيل المعمارية', 'View Architecture Details')}</span>
                   <ArrowIcon className="w-3.5 h-3.5" />
-                </button>
+                </Link>
               </div>
             </div>
           ))}

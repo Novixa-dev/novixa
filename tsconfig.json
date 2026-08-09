@@ -14,13 +14,17 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "allowJs": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
       "@/*": [
-        "./*"
+        "./src/*"
       ]
     },
-    "allowImportingTsExtensions": true,
     "noEmit": true
   }
 }

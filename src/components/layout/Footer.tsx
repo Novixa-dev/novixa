@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from '../ui/Logo';
 import { ViewType } from '../../types';
@@ -6,11 +9,11 @@ import { BRAND_INFO } from '../../content/data';
 import { ArrowLeft, ArrowRight, Shield, Terminal, Globe, Heart } from 'lucide-react';
 
 interface FooterProps {
-  onNavigate: (view: ViewType) => void;
+  onNavigate?: (view: ViewType) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const { isRtl, t, toggleLanguage } = useLanguage();
+  const { language, isRtl, t, toggleLanguage } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   return (
@@ -44,29 +47,29 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <button onClick={() => onNavigate('home')} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}`} className="hover:text-blue-400 transition-colors">
                   {t('الرئيسية', 'Home')}
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('solutions')} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/solutions`} className="hover:text-blue-400 transition-colors">
                   {t('الحلول البرمجية', 'Solutions')}
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('products')} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/products`} className="hover:text-blue-400 transition-colors">
                   {t('المنتجات (SaaS)', 'Products')}
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('industries')} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/industries`} className="hover:text-blue-400 transition-colors">
                   {t('القطاعات المستهدفة', 'Industries')}
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('work')} className="hover:text-blue-400 transition-colors">
-                  {t('أعمالنا وقصص النجاح', 'Case Studies')}
-                </button>
+                <Link href={`/${language}/work`} className="hover:text-blue-400 transition-colors">
+                  {t('أعمالنا المختارة والمعمارية', 'Selected Work')}
+                </Link>
               </li>
             </ul>
           </div>
@@ -78,27 +81,27 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h4>
             <ul className="space-y-2 text-xs">
               <li className="flex items-center gap-2">
-                <button onClick={() => onNavigate('products')} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/products/pulse-ai`} className="hover:text-blue-400 transition-colors">
                   Novixa Pulse (نبض)
-                </button>
+                </Link>
                 <span className="text-[10px] bg-teal-950 text-teal-400 px-1.5 py-0.5 rounded border border-teal-800/50">
                   SaaS
                 </span>
               </li>
               <li>
-                <button onClick={() => onNavigate('products')} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/products/restaurant-pos`} className="hover:text-blue-400 transition-colors">
                   Novixa Restaurant
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('products')} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/products/booking-engine`} className="hover:text-blue-400 transition-colors">
                   Novixa Booking
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('products')} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/products/gaming-arena`} className="hover:text-blue-400 transition-colors">
                   Novixa Gaming
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
@@ -110,26 +113,26 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <button onClick={() => onNavigate('about')} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/about`} className="hover:text-blue-400 transition-colors">
                   {t('من نحن والفلسفة', 'About Us')}
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('insights')} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/insights`} className="hover:text-blue-400 transition-colors">
                   {t('مختبر المعرفة (Insights)', 'Insights Lab')}
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('start')} className="hover:text-blue-400 transition-colors text-blue-400 font-semibold">
+                <Link href={`/${language}/start-project`} className="hover:text-blue-400 transition-colors text-blue-400 font-semibold">
                   {t('ابدأ مشروعك معنا', 'Start a Project')}
-                </button>
+                </Link>
               </li>
             </ul>
 
             <div className="pt-2">
               <button
                 onClick={toggleLanguage}
-                className="inline-flex items-center gap-2 text-xs text-slate-300 hover:text-white bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg"
+                className="inline-flex items-center gap-2 text-xs text-slate-300 hover:text-white bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg cursor-pointer"
               >
                 <Globe className="w-3.5 h-3.5 text-blue-400" />
                 <span>{t('English Version', 'النسخة العربية')}</span>

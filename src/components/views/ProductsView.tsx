@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { PRODUCTS } from '../../content/data';
 import { ViewType } from '../../types';
 import { 
   Activity, UtensilsCrossed, Calendar, Gamepad2, Sparkles, 
-  CheckCircle2, ArrowLeft, ArrowRight, ShieldCheck, Zap 
+  CheckCircle2, ArrowLeft, ArrowRight, ShieldCheck, Zap, ArrowUpRight 
 } from 'lucide-react';
 import { PulseSection } from '../sections/PulseSection';
 
 interface ProductsViewProps {
-  onNavigate: (view: ViewType) => void;
+  onNavigate?: (view: ViewType) => void;
   selectedProductId?: string;
 }
 
 export const ProductsView: React.FC<ProductsViewProps> = ({ onNavigate, selectedProductId }) => {
-  const { isRtl, t } = useLanguage();
+  const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const getProductIcon = (iconName: string) => {
@@ -68,7 +71,9 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onNavigate, selected
 
                     <div>
                       <h2 className="text-2xl font-bold font-display text-white">
-                        {prod.name[isRtl ? 'ar' : 'en']}
+                        <Link href={`/${language}/products/${prod.id}`} className="hover:text-teal-300 transition-colors">
+                          {prod.name[isRtl ? 'ar' : 'en']}
+                        </Link>
                       </h2>
                       <span className="text-xs text-slate-400 font-arabic">
                         {prod.category[isRtl ? 'ar' : 'en']} • {prod.statusLabel[isRtl ? 'ar' : 'en']}
@@ -92,13 +97,14 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onNavigate, selected
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    <span className="text-xs text-slate-400 font-mono self-center">{t('القطاعات المستهدفة:', 'Target Verticals:')}</span>
-                    {prod.targetIndustries[isRtl ? 'ar' : 'en'].map((ind, idx) => (
-                      <span key={idx} className="px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-xs text-slate-300">
-                        {ind}
-                      </span>
-                    ))}
+                  <div className="flex flex-wrap items-center gap-4 pt-2">
+                    <Link
+                      href={`/${language}/products/${prod.id}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-400 hover:text-teal-300 transition-colors"
+                    >
+                      <span>{t('عرض صفحة المنتج بالتفصيل', 'View Full Product Details')}</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </Link>
                   </div>
                 </div>
 
@@ -106,7 +112,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onNavigate, selected
                   <div className="space-y-2">
                     <span className="text-xs font-mono text-slate-400 uppercase block">{t('الأثر المحقق', 'Product Impact')}</span>
                     {prod.metrics && prod.metrics.length > 0 && (
-                      <div className="text-3xl font-extrabold font-display text-teal-400">
+                      <div className="text-2xl font-extrabold font-display text-teal-400">
                         {prod.metrics[0].value}
                       </div>
                     )}
@@ -117,13 +123,13 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onNavigate, selected
                     )}
                   </div>
 
-                  <button
-                    onClick={() => onNavigate('start')}
+                  <Link
+                    href={`/${language}/start-project`}
                     className="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-teal-600/30 transition-all flex items-center justify-center gap-2"
                   >
                     <span>{t('طلب وصول للمنصة', 'Request Product Demo')}</span>
                     <ArrowIcon className="w-4 h-4" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             );
