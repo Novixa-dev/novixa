@@ -8,6 +8,8 @@ export default defineConfig(() => {
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
+        'next/link': path.resolve(__dirname, 'src/lib/safe-link.tsx'),
+        'next/navigation': path.resolve(__dirname, 'src/lib/safe-navigation.ts'),
         '@': path.resolve(__dirname, '.'),
       },
     },
