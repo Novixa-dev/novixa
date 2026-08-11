@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import fs from "fs";
 import { createServer as createViteServer } from "vite";
+import { leadService } from "./src/lib/leads/service";
 
 interface LeadPayload {
   projectType: string;
@@ -83,7 +84,7 @@ async function startServer() {
   });
 
   // POST /api/leads - Real B2B Project Discovery & Lead Intake
-  app.post("/api/leads", (req, res) => {
+  app.post("/api/leads", async (req, res) => {
     const clientIp = req.ip || req.socket.remoteAddress || "127.0.0.1";
 
     if (isRateLimited(clientIp, 5, 60000)) {
@@ -105,51 +106,38 @@ async function startServer() {
       phone,
       budgetRange,
       timeline,
-      details
-    } = req.body as LeadPayload;
+      details,
+      language
+    } = req.body as LeadPayload & { language?: string };
 
-    // Strict validation
-    if (!name || !name.trim()) {
-      res.status(400).json({ success: false, error: "Contact name is required." });
+    const result = await leadService.submitLead({
+      name,
+      email,
+      phone,
+      company,
+      projectType,
+      industry,
+      operationalProblem: problem,
+      currentSetup: existingSystem,
+      budgetRange,
+      timeline,
+      message: details,
+      language: language || 'ar',
+      source: 'web_wizard'
+    });
+
+    if (result.success === false) {
+      res.status(400).json({ success: false, error: result.error });
       return;
     }
 
-    if (!email || !email.includes("@") || !email.includes(".")) {
-      res.status(400).json({ success: false, error: "A valid corporate email is required." });
-      return;
-    }
-
-    if (!projectType || !industry) {
-      res.status(400).json({ success: false, error: "Project type and industry sector are required." });
-      return;
-    }
-
-    const leadRecord = {
-      id: `lead_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-      timestamp: new Date().toISOString(),
-      clientIp,
-      projectType: String(projectType).slice(0, 100),
-      industry: String(industry).slice(0, 100),
-      problem: problem ? String(problem).slice(0, 1000) : "",
-      existingSystem: existingSystem ? String(existingSystem).slice(0, 100) : "",
-      name: String(name).slice(0, 100),
-      company: company ? String(company).slice(0, 100) : "",
-      email: String(email).slice(0, 100),
-      phone: phone ? String(phone).slice(0, 50) : "",
-      budgetRange: budgetRange ? String(budgetRange).slice(0, 50) : "$10k - $25k",
-      timeline: timeline ? String(timeline).slice(0, 50) : "Asap",
-      details: details ? String(details).slice(0, 1000) : "",
-      status: "NEW_LEAD"
-    };
-
-    // Log to server console & persist
-    console.log("📩 NEW B2B LEAD RECEIVED:", leadRecord);
-    saveToFile(LEADS_FILE, leadRecord);
+    // Secondary backup JSON log
+    saveToFile(LEADS_FILE, result.lead);
 
     res.status(201).json({
       success: true,
-      leadId: leadRecord.id,
-      timestamp: leadRecord.timestamp,
+      leadId: result.lead.id,
+      timestamp: result.lead.createdAt,
       message: "Your project brief has been registered with Novixa engineering leadership."
     });
   });
@@ -211,15 +199,11 @@ async function startServer() {
     res.status(200).json({ success: true });
   });
 
-  // GET /api/leads - Inspect received leads (Protected / Dev helper)
-  app.get("/api/leads", (req, res) => {
+  // GET /api/leads - Inspect received leads (Protected / Internal Readiness)
+  app.get("/api/leads", async (req, res) => {
     try {
-      if (fs.existsSync(LEADS_FILE)) {
-        const leads = JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"));
-        res.json({ success: true, count: leads.length, leads });
-      } else {
-        res.json({ success: true, count: 0, leads: [] });
-      }
+      const leads = await leadService.getAllLeads();
+      res.json({ success: true, count: leads.length, leads });
     } catch {
       res.json({ success: true, count: 0, leads: [] });
     }

@@ -1,47 +1,36 @@
-export interface CreateLeadInput {
-  projectType: string;
-  industry: string;
-  problem?: string;
-  existingSystem?: string;
-  name: string;
-  company?: string;
-  email: string;
-  phone?: string;
-  budgetRange?: string;
-  timeline?: string;
-  details?: string;
-}
+export * from './leads/types';
+export * from './leads/sqlite-repository';
+export * from './leads/service';
 
-export interface LeadRecord extends CreateLeadInput {
-  id: string;
-  createdAt: string;
-  status: string;
-}
+import { leadService } from './leads/service';
 
-export interface LeadRepository {
-  createLead(input: CreateLeadInput): Promise<LeadRecord>;
-  getLeads(): Promise<LeadRecord[]>;
-}
+// Backwards-compatibility leadRepository object wrapping LeadService/SQLiteLeadRepository
+export const leadRepository = {
+  createLead: async (input: any) => {
+    const result = await leadService.submitLead({
+      name: input.name,
+      email: input.email,
+      phone: input.phone,
+      company: input.company,
+      projectType: input.projectType,
+      industry: input.industry,
+      operationalProblem: input.problem || input.operationalProblem,
+      currentSetup: input.existingSystem || input.currentSetup,
+      budgetRange: input.budgetRange,
+      timeline: input.timeline,
+      message: input.details || input.message,
+      language: input.language || 'ar',
+      source: 'web_wizard'
+    });
 
-// In-Memory / Local Repository
-class LocalLeadRepository implements LeadRepository {
-  private leads: LeadRecord[] = [];
+    if (result.success === false) {
+      throw new Error(result.error);
+    }
 
-  async createLead(input: CreateLeadInput): Promise<LeadRecord> {
-    const lead: LeadRecord = {
-      ...input,
-      id: `lead_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-      createdAt: new Date().toISOString(),
-      status: 'NEW_LEAD',
-    };
-    this.leads.push(lead);
-    console.log('[Novixa LeadRepository] New Lead Registered:', lead);
-    return lead;
+    return result.lead;
+  },
+
+  getLeads: async () => {
+    return leadService.getAllLeads();
   }
-
-  async getLeads(): Promise<LeadRecord[]> {
-    return this.leads;
-  }
-}
-
-export const leadRepository: LeadRepository = new LocalLeadRepository();
+};

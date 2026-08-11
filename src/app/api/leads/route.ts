@@ -25,11 +25,11 @@ export async function POST(request: Request) {
       industry: String(industry).slice(0, 100),
       company: body.company ? String(body.company).slice(0, 100) : '',
       phone: body.phone ? String(body.phone).slice(0, 50) : '',
-      problem: body.problem ? String(body.problem).slice(0, 1000) : '',
-      existingSystem: body.existingSystem ? String(body.existingSystem).slice(0, 100) : '',
+      operationalProblem: body.problem || body.operationalProblem ? String(body.problem || body.operationalProblem).slice(0, 1000) : '',
+      currentSetup: body.existingSystem || body.currentSetup ? String(body.existingSystem || body.currentSetup).slice(0, 100) : '',
       budgetRange: body.budgetRange ? String(body.budgetRange).slice(0, 50) : '$10k - $25k',
       timeline: body.timeline ? String(body.timeline).slice(0, 50) : 'Asap',
-      details: body.details ? String(body.details).slice(0, 1000) : '',
+      message: body.details || body.message ? String(body.details || body.message).slice(0, 1000) : '',
     };
 
     const lead = await leadRepository.createLead(leadInput);
