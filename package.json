@@ -18,12 +18,14 @@
     "@vitejs/plugin-react": "^5.0.4",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
+    "firebase": "^12.17.1",
+    "firebase-admin": "^14.2.0",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
-    "next": "^16.3.0",
     "postcss": "^8.5.26",
     "react": "^19.0.1",
-    "react-dom": "^19.0.1"
+    "react-dom": "^19.0.1",
+    "resend": "^6.19.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

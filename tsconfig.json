@@ -15,14 +15,18 @@
     "moduleDetection": "force",
     "allowJs": true,
     "jsx": "react-jsx",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "next/link": [
+        "./src/lib/safe-link.tsx"
+      ],
+      "next/navigation": [
+        "./src/lib/safe-navigation.ts"
+      ],
+      "next/server": [
+        "./src/lib/safe-next-server.ts"
       ]
     },
     "noEmit": true,
@@ -32,9 +36,6 @@
     "resolveJsonModule": true
   },
   "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    ".next/types/**/*.ts",
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx"

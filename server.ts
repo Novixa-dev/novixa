@@ -1,8 +1,21 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
+import dotenv from "dotenv";
 import { createServer as createViteServer } from "vite";
+
+// Load .env.local first, fallback to .env
+if (fs.existsSync(path.join(process.cwd(), ".env.local"))) {
+  dotenv.config({ path: path.join(process.cwd(), ".env.local") });
+} else {
+  dotenv.config();
+}
+
 import { leadService } from "./src/lib/leads/service";
+import { generateGeminiGreeting } from "./src/lib/ai/gemini";
+import { sendNovixaTestEmail } from "./src/lib/email/resend";
+import { testAdminConnectivity, getAdminAuth } from "./src/lib/firebase/admin";
+import { validateEnvironment } from "./src/lib/env";
 
 interface LeadPayload {
   projectType: string;
@@ -206,6 +219,112 @@ async function startServer() {
       res.json({ success: true, count: leads.length, leads });
     } catch {
       res.json({ success: true, count: 0, leads: [] });
+    }
+  });
+
+  // --- INTEGRATION TEST API ROUTES ---
+
+  // GET /api/env/status - Check configuration presence without revealing secrets
+  app.get("/api/env/status", (req, res) => {
+    const envStatus = validateEnvironment();
+    res.json({
+      success: true,
+      timestamp: new Date().toISOString(),
+      envStatus,
+    });
+  });
+
+  // POST /api/ai/test - Server-side Gemini API test
+  app.post("/api/ai/test", async (req, res) => {
+    try {
+      const { prompt } = req.body || {};
+      const aiResult = await generateGeminiGreeting(prompt);
+      res.json({
+        success: true,
+        service: "Gemini AI (@google/genai)",
+        response: aiResult.text,
+        model: aiResult.model,
+        timestamp: aiResult.timestamp,
+      });
+    } catch (err: any) {
+      console.error("❌ Gemini Test Error:", err);
+      res.status(500).json({
+        success: false,
+        error: err?.message || "Failed to communicate with Gemini API.",
+      });
+    }
+  });
+
+  // POST /api/email/test - Server-side Resend email dispatch test
+  app.post("/api/email/test", async (req, res) => {
+    try {
+      const emailResult = await sendNovixaTestEmail();
+      res.json({
+        success: true,
+        service: "Resend Email Gateway",
+        emailId: emailResult.emailId,
+        recipient: emailResult.recipient,
+        timestamp: emailResult.timestamp,
+        message: "Test email dispatched successfully via Resend.",
+      });
+    } catch (err: any) {
+      console.error("❌ Resend Test Error:", err);
+      res.status(500).json({
+        success: false,
+        error: err?.message || "Failed to send test email via Resend.",
+      });
+    }
+  });
+
+  // POST /api/firebase/test - Server-side Firebase Admin SDK connectivity test
+  app.post("/api/firebase/test", async (req, res) => {
+    try {
+      const fbResult = await testAdminConnectivity();
+      if (!fbResult.success) {
+        res.status(500).json({ success: false, error: fbResult.message });
+        return;
+      }
+      res.json({
+        success: true,
+        service: "Firebase Admin SDK & Firestore",
+        message: fbResult.message,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (err: any) {
+      console.error("❌ Firebase Admin Test Error:", err);
+      res.status(500).json({
+        success: false,
+        error: err?.message || "Firebase Admin connectivity test failed.",
+      });
+    }
+  });
+
+  // POST /api/auth/verify - Verify Firebase Auth ID Token server-side
+  app.post("/api/auth/verify", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      const bodyToken = req.body?.idToken;
+      const token = bodyToken || (authHeader?.startsWith("Bearer ") ? authHeader.split("Bearer ")[1] : null);
+
+      if (!token) {
+        res.status(400).json({ success: false, error: "Missing ID token in request body or Authorization header." });
+        return;
+      }
+
+      const decodedToken = await getAdminAuth().verifyIdToken(token);
+      res.json({
+        success: true,
+        uid: decodedToken.uid,
+        email: decodedToken.email,
+        emailVerified: decodedToken.email_verified,
+        authTime: new Date(decodedToken.auth_time * 1000).toISOString(),
+      });
+    } catch (err: any) {
+      console.error("❌ Token Verification Error:", err);
+      res.status(401).json({
+        success: false,
+        error: err?.message || "Invalid or expired Firebase Auth token.",
+      });
     }
   });
 

@@ -114,4 +114,5 @@ export type ViewType =
   | 'about'
   | 'insights'
   | 'insight-detail'
-  | 'start';
+  | 'start'
+  | 'dev_integration';

@@ -5,8 +5,11 @@
 | Audit Metric | Target Benchmark | Current Status | Verification Result |
 | :--- | :--- | :--- | :--- |
 | **Applet Compilation** | 0 Build Errors | `compile_applet` PASS | ✅ Clean build output |
-| **TypeScript Validation** | Strict Mode, No `any` | 0 Type Errors | ✅ Fully type-safe (`src/types.ts`) |
-| **ESLint / Linter** | 0 Fatal Warnings | `lint_applet` PASS | ✅ Standard ESLint clean |
+| **Global Error Boundary** | Crash Prevention & Logging | `GlobalErrorBoundary` PASS | ✅ Catches & logs UI crashes cleanly |
+| **Centralized Logger** | Unhandled Rejections & Telemetry | `logger.ts` PASS | ✅ Auto-logs promise rejections & script errors |
+| **Vercel Deployment** | Zero-Config Vite Build | `vercel.json` Verified | ✅ Configured for Vite SPA output |
+| **TypeScript Validation** | Strict Mode, 0 Errors | `npm run lint` PASS | ✅ Fully type-safe (`tsc --noEmit`) |
+| **Bundler & Esbuild** | 0 Warnings, Vendor Split | `npm run build` PASS | ✅ Clean bundle, split vendor chunks |
 | **RTL / LTR Support** | Seamless Bidirectional | Native Arabic & English | ✅ Verified in `LanguageContext` |
 | **Mobile Responsiveness** | 320px - 1440px+ Fluid | Touch-friendly controls | ✅ Tested across breakpoints |
 | **Accessibility (WCAG)** | WCAG 2.1 AA | Proper contrast, ARIA | ✅ Accessible forms & controls |

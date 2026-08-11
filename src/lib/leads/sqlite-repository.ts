@@ -5,13 +5,10 @@ import { createRequire } from 'node:module';
 const getNativeRequire = () => {
   if (typeof require === 'function') return require;
   try {
-    const reqFn = typeof require === 'function' ? require : eval('require');
-    const mod = reqFn('node:module');
-    const metaUrl = typeof import.meta !== 'undefined' && import.meta && import.meta.url ? import.meta.url : `file://${__filename}`;
-    return mod.createRequire(metaUrl);
+    const metaUrl = typeof import.meta !== 'undefined' && import.meta && import.meta.url ? import.meta.url : 'file:///';
+    return createRequire(metaUrl);
   } catch {
     return (modName: string) => {
-      if (typeof require === 'function') return require(modName);
       throw new Error(`Cannot require ${modName}`);
     };
   }

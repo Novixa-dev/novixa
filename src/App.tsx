@@ -6,6 +6,8 @@ import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ViewType } from './types';
 import { trackEvent } from './lib/analytics';
+import { logger } from './lib/logger';
+import { GlobalErrorBoundary } from './components/common/GlobalErrorBoundary';
 
 // Homepage Sections
 import { HeroSection } from './components/sections/HeroSection';
@@ -30,6 +32,7 @@ import { WorkView } from './components/views/WorkView';
 import { AboutView } from './components/views/AboutView';
 import { InsightsView } from './components/views/InsightsView';
 import { StartProjectView } from './components/views/StartProjectView';
+import { DevIntegrationTestView } from './components/views/DevIntegrationTestView';
 
 export function AppContent() {
   const { language, setLanguage, isRtl, t } = useLanguage();
@@ -52,8 +55,10 @@ export function AppContent() {
         targetView = targetLang;
       }
 
-      if (targetView && ['home', 'solutions', 'industries', 'products', 'work', 'about', 'insights', 'start'].includes(targetView)) {
+      if (targetView && ['home', 'solutions', 'industries', 'products', 'work', 'about', 'insights', 'start', 'dev_integration'].includes(targetView)) {
         setCurrentView(targetView as ViewType);
+      } else if (hash.includes('dev/integration-test') || targetView === 'dev') {
+        setCurrentView('dev_integration');
       }
     };
 
@@ -83,7 +88,8 @@ export function AppContent() {
       about: { ar: 'عن نوڤيكسا وفلسفة الهندسة', en: 'About Novixa & Engineering Philosophy' },
       insights: { ar: 'مقالات الهندسة والتقنية | نوڤيكسا', en: 'Engineering Insights & Tech Articles | Novixa' },
       'insight-detail': { ar: 'تفاصيل المقال الهندسي | نوڤيكسا', en: 'Engineering Insight Detail | Novixa' },
-      start: { ar: 'ابدأ مشروعك وابنِ نظامك | نوڤيكسا', en: 'Start Your Project Discovery | Novixa' }
+      start: { ar: 'ابدأ مشروعك وابنِ نظامك | نوڤيكسا', en: 'Start Your Project Discovery | Novixa' },
+      dev_integration: { ar: 'لوحة الاختبار الهندسي الشامل | نوڤيكسا', en: 'Novixa Development Integration Test Dashboard' }
     };
 
     const currentTitle = titleMap[currentView] ? t(titleMap[currentView].ar, titleMap[currentView].en) : 'Novixa';
@@ -132,6 +138,7 @@ export function AppContent() {
         {currentView === 'about' && <AboutView onNavigate={handleNavigate} />}
         {currentView === 'insights' && <InsightsView onNavigate={handleNavigate} />}
         {currentView === 'start' && <StartProjectView onNavigate={handleNavigate} />}
+        {currentView === 'dev_integration' && <DevIntegrationTestView />}
       </main>
 
       {/* Footer */}
@@ -141,9 +148,15 @@ export function AppContent() {
 }
 
 export default function App() {
+  useEffect(() => {
+    logger.initGlobalErrorHandlers();
+  }, []);
+
   return (
-    <LanguageProvider>
-      <AppContent />
-    </LanguageProvider>
+    <GlobalErrorBoundary>
+      <LanguageProvider>
+        <AppContent />
+      </LanguageProvider>
+    </GlobalErrorBoundary>
   );
 }
