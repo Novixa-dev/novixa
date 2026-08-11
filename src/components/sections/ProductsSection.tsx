@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { PRODUCTS } from '../../content/data';
@@ -8,7 +10,7 @@ import {
 } from 'lucide-react';
 
 interface ProductsSectionProps {
-  onNavigate: (view: ViewType) => void;
+  onNavigate?: (view: ViewType) => void;
   onSelectProduct?: (productId: string) => void;
 }
 

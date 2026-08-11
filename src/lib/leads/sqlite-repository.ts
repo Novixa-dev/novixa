@@ -2,7 +2,20 @@ import { CreateLeadInput, LeadRecord, LeadRepository, LeadStatus } from './types
 import path from 'path';
 import { createRequire } from 'node:module';
 
-const require = createRequire(import.meta.url);
+const getNativeRequire = () => {
+  if (typeof require === 'function') return require;
+  try {
+    const reqFn = typeof require === 'function' ? require : eval('require');
+    const mod = reqFn('node:module');
+    const metaUrl = typeof import.meta !== 'undefined' && import.meta && import.meta.url ? import.meta.url : `file://${__filename}`;
+    return mod.createRequire(metaUrl);
+  } catch {
+    return (modName: string) => {
+      if (typeof require === 'function') return require(modName);
+      throw new Error(`Cannot require ${modName}`);
+    };
+  }
+};
 
 let dbInstance: any = null;
 let isInMemoryFallback = false;
@@ -12,7 +25,8 @@ function getDatabase() {
 
   try {
     // Built-in Node 22 node:sqlite module
-    const { DatabaseSync } = require('node:sqlite');
+    const req = getNativeRequire();
+    const { DatabaseSync } = req('node:sqlite');
     const dbPath = process.env.DATABASE_PATH || path.join(process.cwd(), 'novixa_leads.sqlite');
 
     const initDb = (targetPath: string) => {
@@ -46,8 +60,8 @@ function getDatabase() {
     } catch (fsErr) {
       console.warn('[Novixa SQLite] File DB init failed, fallback to fresh DB:', fsErr);
       try {
-        const fs = require('node:fs');
-        if (fs.existsSync(dbPath)) {
+        const fs = req('node:fs');
+        if (fs.existsSync(/* turbopackIgnore: true */ dbPath)) {
           fs.unlinkSync(dbPath);
         }
         dbInstance = initDb(dbPath);

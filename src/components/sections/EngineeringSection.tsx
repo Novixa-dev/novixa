@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { Cpu, ShieldCheck, Zap, Database, Server, Lock, Cloud, Globe } from 'lucide-react';

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { Sparkles, Target, Compass, Layers, ShieldCheck, HeartHandshake, CheckCircle2 } from 'lucide-react';

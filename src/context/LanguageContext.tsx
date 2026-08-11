@@ -69,10 +69,19 @@ export const LanguageProvider: React.FC<{ initialLang?: Language; children: Reac
   );
 };
 
+const defaultContextValue: LanguageContextType = {
+  language: 'ar',
+  setLanguage: () => {},
+  toggleLanguage: () => {},
+  dir: 'rtl',
+  isRtl: true,
+  t: (arText: string, enText: string) => arText,
+};
+
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
   if (!context) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
+    return defaultContextValue;
   }
   return context;
 };

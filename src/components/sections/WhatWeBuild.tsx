@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { SOLUTIONS } from '../../content/data';
