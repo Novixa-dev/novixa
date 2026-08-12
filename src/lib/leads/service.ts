@@ -1,10 +1,10 @@
 import { CreateLeadInput, LeadRecord, LeadRepository, LeadStatus } from './types';
-import { SQLiteLeadRepository } from './sqlite-repository';
+import { FirestoreLeadRepository } from './firestore-repository';
 import { notificationService, NotificationService } from '../notifications/service';
 
 export class LeadService {
   constructor(
-    private repository: LeadRepository = new SQLiteLeadRepository(),
+    private repository: LeadRepository = new FirestoreLeadRepository(),
     private notifications: NotificationService = notificationService
   ) {}
 

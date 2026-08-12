@@ -1,10 +1,10 @@
 import { LeadService } from '../src/lib/leads/service';
-import { SQLiteLeadRepository } from '../src/lib/leads/sqlite-repository';
+import { FirestoreLeadRepository } from '../src/lib/leads/firestore-repository';
 
 async function runTests() {
   console.log('🧪 [Novixa QA] Starting Automated Test Suite for LeadService...');
 
-  const repository = new SQLiteLeadRepository();
+  const repository = new FirestoreLeadRepository();
   const service = new LeadService(repository);
 
   let passed = 0;
@@ -25,7 +25,7 @@ async function runTests() {
     });
 
     if (res.success && res.lead.id && res.lead.status === 'NEW') {
-      console.log('✅ Test 1 Passed: Valid lead registered successfully in SQLite.');
+      console.log('✅ Test 1 Passed: Valid lead registered successfully in Firestore.');
       passed++;
     } else {
       console.error('❌ Test 1 Failed:', res);

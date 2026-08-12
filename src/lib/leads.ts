@@ -1,5 +1,5 @@
 export * from './leads/types';
-export * from './leads/sqlite-repository';
+export * from './leads/firestore-repository';
 export * from './leads/service';
 
 import { leadService } from './leads/service';
