@@ -87,13 +87,12 @@ export const ProjectDiscoveryWizard: React.FC = () => {
         
         {/* Section Header */}
         <div className="text-center space-y-4 mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950 border border-blue-800 text-blue-300 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-            <span>{t('ابدأ مشروعك معنا', 'Start Your Project')}</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium">
+            <span>{t('ابدأ مشروعك معنا', 'Project Discovery & Architecture Intake')}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight">
-            {t('لديك مشكلة تشغيلية تستحق نظامًا أفضل؟', 'Have a operational challenge deserving a modern system?')}
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
+            {t('لديك مشكلة تشغيلية تستحق نظامًا أفضل؟', 'Have an operational challenge deserving a modern system?')}
           </h2>
 
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl mx-auto font-arabic">
@@ -107,7 +106,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
           {!submitted && (
             <div className="flex items-center justify-center gap-3 pt-4 font-mono text-xs text-blue-400">
               <span>{t('الخطوة', 'Step')} 0{step} / 0{totalSteps}</span>
-              <div className="w-32 bg-slate-900 rounded-full h-2 p-0.5 border border-slate-800">
+              <div className="w-32 bg-slate-950 rounded-full h-1.5 p-0.5 border border-slate-800">
                 <div 
                   className="bg-blue-500 h-full rounded-full transition-all duration-300" 
                   style={{ width: `${(step / totalSteps) * 100}%` }}
@@ -125,8 +124,8 @@ export const ProjectDiscoveryWizard: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               className="text-center py-8 space-y-6"
             >
-              <div className="w-16 h-16 rounded-2xl bg-emerald-950 border border-emerald-800 text-emerald-400 flex items-center justify-center mx-auto shadow-xl">
-                <CheckCircle2 className="w-8 h-8" />
+              <div className="w-14 h-14 rounded-xl bg-slate-950 border border-slate-800 text-blue-400 flex items-center justify-center mx-auto shadow-sm">
+                <CheckCircle2 className="w-7 h-7" />
               </div>
 
               <div className="space-y-2">
@@ -153,7 +152,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   setSubmitted(false);
                   setStep(1);
                 }}
-                className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm transition-all shadow-lg"
+                className="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm transition-all shadow-sm"
               >
                 {t('تقديم طلب آخر', 'Submit Another Discovery')}
               </button>
@@ -168,11 +167,11 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h3 className="text-lg font-bold font-display text-white">
+                  <h3 className="text-base sm:text-lg font-bold font-display text-white">
                     01. {t('ماذا تريد أن نبني لشركتك؟', 'What do you want us to build?')}
                   </h3>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs sm:text-sm">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs sm:text-sm">
                     {[
                       'منصة أعمال (Business Platform)',
                       'منتج سحابي (SaaS Product)',
@@ -187,8 +186,8 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                         onClick={() => setFormData({ ...formData, projectType: typeOption })}
                         className={`p-3.5 rounded-xl border text-right rtl:text-right ltr:text-left font-medium transition-all ${
                           formData.projectType === typeOption
-                            ? 'bg-blue-600 text-white border-blue-500 font-bold shadow-md'
-                            : 'bg-slate-950/80 border-slate-800 text-slate-300 hover:border-slate-700'
+                            ? 'bg-blue-600 text-white border-blue-500 font-bold shadow-sm'
+                            : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'
                         }`}
                       >
                         {typeOption}
@@ -205,11 +204,11 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h3 className="text-lg font-bold font-display text-white">
+                  <h3 className="text-base sm:text-lg font-bold font-display text-white">
                     02. {t('ما مجال عمل شركتك؟', 'What is your business sector?')}
                   </h3>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs sm:text-sm">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs sm:text-sm">
                     {[
                       'المطاعم والضيافة',
                       'الرعاية الصحية والعيادات',
@@ -224,8 +223,8 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                         onClick={() => setFormData({ ...formData, industry: indOption })}
                         className={`p-3.5 rounded-xl border text-right rtl:text-right ltr:text-left font-medium transition-all ${
                           formData.industry === indOption
-                            ? 'bg-blue-600 text-white border-blue-500 font-bold shadow-md'
-                            : 'bg-slate-950/80 border-slate-800 text-slate-300 hover:border-slate-700'
+                            ? 'bg-blue-600 text-white border-blue-500 font-bold shadow-sm'
+                            : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'
                         }`}
                       >
                         {indOption}
@@ -242,7 +241,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h3 className="text-lg font-bold font-display text-white">
+                  <h3 className="text-base sm:text-lg font-bold font-display text-white">
                     03. {t('ما المشكلة التشغيلية الرئيسية التي تريد حلها؟', 'What primary operational issue are you solving?')}
                   </h3>
 
@@ -252,7 +251,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                       onChange={(e) => setFormData({ ...formData, problem: e.target.value })}
                       placeholder={t('صف المشكلة باختصار (مثلاً: زحام الطلبات في نهاية الأسبوع، تضارب بيانات المستودع، أخطاء الفوترة اليدوية...)', 'Describe your operational bottleneck briefly...')}
                       rows={4}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
                     ></textarea>
                   </div>
                 </motion.div>
@@ -265,7 +264,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-5"
                 >
-                  <h3 className="text-lg font-bold font-display text-white">
+                  <h3 className="text-base sm:text-lg font-bold font-display text-white">
                     04. {t('النظام الحالي ونطاق الميزانية', 'Current Setup & Budget Scope')}
                   </h3>
 
@@ -315,7 +314,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h3 className="text-lg font-bold font-display text-white">
+                  <h3 className="text-base sm:text-lg font-bold font-display text-white">
                     05. {t('معلومات التواصل لمناقشة المخطط الهندسي', 'Contact Information')}
                   </h3>
 
@@ -367,9 +366,9 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                     type="button"
                     onClick={handleBack}
                     disabled={isSubmitting}
-                    className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-300 transition-all disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-300 transition-all disabled:opacity-50"
                   >
-                    <BackArrowIcon className="w-4 h-4" />
+                    <BackArrowIcon className="w-3.5 h-3.5" />
                     <span>{t('السابق', 'Back')}</span>
                   </button>
                 ) : (
@@ -380,16 +379,16 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold transition-all shadow-lg shadow-blue-600/30"
+                    className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold transition-all shadow-sm"
                   >
                     <span>{t('الخطوة التالية', 'Next Step')}</span>
-                    <ArrowIcon className="w-4 h-4" />
+                    <ArrowIcon className="w-3.5 h-3.5" />
                   </button>
                 ) : (
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-600 disabled:opacity-50 text-white text-xs sm:text-sm font-bold transition-all shadow-xl shadow-blue-600/30"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:opacity-50 text-white text-xs sm:text-sm font-semibold transition-all shadow-sm"
                   >
                     <Send className="w-4 h-4" />
                     <span>{isSubmitting ? t('جاري الحفظ مع الهندسة...', 'Submitting Brief...') : t('إرسال للمراجعة الهندسية', 'Submit Project Brief')}</span>

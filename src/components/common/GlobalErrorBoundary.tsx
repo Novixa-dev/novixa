@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Component, ReactNode, ErrorInfo } from 'react';
+import React, { ReactNode, ErrorInfo } from 'react';
 import { logger } from '../../lib/logger';
 import { AlertTriangle, RefreshCw, Home, Bug } from 'lucide-react';
 
@@ -16,13 +16,16 @@ interface State {
   showDetails: boolean;
 }
 
-export class GlobalErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false,
-    error: null,
-    errorInfo: null,
-    showDetails: false,
-  };
+export class GlobalErrorBoundary extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: null,
+      errorInfo: null,
+      showDetails: false,
+    };
+  }
 
   public static getDerivedStateFromError(error: Error): Partial<State> {
     return { hasError: true, error };

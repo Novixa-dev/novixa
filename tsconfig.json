@@ -19,6 +19,9 @@
       "@/*": [
         "./src/*"
       ],
+      "next": [
+        "./src/types/next.d.ts"
+      ],
       "next/link": [
         "./src/lib/safe-link.tsx"
       ],

@@ -39,54 +39,84 @@ export function AppContent() {
   const [currentView, setCurrentView] = useState<ViewType>('home');
   const [selectedProductId, setSelectedProductId] = useState<string | undefined>(undefined);
 
-  // Sync state with URL hash on mount & hash change
+  // Sync state with URL pathname & hash on mount and on popstate/hashchange
   useEffect(() => {
-    const parseHash = () => {
-      const hash = window.location.hash.replace(/^#\/?/, '');
-      if (!hash) return;
+    const parseLocation = () => {
+      let rawPath = '';
+      if (typeof window !== 'undefined') {
+        const hash = window.location.hash.replace(/^#\/?/, '');
+        if (hash) {
+          rawPath = hash;
+        } else {
+          rawPath = window.location.pathname.replace(/^\//, '');
+        }
+      }
+      if (!rawPath) return;
 
-      const parts = hash.split('/');
+      const parts = rawPath.split('/').filter(Boolean);
+      if (parts.length === 0) return;
+
       let targetLang = parts[0];
-      let targetView = parts[1];
+      let targetView = parts[1] || 'home';
+      let subSlug = parts[2];
 
       if (targetLang === 'ar' || targetLang === 'en') {
-        if (targetLang !== language) setLanguage(targetLang);
+        if (targetLang !== language) {
+          setLanguage(targetLang);
+        }
       } else {
         targetView = targetLang;
       }
 
-      if (targetView && ['home', 'solutions', 'industries', 'products', 'work', 'about', 'insights', 'start', 'dev_integration'].includes(targetView)) {
+      if (targetView === 'start-project' || targetView === 'start') {
+        setCurrentView('start');
+      } else if (targetView === 'products') {
+        setCurrentView('products');
+        if (subSlug) {
+          setSelectedProductId(subSlug);
+        }
+      } else if (['home', 'solutions', 'industries', 'work', 'about', 'insights', 'dev_integration'].includes(targetView)) {
         setCurrentView(targetView as ViewType);
-      } else if (hash.includes('dev/integration-test') || targetView === 'dev') {
+      } else if (rawPath.includes('dev/integration-test') || targetView === 'dev') {
         setCurrentView('dev_integration');
       }
     };
 
-    parseHash();
-    window.addEventListener('hashchange', parseHash);
-    return () => window.removeEventListener('hashchange', parseHash);
-  }, []);
+    parseLocation();
+    window.addEventListener('popstate', parseLocation);
+    window.addEventListener('hashchange', parseLocation);
+    return () => {
+      window.removeEventListener('popstate', parseLocation);
+      window.removeEventListener('hashchange', parseLocation);
+    };
+  }, [language]);
 
-  // Update URL hash, page title & track analytics on view/lang change
+  // Update browser URL & title on view/lang change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Update URL hash
-    const newHash = `/${language}/${currentView}`;
-    if (window.location.hash !== `#${newHash}`) {
-      window.history.replaceState(null, '', `#${newHash}`);
+    // Build canonical route path
+    const viewSegment = currentView === 'home' ? '' : `/${currentView === 'start' ? 'start-project' : currentView}`;
+    const productSegment = currentView === 'products' && selectedProductId ? `/${selectedProductId}` : '';
+    const newPath = `/${language}${viewSegment}${productSegment}`;
+
+    if (typeof window !== 'undefined') {
+      const currentPath = window.location.pathname;
+      if (currentPath !== newPath && !window.location.hash) {
+        window.history.replaceState(null, '', newPath);
+      }
     }
 
     // Dynamic Title Map
     const titleMap: Record<ViewType, { ar: string; en: string }> = {
-      home: { ar: 'نوڤيكسا | هندسة البرمجيات والمنتجات الرقمية', en: 'Novixa | Software Engineering & Digital Products' },
-      solutions: { ar: 'منصات الأعمال والحلول المخصصة | نوڤيكسا', en: 'Business Platforms & Custom Solutions | Novixa' },
-      industries: { ar: 'القطاعات والحلول التشغيلية | نوڤيكسا', en: 'Industry Solutions & Vertical Engineering | Novixa' },
-      products: { ar: 'كتالوج المنتجات الرقمية | نوڤيكسا', en: 'Digital Product Catalog | Novixa' },
+      home: { ar: 'نوڤيكسا | هندسة البرمجيات والمنتجات الرقمية', en: 'Novixa | Enterprise Software Architecture & Digital Systems' },
+      solutions: { ar: 'منصات الأعمال والحلول المخصصة | نوڤيكسا', en: 'Enterprise Business Platforms & Custom Systems | Novixa' },
+      industries: { ar: 'القطاعات والحلول التشغيلية | نوڤيكسا', en: 'Industry Verticals & Operations Engineering | Novixa' },
+      products: { ar: 'كتالوج المنتجات البرمجية الرقمية | نوڤيكسا', en: 'Digital Product Catalog (SaaS) | Novixa' },
       work: { ar: 'الأعمال المختارة والمعمارية | نوڤيكسا', en: 'Selected Work & System Architecture | Novixa' },
-      'case-study-detail': { ar: 'تفاصيل المعمارية الهندسية | نوڤيكسا', en: 'Selected Work Architecture Detail | Novixa' },
+      'case-study-detail': { ar: 'تفاصيل المعمارية الهندسية | نوڤيكسا', en: 'Architecture Case Detail | Novixa' },
       about: { ar: 'عن نوڤيكسا وفلسفة الهندسة', en: 'About Novixa & Engineering Philosophy' },
-      insights: { ar: 'مقالات الهندسة والتقنية | نوڤيكسا', en: 'Engineering Insights & Tech Articles | Novixa' },
+      insights: { ar: 'مختبر المعرفة ومقالات الهندسة | نوڤيكسا', en: 'Engineering Insights & Tech Articles | Novixa' },
       'insight-detail': { ar: 'تفاصيل المقال الهندسي | نوڤيكسا', en: 'Engineering Insight Detail | Novixa' },
       start: { ar: 'ابدأ مشروعك وابنِ نظامك | نوڤيكسا', en: 'Start Your Project Discovery | Novixa' },
       dev_integration: { ar: 'لوحة الاختبار الهندسي الشامل | نوڤيكسا', en: 'Novixa Development Integration Test Dashboard' }
@@ -96,8 +126,8 @@ export function AppContent() {
     document.title = currentTitle;
 
     // Track pageview
-    trackEvent('page_view', { view: currentView }, `/${language}/${currentView}`, language);
-  }, [currentView, language]);
+    trackEvent('page_view', { view: currentView, productId: selectedProductId }, newPath, language);
+  }, [currentView, language, selectedProductId]);
 
   const handleNavigate = (view: ViewType) => {
     setCurrentView(view);

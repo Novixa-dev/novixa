@@ -2,6 +2,8 @@
 
 export function trackEvent(eventName: string, details?: Record<string, any>, page?: string, language?: string) {
   try {
+    if (typeof window === 'undefined') return;
+
     const payload = {
       event: eventName,
       page: page || window.location.hash || '/',
@@ -11,19 +13,24 @@ export function trackEvent(eventName: string, details?: Record<string, any>, pag
     };
 
     if (navigator.sendBeacon) {
-      const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-      navigator.sendBeacon('/api/analytics', blob);
-    } else {
-      fetch('/api/analytics', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        keepalive: true
-      }).catch(() => {
-        // Silently catch network failures in background logging
-      });
+      try {
+        const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+        const queued = navigator.sendBeacon('/api/analytics', blob);
+        if (queued) return;
+      } catch {
+        // Fall back to fetch if sendBeacon fails
+      }
     }
-  } catch (err) {
+
+    fetch('/api/analytics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true
+    }).catch(() => {
+      // Silently catch network failures in background logging
+    });
+  } catch {
     // Analytics logging failure should never disrupt UX
   }
 }

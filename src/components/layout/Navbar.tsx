@@ -65,7 +65,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-2 bg-slate-900/60 backdrop-blur-md border border-slate-800/80 rounded-full px-4 py-1.5 shadow-inner">
+          <nav className="hidden md:flex items-center gap-1 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-full px-3 py-1 shadow-sm">
             {navItems.map((item) => {
               const isActive = pathname === item.path || (item.view === 'home' && (pathname === `/${language}` || pathname === `/${language}/`));
               return (
@@ -75,8 +75,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                   onClick={() => handleLinkClick(item.view, item.path)}
                   className={`px-3.5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 relative ${
                     isActive
-                      ? 'text-white bg-blue-600 shadow-md shadow-blue-600/30 font-semibold'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                      ? 'text-white bg-blue-600 shadow-sm font-semibold'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                   }`}
                 >
                   {t(item.labelAr, item.labelEn)}
@@ -86,7 +86,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           </nav>
 
           {/* Right Actions */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2.5">
             {/* Language Switcher */}
             <button
               onClick={toggleLanguage}
@@ -101,11 +101,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             <Link
               href={`/${language}/start-project`}
               onClick={() => setMobileMenuOpen(false)}
-              className="relative group inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white text-xs lg:text-sm font-semibold px-4 lg:px-5 py-2.5 rounded-xl shadow-lg shadow-blue-600/25 transition-all duration-300 hover:shadow-blue-600/40 hover:-translate-y-0.5 active:translate-y-0"
+              className="relative group inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs lg:text-sm font-semibold px-4 lg:px-5 py-2 rounded-lg shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
             >
-              <Sparkles className="w-4 h-4 text-blue-200 animate-pulse" />
               <span>{t('ابدأ مشروعك', 'Start Project')}</span>
-              <ArrowIcon className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+              <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
             </Link>
           </div>
 
@@ -113,15 +112,15 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           <div className="flex md:hidden items-center gap-2">
             <button
               onClick={toggleLanguage}
-              className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold"
+              className="px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold"
             >
               {language === 'ar' ? 'EN' : 'ع'}
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white focus:outline-none"
+              className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white focus:outline-none"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -129,8 +128,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-[65px] bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 p-5 shadow-2xl transition-all duration-300">
-          <div className="flex flex-col gap-2">
+        <div className="md:hidden fixed inset-x-0 top-[65px] bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 p-4 shadow-2xl transition-all duration-300">
+          <div className="flex flex-col gap-1.5">
             {navItems.map((item) => {
               const isActive = pathname === item.path;
               return (
@@ -138,7 +137,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                   key={item.view}
                   href={item.path}
                   onClick={() => handleLinkClick(item.view, item.path)}
-                  className={`text-right rtl:text-right ltr:text-left px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                  className={`text-right rtl:text-right ltr:text-left px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all ${
                     isActive
                       ? 'bg-blue-600 text-white font-semibold'
                       : 'text-slate-300 hover:bg-slate-900 hover:text-white'
@@ -153,9 +152,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
               <Link
                 href={`/${language}/start-project`}
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-blue-600/30"
+                className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-4 rounded-lg shadow-sm"
               >
-                <Sparkles className="w-4 h-4 text-blue-200" />
                 <span>{t('ابدأ مشروعك الآن', 'Start Your Project Now')}</span>
                 <ArrowIcon className="w-4 h-4" />
               </Link>

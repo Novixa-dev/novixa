@@ -8,9 +8,14 @@ import { InsightsSection } from '../sections/InsightsSection';
 interface InsightsViewProps {
   onNavigate: (view: ViewType) => void;
   onSelectInsight?: (article: InsightArticle) => void;
+  isLoading?: boolean;
 }
 
-export const InsightsView: React.FC<InsightsViewProps> = ({ onNavigate, onSelectInsight }) => {
+export const InsightsView: React.FC<InsightsViewProps> = ({ 
+  onNavigate, 
+  onSelectInsight,
+  isLoading 
+}) => {
   const { isRtl, t } = useLanguage();
 
   return (
@@ -32,7 +37,7 @@ export const InsightsView: React.FC<InsightsViewProps> = ({ onNavigate, onSelect
         </div>
       </div>
 
-      <InsightsSection onNavigate={onNavigate} onSelectInsight={onSelectInsight} />
+      <InsightsSection onNavigate={onNavigate} onSelectInsight={onSelectInsight} isLoading={isLoading} />
     </div>
   );
 };

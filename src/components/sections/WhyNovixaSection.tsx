@@ -50,38 +50,37 @@ export const WhyNovixaSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-teal-400 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>{t('الفارق الجوهري', 'The Novixa Difference')}</span>
+        <div className="text-center max-w-3xl mx-auto space-y-4 mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium">
+            <span>{t('الفارق الجوهري', 'The Engineering Discipline')}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white tracking-tight">
-            {t('لماذا تختار نوڤيكسا لشراكتك التقنية؟', 'Why businesses trust Novixa for technology.')}
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white tracking-tight leading-snug">
+            {t('لماذا تختار نوڤيكسا لشراكتك التقنية؟', 'Why enterprises partner with Novixa.')}
           </h2>
 
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
             {t(
-              'لسنا مجرد شركة برمجة تبيع ساعات عمل. نحن شريك هندسي يتبنى أهداف شركتك ويضمن تحولها إلى واقع برمجي ناجح.',
-              'We are not a body-shopping agency. We are product engineers invested in turning your operational vision into a thriving tech asset.'
+              'لسنا مجرد شركة برمجة تبيع ساعات عمل. نحن فريق هندسي متكامل يتبنى أهداف أعمالك ويضمن تحولها إلى أصل تقني متين.',
+              'We are not a body-shopping agency. We are product engineers invested in turning your operational vision into a robust technical asset.'
             )}
           </p>
         </div>
 
         {/* Differentiators Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {differentiators.map((diff, idx) => {
             const IconComp = diff.icon;
             return (
               <div
                 key={idx}
-                className="glass-card rounded-2xl p-7 border border-slate-800 text-right rtl:text-right ltr:text-left space-y-4 relative group"
+                className="glass-card glass-card-hover rounded-2xl p-6 sm:p-7 border border-slate-800 text-right rtl:text-right ltr:text-left space-y-4 relative group"
               >
-                <div className="w-12 h-12 rounded-xl bg-blue-950/80 border border-blue-800/80 flex items-center justify-center text-blue-400 font-bold group-hover:scale-110 transition-transform">
-                  <IconComp className="w-6 h-6" />
+                <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-400 font-bold">
+                  <IconComp className="w-5 h-5" />
                 </div>
 
-                <h3 className="text-lg font-bold text-white font-display">
+                <h3 className="text-base sm:text-lg font-bold text-white font-display">
                   {t(diff.titleAr, diff.titleEn)}
                 </h3>
 
@@ -89,9 +88,9 @@ export const WhyNovixaSection: React.FC = () => {
                   {t(diff.descAr, diff.descEn)}
                 </p>
 
-                <div className="pt-2 flex items-center gap-1.5 text-xs text-teal-400 font-mono">
+                <div className="pt-2 flex items-center gap-1.5 text-xs text-blue-400 font-mono">
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>{t('معيار هندسي ثابت', 'Novixa Standard')}</span>
+                  <span>{t('معيار هندسي ثابت', 'Novixa Engineering Standard')}</span>
                 </div>
               </div>
             );

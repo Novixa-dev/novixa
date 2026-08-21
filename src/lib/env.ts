@@ -21,8 +21,9 @@ const getEnvVal = (key: string, fallback: string): string => {
   if (typeof process !== 'undefined' && process.env && process.env[key]) {
     return process.env[key] as string;
   }
-  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env[key]) {
-    return import.meta.env[key] as string;
+  const meta = import.meta as unknown as { env?: Record<string, string> };
+  if (typeof meta !== 'undefined' && meta.env && meta.env[key]) {
+    return meta.env[key] as string;
   }
   return fallback;
 };
@@ -79,8 +80,10 @@ export function validateEnvironment(): EnvValidationResult {
     'NOVIXA_CONTACT_EMAIL',
   ];
 
-  const missingClientVars = requiredClient.filter((key) => !process.env[key]);
-  const missingServerVars = isServer ? requiredServer.filter((key) => !process.env[key]) : [];
+  const missingClientVars = requiredClient.filter((key) => !getEnvVal(key, ''));
+  const missingServerVars = isServer
+    ? requiredServer.filter((key) => typeof process !== 'undefined' && process.env && !process.env[key])
+    : [];
 
   return {
     isValid: missingClientVars.length === 0 && (isServer ? missingServerVars.length === 0 : true),
@@ -88,10 +91,10 @@ export function validateEnvironment(): EnvValidationResult {
     missingClientVars,
     missingServerVars,
     summary: {
-      hasFirebaseClient: !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-      hasFirebaseAdmin: isServer ? !!process.env.FIREBASE_PRIVATE_KEY : false,
-      hasGemini: isServer ? !!process.env.GEMINI_API_KEY : false,
-      hasResend: isServer ? !!process.env.RESEND_API_KEY : false,
+      hasFirebaseClient: !!getEnvVal('NEXT_PUBLIC_FIREBASE_API_KEY', ''),
+      hasFirebaseAdmin: isServer ? !!(typeof process !== 'undefined' && process.env?.FIREBASE_PRIVATE_KEY) : false,
+      hasGemini: isServer ? !!(typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) : false,
+      hasResend: isServer ? !!(typeof process !== 'undefined' && process.env?.RESEND_API_KEY) : false,
     },
   };
 }

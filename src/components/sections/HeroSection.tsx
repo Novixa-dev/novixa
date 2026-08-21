@@ -39,49 +39,48 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
       <div className="absolute inset-0 bg-grid-line-pattern opacity-30 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
           
           {/* Left / Main Text Side */}
           <div className="lg:col-span-7 space-y-6 text-right rtl:text-right ltr:text-left">
             {/* Top Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-blue-800/60 text-blue-300 text-xs font-medium shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-              <span>{t('Software Engineering · Digital Products · Business Platforms', 'Software Engineering · Digital Products · Business Platforms')}</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+              <span>{t('Software Engineering · Digital Systems · Multi-Tenant Cloud', 'Software Engineering · Digital Systems · Multi-Tenant Cloud')}</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white leading-[1.25] tracking-tight">
-              {t('نبني التقنية التي تجعل', 'Engineered for Growth.')} <br className="hidden sm:inline" />
-              <span className="bg-gradient-to-r from-blue-400 via-blue-300 to-teal-300 bg-clip-text text-transparent">
-                {t('أعمالك أقوى وأكثر توسعًا.', 'Building Systems That Power Scale.')}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white leading-[1.3] tracking-normal lg:tracking-tight">
+              {t('نبني التقنية التي تجعل', 'Engineered for Scale.')} <br className="hidden sm:inline" />
+              <span className="text-blue-400">
+                {t('أعمالك أقوى وأسرع توسعًا.', 'Digital Systems Powering Modern Business.')}
               </span>
             </h1>
 
             {/* Subheadline */}
             <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl font-arabic font-normal">
               {t(
-                'نحوّل الأفكار والعمليات التشغيلية المعقدة إلى منتجات ومنصات رقمية حديثة، مصممة بأعلى معايير الهندسة لتنفذ اليوم وتتوسع مع شركتك غدًا.',
-                'We transform complex operational workflows into modern digital platforms—engineered to execute flawlessly today and scale effortlessly tomorrow.'
+                'نحوّل العمليات التشغيلية المعقدة إلى منصات رقمية حديثة، مصممة بأعلى معايير هندسة البرمجيات لتنفذ اليوم وتتوسع مع شركتك غدًا.',
+                'We transform complex operational workflows into resilient enterprise platforms—engineered to execute with high reliability today and scale effortlessly tomorrow.'
               )}
             </p>
 
             {/* CTA Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            <div className="pt-2 flex flex-wrap items-center gap-3.5">
               <Link
                 href={`/${language}/start-project`}
-                className="group inline-flex items-center gap-2.5 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 hover:from-blue-500 hover:to-blue-600 text-white font-semibold text-sm sm:text-base px-6 py-3.5 rounded-xl shadow-xl shadow-blue-600/30 transition-all duration-300 hover:shadow-blue-600/50 hover:-translate-y-0.5 active:translate-y-0"
+                className="group inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-semibold text-sm sm:text-base px-6 py-3 rounded-lg shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
               >
-                <Sparkles className="w-4 h-4 text-blue-200" />
                 <span>{t('ابدأ مشروعك معنا', 'Start Your Project')}</span>
-                <ArrowIcon className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+                <ArrowIcon className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
               </Link>
 
               <Link
                 href={`/${language}/products`}
-                className="inline-flex items-center gap-2 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 text-slate-200 font-medium text-sm sm:text-base px-5 py-3.5 rounded-xl transition-all duration-200"
+                className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 font-medium text-sm sm:text-base px-5 py-3 rounded-lg transition-all duration-200"
               >
-                <Layers className="w-4 h-4 text-teal-400" />
-                <span>{t('اكتشف ما نبنيه', 'Explore Our Products')}</span>
+                <Layers className="w-4 h-4 text-blue-400" />
+                <span>{t('استكشف المنتجات الرقمية', 'Explore Digital Products')}</span>
               </Link>
             </div>
 
@@ -104,14 +103,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
 
           {/* Right / Interactive Architecture System Visual */}
           <div className="lg:col-span-5 relative">
-            <div className="glass-card rounded-2xl p-5 border border-slate-800/90 shadow-2xl bg-slate-900/90 relative overflow-hidden">
+            <div className="glass-card rounded-2xl p-5 border border-slate-800 shadow-2xl bg-slate-900/90 relative overflow-hidden">
               {/* Top Control Toggle */}
               <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-800">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
-                  <span className="text-xs font-mono text-slate-400 ml-2">novixa-system-v2.6</span>
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                  <span className="text-xs font-mono text-slate-400 ml-1">novixa-system-v2.6</span>
                 </div>
 
                 <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-[11px] font-medium">

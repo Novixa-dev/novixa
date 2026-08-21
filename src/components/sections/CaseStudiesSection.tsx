@@ -10,15 +10,23 @@ import {
   CheckCircle2, Layers, Cpu, X 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { CaseStudyCardSkeleton } from '../ui/Skeleton';
+import { usePerceivedLoading } from '../../hooks/usePerceivedLoading';
 
 interface CaseStudiesSectionProps {
   onNavigate?: (view: ViewType) => void;
   onSelectCaseStudy?: (caseStudy: CaseStudy) => void;
+  isLoading?: boolean;
 }
 
-export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ onNavigate, onSelectCaseStudy }) => {
+export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ 
+  onNavigate, 
+  onSelectCaseStudy,
+  isLoading: controlledLoading
+}) => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
+  const { isLoading } = usePerceivedLoading([], { initialDelay: 320, controlledLoading });
 
   const [activeModalCase, setActiveModalCase] = useState<CaseStudy | null>(null);
 
@@ -34,13 +42,13 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ onNaviga
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 text-right rtl:text-right ltr:text-left">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 text-right rtl:text-right ltr:text-left">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950 border border-blue-800 text-blue-400 text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium">
               <Briefcase className="w-3.5 h-3.5" />
-              <span>{t('أعمالنا المختارة والمعمارية', 'Selected Work Architecture')}</span>
+              <span>{t('أعمالنا المختارة والمعمارية', 'Selected Engineering Case Studies')}</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
               {t('ما نبنيه يصبح واقعًا تشغيليًا.', 'What we build becomes operational reality.')}
             </h2>
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
@@ -53,77 +61,81 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ onNaviga
 
           <Link
             href={`/${language}/work`}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors self-start md:self-auto"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors self-start md:self-auto"
           >
             <span>{t('عرض جميع الأعمال المختارة', 'Explore All Selected Work')}</span>
-            <ArrowIcon className="w-4 h-4" />
+            <ArrowIcon className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        {/* Case Studies Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {CASE_STUDIES.map((cs) => (
-            <div
-              key={cs.id}
-              className="glass-card glass-card-hover rounded-2xl p-6 sm:p-7 border border-slate-800 flex flex-col justify-between gap-6 relative group"
-            >
-              <div className="space-y-4 text-right rtl:text-right ltr:text-left">
-                {/* Meta Badge */}
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <span className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-blue-950 text-blue-300 border border-blue-800/60">
-                    {cs.industry[isRtl ? 'ar' : 'en']}
-                  </span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-900 text-teal-300 border border-teal-800/60">
-                    {cs.caseStudyTypeLabel[isRtl ? 'ar' : 'en']}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-blue-400 transition-colors">
-                  <Link href={`/${language}/work/${cs.id}`}>
-                    {cs.title[isRtl ? 'ar' : 'en']}
-                  </Link>
-                </h3>
-
-                {/* Challenge Excerpt */}
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-arabic line-clamp-3">
-                  {cs.challenge[isRtl ? 'ar' : 'en']}
-                </p>
-
-                {/* Metrics Highlights */}
-                <div className="grid grid-cols-2 gap-2 pt-2">
-                  {cs.metrics.slice(0, 2).map((m, idx) => (
-                    <div key={idx} className="p-2.5 bg-slate-950 rounded-xl border border-slate-800/80">
-                      <div className="text-lg font-bold font-display text-teal-400">{m.value}</div>
-                      <div className="text-[10px] text-slate-400 font-arabic truncate">{m.label[isRtl ? 'ar' : 'en']}</div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Tech Pills */}
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {cs.technologies.slice(0, 4).map((tech, idx) => (
-                    <span key={idx} className="text-[10px] font-mono text-slate-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded">
-                      {tech}
+        {/* Case Studies Cards Grid / Skeletons */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {isLoading ? (
+            <CaseStudyCardSkeleton count={3} />
+          ) : (
+            CASE_STUDIES.map((cs) => (
+              <div
+                key={cs.id}
+                className="glass-card glass-card-hover rounded-2xl p-6 sm:p-7 border border-slate-800 flex flex-col justify-between gap-6 relative group animate-fadeIn"
+              >
+                <div className="space-y-4 text-right rtl:text-right ltr:text-left">
+                  {/* Meta Badge */}
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <span className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-slate-900 text-blue-400 border border-slate-800">
+                      {cs.industry[isRtl ? 'ar' : 'en']}
                     </span>
-                  ))}
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950 text-slate-400 border border-slate-800">
+                      {cs.caseStudyTypeLabel[isRtl ? 'ar' : 'en']}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-blue-400 transition-colors">
+                    <Link href={`/${language}/work/${cs.id}`}>
+                      {cs.title[isRtl ? 'ar' : 'en']}
+                    </Link>
+                  </h3>
+
+                  {/* Challenge Excerpt */}
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-arabic line-clamp-3">
+                    {cs.challenge[isRtl ? 'ar' : 'en']}
+                  </p>
+
+                  {/* Metrics Highlights */}
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    {cs.metrics.slice(0, 2).map((m, idx) => (
+                      <div key={idx} className="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
+                        <div className="text-base sm:text-lg font-bold font-display text-blue-400">{m.value}</div>
+                        <div className="text-[10px] text-slate-400 font-arabic truncate">{m.label[isRtl ? 'ar' : 'en']}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Tech Pills */}
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {cs.technologies.slice(0, 4).map((tech, idx) => (
+                      <span key={idx} className="text-[10px] font-mono text-slate-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom Action */}
+                <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+                  <span className="text-xs text-slate-400 font-mono">{cs.location[isRtl ? 'ar' : 'en']}</span>
+
+                  <Link
+                    href={`/${language}/work/${cs.id}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-white transition-colors"
+                  >
+                    <span>{t('عرض التفاصيل المعمارية', 'View Architecture Details')}</span>
+                    <ArrowIcon className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
-
-              {/* Bottom Action */}
-              <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                <span className="text-xs text-slate-400 font-mono">{cs.location[isRtl ? 'ar' : 'en']}</span>
-
-                <Link
-                  href={`/${language}/work/${cs.id}`}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-white transition-colors"
-                >
-                  <span>{t('عرض التفاصيل المعمارية', 'View Architecture Details')}</span>
-                  <ArrowIcon className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
       </div>

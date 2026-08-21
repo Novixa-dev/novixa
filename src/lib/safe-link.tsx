@@ -11,27 +11,39 @@ export interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement>
 }
 
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(
-  { href, children, onClick, replace, scroll, prefetch, ...props },
+  { href, children, onClick, replace, scroll = true, prefetch, target, ...props },
   ref
 ) {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (onClick) {
       onClick(e);
     }
-    if (!e.defaultPrevented && href) {
-      if (href.startsWith('/')) {
-        const currentHash = typeof window !== 'undefined' ? window.location.hash : '';
-        if (currentHash && currentHash.startsWith('#/')) {
-          e.preventDefault();
-          window.location.hash = `#${href}`;
-          return;
+    
+    // If not a standard left-click or has modifiers, allow default browser behavior
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || target === '_blank') {
+      return;
+    }
+
+    if (href && href.startsWith('/') && !href.startsWith('//')) {
+      e.preventDefault();
+      
+      if (typeof window !== 'undefined') {
+        if (replace) {
+          window.history.replaceState(null, '', href);
+        } else {
+          window.history.pushState(null, '', href);
+        }
+        window.dispatchEvent(new Event('popstate'));
+        
+        if (scroll) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       }
     }
   };
 
   return (
-    <a ref={ref} href={href} onClick={handleClick} {...props}>
+    <a ref={ref} href={href} target={target} onClick={handleClick} {...props}>
       {children}
     </a>
   );

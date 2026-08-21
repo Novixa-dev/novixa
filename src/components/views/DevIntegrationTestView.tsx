@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { validateEnvironment } from '../../lib/env';
-import { testFirebaseClientConnection, auth } from '../../lib/firebase/client';
+import { testFirebaseClientConnection, getClientAuth } from '../../lib/firebase/client';
 import { signInAnonymously, onAuthStateChanged, User } from 'firebase/auth';
 
 interface TestResult {
@@ -46,10 +46,29 @@ export function DevIntegrationTestView() {
   // Load environment & Auth listener on mount
   useEffect(() => {
     fetchEnvStatus();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-    });
-    return () => unsubscribe();
+    try {
+      const clientAuth = getClientAuth();
+      if (clientAuth) {
+        const unsubscribe = onAuthStateChanged(
+          clientAuth,
+          (user) => {
+            setCurrentUser(user);
+          },
+          (error) => {
+            console.warn('[DevIntegration] Auth state change notice:', error?.message);
+          }
+        );
+        return () => {
+          try {
+            unsubscribe();
+          } catch {
+            // ignore cleanup errors
+          }
+        };
+      }
+    } catch (err) {
+      console.warn('[DevIntegration] Auth listener setup notice:', err);
+    }
   }, []);
 
   const fetchEnvStatus = async () => {
@@ -70,7 +89,11 @@ export function DevIntegrationTestView() {
   const runAuthClientTest = async () => {
     setAuthTest({ status: 'loading' });
     try {
-      const cred = await signInAnonymously(auth);
+      const clientAuth = getClientAuth();
+      if (!clientAuth) {
+        throw new Error('Firebase Auth client could not be initialized.');
+      }
+      const cred = await signInAnonymously(clientAuth);
       setAuthTest({
         status: 'success',
         data: {
@@ -91,7 +114,8 @@ export function DevIntegrationTestView() {
 
   // 2. Token Verification Test (Server-side via Admin SDK)
   const runTokenVerifyTest = async () => {
-    if (!auth.currentUser) {
+    const clientAuth = getClientAuth();
+    if (!clientAuth || !clientAuth.currentUser) {
       setTokenVerifyTest({
         status: 'error',
         error: 'Please sign in first via the Auth card to obtain an ID token.',
@@ -102,7 +126,7 @@ export function DevIntegrationTestView() {
 
     setTokenVerifyTest({ status: 'loading' });
     try {
-      const token = await auth.currentUser.getIdToken(true);
+      const token = await clientAuth.currentUser.getIdToken(true);
       const res = await fetch('/api/auth/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

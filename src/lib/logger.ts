@@ -36,15 +36,30 @@ class Logger {
     window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
       const reason = event.reason;
 
-      // Filter out benign browser noise, canceled requests, or empty/falsy rejections
+      // Filter out benign browser noise, canceled requests, empty/falsy rejections, or zero codes
       if (
-        !reason ||
+        reason === undefined ||
+        reason === null ||
         reason === 0 ||
         reason === '0' ||
+        reason === '' ||
         reason === 'ResizeObserver loop limit exceeded' ||
-        (typeof reason === 'object' && reason?.name === 'AbortError') ||
-        (typeof reason === 'string' && (reason.includes('WebSocket') || reason.includes('ResizeObserver') || reason === '0'))
+        (typeof reason === 'object' && (reason?.name === 'AbortError' || reason?.code === 0)) ||
+        (typeof reason === 'string' && (
+          reason.includes('WebSocket') ||
+          reason.includes('ResizeObserver') ||
+          reason.includes('canceled') ||
+          reason === '0' ||
+          reason.trim() === ''
+        ))
       ) {
+        event.preventDefault();
+        return;
+      }
+
+      // If reason is an empty object or has no actionable details
+      if (typeof reason === 'object' && !reason.message && !reason.stack && Object.keys(reason).length === 0) {
+        event.preventDefault();
         return;
       }
 
@@ -59,10 +74,14 @@ class Logger {
                 : 'Unhandled Promise Rejection'
             );
 
-      // Don't report empty or zero error messages
-      if (!error.message || error.message === '0' || error.message === 'null') {
+      // Don't report empty, zero, or uninformative error messages
+      if (!error.message || error.message === '0' || error.message === 'null' || error.message.trim() === '') {
+        event.preventDefault();
         return;
       }
+
+      // Prevent default to avoid bubbling duplicate rejection notices
+      event.preventDefault();
 
       this.logError(error, {
         source: 'unhandledrejection',

@@ -8,15 +8,23 @@ import {
   Activity, UtensilsCrossed, Calendar, Gamepad2, Sparkles, 
   ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck 
 } from 'lucide-react';
+import { ProductCardSkeleton } from '../ui/Skeleton';
+import { usePerceivedLoading } from '../../hooks/usePerceivedLoading';
 
 interface ProductsSectionProps {
   onNavigate?: (view: ViewType) => void;
   onSelectProduct?: (productId: string) => void;
+  isLoading?: boolean;
 }
 
-export const ProductsSection: React.FC<ProductsSectionProps> = ({ onNavigate, onSelectProduct }) => {
+export const ProductsSection: React.FC<ProductsSectionProps> = ({ 
+  onNavigate, 
+  onSelectProduct,
+  isLoading: controlledLoading
+}) => {
   const { isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
+  const { isLoading } = usePerceivedLoading([], { initialDelay: 320, controlledLoading });
 
   const getProductIcon = (iconName: string) => {
     switch (iconName) {
@@ -50,113 +58,110 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onNavigate, on
             </p>
           </div>
 
-          <button
-            onClick={() => onNavigate('products')}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-teal-400 hover:text-teal-300 transition-colors self-start md:self-auto"
-          >
-            <span>{t('عرض جميع المنتجات والتجارب', 'View All Product Specs')}</span>
-            <ArrowIcon className="w-4 h-4" />
-          </button>
+          {onNavigate && (
+            <button
+              onClick={() => onNavigate('products')}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors self-start md:self-auto"
+            >
+              <span>{t('عرض جميع المنتجات والمنصات', 'View All Products & Systems')}</span>
+              <ArrowIcon className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {PRODUCTS.map((prod) => {
-            const IconComp = getProductIcon(prod.iconName);
-            return (
-              <div
-                key={prod.id}
-                className="glass-card glass-card-hover rounded-2xl p-6 sm:p-8 border border-slate-800/90 flex flex-col justify-between gap-6 relative group overflow-hidden"
-              >
-                {/* Background Accent Pill */}
-                <div 
-                  className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-10 pointer-events-none"
-                  style={{ backgroundColor: prod.accentColor }}
-                ></div>
-
-                <div className="space-y-4 text-right rtl:text-right ltr:text-left">
-                  {/* Top Row: Category & Status */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div 
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md"
-                        style={{ backgroundColor: prod.accentColor }}
-                      >
-                        <IconComp className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <span className="font-display font-bold text-white text-lg block">
-                          {prod.name[isRtl ? 'ar' : 'en']}
-                        </span>
-                        <span className="text-xs text-slate-400 font-arabic">
-                          {prod.category[isRtl ? 'ar' : 'en']}
-                        </span>
-                      </div>
-                    </div>
-
-                    <span className="px-2.5 py-1 rounded-full text-[11px] font-mono font-medium bg-slate-900 border border-slate-700 text-slate-300">
-                      {prod.statusLabel[isRtl ? 'ar' : 'en']}
-                    </span>
-                  </div>
-
-                  {/* Title & Tagline */}
-                  <div className="space-y-1">
-                    <h3 className="text-sm sm:text-base font-bold text-blue-300 font-display">
-                      {prod.title[isRtl ? 'ar' : 'en']}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-arabic">
-                      {prod.description[isRtl ? 'ar' : 'en']}
-                    </p>
-                  </div>
-
-                  {/* Key Features */}
-                  <div className="pt-2 space-y-2">
-                    <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block">
-                      {t('الميزات التشغيلية الرئيسية:', 'Key Product Features:')}
-                    </span>
-                    <div className="space-y-1.5 text-xs text-slate-300">
-                      {prod.features[isRtl ? 'ar' : 'en'].slice(0, 3).map((feat, idx) => (
-                        <div key={idx} className="flex items-start gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-teal-400 shrink-0 mt-0.5" />
-                          <span>{feat}</span>
+        {/* Products Grid / Skeletons */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {isLoading ? (
+            <ProductCardSkeleton count={4} />
+          ) : (
+            PRODUCTS.map((prod) => {
+              const IconComp = getProductIcon(prod.iconName);
+              return (
+                <div
+                  key={prod.id}
+                  className="glass-card glass-card-hover rounded-2xl p-6 sm:p-7 border border-slate-800 flex flex-col justify-between gap-6 relative group animate-fadeIn"
+                >
+                  <div className="space-y-4 text-right rtl:text-right ltr:text-left">
+                    {/* Top Row: Category & Status */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-400">
+                          <IconComp className="w-5 h-5" />
                         </div>
-                      ))}
+                        <div>
+                          <span className="font-display font-bold text-white text-base sm:text-lg block">
+                            {prod.name[isRtl ? 'ar' : 'en']}
+                          </span>
+                          <span className="text-xs text-slate-400 font-arabic">
+                            {prod.category[isRtl ? 'ar' : 'en']}
+                          </span>
+                        </div>
+                      </div>
+
+                      <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-medium bg-slate-950 border border-slate-800 text-slate-300">
+                        {prod.statusLabel[isRtl ? 'ar' : 'en']}
+                      </span>
                     </div>
+
+                    {/* Title & Tagline */}
+                    <div className="space-y-1">
+                      <h3 className="text-sm sm:text-base font-semibold text-blue-300 font-display">
+                        {prod.title[isRtl ? 'ar' : 'en']}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-arabic">
+                        {prod.description[isRtl ? 'ar' : 'en']}
+                      </p>
+                    </div>
+
+                    {/* Key Features */}
+                    <div className="pt-1 space-y-2">
+                      <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block">
+                        {t('الميزات التشغيلية الرئيسية:', 'Key Product Features:')}
+                      </span>
+                      <div className="space-y-1.5 text-xs text-slate-300">
+                        {prod.features[isRtl ? 'ar' : 'en'].slice(0, 3).map((feat, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" />
+                            <span>{feat}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Metrics if available */}
+                    {prod.metrics && prod.metrics.length > 0 && (
+                      <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-around text-center">
+                        {prod.metrics.map((m, idx) => (
+                          <div key={idx}>
+                            <div className="text-base sm:text-lg font-bold font-display text-blue-400">{m.value}</div>
+                            <div className="text-[10px] text-slate-400 font-arabic">{m.label[isRtl ? 'ar' : 'en']}</div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
-                  {/* Metrics if available */}
-                  {prod.metrics && prod.metrics.length > 0 && (
-                    <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-around text-center">
-                      {prod.metrics.map((m, idx) => (
-                        <div key={idx}>
-                          <div className="text-lg font-bold font-display text-teal-400">{m.value}</div>
-                          <div className="text-[10px] text-slate-400 font-arabic">{m.label[isRtl ? 'ar' : 'en']}</div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                  {/* Bottom Action */}
+                  <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+                    <span className="text-xs text-slate-400 font-mono">
+                      {prod.id === 'pulse' ? 'Spotlight Product' : 'SaaS System'}
+                    </span>
 
-                {/* Bottom Action */}
-                <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                  <span className="text-xs text-slate-400 font-mono">
-                    {prod.id === 'pulse' ? 'Special Spotlight' : 'SaaS Ready'}
-                  </span>
-
-                  <button
-                    onClick={() => {
-                      if (onSelectProduct) onSelectProduct(prod.id);
-                      onNavigate('products');
-                    }}
-                    className="inline-flex items-center gap-2 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-slate-600 px-4 py-2 rounded-xl transition-all"
-                  >
-                    <span>{t('معاينة المنتج بالكامل', 'Preview Product Details')}</span>
-                    <ArrowIcon className="w-3.5 h-3.5 text-blue-400" />
-                  </button>
+                    <button
+                      onClick={() => {
+                        if (onSelectProduct) onSelectProduct(prod.id);
+                        if (onNavigate) onNavigate('products');
+                      }}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 px-3.5 py-1.5 rounded-lg transition-all"
+                    >
+                      <span>{t('تفاصيل المنتج بالكامل', 'View Full Specifications')}</span>
+                      <ArrowIcon className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </div>
 
       </div>

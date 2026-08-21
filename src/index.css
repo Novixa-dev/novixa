@@ -2,20 +2,29 @@
 
 @layer base {
   :root {
-    --font-arabic: 'IBM Plex Sans Arabic', 'Alexandria', system-ui, sans-serif;
-    --font-display: 'Alexandria', 'IBM Plex Sans Arabic', system-ui, sans-serif;
-    --font-english: 'Inter', system-ui, sans-serif;
+    --font-arabic: 'IBM Plex Sans Arabic', 'Alexandria', system-ui, -apple-system, sans-serif;
+    --font-display: 'Alexandria', 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
+    --font-english: 'Inter', system-ui, -apple-system, sans-serif;
   }
 
   body {
     font-family: var(--font-arabic);
-    background-color: #0b1120;
-    color: #f1f5f9;
+    background-color: #020617;
+    color: #f8fafc;
     overflow-x: hidden;
+    line-height: 1.6;
+    letter-spacing: normal;
   }
 
   html[lang="en"] body {
     font-family: var(--font-english);
+    letter-spacing: -0.01em;
+  }
+
+  /* Accessible high-contrast focus rings */
+  *:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
   }
 }
 
@@ -31,50 +40,89 @@
   font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* Custom Grids & Background Accent Effects */
+/* Crisp technical background patterns */
 .bg-grid-pattern {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 .bg-grid-line-pattern {
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
 .bg-radial-gradient {
-  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.15) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.12) 0%, transparent 60%);
 }
 
+/* Precision engineered card style */
 .glass-card {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-card-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card-hover:hover {
-  background: rgba(30, 41, 59, 0.8);
-  border-color: rgba(37, 99, 235, 0.3);
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(59, 130, 246, 0.4);
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px -10px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 16px 32px -8px rgba(2, 6, 23, 0.8), 0 0 0 1px rgba(59, 130, 246, 0.15);
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #020617;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #1e293b;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #2563eb;
 }
+
+/* Skeleton Loading Shimmer Animation */
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(30, 41, 59, 0.65);
+}
+
+.skeleton-shimmer::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.02) 25%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.02) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  content: '';
+  pointer-events: none;
+}
+

@@ -9,9 +9,14 @@ import { CaseStudiesSection } from '../sections/CaseStudiesSection';
 interface WorkViewProps {
   onNavigate: (view: ViewType) => void;
   onSelectCaseStudy?: (caseStudy: CaseStudy) => void;
+  isLoading?: boolean;
 }
 
-export const WorkView: React.FC<WorkViewProps> = ({ onNavigate, onSelectCaseStudy }) => {
+export const WorkView: React.FC<WorkViewProps> = ({ 
+  onNavigate, 
+  onSelectCaseStudy,
+  isLoading 
+}) => {
   const { isRtl, t } = useLanguage();
 
   return (
@@ -33,7 +38,7 @@ export const WorkView: React.FC<WorkViewProps> = ({ onNavigate, onSelectCaseStud
         </div>
       </div>
 
-      <CaseStudiesSection onNavigate={onNavigate} onSelectCaseStudy={onSelectCaseStudy} />
+      <CaseStudiesSection onNavigate={onNavigate} onSelectCaseStudy={onSelectCaseStudy} isLoading={isLoading} />
     </div>
   );
 };

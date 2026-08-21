@@ -7,15 +7,23 @@ import { INSIGHTS } from '../../content/data';
 import { InsightArticle, ViewType } from '../../types';
 import { BookOpen, ArrowLeft, ArrowRight, Clock, User, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { InsightCardSkeleton } from '../ui/Skeleton';
+import { usePerceivedLoading } from '../../hooks/usePerceivedLoading';
 
 interface InsightsSectionProps {
   onNavigate?: (view: ViewType) => void;
   onSelectInsight?: (article: InsightArticle) => void;
+  isLoading?: boolean;
 }
 
-export const InsightsSection: React.FC<InsightsSectionProps> = ({ onNavigate, onSelectInsight }) => {
+export const InsightsSection: React.FC<InsightsSectionProps> = ({ 
+  onNavigate, 
+  onSelectInsight,
+  isLoading: controlledLoading 
+}) => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
+  const { isLoading } = usePerceivedLoading([], { initialDelay: 320, controlledLoading });
 
   const [activeArticle, setActiveArticle] = useState<InsightArticle | null>(null);
 
@@ -29,14 +37,14 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ onNavigate, on
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 text-right rtl:text-right ltr:text-left">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 text-right rtl:text-right ltr:text-left">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-teal-400 text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium">
               <BookOpen className="w-3.5 h-3.5" />
-              <span>{t('من مختبر نوڤيكسا', 'Novixa Insights Lab')}</span>
+              <span>{t('من مختبر نوڤيكسا', 'Novixa Engineering & Insights Lab')}</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight">
-              {t('معرفة هندسية ورؤى في تقنية الأعمال.', 'Engineering insights for modern business.')}
+            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
+              {t('معرفة هندسية ورؤى في تقنية الأعمال.', 'Engineering insights for modern enterprise.')}
             </h2>
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
               {t(
@@ -48,55 +56,59 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ onNavigate, on
 
           <Link
             href={`/${language}/insights`}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-teal-400 hover:text-teal-300 transition-colors self-start md:self-auto"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors self-start md:self-auto"
           >
-            <span>{t('تصفح مكتبة المقالات بالكامل', 'Browse All Articles')}</span>
-            <ArrowIcon className="w-4 h-4" />
+            <span>{t('تصفح مكتبة المقالات بالكامل', 'Browse All Insights')}</span>
+            <ArrowIcon className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        {/* Articles Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {INSIGHTS.map((art) => (
-            <div
-              key={art.id}
-              className="glass-card glass-card-hover rounded-2xl p-6 border border-slate-800 flex flex-col justify-between gap-6 relative group"
-            >
-              <div className="space-y-3 text-right rtl:text-right ltr:text-left">
-                <div className="flex items-center justify-between text-xs font-mono text-slate-400">
-                  <span className="px-2.5 py-1 rounded bg-teal-950 text-teal-300 border border-teal-800">
-                    {art.category[isRtl ? 'ar' : 'en']}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
-                    <span>{art.readTime[isRtl ? 'ar' : 'en']}</span>
-                  </span>
+        {/* Articles Grid / Skeletons */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {isLoading ? (
+            <InsightCardSkeleton count={3} />
+          ) : (
+            INSIGHTS.map((art) => (
+              <div
+                key={art.id}
+                className="glass-card glass-card-hover rounded-2xl p-6 sm:p-7 border border-slate-800 flex flex-col justify-between gap-6 relative group animate-fadeIn"
+              >
+                <div className="space-y-3 text-right rtl:text-right ltr:text-left">
+                  <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+                    <span className="px-2.5 py-0.5 rounded-md bg-slate-900 text-blue-400 border border-slate-800 text-[11px]">
+                      {art.category[isRtl ? 'ar' : 'en']}
+                    </span>
+                    <span className="flex items-center gap-1 text-[11px]">
+                      <Clock className="w-3 h-3" />
+                      <span>{art.readTime[isRtl ? 'ar' : 'en']}</span>
+                    </span>
+                  </div>
+
+                  <h3 className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-blue-400 transition-colors">
+                    <Link href={`/${language}/insights/${art.id}`}>
+                      {art.title[isRtl ? 'ar' : 'en']}
+                    </Link>
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-arabic line-clamp-3">
+                    {art.excerpt[isRtl ? 'ar' : 'en']}
+                  </p>
                 </div>
 
-                <h3 className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-teal-400 transition-colors">
-                  <Link href={`/${language}/insights/${art.id}`}>
-                    {art.title[isRtl ? 'ar' : 'en']}
+                <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+                  <span className="text-xs text-slate-400 font-mono">{art.date}</span>
+
+                  <Link
+                    href={`/${language}/insights/${art.id}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-white transition-colors"
+                  >
+                    <span>{t('قراءة المقال', 'Read Essay')}</span>
+                    <ArrowIcon className="w-3.5 h-3.5" />
                   </Link>
-                </h3>
-
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-arabic line-clamp-3">
-                  {art.excerpt[isRtl ? 'ar' : 'en']}
-                </p>
+                </div>
               </div>
-
-              <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                <span className="text-xs text-slate-400 font-mono">{art.date}</span>
-
-                <Link
-                  href={`/${language}/insights/${art.id}`}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-teal-400 hover:text-white transition-colors"
-                >
-                  <span>{t('قراءة المقال', 'Read Essay')}</span>
-                  <ArrowIcon className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
       </div>
@@ -119,7 +131,7 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ onNavigate, on
               </button>
 
               <div className="space-y-2 pt-2">
-                <span className="px-3 py-1 rounded-full text-xs font-mono bg-teal-950 text-teal-300 border border-teal-800">
+                <span className="px-3 py-1 rounded-full text-xs font-mono bg-slate-950 text-blue-400 border border-slate-800">
                   {activeArticle.category[isRtl ? 'ar' : 'en']} • {activeArticle.readTime[isRtl ? 'ar' : 'en']}
                 </span>
                 <h2 className="text-xl sm:text-2xl font-extrabold font-display text-white">
@@ -139,7 +151,7 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ onNavigate, on
                 <span className="text-xs text-slate-400 font-mono">— {activeArticle.author.name}</span>
                 <button
                   onClick={() => setActiveArticle(null)}
-                  className="px-5 py-2.5 bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs sm:text-sm rounded-xl transition-all"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-lg transition-all"
                 >
                   {t('إغلاق المقال', 'Close Article')}
                 </button>
