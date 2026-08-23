@@ -111,9 +111,6 @@ export const PulseSection: React.FC = () => {
 
   return (
     <section className="py-20 lg:py-28 bg-slate-900/80 border-y border-slate-800 relative overflow-hidden">
-      {/* Background Accent Lines */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl h-[500px] bg-teal-500/5 blur-3xl pointer-events-none"></div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}

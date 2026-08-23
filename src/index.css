@@ -5,20 +5,27 @@
     --font-arabic: 'IBM Plex Sans Arabic', 'Alexandria', system-ui, -apple-system, sans-serif;
     --font-display: 'Alexandria', 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
     --font-english: 'Inter', system-ui, -apple-system, sans-serif;
+    --color-bg-base: #030712;
+    --color-surface-subtle: #0b1120;
+    --color-surface-raised: #0f172a;
+    --color-border-subtle: rgba(255, 255, 255, 0.07);
+    --color-border-hover: rgba(59, 130, 246, 0.35);
   }
 
   body {
     font-family: var(--font-arabic);
-    background-color: #020617;
+    background-color: #030712;
     color: #f8fafc;
     overflow-x: hidden;
-    line-height: 1.6;
+    line-height: 1.65;
     letter-spacing: normal;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
 
   html[lang="en"] body {
     font-family: var(--font-english);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
   }
 
   /* Accessible high-contrast focus rings */
@@ -40,54 +47,58 @@
   font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* Crisp technical background patterns */
-.bg-grid-pattern {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 24px 24px;
+/* Crisp technical blueprint & micro-grid patterns */
+.bg-blueprint-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-.bg-grid-line-pattern {
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 .bg-radial-gradient {
-  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.12) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% -10%, rgba(37, 99, 235, 0.14) 0%, transparent 65%);
 }
 
-/* Precision engineered card style */
+.bg-spotlight {
+  background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.06), transparent 40%);
+}
+
+/* Precision engineered tactile card surface */
 .glass-card {
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0b1120;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .glass-card-hover {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.2s ease-out, transform 0.2s ease-out;
 }
 
 .glass-card-hover:hover {
-  background: rgba(30, 41, 59, 0.95);
-  border-color: rgba(59, 130, 246, 0.4);
+  background: #0f172a;
+  border-color: rgba(59, 130, 246, 0.4); /* Tailwind blue-500 */
   transform: translateY(-2px);
-  box-shadow: 0 16px 32px -8px rgba(2, 6, 23, 0.8), 0 0 0 1px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Custom scrollbar */
+/* Custom surgical scrollbar */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #020617;
+  background: #030712;
 }
 ::-webkit-scrollbar-thumb {
   background: #1e293b;
-  border-radius: 4px;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
+  background: #3b82f6;
 }
 
 /* Skeleton Loading Shimmer Animation */
@@ -103,7 +114,7 @@
 .skeleton-shimmer {
   position: relative;
   overflow: hidden;
-  background-color: rgba(30, 41, 59, 0.65);
+  background-color: rgba(15, 23, 42, 0.85);
 }
 
 .skeleton-shimmer::after {
@@ -116,13 +127,14 @@
   background-image: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.02) 25%,
-    rgba(255, 255, 255, 0.06) 50%,
-    rgba(255, 255, 255, 0.02) 75%,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.07) 50%,
+    rgba(255, 255, 255, 0.03) 75%,
     rgba(255, 255, 255, 0) 100%
   );
   animation: skeleton-shimmer 1.8s ease-in-out infinite;
   content: '';
   pointer-events: none;
 }
+
 

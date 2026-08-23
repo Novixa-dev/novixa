@@ -1,4 +1,4 @@
-import { Product, SolutionCategory, Industry, CaseStudy, ProcessStep, InsightArticle } from '../types';
+import { Product, SolutionCategory, Industry, CaseStudy, ProcessStep, InsightArticle, Testimonial } from '../types';
 
 export const BRAND_INFO = {
   name: 'Novixa',
@@ -24,88 +24,74 @@ export const BRAND_INFO = {
 
 export const SOLUTIONS: SolutionCategory[] = [
   {
-    id: 'platforms',
-    slug: 'business-platforms',
-    title: { ar: 'منصات الأعمال', en: 'Business Platforms' },
-    subtitle: { ar: 'أنظمة تشغيلية متكاملة تدمج الفروع والمبيعات والمخزون والعُملاء في شاشة واحدة', en: 'Integrated operational engines unifying branches, inventory, and analytics' },
-    description: { ar: 'نبني أنظمة إدارة مركزية مخصصة للشركات متنامية الحجم. نوحّد العمليات المشتتة بين الإكسل والواتساب والأنظمة القديمة في منصة واحدة آمنة وسريعة.', en: 'Custom centralized management engines built for growth. Eliminate fragmented spreadsheets and legacy gaps with unified operational hubs.' },
+    id: 'architecture',
+    slug: 'system-architecture',
+    title: { ar: 'معمارية النظم السحابية', en: 'System Architecture' },
+    subtitle: { ar: 'تصميم البنية التحتية للسحابة متعددة المستأجرين والتطبيقات المعقدة', en: 'Multi-tenant cloud infrastructure & distributed systems design' },
+    description: { ar: 'نصمم بنيات تحتية قابلة للتوسع وتتحمل الضغط العالي. نركز على عزل البيانات (Tenant Isolation)، قواعد البيانات الموزعة، وتقليل زمن الاستجابة (Latency) في الخوادم الطرفية (Edge Compute).', en: 'We architect highly scalable, distributed systems focusing on strict tenant isolation, distributed databases, and minimizing edge compute latency.' },
     features: {
-      ar: ['إدارة الفروع المتعددة والمستودعات', 'ربط الدفع الإلكتروني والفوترة الذكية', 'تحليلات تشغيلية مباشرة ولوحات قيادة', 'نظام صلاحيات متقدم وإدارة الموظفين'],
-      en: ['Multi-branch & inventory sync', 'Smart billing & payment gateway integration', 'Live operational metrics & dashboards', 'Role-based access & staff workflows']
+      ar: ['عزل آمن لبيانات المستأجرين (RLS)', 'توزيع قواعد البيانات وضمان التوفر 99.99%', 'هيكلة مايكروسيرفيسز (Microservices) والتوجيه', 'التخزين المؤقت المتقدم (Redis Edge Caching)'],
+      en: ['Row-Level Security (RLS) tenant isolation', 'Distributed DB topology & 99.99% SLA', 'Microservices routing & orchestration', 'Advanced Redis Edge Caching strategies']
     },
-    businessImpact: { ar: 'تقليل الأخطاء التشغيلية بنسبة 65% وتسريع تنفيذ الطلبات', en: '65% reduction in operational friction & accelerated fulfillment' },
-    iconName: 'Building2',
-    badge: { ar: 'الأكثر طلبًا للشركات', en: 'Enterprise Grade' }
+    businessImpact: { ar: 'نظام لا يتعطل تحت الضغط ومستعد للتوسع العالمي فورًا.', en: 'Zero-downtime architecture ready for immediate global scale.' },
+    iconName: 'Server',
+    badge: { ar: 'بنية تحتية', en: 'Infrastructure' }
   },
   {
-    id: 'saas',
-    slug: 'saas',
-    title: { ar: 'منتجات SaaS', en: 'Cloud SaaS Products' },
-    subtitle: { ar: 'تطوير منصات سحابية متكاملة متعددة المستأجرين (Multi-Tenant Architecture)', en: 'Multi-tenant cloud architectures designed for recurring revenue scale' },
-    description: { ar: 'نساعد الشركات والمبتكرين على تحويل الأفكار البرمجية إلى منتجات SaaS قابلة للتوسع، مع إدارة الاشتراك والتحليلات والعزل الأمني الكامل للبيانات.', en: 'We engineer multi-tenant SaaS products with robust subscription management, secure data isolation, and low-latency global edge deployment.' },
+    id: 'software-engineering',
+    slug: 'software-engineering',
+    title: { ar: 'هندسة البرمجيات المعقدة', en: 'Software Engineering' },
+    subtitle: { ar: 'تطوير تطبيقات الويب (SPA/SSR) وبناء واجهات برمجية متينة', en: 'Full-stack application development (SPA/SSR) & robust API design' },
+    description: { ar: 'نكتب كودًا نظيفًا ومتينًا (Type-Safe). من بناء واجهات React حديثة باستجابة فورية، إلى تصميم واجهات برمجية REST و GraphQL تتعامل مع آلاف الطلبات في الثانية.', en: 'We write clean, strictly typed code. From lightning-fast React frontends to robust REST & GraphQL APIs capable of handling massive concurrency.' },
     features: {
-      ar: ['بنية سحابية متعددة المشركين (Multi-Tenant)', 'إدارة الاشتراكات والتجديد التلقائي', 'بوابات دفع واشتراكات دورية', 'واجهات برمجية API للتكامل المباشر'],
-      en: ['Multi-tenant isolated data stores', 'Automated recurring billing & tiers', 'API-first design for seamless integrations', 'Global low-latency serverless edge']
+      ar: ['واجهات تفاعلية متطورة (Next.js & React)', 'هندسة واجهات برمجية (API Design)', 'حماية ومصادقة متقدمة (OAuth & JWT)', 'معالجة البيانات اللحظية (WebSockets)'],
+      en: ['High-performance frontends (Next.js & React)', 'API contract design & versioning', 'Advanced Auth & Authorization (OAuth, JWT)', 'Real-time state sync (WebSockets)']
     },
-    businessImpact: { ar: 'بناء منتج رقمي بقيمة استثمارية ومقاييس نمو مستدامة', en: 'Scalable asset foundation with predictable recurring revenue' },
-    iconName: 'Cloud',
-    badge: { ar: 'بنية هندسية مرنة', en: 'Multi-Tenant' }
+    businessImpact: { ar: 'أصول تقنية نظيفة قابلة للصيانة والتطوير دون تراكم ديون تقنية.', en: 'Clean, maintainable tech assets with zero technical debt accumulation.' },
+    iconName: 'Code2',
+    badge: { ar: 'تطوير', en: 'Development' }
   },
   {
-    id: 'commerce',
-    slug: 'digital-commerce',
-    title: { ar: 'التجارة الرقمية', en: 'Digital Commerce' },
-    subtitle: { ar: 'متاجر ومنصات بيع مخصصة عالية السرعة ومصممة لزيادة المبيعات', en: 'Bespoke, high-converting digital storefronts and B2B ordering systems' },
-    description: { ar: 'أكثر من مجرد متجر إلكتروني؛ نبني تجارب شراء فائقة السرعة مع ربط معقد لمخزون الفروع، حلول توصيل، وأنظمة ولاء مخصصة.', en: 'Beyond basic shopping carts—we build lightning-fast commerce engines synced with ERP inventory, logistics providers, and loyalty programs.' },
+    id: 'modernization',
+    slug: 'system-modernization',
+    title: { ar: 'تحديث الأنظمة الموروثة', en: 'System Modernization' },
+    subtitle: { ar: 'تفكيك الأنظمة القديمة ونقلها لتقنيات حديثة بلا توقف', en: 'Refactoring & migrating legacy monoliths with zero downtime' },
+    description: { ar: 'نساعد الشركات على التخلص من الكود القديم المعقد. نقوم بتحديث التقنيات (Refactoring)، تحسين سرعة قواعد البيانات، ونقل النظام للسحابة الحديثة دون إيقاف العمليات.', en: 'We help enterprises eliminate legacy debt. We refactor codebases, optimize database queries, and migrate to modern cloud stacks without disrupting active operations.' },
     features: {
-      ar: ['تجربة تسوق فائقة السرعة وشاشات سلسة', 'تكامل مباشر مع شركات الشحن والربط البنكي', 'إدارة سلة المشتريات المعقدة والخصومات', 'نظام إدارة العروض والولاء المتقدم'],
-      en: ['Sub-second load speeds & seamless checkout', 'Logistics API & ERP inventory sync', 'Dynamic discounting & promotional engine', 'Custom loyalty & rewards programs']
+      ar: ['فصل الأنظمة المتجانسة (Monolith to Microservices)', 'تحسين هيكلة قواعد البيانات (Schema Migration)', 'التخلص من الديون التقنية وتنظيف الكود', 'نقل آمن للسحابة (Cloud Migration)'],
+      en: ['Monolith to Microservices decoupling', 'Zero-downtime DB Schema Migration', 'Technical debt resolution & codebase audit', 'Seamless Cloud platform migration']
     },
-    businessImpact: { ar: 'زيادة معدل التحويل وسرعة إتمام الشراء دون انقطاع', en: 'Higher conversion rates and zero checkout downtime' },
-    iconName: 'ShoppingCart',
-    badge: { ar: 'نمو المبيعات', en: 'High Conversion' }
+    businessImpact: { ar: 'تخفيض تكاليف الصيانة وتسريع إطلاق الميزات الجديدة بـ 3 أضعاف.', en: 'Lower maintenance costs and 3x faster feature deployment.' },
+    iconName: 'RefreshCw',
+    badge: { ar: 'تحديث وترقية', en: 'Modernization' }
   },
   {
-    id: 'booking',
-    slug: 'booking-systems',
-    title: { ar: 'أنظمة الحجوزات', en: 'Booking & Scheduling' },
-    subtitle: { ar: 'منصات حجز المواعيد والجداول الزمنية وإدارة الصالات والخدمات', en: 'Smart reservation, scheduling, and resource allocation platforms' },
-    description: { ar: 'حلول حجز ذكية للصالات الرياضية، مراكز الألعاب، العيادات، والفنادق. تجربة حجز سلسة للعملاء مع لوحة تحكم تشغيلية لمنع التضارب.', en: 'Custom booking hubs for gaming arenas, healthcare clinics, hospitality, and venues with real-time slot lock and automated customer reminders.' },
+    id: 'performance',
+    slug: 'performance-security',
+    title: { ar: 'الأداء والأمان', en: 'Performance & Security' },
+    subtitle: { ar: 'تحسين سرعة التحميل (Core Web Vitals) وتحصين الاختراقات', en: 'Core Web Vitals optimization & advanced threat mitigation' },
+    description: { ar: 'النظام البطيء يخسر العملاء. نقوم بهندسة الأداء ليصل التحميل لأجزاء من الثانية. كما نطبق معايير أمان صارمة لحماية تدفق البيانات ومنع الهجمات.', en: 'Slow systems lose revenue. We engineer sub-second load times and apply strict security protocols to encrypt data flows and block vulnerabilities.' },
     features: {
-      ar: ['حجز فوري مع منع التعارض الزمني', 'إشعارات واتساب وتنبيهات تأكيد المواعيد', 'إدارة الموارد والصالات والموظفين', 'دفع عربون وإدارة الإلغاء الذكية'],
-      en: ['Real-time slot locking with zero conflicts', 'Automated WhatsApp & SMS reminders', 'Resource & staff scheduling dashboard', 'Deposit locks & cancellation logic']
+      ar: ['تحقيق علامة 99+ في Core Web Vitals', 'تشفير البيانات وفحص الثغرات (Pen Testing)', 'تحسين أداء استعلامات قواعد البيانات (Query Tuning)', 'مراقبة الأداء اللحظية (Observability)'],
+      en: ['99+ Core Web Vitals & Lighthouse scoring', 'Data encryption & Penetration Testing', 'Database Query Tuning & Indexing', 'Real-time Observability & Telemetry']
     },
-    businessImpact: { ar: 'القضاء على تداخل المواعيد وتقليل نسبة عدم الحضور بـ 80%', en: '80% drop in no-shows and complete schedule clarity' },
-    iconName: 'CalendarCheck',
-    badge: { ar: 'أتمتة التشغيل', en: 'Automated Flow' }
+    businessImpact: { ar: 'تجربة مستخدم فورية وحماية تامة لبيانات عملائك.', en: 'Instant UX response and bulletproof protection for customer data.' },
+    iconName: 'Shield',
+    badge: { ar: 'أمان وسرعة', en: 'Security & Speed' }
   },
   {
-    id: 'ai',
-    slug: 'ai-solutions',
-    title: { ar: 'حلول الذكاء الاصطناعي', en: 'Practical AI Solutions' },
-    subtitle: { ar: 'دمج نماذج الذكاء الاصطناعي لأتمتة خدمة العملاء واستخراج البيانات', en: 'Applied AI integration for business automation and document intelligence' },
-    description: { ar: 'نطوع الذكاء الاصطناعي لخدمة أهداف عملك الحقيقية: المساعدات الذكية، تحليل المستندات تلقائيًا، والتنبؤ بالطلب بناءً على البيانات.', en: 'We integrate production-ready AI models directly into your business logic to process documents, answer customer queries, and surface insights.' },
+    id: 'devops',
+    slug: 'devops-deployment',
+    title: { ar: 'النشر والأتمتة (DevOps)', en: 'DevOps & Deployment' },
+    subtitle: { ar: 'أتمتة خطوط التكامل (CI/CD) وعمليات النشر والتراجع', en: 'CI/CD pipeline automation, deployments, and safe rollbacks' },
+    description: { ar: 'نصمم مسارات عمل آلية (Pipelines) لاختبار وتوزيع الكود بشكل مستمر. نضمن بيئات عمل متطابقة، وعمليات تراجع فورية (Rollbacks) عند حدوث خطأ دون شعور المستخدم.', en: 'We design automated CI/CD pipelines for continuous testing and delivery. Ensuring environment parity and zero-downtime automated rollbacks.' },
     features: {
-      ar: ['مساعدات ذكية مُدربة على بيانات شركتك (RAG)', 'استخراج البيانات الآلي من الفواتير والعقود', 'تحليل انطباعات الموظفين والعملاء تلقائيًا', 'تصنيف المراسلات والمهام الذكي'],
-      en: ['Custom RAG assistants trained on company docs', 'Automated invoice & document extraction', 'Sentiment analytics for feedback loops', 'Smart ticket classification & routing']
+      ar: ['بناء مسارات CI/CD متطورة', 'استراتيجيات النشر المتقدمة (Blue-Green/Canary)', 'البنية التحتية ككود (Infrastructure as Code)', 'تراجع تلقائي آمن عند الفشل (Automated Rollback)'],
+      en: ['Advanced CI/CD pipeline orchestration', 'Blue-Green & Canary deployment strategies', 'Infrastructure as Code (IaC) implementation', 'Zero-downtime automated state rollbacks']
     },
-    businessImpact: { ar: 'توفير مئات الساعات التشغيلية شهريًا في المهام المكررة', en: 'Saves hundreds of manual hours every month' },
-    iconName: 'Sparkles',
-    badge: { ar: 'قيمة عملية', en: 'Practical AI' }
-  },
-  {
-    id: 'custom',
-    slug: 'custom-software',
-    title: { ar: 'البرمجيات المخصصة', en: 'Custom Software' },
-    subtitle: { ar: 'هندسة نظم معقدة تناسب متطلبات أعمالك الفريدة من الصفر', en: 'Tailor-made software architectures for complex, proprietary domain needs' },
-    description: { ar: 'عندما لا تكفي الحلول الجاهزة، نبني أنظمة برمجية مخصصة بالكامل من القواعد الأمنية وحتى الواجهات التفاعلية بما يطابق نموذج عملك الفريد.', en: 'When off-the-shelf software falls short, we design custom systems engineered strictly around your proprietary workflows and security standards.' },
-    features: {
-      ar: ['تصميم بنية تحتية مخصصة وحماية فائقة', 'واجهات برمجة التطبيقات APIs متطورة', 'تراسل فوري ومزامنة实时 للبيانات', 'توثيق تقني كامل واختبارات مؤتمتة'],
-      en: ['Custom architecture built for high concurrency', 'REST & GraphQL API design', 'Real-time WebSocket data pipelines', 'Comprehensive specs & automated tests']
-    },
-    businessImpact: { ar: 'امتلاك أصل تقني ملك لشركتك بالكامل ودائم التطور', en: 'Full proprietary ownership of your core technology asset' },
-    iconName: 'Cpu',
-    badge: { ar: 'أصل تقني مخصص', en: 'Bespoke Asset' }
+    businessImpact: { ar: 'إطلاق يومي للميزات بأمان تام ودون الحاجة لإيقاف الخوادم.', en: 'Daily safe feature releases without taking servers offline.' },
+    iconName: 'Terminal',
+    badge: { ar: 'أتمتة مستمرة', en: 'Automation' }
   }
 ];
 
@@ -215,38 +201,38 @@ export const PRODUCTS: Product[] = [
     iconName: 'Calendar'
   },
   {
-    id: 'gaming',
-    slug: 'gaming',
-    name: { ar: 'Novixa Gaming', en: 'Novixa Gaming' },
-    tagline: { ar: 'منصة إدارة صالات الألعاب والترفيه وحجز الأجهزة والغرف', en: 'Gaming center management & seat reservation software' },
-    title: { ar: 'نظام تشغيل صالات الألعاب الإلكترونية والبلياردو والـ PS5', en: 'All-in-One Gaming Center & Lounge Management Engine' },
-    description: { ar: 'نظام متكامل لحجز أجهزة الكمبيوتر (PC Arena)، غرف VIP، أجهزة البلايستيشن، وتنظيم البطولات مع إدارة الوقت والخدمات الداخلية.', en: 'Specialized venue software designed for esports arenas and gaming lounges to manage station timers, VIP rooms, snack orders, and tournaments.' },
+    id: 'aqar',
+    slug: 'aqar',
+    name: { ar: 'Novixa Aqar', en: 'Novixa Aqar' },
+    tagline: { ar: 'منصة إدارة الأملاك وعقود الإيجار السحابية', en: 'Cloud property & lease management platform' },
+    title: { ar: 'نظام تشغيل وإدارة العقارات التجارية والسكنية', en: 'Commercial & Residential Property Management Engine' },
+    description: { ar: 'منصة عقارية شاملة لأتمتة تحصيل الإيجارات، تتبع عقود الصيانة، وإدارة الشكاوى والمرافق مع ربط مالي متقدم.', en: 'Comprehensive prop-tech platform automating rent collection, maintenance workflows, and facility management with deep financial integrations.' },
     status: 'In Development',
     statusLabel: { ar: 'قيد التطوير الشامل', en: 'In Active Build' },
-    category: { ar: 'حلول الترفيه والبطولات', en: 'Entertainment Tech' },
+    category: { ar: 'حلول التقنية العقارية (PropTech)', en: 'PropTech Solutions' },
     features: {
       ar: [
-        'حجز الأجهزة والتوقيت التلقائي مع شاشات العد التصاعدي',
-        'إدارة طلبات المأكولات والمشروبات من شاشة اللعب مباشرة',
-        'نظام الاشتراكات ورصيد الساعات للعملاء الدائمين',
-        'تنظيم البطولات ورسم شجرة المواجهات تلقائيًا'
+        'أتمتة الفواتير الدورية وتحصيل الإيجارات عبر الإنترنت',
+        'بوابة مخصصة للمستأجرين لرفع طلبات الصيانة',
+        'تتبع الشواغر وتنبيهات تجديد العقود تلقائيًا',
+        'تقارير مالية وتدفقات نقدية لحظية للملاك'
       ],
       en: [
-        'Station timer & automated PC/Console session control',
-        'In-seat F&B ordering from playing screen',
-        'Gamer wallet balances & hourly package subscriptions',
-        'Automated tournament bracket generation & registration'
+        'Automated recurring invoicing & online rent collection',
+        'Dedicated tenant portal for maintenance requests',
+        'Vacancy tracking & automated lease renewal alerts',
+        'Real-time cash flow & financial reporting for landlords'
       ]
     },
     targetIndustries: {
-      ar: ['صالات الألعاب الإلكترونية (Esports Hubs)', 'أندية البلياردو والبولينج', 'مراكز الترفيه العائلي'],
-      en: ['Esports Arenas', 'Billiards & Bowling Lounges', 'Family Entertainment Centers']
+      ar: ['شركات التطوير العقاري', 'إدارة الأملاك والمرافق', 'المجمعات السكنية والتجارية'],
+      en: ['Real Estate Developers', 'Property Management Firms', 'Residential & Commercial Complexes']
     },
     metrics: [
-      { label: { ar: 'معدل إشغال الصالات', en: 'Arena Utilization' }, value: '+35%' }
+      { label: { ar: 'كفاءة تحصيل الإيجارات', en: 'Rent Collection Efficiency' }, value: '+45%' }
     ],
     accentColor: '#EC4899',
-    iconName: 'Gamepad2'
+    iconName: 'Building'
   }
 ];
 
@@ -697,3 +683,157 @@ export const FOUNDER_INFO = {
     en: 'Novixa was founded on a clear realization: many ambitious companies have great business models but stall due to fragmented tools and fragile custom code. Novixa bridges this gap by engineering scalable digital systems that blend deep business acumen with world-class UX craft.'
   }
 };
+
+export const TESTIMONIALS: Testimonial[] = [
+  {
+    id: 'madaen-logistics',
+    clientName: { ar: 'م. خالد المنصور', en: 'Eng. Khalid Al-Mansoor' },
+    clientRole: { ar: 'رئيس العمليات التشغيلية (COO)', en: 'Chief Operating Officer' },
+    company: { ar: 'مجموعة المدائن للخدمات اللوجستية والتوزيع', en: 'Al-Madaen Logistics & Distribution Group' },
+    industry: { ar: 'اللوجستيات وسلاسل الإمداد', en: 'Logistics & Supply Chain' },
+    projectType: { ar: 'منصة إدارة مستودعات وربط فروع مركزي', en: 'Multi-Branch ERP & Warehouse Engine' },
+    quote: {
+      ar: 'تحولنا مع نوڤيكسا من الاعتماد على 6 برامج مشتتة وجداول إكسل يدوية إلى منصة مركزية واحدة تدير مستودعاتنا وشحناتنا لحظيًا. استقرار النظام وسرعة استجابته تحت ضغط المواسم فاق كل توقعاتنا.',
+      en: 'With Novixa, we transitioned from 6 disconnected tools and manual spreadsheets to a single, unified enterprise engine managing our warehouses and deliveries in real time. Uptime during seasonal peaks has been flawless.'
+    },
+    outcome: {
+      ar: 'تقليص زمن معالجة وتوزيع الطلبات بنسبة 62% والقضاء على فروقات الجرد اليدوي نهائيًا.',
+      en: '62% reduction in order processing time and elimination of inventory reconciliation discrepancies.'
+    },
+    metrics: [
+      { label: { ar: 'تسريع معالجة الطلبات', en: 'Order Cycle Speed' }, value: '62%' },
+      { label: { ar: 'جاهزية واستقرار الخوادم', en: 'Platform Uptime' }, value: '99.99%' },
+      { label: { ar: 'مستودع متصل لحظيًا', en: 'Connected Hubs' }, value: '14+' }
+    ],
+    rating: 5,
+    avatarInitials: 'KM',
+    verifiedProject: true,
+    relatedCaseStudySlug: 'madaen-logistics'
+  },
+  {
+    id: 'artisan-hospitality',
+    clientName: { ar: 'سارة الحسيني', en: 'Sara Al-Husseini' },
+    clientRole: { ar: 'الشريك المؤسس والمدير العام', en: 'Co-Founder & Managing Director' },
+    company: { ar: 'شبكة كافيهات ومطابخ أرتيزان', en: 'Artisan Hospitality Network' },
+    industry: { ar: 'المطاعم والضيافة', en: 'Restaurants & Hospitality' },
+    projectType: { ar: 'نظام إدارة نقاط البيع وشاشات المطبخ الذكية (KDS)', en: 'Unified POS & Kitchen Display Engine (KDS)' },
+    quote: {
+      ar: 'نوڤيكسا لم تبنِ لنا مجرد برنامج نقاط بيع، بل أعادت هندسة مسار الطلب من يد العميل إلى شاشة المطبخ ثم سائق التوصيل. الواجهة بديهية وسريعة جدًا لدرجة أن تدريب الكاشير الجديد لا يستغرق سوى 20 دقيقة.',
+      en: 'Novixa did not just build POS software; they re-engineered the complete order flow from customer ordering to kitchen displays and dispatch. It is so intuitive that new staff become proficient in 20 minutes.'
+    },
+    outcome: {
+      ar: 'مضاعفة سرعة تجهيز الوجبات 3.4 أضعاف وانخفاض نسبة أخطاء الطلبات إلى أقل من 0.2%.',
+      en: '3.4x faster kitchen fulfillment rate and order dispatch errors dropped below 0.2%.'
+    },
+    metrics: [
+      { label: { ar: 'معدل سرعة المطبخ', en: 'Kitchen Speed' }, value: '3.4x' },
+      { label: { ar: 'انخفاض هدر المخزون', en: 'Waste Reduction' }, value: '44%' },
+      { label: { ar: 'فروع تعمل بالتزامن', en: 'Synced Branches' }, value: '9' }
+    ],
+    rating: 5,
+    avatarInitials: 'SH',
+    verifiedProject: true,
+    relatedCaseStudySlug: 'artisan-hospitality'
+  },
+  {
+    id: 'safwa-healthcare',
+    clientName: { ar: 'د. طارق الغامدي', en: 'Dr. Tariq Al-Ghamdi' },
+    clientRole: { ar: 'نائب الرئيس للشؤون الطبية والتشغيل', en: 'VP of Medical Ops & Clinical Informatics' },
+    company: { ar: 'مجمعات الصفوة الطبية التخصصية', en: 'Al-Safwa Specialized Medical Clinics' },
+    industry: { ar: 'الرعاية الصحية والعيادات', en: 'Healthcare & Specialized Clinics' },
+    projectType: { ar: 'منصة إدارة المواعيد وتدفق المرضى الذكي', en: 'Smart Patient Queue & Clinical Scheduling Hub' },
+    quote: {
+      ar: 'كانت صالات الانتظار تعاني من الازدحام وتضارب مواعيد الاستشاريين. النظام الذي صممته نوڤيكسا قضى على الفوضى عبر حجز فوري مؤكد وإشعارات واتساب تنبّه المريض بدقة بموعد دخوله.',
+      en: 'Our waiting rooms suffered from congestion and consultant calendar overlap. Novixa’s scheduling platform completely cleared the bottleneck with instant slot locking and smart WhatsApp queue alerts.'
+    },
+    outcome: {
+      ar: 'انخفاض معدل التغيب عن المواعيد بنسبة 78% وزيادة الطاقة الاستيعابية اليومية للعيادات بـ 35%.',
+      en: '78% drop in patient appointment no-shows and a 35% increase in daily clinic consultation capacity.'
+    },
+    metrics: [
+      { label: { ar: 'انخفاض التغيب عن الموعد', en: 'No-Show Reduction' }, value: '78%' },
+      { label: { ar: 'رضا المرضى والزوار', en: 'Patient CSAT Score' }, value: '4.9/5' },
+      { label: { ar: 'استشاري وطبيب نشط', en: 'Active Doctors' }, value: '48+' }
+    ],
+    rating: 5,
+    avatarInitials: 'TG',
+    verifiedProject: true,
+    relatedCaseStudySlug: 'safwa-healthcare'
+  },
+  {
+    id: 'fleetgrid-saas',
+    clientName: { ar: 'يوسف الخطيب', en: 'Yousef Al-Khatib' },
+    clientRole: { ar: 'المؤسس والمدير التقني (CTO)', en: 'Founder & Chief Technology Officer' },
+    company: { ar: 'منصة فليت جريد للتقنية السحابية', en: 'FleetGrid Cloud Telematics' },
+    industry: { ar: 'المنتجات السحابية SaaS', en: 'Enterprise Cloud SaaS' },
+    projectType: { ar: 'معمارية سحابية متعددة المستأجرين (Multi-Tenant Architecture)', en: 'High-Concurrency Multi-Tenant SaaS Platform' },
+    quote: {
+      ar: 'فريق نوڤيكسا يمتلك عقلية هندسة منتجات عالمية. صمموا بنية Multi-Tenant متينة للغاية مع عزل تام للبيانات، مما سمح لنا بالنمو السريع وجذب أكثر من 120 شركة مشتركة دون أي قلق بشأن الأمان.',
+      en: 'Novixa thinks like world-class product engineers. They built a multi-tenant cloud architecture with strict tenant isolation, enabling us to onboard 120+ enterprises seamlessly with zero security overhead.'
+    },
+    outcome: {
+      ar: 'إطلاق منصة سريعة بزمن استجابة 65ms وتوسع مستقر مع الحفاظ على خصوصية بيانات كل عميل.',
+      en: 'Shipped a sub-65ms low-latency SaaS engine scaling effortlessly while maintaining strict tenant isolation.'
+    },
+    metrics: [
+      { label: { ar: 'سرعة استجابة الـ API', en: 'API Latency' }, value: '65ms' },
+      { label: { ar: 'شركات نشطة على المنصة', en: 'Enterprise Tenants' }, value: '120+' },
+      { label: { ar: 'معدل التوفر السحابي', en: 'Cloud SLA' }, value: '99.98%' }
+    ],
+    rating: 5,
+    avatarInitials: 'YK',
+    verifiedProject: true,
+    relatedCaseStudySlug: 'fleetgrid-saas'
+  },
+  {
+    id: 'rawabi-commerce',
+    clientName: { ar: 'ناصر السبيعي', en: 'Nasser Al-Subaie' },
+    clientRole: { ar: 'رئيس التحول الرقمي والتجارة الإلكترونية', en: 'Head of Digital Transformation & B2B Commerce' },
+    company: { ar: 'شبكة روابي للتجارة وتوزيع الجملة', en: 'Rawabi Trade & Wholesale Network' },
+    industry: { ar: 'التجارة الرقمية والجملة', en: 'Digital Commerce & Wholesale' },
+    projectType: { ar: 'بوابة طلبات وتجارة B2B مخصصة مع ربط ERP', en: 'B2B Wholesale Commerce & ERP Gateway' },
+    quote: {
+      ar: 'كنا بحاجة إلى منصة تجارة إلكترونية بالجملة تتحمل آلاف الطلبات المتزامنة مع ربط مباشر ببرنامج المحاسبة الخاص بنا. التزام نوڤيكسا بمواعيد التسليم ودقة الاختبارات جعلت الإطلاق سلسًا بنسبة 100%.',
+      en: 'We needed a custom B2B wholesale platform capable of handling thousands of concurrent orders synchronized with our ERP. Novixa’s execution discipline made our go-live 100% seamless.'
+    },
+    outcome: {
+      ar: 'نمو المبيعات الرقمية بنسبة 140% وتوفير ما يزيد عن 30 ساعة عمل أسبوعيًا في إدخال الفواتير.',
+      en: '140% digital GMV growth and 30+ hours saved weekly on manual invoice reconciliations.'
+    },
+    metrics: [
+      { label: { ar: 'نمو المبيعات الرقمية', en: 'Digital GMV Lift' }, value: '+140%' },
+      { label: { ar: 'أتمتة الفوترة مع ERP', en: 'ERP Auto-Sync' }, value: '100%' },
+      { label: { ar: 'عميل جملة مسجل', en: 'B2B Buyers' }, value: '450+' }
+    ],
+    rating: 5,
+    avatarInitials: 'NS',
+    verifiedProject: true,
+    relatedCaseStudySlug: 'rawabi-commerce'
+  },
+  {
+    id: 'cyberzone-entertainment',
+    clientName: { ar: 'فيصل العتيبي', en: 'Faisal Al-Otaibi' },
+    clientRole: { ar: 'المدير العام لشبكة الصالات', en: 'General Manager' },
+    company: { ar: 'صالات سايبر زون للترفيه والرياضات الإلكترونية', en: 'CyberZone Esports & Gaming Arenas' },
+    industry: { ar: 'أنظمة الحجوزات والترفيه', en: 'Entertainment & Gaming Venues' },
+    projectType: { ar: 'نظام حجز المحطات والشاشات والدفع المسبق', en: 'Real-Time Arena Station Reservation Hub' },
+    quote: {
+      ar: 'النظام الذي بنته نوڤيكسا ألغى تمامًا النزاع على حجز الأجهزة في عطلات نهاية الأسبوع، ومكن الزوار من حجز أجهزتهم المفضلة والدفع المسبق من هواتفهم في ثوانٍ معدودة قبل الوصول للصالة.',
+      en: 'The reservation hub built by Novixa completely eliminated weekend seating conflicts, letting gamers pick and pay for their favorite stations from their phones before stepping through the door.'
+    },
+    outcome: {
+      ar: 'رفع نسبة إشغال الصالات إلى 94% في عطلات الأسبوع وزيادة الإيرادات المباشرة بنسبة 35%.',
+      en: 'Pushed weekend station utilization to 94% and increased direct upfront venue revenue by 35%.'
+    },
+    metrics: [
+      { label: { ar: 'نسبة إشغال المقاعد', en: 'Peak Utilization' }, value: '94%' },
+      { label: { ar: 'نمو العائد التشغيلي', en: 'Revenue Uplift' }, value: '+35%' },
+      { label: { ar: 'محطة ألعاب وشاشة مدمجة', en: 'Active Stations' }, value: '64' }
+    ],
+    rating: 5,
+    avatarInitials: 'FA',
+    verifiedProject: true,
+    relatedCaseStudySlug: 'cyberzone-arenas'
+  }
+];
+

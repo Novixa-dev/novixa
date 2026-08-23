@@ -11,6 +11,7 @@ import { ProcessSection } from '@/components/sections/ProcessSection';
 import { EngineeringSection } from '@/components/sections/EngineeringSection';
 import { WhyNovixaSection } from '@/components/sections/WhyNovixaSection';
 import { FounderSection } from '@/components/sections/FounderSection';
+import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
 import { InsightsSection } from '@/components/sections/InsightsSection';
 import { ProjectDiscoveryWizard } from '@/components/sections/ProjectDiscoveryWizard';
 import { Language } from '@/types';
@@ -50,6 +51,7 @@ export default async function HomePage() {
       <EngineeringSection />
       <WhyNovixaSection />
       <FounderSection />
+      <TestimonialsSection />
       <InsightsSection />
       <ProjectDiscoveryWizard />
     </>

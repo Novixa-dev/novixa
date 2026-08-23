@@ -18,9 +18,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
   return (
     <footer className="bg-slate-950 border-t border-slate-800/80 pt-16 pb-12 relative overflow-hidden text-slate-400 text-sm">
-      {/* Background Subtle Accent */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-blue-600/5 blur-3xl pointer-events-none"></div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800/60">
           {/* Col 1 & 2: Brand Info */}
@@ -52,8 +49,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </Link>
               </li>
               <li>
-                <Link href={`/${language}/solutions`} className="hover:text-blue-400 transition-colors">
-                  {t('الحلول البرمجية', 'Solutions')}
+                <Link href={`/${language}/services`} className="hover:text-blue-400 transition-colors">
+                  {t('الخدمات الهندسية', 'Engineering Services')}
                 </Link>
               </li>
               <li>
@@ -99,8 +96,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </Link>
               </li>
               <li>
-                <Link href={`/${language}/products/gaming-arena`} className="hover:text-blue-400 transition-colors">
-                  Novixa Gaming
+                <Link href={`/${language}/products/aqar`} className="hover:text-blue-400 transition-colors">
+                  Novixa Aqar
                 </Link>
               </li>
             </ul>

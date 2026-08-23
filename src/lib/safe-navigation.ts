@@ -5,26 +5,24 @@ import { useState, useEffect } from 'react';
 export function usePathname(): string {
   const [pathname, setPathname] = useState<string>(() => {
     if (typeof window === 'undefined') return '/';
-    if (window.location.hash && window.location.hash.startsWith('#/')) {
-      return window.location.hash.replace(/^#/, '');
-    }
     return window.location.pathname || '/';
   });
 
   useEffect(() => {
+    // If we land on a hash route like /#/ar/home, redirect to clean URL
+    if (typeof window !== 'undefined' && window.location.hash && window.location.hash.startsWith('#/')) {
+      const cleanPath = window.location.hash.replace(/^#/, '');
+      window.history.replaceState(null, '', cleanPath);
+      setPathname(cleanPath);
+    }
+
     const handleLocationChange = () => {
-      if (window.location.hash && window.location.hash.startsWith('#/')) {
-        setPathname(window.location.hash.replace(/^#/, ''));
-      } else {
-        setPathname(window.location.pathname || '/');
-      }
+      setPathname(window.location.pathname || '/');
     };
 
     window.addEventListener('popstate', handleLocationChange);
-    window.addEventListener('hashchange', handleLocationChange);
     return () => {
       window.removeEventListener('popstate', handleLocationChange);
-      window.removeEventListener('hashchange', handleLocationChange);
     };
   }, []);
 
@@ -35,22 +33,14 @@ export function useRouter() {
   return {
     push: (url: string) => {
       if (typeof window !== 'undefined') {
-        if (window.location.hash && window.location.hash.startsWith('#/')) {
-          window.location.hash = `#${url}`;
-        } else {
-          window.history.pushState(null, '', url);
-          window.dispatchEvent(new Event('popstate'));
-        }
+        window.history.pushState(null, '', url);
+        window.dispatchEvent(new Event('popstate'));
       }
     },
     replace: (url: string) => {
       if (typeof window !== 'undefined') {
-        if (window.location.hash && window.location.hash.startsWith('#/')) {
-          window.location.hash = `#${url}`;
-        } else {
-          window.history.replaceState(null, '', url);
-          window.dispatchEvent(new Event('popstate'));
-        }
+        window.history.replaceState(null, '', url);
+        window.dispatchEvent(new Event('popstate'));
       }
     },
     back: () => {

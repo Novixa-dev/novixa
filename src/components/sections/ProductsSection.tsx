@@ -5,7 +5,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { PRODUCTS } from '../../content/data';
 import { ViewType } from '../../types';
 import { 
-  Activity, UtensilsCrossed, Calendar, Gamepad2, Sparkles, 
+  Activity, UtensilsCrossed, Calendar, Building, Sparkles, 
   ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck 
 } from 'lucide-react';
 import { ProductCardSkeleton } from '../ui/Skeleton';
@@ -26,12 +26,12 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
   const { isLoading } = usePerceivedLoading([], { initialDelay: 320, controlledLoading });
 
-  const getProductIcon = (iconName: string) => {
+    const getProductIcon = (iconName: string) => {
     switch (iconName) {
       case 'Activity': return Activity;
       case 'UtensilsCrossed': return UtensilsCrossed;
       case 'Calendar': return Calendar;
-      case 'Gamepad2': return Gamepad2;
+      case 'Building': return Building;
       default: return Sparkles;
     }
   };

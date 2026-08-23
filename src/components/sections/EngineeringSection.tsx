@@ -20,20 +20,20 @@ export const EngineeringSection: React.FC = () => {
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950 border border-blue-800 text-blue-400 text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400 text-xs font-mono font-medium tracking-wide">
             <Cpu className="w-3.5 h-3.5" />
             <span>{t('الفلسفة الهندسية', 'Engineering Philosophy')}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white tracking-tight">
             {t('وراء كل تجربة بسيطة،', 'Behind every simple experience,')} <br />
-            <span className="text-blue-400">{t('هندسة برمجية قوية ومحكمة.', 'lies a robust engineering core.')}</span>
+            <span className="text-white">{t('هندسة برمجية قوية ومحكمة.', 'lies a robust engineering core.')}</span>
           </h2>
 
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed font-arabic">
             {t(
               'لا نكتفي بجعل الواجهات جميلة. نبني معمارية برمجية فائقة الأمان، سريعة الاستجابة بالملي ثانية، ومصممة لتحمل ملايين الطلبات.',
-              'We don\'t just design sleek interfaces. We engineer high-availability cloud architecture built for sub-second response speeds and SOC2 compliance.'
+              'We don\'t just design sleek interfaces. We engineer high-availability cloud architecture built for sub-second response speeds and strict SOC2 compliance.'
             )}
           </p>
         </div>
@@ -47,7 +47,7 @@ export const EngineeringSection: React.FC = () => {
               descAr: 'توسع تلقائي للموارد أثناء الذروة لمنع البطء والتوقف.',
               descEn: 'Auto-scaling infrastructure handling high traffic spikes without downtime.',
               icon: Cloud,
-              color: 'text-blue-400'
+              color: 'text-slate-300'
             },
             {
               titleAr: 'أمن وعزل البيانات',
@@ -55,7 +55,7 @@ export const EngineeringSection: React.FC = () => {
               descAr: 'تشفير كامل وضوابط وصول دقيقة لحماية بيانات الشركات.',
               descEn: 'Strict tenant boundary encryption and role-based access control.',
               icon: ShieldCheck,
-              color: 'text-teal-400'
+              color: 'text-slate-300'
             },
             {
               titleAr: 'تراسل فوري (Real-Time)',
@@ -63,7 +63,7 @@ export const EngineeringSection: React.FC = () => {
               descAr: 'تحديثات مباشرة بالثواني للطلبات والمخزون والمواعيد.',
               descEn: 'Sub-second WebSocket pipelines for order queues and inventory updates.',
               icon: Zap,
-              color: 'text-amber-400'
+              color: 'text-slate-300'
             },
             {
               titleAr: 'واجهات برمجة APIs حديثة',
@@ -71,21 +71,23 @@ export const EngineeringSection: React.FC = () => {
               descAr: 'ربط سلس مع بوابات الدفع وبرامج الفوترة وشركات الشحن.',
               descEn: 'Clean REST & GraphQL endpoints for seamless ERP & payment gateway integration.',
               icon: Server,
-              color: 'text-indigo-400'
+              color: 'text-slate-300'
             },
           ].map((item, idx) => {
             const IconComp = item.icon;
             return (
-              <div key={idx} className="glass-card rounded-2xl p-6 border border-slate-800 text-right rtl:text-right ltr:text-left space-y-3">
-                <div className={`p-2.5 rounded-xl bg-slate-900 border border-slate-800 inline-block ${item.color}`}>
+              <div key={idx} className="bg-[#0b1120] rounded-xl p-6 border border-slate-800 text-right rtl:text-right ltr:text-left space-y-4 hover:border-slate-700 transition-colors">
+                <div className={`p-3 rounded-lg bg-slate-900 border border-slate-800 inline-block ${item.color}`}>
                   <IconComp className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-bold text-white font-display">
-                  {t(item.titleAr, item.titleEn)}
-                </h3>
-                <p className="text-xs text-slate-300 font-arabic leading-relaxed">
-                  {t(item.descAr, item.descEn)}
-                </p>
+                <div>
+                  <h3 className="text-base font-bold text-white font-display mb-1.5">
+                    {t(item.titleAr, item.titleEn)}
+                  </h3>
+                  <p className="text-sm text-slate-400 font-arabic leading-relaxed">
+                    {t(item.descAr, item.descEn)}
+                  </p>
+                </div>
               </div>
             );
           })}

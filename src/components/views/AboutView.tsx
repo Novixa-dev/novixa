@@ -49,39 +49,44 @@ export const AboutView: React.FC<AboutViewProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="pt-28 pb-20 bg-slate-950 min-h-screen space-y-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div className="pt-28 pb-20 bg-[#030712] min-h-screen space-y-24">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
-        {/* Page Hero */}
-        <div className="space-y-4 text-right rtl:text-right ltr:text-left max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-950 border border-blue-800 text-blue-300 text-xs font-semibold">
-            <span>{t('عن نوڤيكسا والقيم', 'About Novixa & Core Values')}</span>
+        {/* Minimalist Hero */}
+        <div className="space-y-6 text-right rtl:text-right ltr:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400 text-xs font-mono font-medium tracking-wide">
+            {t('بيان نوڤيكسا', 'The Novixa Manifesto')}
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight">
-            {t('شركة هندسة برمجيات تضع نتائج أعمالك أولاً.', 'A software engineering company focused on real business outcomes.')}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-display text-white tracking-tight leading-tight">
+            {t('نحن مهندسون، لسنا وكالة.', 'We are Engineers. Not an Agency.')}
           </h1>
-          <p className="text-slate-300 text-base sm:text-lg font-arabic leading-relaxed">
+          <div className="w-20 h-1 bg-blue-600 rounded-full mt-6 mb-8"></div>
+          <p className="text-slate-300 text-lg sm:text-xl font-arabic leading-relaxed max-w-2xl">
             {t(
-              'تأسست نوڤيكسا لتقديم بديل متقدم وموثوق للشركات المتنامية عبر دمج التفكير التجاري والخبرة البرمجية المعتمدة.',
-              'Novixa was created to provide ambitious companies with a mature, reliable tech partner blending strategic acumen with software craft.'
+              'تأسست نوڤيكسا على مبدأ واحد: البرمجيات العظيمة لا تُبنى عن طريق قوالب جاهزة أو فرق خارجية رخيصة. إنها تتطلب حِرفية هندسية، فهماً عميقاً للأعمال، والتزاماً لا يتزعزع بالجودة والأداء.',
+              'Novixa was founded on a singular principle: Great software is not built with off-the-shelf templates or outsourced commodity teams. It requires engineering craft, deep domain expertise, and an unwavering commitment to performance.'
             )}
           </p>
         </div>
 
-        {/* Values Grid */}
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold font-display text-white text-right rtl:text-right ltr:text-left">
-            {t('قيمنا الهندسية والثابتة:', 'Our Core Engineering Values:')}
+        {/* Values List (Architectural Layout) */}
+        <div className="pt-16 border-t border-slate-800/60 space-y-12">
+          <h2 className="text-xs font-mono text-slate-400 uppercase tracking-widest text-right rtl:text-right ltr:text-left">
+            {t('المبادئ الهندسية الأساسية', 'Core Engineering Tenets')}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 text-right rtl:text-right ltr:text-left">
+          <div className="space-y-12 text-right rtl:text-right ltr:text-left">
             {values.map((v, idx) => (
-              <div key={idx} className="glass-card rounded-2xl p-6 border border-slate-800 space-y-3">
-                <div className="w-8 h-8 rounded-lg bg-blue-950 border border-blue-800 text-blue-400 flex items-center justify-center font-bold text-xs font-mono">
-                  0{idx + 1}
+              <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start group">
+                <div className="md:col-span-3">
+                  <div className="text-3xl font-black font-display text-slate-800 transition-colors group-hover:text-blue-600">
+                    0{idx + 1}
+                  </div>
                 </div>
-                <h3 className="text-base font-bold font-display text-white">{t(v.titleAr, v.titleEn)}</h3>
-                <p className="text-xs text-slate-300 font-arabic leading-relaxed">{t(v.descAr, v.descEn)}</p>
+                <div className="md:col-span-9 space-y-3">
+                  <h3 className="text-2xl font-bold font-display text-white">{t(v.titleAr, v.titleEn)}</h3>
+                  <p className="text-base sm:text-lg text-slate-400 font-arabic leading-relaxed max-w-2xl">{t(v.descAr, v.descEn)}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -89,8 +94,10 @@ export const AboutView: React.FC<AboutViewProps> = ({ onNavigate }) => {
 
       </div>
 
-      <WhyNovixaSection />
-      <FounderSection />
+      <div className="border-t border-slate-800/50 pt-24 bg-slate-950">
+        <WhyNovixaSection />
+        <FounderSection />
+      </div>
     </div>
   );
 };

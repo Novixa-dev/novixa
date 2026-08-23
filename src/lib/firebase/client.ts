@@ -53,10 +53,27 @@ export function getClientDb(): Firestore {
   return _cachedDb as Firestore;
 }
 
-// Proxied exports to maintain compatibility without immediate crash
-export const app = typeof window !== 'undefined' ? getClientApp() : ({} as FirebaseApp);
-export const auth = typeof window !== 'undefined' ? getClientAuth() : ({} as Auth);
-export const db = typeof window !== 'undefined' ? getClientDb() : ({} as Firestore);
+// Proxied exports to maintain compatibility without immediate module-load execution
+export const app = new Proxy({} as FirebaseApp, {
+  get: (_, prop) => {
+    const instance = getClientApp();
+    return (instance as any)?.[prop];
+  }
+});
+
+export const auth = new Proxy({} as Auth, {
+  get: (_, prop) => {
+    const instance = getClientAuth();
+    return (instance as any)?.[prop];
+  }
+});
+
+export const db = new Proxy({} as Firestore, {
+  get: (_, prop) => {
+    const instance = getClientDb();
+    return (instance as any)?.[prop];
+  }
+});
 
 /**
  * Safely tests Firebase Client connectivity to Firestore without leaving permanent data.

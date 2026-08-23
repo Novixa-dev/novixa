@@ -50,15 +50,15 @@ export const SolutionsView: React.FC<SolutionsViewProps> = ({
         {/* Page Hero */}
         <div className="space-y-4 text-right rtl:text-right ltr:text-left max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-950 border border-blue-800 text-blue-300 text-xs font-semibold">
-            <span>{t('منظومة الحلول الهندسية', 'Engineering Solutions Catalogue')}</span>
+            <span>{t('القدرات الهندسية التقنية', 'Core Engineering Capabilities')}</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight">
-            {t('حلول برمجية مخصصة للتحول الرقمي والنمو.', 'Custom Software Solutions Engineered for Scale.')}
+            {t('هندسة برمجيات متقدمة وبنية تحتية مصممة للشركات القابلة للتوسع.', 'Advanced Software Engineering & Enterprise Infrastructure.')}
           </h1>
           <p className="text-slate-300 text-base sm:text-lg font-arabic leading-relaxed">
             {t(
-              'نحن لا نكتفي بإنشاء الواجهات؛ بل نبني المحرك التشغيلي الذي يدير مبيعاتك، مخزونك، وعلاقاتك مع العملاء بكفاءة مطلقة.',
-              'Beyond simple websites: we engineer operational backbones unifying orders, multi-branch inventory, and automated workflows.'
+              'لا نقدم قوالب جاهزة. نحن فريق هندسي متكامل يبني بنيات تحتية سحابية (Cloud Architecture)، واجهات برمجية متينة (APIs)، وتطبيقات معقدة قابلة للصيانة والتوسع المليوني.',
+              'We do not deploy templates. We architect distributed cloud systems, robust APIs, and scalable applications built on strict software engineering principles.'
             )}
           </p>
         </div>
@@ -73,7 +73,7 @@ export const SolutionsView: React.FC<SolutionsViewProps> = ({
                 : 'bg-slate-900 border border-slate-800 text-slate-300 hover:text-white'
             }`}
           >
-            {t('جميع الحلول', 'All Solutions')}
+            {t('كل القدرات', 'All Capabilities')}
           </button>
           {SOLUTIONS.map((s) => (
             <button

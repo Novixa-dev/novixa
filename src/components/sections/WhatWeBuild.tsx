@@ -5,7 +5,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { SOLUTIONS } from '../../content/data';
 import { ViewType } from '../../types';
 import { 
-  Building2, Cloud, ShoppingCart, CalendarCheck, Sparkles, Cpu, 
+  Server, Code2, RefreshCw, Shield, Terminal, Sparkles, Cpu, 
   CheckCircle2, ArrowLeft, ArrowRight, Zap, Layers 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -24,12 +24,11 @@ export const WhatWeBuild: React.FC<WhatWeBuildProps> = ({ onNavigate }) => {
 
   const getIcon = (name: string) => {
     switch (name) {
-      case 'Building2': return Building2;
-      case 'Cloud': return Cloud;
-      case 'ShoppingCart': return ShoppingCart;
-      case 'CalendarCheck': return CalendarCheck;
-      case 'Sparkles': return Sparkles;
-      case 'Cpu': return Cpu;
+      case 'Server': return Server;
+      case 'Code2': return Code2;
+      case 'RefreshCw': return RefreshCw;
+      case 'Shield': return Shield;
+      case 'Terminal': return Terminal;
       default: return Layers;
     }
   };

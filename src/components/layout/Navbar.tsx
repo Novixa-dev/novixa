@@ -6,7 +6,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from '../ui/Logo';
 import { ViewType } from '../../types';
-import { Menu, X, ArrowLeft, ArrowRight, Globe, Sparkles } from 'lucide-react';
+import { Menu, X, ArrowLeft, ArrowRight, Globe, Search, Command } from 'lucide-react';
+import { CommandMenu } from '../common/CommandMenu';
 
 interface NavbarProps {
   currentView?: ViewType;
@@ -17,6 +18,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
   const { language, toggleLanguage, isRtl, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [commandMenuOpen, setCommandMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -28,11 +30,23 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Global Cmd+K trigger
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setCommandMenuOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const navItems: { view: ViewType; path: string; labelAr: string; labelEn: string }[] = [
     { view: 'home', path: `/${language}`, labelAr: 'الرئيسية', labelEn: 'Home' },
-    { view: 'solutions', path: `/${language}/solutions`, labelAr: 'الحلول', labelEn: 'Solutions' },
-    { view: 'products', path: `/${language}/products`, labelAr: 'المنتجات', labelEn: 'Products' },
-    { view: 'industries', path: `/${language}/industries`, labelAr: 'القطاعات', labelEn: 'Industries' },
+    { view: 'services', path: `/${language}/services`, labelAr: 'الهندسة والخدمات', labelEn: 'Services' },
+    { view: 'products', path: `/${language}/products`, labelAr: 'المنتجات (SaaS)', labelEn: 'Products' },
+    { view: 'industries', path: `/${language}/industries`, labelAr: 'قطاعات الأعمال', labelEn: 'Industries' },
     { view: 'work', path: `/${language}/work`, labelAr: 'أعمالنا', labelEn: 'Work' },
     { view: 'about', path: `/${language}/about`, labelAr: 'من نحن', labelEn: 'About' },
     { view: 'insights', path: `/${language}/insights`, labelAr: 'المعرفة', labelEn: 'Insights' },
@@ -46,121 +60,164 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-slate-950/85 backdrop-blur-md border-b border-slate-800/80 py-3.5 shadow-2xl shadow-slate-950/50'
-          : 'bg-transparent py-5'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            href={`/${language}`}
-            className="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Logo size="md" />
-          </Link>
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? 'bg-slate-950/85 backdrop-blur-md border-b border-slate-800/80 py-3 shadow-2xl shadow-slate-950/60'
+            : 'bg-transparent py-4 sm:py-5'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            {/* Left: Logo & Live Status */}
+            <div className="flex items-center gap-4">
+              <Link
+                href={`/${language}`}
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Logo size="md" />
+              </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-full px-3 py-1 shadow-sm">
-            {navItems.map((item) => {
-              const isActive = pathname === item.path || (item.view === 'home' && (pathname === `/${language}` || pathname === `/${language}/`));
-              return (
-                <Link
-                  key={item.view}
-                  href={item.path}
-                  onClick={() => handleLinkClick(item.view, item.path)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 relative ${
-                    isActive
-                      ? 'text-white bg-blue-600 shadow-sm font-semibold'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
-                  }`}
-                >
-                  {t(item.labelAr, item.labelEn)}
-                </Link>
-              );
-            })}
-          </nav>
+              {/* Discreet Operational Status Badge */}
+              <div className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/90 border border-slate-800 text-[11px] font-mono text-slate-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>System 99.99%</span>
+              </div>
+            </div>
 
-          {/* Right Actions */}
-          <div className="hidden md:flex items-center gap-2.5">
-            {/* Language Switcher */}
-            <button
-              onClick={toggleLanguage}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white hover:border-slate-700 transition-all duration-200 font-medium cursor-pointer"
-              title={isRtl ? 'Switch to English' : 'التحويل للعربية'}
-            >
-              <Globe className="w-3.5 h-3.5 text-blue-400" />
-              <span>{language === 'ar' ? 'English' : 'العربية'}</span>
-            </button>
+            {/* Center: Desktop Navigation Links */}
+            <nav className="hidden lg:flex items-center gap-1 bg-slate-900/90 backdrop-blur-md border border-slate-800/90 rounded-full px-2.5 py-1 shadow-inner">
+              {navItems.map((item) => {
+                const isActive = pathname === item.path || (item.view === 'home' && (pathname === `/${language}` || pathname === `/${language}/`));
+                return (
+                  <Link
+                    key={item.view}
+                    href={item.path}
+                    onClick={() => handleLinkClick(item.view, item.path)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 relative ${
+                      isActive
+                        ? 'text-white bg-blue-600 shadow-sm font-semibold'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                    }`}
+                  >
+                    {t(item.labelAr, item.labelEn)}
+                  </Link>
+                );
+              })}
+            </nav>
 
-            {/* Primary CTA */}
-            <Link
-              href={`/${language}/start-project`}
-              onClick={() => setMobileMenuOpen(false)}
-              className="relative group inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs lg:text-sm font-semibold px-4 lg:px-5 py-2 rounded-lg shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
-            >
-              <span>{t('ابدأ مشروعك', 'Start Project')}</span>
-              <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
-            </Link>
-          </div>
+            {/* Right Actions */}
+            <div className="hidden md:flex items-center gap-2">
+              {/* Command Palette Trigger */}
+              <button
+                onClick={() => setCommandMenuOpen(true)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-xs text-slate-400 hover:text-slate-200 transition-all cursor-pointer shadow-sm"
+                title="Quick Command Search"
+              >
+                <Search className="w-3.5 h-3.5 text-slate-400" />
+                <span className="text-[11px] font-arabic">{t('بحث', 'Search')}</span>
+                <kbd className="inline-flex items-center gap-0.5 text-[10px] font-mono bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800 text-slate-400">
+                  <Command className="w-2.5 h-2.5" /> K
+                </kbd>
+              </button>
 
-          {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center gap-2">
-            <button
-              onClick={toggleLanguage}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold"
-            >
-              {language === 'ar' ? 'EN' : 'ع'}
-            </button>
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white focus:outline-none"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
-        </div>
-      </div>
+              {/* Language Switcher */}
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 text-xs text-slate-300 hover:text-white hover:border-slate-700 transition-all duration-200 font-medium cursor-pointer"
+                title={isRtl ? 'Switch to English' : 'التحويل للعربية'}
+              >
+                <Globe className="w-3.5 h-3.5 text-blue-400" />
+                <span>{language === 'ar' ? 'English' : 'العربية'}</span>
+              </button>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-[65px] bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 p-4 shadow-2xl transition-all duration-300">
-          <div className="flex flex-col gap-1.5">
-            {navItems.map((item) => {
-              const isActive = pathname === item.path;
-              return (
-                <Link
-                  key={item.view}
-                  href={item.path}
-                  onClick={() => handleLinkClick(item.view, item.path)}
-                  className={`text-right rtl:text-right ltr:text-left px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                    isActive
-                      ? 'bg-blue-600 text-white font-semibold'
-                      : 'text-slate-300 hover:bg-slate-900 hover:text-white'
-                  }`}
-                >
-                  {t(item.labelAr, item.labelEn)}
-                </Link>
-              );
-            })}
-
-            <div className="pt-3 border-t border-slate-800 mt-2">
+              {/* Primary CTA */}
               <Link
                 href={`/${language}/start-project`}
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-4 rounded-lg shadow-sm"
+                className="relative group inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs lg:text-sm font-semibold px-4 py-2 rounded-lg shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
               >
-                <span>{t('ابدأ مشروعك الآن', 'Start Your Project Now')}</span>
-                <ArrowIcon className="w-4 h-4" />
+                <span>{t('ابدأ مشروعك', 'Start Project')}</span>
+                <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
               </Link>
+            </div>
+
+            {/* Mobile Menu & Quick Search Button */}
+            <div className="flex md:hidden items-center gap-1.5">
+              <button
+                onClick={() => setCommandMenuOpen(true)}
+                className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white"
+                title="Search"
+              >
+                <Search className="w-4 h-4" />
+              </button>
+
+              <button
+                onClick={toggleLanguage}
+                className="px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold"
+              >
+                {language === 'ar' ? 'EN' : 'ع'}
+              </button>
+
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white focus:outline-none"
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
             </div>
           </div>
         </div>
-      )}
-    </header>
+
+        {/* Mobile Drawer */}
+        {mobileMenuOpen && (
+          <div className="md:hidden fixed inset-x-0 top-[65px] bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 p-4 shadow-2xl transition-all duration-300">
+            <div className="flex flex-col gap-1.5">
+              {navItems.map((item) => {
+                const isActive = pathname === item.path;
+                return (
+                  <Link
+                    key={item.view}
+                    href={item.path}
+                    onClick={() => handleLinkClick(item.view, item.path)}
+                    className={`text-right rtl:text-right ltr:text-left px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                      isActive
+                        ? 'bg-blue-600 text-white font-semibold'
+                        : 'text-slate-300 hover:bg-slate-900 hover:text-white'
+                    }`}
+                  >
+                    {t(item.labelAr, item.labelEn)}
+                  </Link>
+                );
+              })}
+
+              <div className="pt-3 border-t border-slate-800 mt-2">
+                <Link
+                  href={`/${language}/start-project`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-4 rounded-lg shadow-sm"
+                >
+                  <span>{t('ابدأ مشروعك الآن', 'Start Your Project Now')}</span>
+                  <ArrowIcon className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* Global Command Menu */}
+      <CommandMenu 
+        isOpen={commandMenuOpen} 
+        onClose={() => setCommandMenuOpen(false)} 
+        onNavigate={(view) => {
+          if (onNavigate) onNavigate(view);
+          setMobileMenuOpen(false);
+        }}
+      />
+    </>
   );
 };
+

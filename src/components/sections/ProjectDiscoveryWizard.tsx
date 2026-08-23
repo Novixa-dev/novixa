@@ -80,9 +80,6 @@ export const ProjectDiscoveryWizard: React.FC = () => {
 
   return (
     <section className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden" id="start-project">
-      {/* Background Accent glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[500px] bg-blue-600/10 blur-3xl pointer-events-none"></div>
-
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
