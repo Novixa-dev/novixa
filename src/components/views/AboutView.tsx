@@ -2,17 +2,10 @@
 
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { ViewType } from '../../types';
-import { BRAND_INFO, FOUNDER_INFO } from '../../content/data';
 import { FounderSection } from '../sections/FounderSection';
-import { WhyNovixaSection } from '../sections/WhyNovixaSection';
-import { Shield, Sparkles, CheckCircle2, Terminal, Award, Target, Heart } from 'lucide-react';
+import { StartProjectCTA } from '../sections/StartProjectCTA';
 
-interface AboutViewProps {
-  onNavigate: (view: ViewType) => void;
-}
-
-export const AboutView: React.FC<AboutViewProps> = ({ onNavigate }) => {
+export const AboutView: React.FC = () => {
   const { isRtl, t } = useLanguage();
 
   const values = [
@@ -89,8 +82,8 @@ export const AboutView: React.FC<AboutViewProps> = ({ onNavigate }) => {
 
       </div>
 
-      <WhyNovixaSection />
       <FounderSection />
+      <StartProjectCTA />
     </div>
   );
 };

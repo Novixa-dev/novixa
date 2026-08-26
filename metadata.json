@@ -1,6 +1,0 @@
-{
-  "name": "Novixa",
-  "description": "الموقع الرسمي لشركة نوڤيكسا - هندسة البرمجيات والمنتجات الرقمية وحلول الأعمال الحديثة",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

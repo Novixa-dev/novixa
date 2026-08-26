@@ -36,14 +36,9 @@ export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', showTex
 
       {showText && (
         <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <span className={`font-display font-extrabold tracking-tight text-white ${currentSize.text}`}>
-              NOVIXA
-            </span>
-            <span className={`bg-blue-950/80 text-blue-400 border border-blue-800/50 rounded-full font-mono font-medium ${currentSize.badge}`}>
-              io
-            </span>
-          </div>
+          <span className={`font-display font-extrabold tracking-tight text-white ${currentSize.text}`}>
+            NOVIXA
+          </span>
           <span className="text-[10px] font-arabic text-slate-400 tracking-wider font-medium -mt-1 hidden sm:block">
             نوڤيكسا • هندسة البرمجيات
           </span>

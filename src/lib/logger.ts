@@ -4,8 +4,6 @@
  * and sends actionable telemetry for production debugging.
  */
 
-import { trackEvent } from './analytics';
-
 export interface LogContext {
   [key: string]: any;
 }
@@ -136,12 +134,6 @@ class Logger {
   public warn(message: string, context?: LogContext) {
     const timestamp = new Date().toISOString();
     console.warn(`[WARN][${timestamp}] ${message}`, context || '');
-
-    trackEvent('app_warning', {
-      message,
-      context,
-      timestamp,
-    });
   }
 
   /**
@@ -170,9 +162,6 @@ class Logger {
       '\nContext:',
       context || {}
     );
-
-    // Track via analytics engine
-    trackEvent('ui_crash_or_error', payload);
   }
 }
 

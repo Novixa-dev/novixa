@@ -55,24 +55,29 @@ export const ProjectDiscoveryWizard: React.FC = () => {
     setErrorMessage('');
 
     try {
-      const response = await fetch('/api/leads', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
       if (response.ok && data.success) {
-        setLeadReceiptId(data.leadId || `LEAD-${Date.now()}`);
+        setLeadReceiptId(data.receiptId || `NVX-${Date.now()}`);
         setSubmitted(true);
       } else {
-        setErrorMessage(data.error || t('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.', 'Submission error. Please try again.'));
+        setErrorMessage(
+          data.error || t('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.', 'Submission error. Please try again.')
+        );
       }
     } catch {
-      // Graceful fallback receipt if server network is unreachable
-      setLeadReceiptId(`LEAD-LOC-${Date.now()}`);
-      setSubmitted(true);
+      setErrorMessage(
+        t(
+          'تعذر الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.',
+          'Could not reach the server. Please check your connection and try again.'
+        )
+      );
     } finally {
       setIsSubmitting(false);
     }

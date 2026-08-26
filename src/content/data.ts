@@ -15,7 +15,7 @@ export const BRAND_INFO = {
     ar: 'شركة هندسة البرمجيات والمنتجات الرقمية',
     en: 'Software Engineering & Digital Products Company'
   },
-  email: 'hello@novixa.io',
+  email: 'hello@novixa.dev',
   location: {
     ar: 'الشرق الأوسط والخليج العربي',
     en: 'Middle East & GCC'
@@ -139,8 +139,8 @@ export const PRODUCTS: Product[] = [
       en: ['Enterprises', 'Healthcare Chains', 'Hospitality Groups', 'Tech Companies']
     },
     metrics: [
-      { label: { ar: 'نسبة مشاركة الموظفين', en: 'Employee Engagement' }, value: '84%' },
-      { label: { ar: 'سرعة الاستجابة للمشاكل', en: 'Issue Resolution Speed' }, value: '3x Faster' }
+      { label: { ar: 'مشاركة الموظفين', en: 'Employee Engagement' }, value: 'مصمم لرفع نسبة المشاركة' },
+      { label: { ar: 'سرعة الاستجابة للمشاكل', en: 'Issue Resolution Speed' }, value: 'تصنيف وتوجيه أسرع للملاحظات' }
     ],
     accentColor: '#14B8A6',
     iconName: 'Activity'
@@ -243,7 +243,7 @@ export const PRODUCTS: Product[] = [
       en: ['Esports Arenas', 'Billiards & Bowling Lounges', 'Family Entertainment Centers']
     },
     metrics: [
-      { label: { ar: 'معدل إشغال الصالات', en: 'Arena Utilization' }, value: '+35%' }
+      { label: { ar: 'معدل إشغال الصالات', en: 'Arena Utilization' }, value: 'مصمم لرفع معدل الإشغال' }
     ],
     accentColor: '#EC4899',
     iconName: 'Gamepad2'
@@ -437,14 +437,6 @@ export const CASE_STUDIES: CaseStudy[] = [
       { label: { ar: 'تقليل وقت الانتظار', en: 'Customer Wait Time' }, value: '-70%' }
     ],
     heroImageTag: 'BLACK_SPIDER_SCREENSHOT',
-    quote: {
-      text: {
-        ar: 'تحولنا مع نوڤيكسا من مجرد صالة ألعاب تقليدية إلى مركز ترفيهي ذكي يعمل بسلاسة ودقة، وزادت أرباحنا التشغيلية بشكل ملحوظ.',
-        en: 'Novixa transformed us from a traditional gaming hall into a sleek, automated entertainment brand. Our operational clarity and margins jumped immediately.'
-      },
-      author: 'إدارة Black Spider',
-      role: { ar: 'الفريق القيادي', en: 'Executive Leadership' }
-    }
   },
   {
     id: 'aura-medical',

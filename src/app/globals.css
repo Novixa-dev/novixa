@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --font-arabic: 'IBM Plex Sans Arabic', 'Alexandria', system-ui, -apple-system, sans-serif;
-    --font-display: 'Alexandria', 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
-    --font-english: 'Inter', system-ui, -apple-system, sans-serif;
-  }
+/*
+ * --font-arabic / --font-display / --font-english are supplied at runtime by
+ * next/font (see src/app/fonts.ts + src/app/layout.tsx). They resolve to the
+ * self-hosted, subset font faces — no external Google Fonts request at
+ * runtime, no render-blocking <link> tags, better Core Web Vitals.
+ */
 
+@layer base {
   body {
     font-family: var(--font-arabic);
     background-color: #020617;

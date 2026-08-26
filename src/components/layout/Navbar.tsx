@@ -2,23 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from '../ui/Logo';
-import { ViewType } from '../../types';
-import { Menu, X, ArrowLeft, ArrowRight, Globe, Sparkles } from 'lucide-react';
+import { Menu, X, ArrowLeft, ArrowRight, Globe, Search, Command } from 'lucide-react';
 
-interface NavbarProps {
-  currentView?: ViewType;
-  onNavigate?: (view: ViewType) => void;
-}
-
-export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
+export const Navbar: React.FC = () => {
   const { language, toggleLanguage, isRtl, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,21 +21,20 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems: { view: ViewType; path: string; labelAr: string; labelEn: string }[] = [
-    { view: 'home', path: `/${language}`, labelAr: 'الرئيسية', labelEn: 'Home' },
-    { view: 'solutions', path: `/${language}/solutions`, labelAr: 'الحلول', labelEn: 'Solutions' },
-    { view: 'products', path: `/${language}/products`, labelAr: 'المنتجات', labelEn: 'Products' },
-    { view: 'industries', path: `/${language}/industries`, labelAr: 'القطاعات', labelEn: 'Industries' },
-    { view: 'work', path: `/${language}/work`, labelAr: 'أعمالنا', labelEn: 'Work' },
-    { view: 'about', path: `/${language}/about`, labelAr: 'من نحن', labelEn: 'About' },
-    { view: 'insights', path: `/${language}/insights`, labelAr: 'المعرفة', labelEn: 'Insights' },
+  const navItems = [
+    { path: `/${language}`, labelAr: 'الرئيسية', labelEn: 'Home' },
+    { path: `/${language}/solutions`, labelAr: 'الحلول', labelEn: 'Solutions' },
+    { path: `/${language}/products`, labelAr: 'المنتجات', labelEn: 'Products' },
+    { path: `/${language}/industries`, labelAr: 'القطاعات', labelEn: 'Industries' },
+    { path: `/${language}/work`, labelAr: 'أعمالنا', labelEn: 'Work' },
+    { path: `/${language}/about`, labelAr: 'من نحن', labelEn: 'About' },
+    { path: `/${language}/insights`, labelAr: 'المعرفة', labelEn: 'Insights' },
   ];
 
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
-  const handleLinkClick = (view: ViewType, path: string) => {
-    if (onNavigate) onNavigate(view);
-    setMobileMenuOpen(false);
+  const triggerCommandMenu = () => {
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }));
   };
 
   return (
@@ -67,12 +59,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-1 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-full px-3 py-1 shadow-sm">
             {navItems.map((item) => {
-              const isActive = pathname === item.path || (item.view === 'home' && (pathname === `/${language}` || pathname === `/${language}/`));
+              const isActive = pathname === item.path || (item.path === `/${language}` && (pathname === `/${language}` || pathname === `/${language}/`));
               return (
                 <Link
-                  key={item.view}
+                  key={item.path}
                   href={item.path}
-                  onClick={() => handleLinkClick(item.view, item.path)}
                   className={`px-3.5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 relative ${
                     isActive
                       ? 'text-white bg-blue-600 shadow-sm font-semibold'
@@ -87,6 +78,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
 
           {/* Right Actions */}
           <div className="hidden md:flex items-center gap-2.5">
+            {/* Search / Command Menu Trigger */}
+            <button
+              onClick={triggerCommandMenu}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-white hover:border-slate-700 transition-colors"
+              title="Search (Cmd+K)"
+            >
+              <Search className="w-3.5 h-3.5" />
+              <span className="hidden lg:inline text-[11px] font-mono">⌘K</span>
+            </button>
+
             {/* Language Switcher */}
             <button
               onClick={toggleLanguage}
@@ -100,7 +101,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             {/* Primary CTA */}
             <Link
               href={`/${language}/start-project`}
-              onClick={() => setMobileMenuOpen(false)}
               className="relative group inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs lg:text-sm font-semibold px-4 lg:px-5 py-2 rounded-lg shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
             >
               <span>{t('ابدأ مشروعك', 'Start Project')}</span>
@@ -110,6 +110,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={triggerCommandMenu}
+              className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+            >
+              <Search className="w-4 h-4" />
+            </button>
             <button
               onClick={toggleLanguage}
               className="px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold"
@@ -134,9 +140,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
               const isActive = pathname === item.path;
               return (
                 <Link
-                  key={item.view}
+                  key={item.path}
                   href={item.path}
-                  onClick={() => handleLinkClick(item.view, item.path)}
+                  onClick={() => setMobileMenuOpen(false)}
                   className={`text-right rtl:text-right ltr:text-left px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all ${
                     isActive
                       ? 'bg-blue-600 text-white font-semibold'

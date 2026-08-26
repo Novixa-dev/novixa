@@ -65,7 +65,7 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
       name: 'Novixa',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://novixa.io/assets/logo.png',
+        url: 'https://novixa.dev/icon.svg',
       },
     },
     datePublished: article.date,

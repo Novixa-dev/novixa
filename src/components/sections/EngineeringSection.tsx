@@ -8,10 +8,10 @@ export const EngineeringSection: React.FC = () => {
   const { isRtl, t } = useLanguage();
 
   const techGroups = [
-    { category: 'Frontend', techs: ['React 19', 'Next.js App Router', 'TypeScript', 'Tailwind CSS', 'Framer Motion'] },
-    { category: 'Backend & APIs', techs: ['Node.js', 'Express', 'TypeScript ESM', 'WebSockets', 'REST & GraphQL'] },
-    { category: 'Cloud Infrastructure', techs: ['Vercel Edge', 'Docker Containers', 'Cloud Run', 'Redis Cache', 'CDN Edge'] },
-    { category: 'Database & Security', techs: ['PostgreSQL', 'Firestore', 'SOC2 Isolation', '256-Bit SSL', 'OAuth 2.0'] },
+    { category: 'Frontend', techs: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Vue / Nuxt'] },
+    { category: 'Backend & APIs', techs: ['Node.js', 'NestJS', 'Laravel / PHP', 'ASP.NET', 'REST APIs'] },
+    { category: 'Cloud & Infrastructure', techs: ['Vercel', 'Docker', 'CDN Edge', 'CI/CD Pipelines'] },
+    { category: 'Data & Security', techs: ['PostgreSQL', 'MySQL', 'Tenant Isolation', 'TLS Encryption', 'OAuth 2.0'] },
   ];
 
   return (
@@ -33,7 +33,7 @@ export const EngineeringSection: React.FC = () => {
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
             {t(
               'لا نكتفي بجعل الواجهات جميلة. نبني معمارية برمجية فائقة الأمان، سريعة الاستجابة بالملي ثانية، ومصممة لتحمل ملايين الطلبات.',
-              'We don\'t just design sleek interfaces. We engineer high-availability cloud architecture built for sub-second response speeds and SOC2 compliance.'
+              'We don\'t just design sleek interfaces. We engineer high-availability cloud architecture built for fast response times and security-conscious data handling.'
             )}
           </p>
         </div>
@@ -58,10 +58,10 @@ export const EngineeringSection: React.FC = () => {
               color: 'text-teal-400'
             },
             {
-              titleAr: 'تراسل فوري (Real-Time)',
-              titleEn: 'Real-Time WebSockets',
-              descAr: 'تحديثات مباشرة بالثواني للطلبات والمخزون والمواعيد.',
-              descEn: 'Sub-second WebSocket pipelines for order queues and inventory updates.',
+              titleAr: 'تراسل فوري وتحديثات حية',
+              titleEn: 'Real-Time Data Sync',
+              descAr: 'تحديثات مباشرة وسريعة للطلبات والمخزون والمواعيد فور حدوثها.',
+              descEn: 'Fast, live updates across order queues, inventory, and bookings as they happen.',
               icon: Zap,
               color: 'text-amber-400'
             },
@@ -69,7 +69,7 @@ export const EngineeringSection: React.FC = () => {
               titleAr: 'واجهات برمجة APIs حديثة',
               titleEn: 'Modular API Architecture',
               descAr: 'ربط سلس مع بوابات الدفع وبرامج الفوترة وشركات الشحن.',
-              descEn: 'Clean REST & GraphQL endpoints for seamless ERP & payment gateway integration.',
+              descEn: 'Clean, well-documented endpoints for seamless payment gateway and third-party integrations.',
               icon: Server,
               color: 'text-indigo-400'
             },
@@ -95,10 +95,10 @@ export const EngineeringSection: React.FC = () => {
         <div className="bg-slate-900/80 rounded-2xl p-6 sm:p-8 border border-slate-800 space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-slate-800">
             <h3 className="text-base font-bold font-display text-white">
-              {t('منظومة التقنيات المعتمدة لدى نوڤيكسا', 'Novixa Engineering Stack')}
+              {t('تقنيات نعتمدها عبر مشاريعنا الهندسية', 'Technologies Across Our Engineering Practice')}
             </h3>
             <span className="text-xs font-mono text-slate-400">
-              {t('تقنيات حديثة مجربة ومستقرة', 'Battle-tested Production Stack')}
+              {t('نختار الأداة المناسبة لكل مشروع حسب متطلباته', 'Chosen per-project based on real requirements')}
             </span>
           </div>
 

@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
 import { productsCatalog, industriesCatalog, caseStudiesCatalog, insightsArticles } from '@/lib/content';
+import { getSiteUrl } from '@/lib/env';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://novixa.io';
+  const baseUrl = getSiteUrl();
   const languages = ['ar', 'en'];
   const staticRoutes = ['', 'solutions', 'products', 'industries', 'work', 'insights', 'about', 'start-project'];
 

@@ -2,21 +2,10 @@
 
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { InsightArticle, ViewType } from '../../types';
 import { InsightsSection } from '../sections/InsightsSection';
 
-interface InsightsViewProps {
-  onNavigate: (view: ViewType) => void;
-  onSelectInsight?: (article: InsightArticle) => void;
-  isLoading?: boolean;
-}
-
-export const InsightsView: React.FC<InsightsViewProps> = ({ 
-  onNavigate, 
-  onSelectInsight,
-  isLoading 
-}) => {
-  const { isRtl, t } = useLanguage();
+export const InsightsView: React.FC = () => {
+  const { t } = useLanguage();
 
   return (
     <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
@@ -37,7 +26,7 @@ export const InsightsView: React.FC<InsightsViewProps> = ({
         </div>
       </div>
 
-      <InsightsSection onNavigate={onNavigate} onSelectInsight={onSelectInsight} isLoading={isLoading} />
+      <InsightsSection />
     </div>
   );
 };

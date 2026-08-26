@@ -2,9 +2,9 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['lucide-react', 'motion'],
   images: {
-    unoptimized: true,
+    // No remote images yet; all imagery is served from /public.
+    formats: ['image/avif', 'image/webp'],
   },
 };
 

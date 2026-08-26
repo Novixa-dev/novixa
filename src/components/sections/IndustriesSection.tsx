@@ -1,21 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { INDUSTRIES } from '../../content/data';
-import { ViewType } from '../../types';
 import { 
   Utensils, HeartPulse, Store, Gamepad, Building, ShieldCheck, 
   AlertCircle, CheckCircle2, ArrowLeft, ArrowRight, Layers 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-interface IndustriesSectionProps {
-  onNavigate?: (view: ViewType) => void;
-}
-
-export const IndustriesSection: React.FC<IndustriesSectionProps> = ({ onNavigate }) => {
-  const { isRtl, t } = useLanguage();
+export const IndustriesSection: React.FC = () => {
+  const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const [activeId, setActiveId] = useState<string>(INDUSTRIES[0].id);
@@ -168,13 +164,13 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({ onNavigate
                 </div>
               </div>
 
-              <button
-                onClick={() => onNavigate && onNavigate('start')}
+              <Link
+                href={`/${language}/start-project`}
                 className="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs sm:text-sm shadow-lg shadow-teal-600/30 transition-all flex items-center justify-center gap-2"
               >
                 <span>{t('تخصيص حل لقطاعك', 'Build for Your Industry')}</span>
                 <ArrowIcon className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
           </motion.div>
         </AnimatePresence>

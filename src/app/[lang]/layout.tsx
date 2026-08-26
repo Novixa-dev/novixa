@@ -2,6 +2,7 @@ import React from 'react';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
+import { CommandMenu } from '@/components/common/CommandMenu';
 import { Language } from '@/types';
 
 export function generateStaticParams() {
@@ -23,7 +24,8 @@ export default async function LocalizedLayout({
     <LanguageProvider initialLang={lang}>
       <div className={`min-h-screen flex flex-col font-arabic ${lang === 'en' ? 'font-latin' : ''}`} dir={dir}>
         <Navbar />
-        <main className="flex-grow pt-24">{children}</main>
+        <CommandMenu />
+        <main className="flex-grow">{children}</main>
         <Footer />
       </div>
     </LanguageProvider>

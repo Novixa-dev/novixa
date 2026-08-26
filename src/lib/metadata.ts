@@ -5,7 +5,7 @@ export function getSiteUrl(): string {
     if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '');
     if (process.env.SITE_URL) return process.env.SITE_URL.replace(/\/$/, '');
   }
-  return 'https://novixa.io';
+  return 'https://novixa.dev';
 }
 
 export function constructMetadata({
@@ -13,25 +13,21 @@ export function constructMetadata({
   description,
   lang,
   path = '',
-  image = '/assets/og-preview.png',
 }: {
   title: string;
   description: string;
   lang: 'ar' | 'en';
   path?: string;
-  image?: string;
 }): Metadata {
   const baseUrl = getSiteUrl();
   const cleanPath = path ? (path.startsWith('/') ? path : `/${path}`) : '';
   const canonicalUrl = `${baseUrl}/${lang}${cleanPath}`;
   const alternateAr = `${baseUrl}/ar${cleanPath}`;
   const alternateEn = `${baseUrl}/en${cleanPath}`;
-  const ogImageUrl = image.startsWith('http') ? image : `${baseUrl}${image.startsWith('/') ? image : `/${image}`}`;
 
   return {
-    title: `${title} | Novixa`,
+    title,
     description,
-    metadataBase: new URL(baseUrl),
     alternates: {
       canonical: canonicalUrl,
       languages: {
@@ -47,20 +43,11 @@ export function constructMetadata({
       siteName: 'Novixa | نوڤيكسا',
       locale: lang === 'ar' ? 'ar_SA' : 'en_US',
       type: 'website',
-      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: lang === 'ar' ? 'نوڤيكسا - هندسة البرمجيات والأنظمة الرقمية' : 'Novixa - Enterprise Software Architecture',
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${title} | Novixa`,
       description,
-      images: [ogImageUrl],
     },
     robots: {
       index: true,
@@ -84,9 +71,10 @@ export function generateOrganizationJsonLd() {
     name: 'Novixa',
     alternateName: 'نوڤيكسا',
     url: baseUrl,
-    logo: `${baseUrl}/assets/logo.png`,
-    description: 'Enterprise Software Architecture, POS Hospitality Tech, Booking Engines & Logistics Control Systems.',
-    areaServed: ['Saudi Arabia', 'United Arab Emirates', 'Yemen', 'GCC', 'Middle East'],
+    logo: `${baseUrl}/icon.svg`,
+    description:
+      'Novixa is a software engineering and digital products company: custom business platforms, SaaS products, and system modernization for the Middle East and GCC.',
+    areaServed: ['Yemen', 'Saudi Arabia', 'GCC', 'Middle East'],
     sameAs: [],
     knowsAbout: [
       'Enterprise Software Architecture',
@@ -191,7 +179,7 @@ export function generateArticleJsonLd({
       name: 'Novixa',
       logo: {
         '@type': 'ImageObject',
-        url: `${baseUrl}/assets/logo.png`,
+        url: `${baseUrl}/icon.svg`,
       },
     },
     datePublished,

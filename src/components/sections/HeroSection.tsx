@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
-import { ViewType } from '../../types';
 import { 
   Sparkles, ArrowLeft, ArrowRight, Shield, Zap, Layers, Cpu, 
   CheckCircle2, RefreshCw, BarChart3, Database, MessageSquare, 
@@ -11,17 +10,13 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-interface HeroSectionProps {
-  onNavigate?: (view: ViewType) => void;
-}
-
-export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
+export const HeroSection: React.FC = () => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   // State for interactive architecture visual demo
   const [activeTab, setActiveTab] = useState<'fragmented' | 'unified'>('unified');
-  const [selectedNode, setSelectedNode] = useState<string>('core');
+  const [selectedNode, setSelectedNode] = useState<string>('orders');
 
   const nodes = [
     { id: 'orders', nameAr: 'المبيعات والطلبات', nameEn: 'Orders & Sales', icon: ShoppingCart, count: '1,420 / اليوم' },
@@ -91,12 +86,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
                 <div className="text-xs text-slate-400 font-arabic">{t('معمارية مخصصة', 'Custom Architecture')}</div>
               </div>
               <div>
-                <div className="text-xl sm:text-2xl font-bold font-display text-blue-400">High Standard</div>
+                <div className="text-xl sm:text-2xl font-bold font-display text-blue-400">{t('أعلى المعايير', 'High Standard')}</div>
                 <div className="text-xs text-slate-400 font-arabic">{t('معايير أمان موثوقة', 'Security Standards')}</div>
               </div>
               <div>
-                <div className="text-xl sm:text-2xl font-bold font-display text-teal-400">99.9%</div>
-                <div className="text-xs text-slate-400 font-arabic">{t('استقرار التشغيل', 'Uptime Guarantee')}</div>
+                <div className="text-xl sm:text-2xl font-bold font-display text-teal-400">{t('مبني للاستقرار', 'Built for Uptime')}</div>
+                <div className="text-xs text-slate-400 font-arabic">{t('هندسة موثوقة للتشغيل المستمر', 'Reliability-first Architecture')}</div>
               </div>
             </div>
           </div>
@@ -110,7 +105,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
-                  <span className="text-xs font-mono text-slate-400 ml-1">novixa-system-v2.6</span>
+                  <span className="text-xs font-mono text-slate-400 ml-1">novixa-core-engine</span>
                 </div>
 
                 <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-[11px] font-medium">

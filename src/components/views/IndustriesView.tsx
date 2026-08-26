@@ -2,15 +2,10 @@
 
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { ViewType } from '../../types';
 import { IndustriesSection } from '../sections/IndustriesSection';
 
-interface IndustriesViewProps {
-  onNavigate?: (view: ViewType) => void;
-}
-
-export const IndustriesView: React.FC<IndustriesViewProps> = ({ onNavigate }) => {
-  const { isRtl, t } = useLanguage();
+export const IndustriesView: React.FC = () => {
+  const { t } = useLanguage();
 
   return (
     <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
@@ -31,7 +26,7 @@ export const IndustriesView: React.FC<IndustriesViewProps> = ({ onNavigate }) =>
         </div>
       </div>
 
-      <IndustriesSection onNavigate={onNavigate} />
+      <IndustriesSection />
     </div>
   );
 };
