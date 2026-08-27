@@ -85,7 +85,7 @@ export interface InsightArticle {
   excerpt: { ar: string; en: string };
   content: { ar: string[]; en: string[] };
   author: {
-    name: string;
+    name: { ar: string; en: string };
     role: { ar: string; en: string };
   };
 }

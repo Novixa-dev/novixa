@@ -588,7 +588,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
 export const INSIGHTS: InsightArticle[] = [
   {
     id: 'custom-vs-ready',
-    slug: 'custom-vs-ready-software',
+    slug: 'custom-vs-ready',
     title: {
       ar: 'كيف تعرف أن شركتك تحتاج نظامًا برمجيًا مخصصًا بدلاً من الحلول الجاهزة؟',
       en: 'How to know if your company needs custom software instead of off-the-shelf tools?'
@@ -601,7 +601,7 @@ export const INSIGHTS: InsightArticle[] = [
       en: 'A deep comparison between fitting your workflows into rigid off-the-shelf software versus building a proprietary tech asset that scales with your strategy.'
     },
     author: {
-      name: 'فريق هندسة نوڤيكسا',
+      name: { ar: 'فريق هندسة نوڤيكسا', en: 'Novixa Engineering Team' },
       role: { ar: 'استشارات الهندسة البرمجية', en: 'Software Engineering Practice' }
     },
     content: {
@@ -619,7 +619,7 @@ export const INSIGHTS: InsightArticle[] = [
   },
   {
     id: 'multi-tenant-saas',
-    slug: 'multi-tenant-saas-architecture',
+    slug: 'multi-tenant-saas',
     title: {
       ar: 'هندسة منصات SaaS متعددة المستأجرين (Multi-Tenant): كيف تبني منتجًا يتوسع عالميًا؟',
       en: 'Multi-Tenant SaaS Architecture: How to build software engineered for global scale?'
@@ -632,8 +632,8 @@ export const INSIGHTS: InsightArticle[] = [
       en: 'Core engineering principles for tenant isolation, data privacy, and sub-second performance when serving thousands of B2B accounts on a single cloud core.'
     },
     author: {
-      name: 'فريق المعمارية السحابية',
-      role: { ar: 'هندسة البرمجيات السحابية', en: 'Cloud Architecture Team' }
+      name: { ar: 'فريق المعمارية السحابية', en: 'Cloud Architecture Team' },
+      role: { ar: 'هندسة البرمجيات السحابية', en: 'Cloud Software Engineering' }
     },
     content: {
       ar: [
@@ -648,7 +648,7 @@ export const INSIGHTS: InsightArticle[] = [
   },
   {
     id: 'practical-ai',
-    slug: 'practical-ai-for-enterprises',
+    slug: 'practical-ai',
     title: {
       ar: 'الذكاء الاصطناعي في الشركات: أين توجد القيمة الحقيقية بعيدًا عن البهرجة الإعلامية؟',
       en: 'Applied AI for Enterprise: Where is the real business ROI beyond the hype?'
@@ -661,8 +661,8 @@ export const INSIGHTS: InsightArticle[] = [
       en: 'How businesses harness Retrieval-Augmented Generation (RAG) and document extraction to automate manual workflows and save hundreds of operational hours.'
     },
     author: {
-      name: 'مختبر نوڤيكسا للذكاء الاصطناعي',
-      role: { ar: 'الذكاء الاصطناعي التطبقي', en: 'Applied AI Lab' }
+      name: { ar: 'مختبر نوڤيكسا للذكاء الاصطناعي', en: 'Novixa AI Lab' },
+      role: { ar: 'الذكاء الاصطناعي التطبيقي', en: 'Applied AI Practice' }
     },
     content: {
       ar: [

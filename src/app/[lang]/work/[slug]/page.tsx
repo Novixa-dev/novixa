@@ -97,17 +97,17 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ lan
           {/* Body Sections */}
           <div className="space-y-6 text-sm text-slate-200 font-arabic leading-relaxed">
             <div>
-              <h3 className="text-base font-bold text-white font-display mb-2">{isAr ? 'التحدي التشغيلي والمعماري:' : 'Operational & Architecture Challenge:'}</h3>
+              <h2 className="text-base font-bold text-white font-display mb-2">{isAr ? 'التحدي التشغيلي والمعماري:' : 'Operational & Architecture Challenge:'}</h2>
               <p>{workItem.challenge[isAr ? 'ar' : 'en']}</p>
             </div>
 
             <div>
-              <h3 className="text-base font-bold text-white font-display mb-2">{isAr ? 'الاستراتيجية البرمجية:' : 'Engineering Strategy:'}</h3>
+              <h2 className="text-base font-bold text-white font-display mb-2">{isAr ? 'الاستراتيجية البرمجية:' : 'Engineering Strategy:'}</h2>
               <p>{workItem.strategy[isAr ? 'ar' : 'en']}</p>
             </div>
 
             <div>
-              <h3 className="text-base font-bold text-white font-display mb-2">{isAr ? 'الميزات والحلول المنفذة:' : 'Delivered Architectural Features:'}</h3>
+              <h2 className="text-base font-bold text-white font-display mb-2">{isAr ? 'الميزات والحلول المنفذة:' : 'Delivered Architectural Features:'}</h2>
               <ul className="space-y-2 text-xs sm:text-sm text-slate-300 font-arabic">
                 {workItem.features[isAr ? 'ar' : 'en'].map((f, i) => (
                   <li key={i} className="flex items-start gap-2">

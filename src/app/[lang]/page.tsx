@@ -1,5 +1,5 @@
 import React from 'react';
-import { constructMetadata, generateOrganizationJsonLd } from '@/lib/metadata';
+import { constructMetadata, generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/lib/metadata';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { ProblemTransformation } from '@/components/sections/ProblemTransformation';
 import { WhatWeBuild } from '@/components/sections/WhatWeBuild';
@@ -30,13 +30,18 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 }
 
 export default async function HomePage() {
-  const jsonLd = generateOrganizationJsonLd();
+  const organizationJsonLd = generateOrganizationJsonLd();
+  const websiteJsonLd = generateWebSiteJsonLd();
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
       <HeroSection />
       <ProblemTransformation />

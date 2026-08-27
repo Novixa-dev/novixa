@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getArticleBySlug, insightsArticles } from '@/lib/content';
-import { constructMetadata } from '@/lib/metadata';
+import { constructMetadata, generateArticleJsonLd } from '@/lib/metadata';
 import { BookOpen, ArrowLeft, ArrowRight, Clock, User } from 'lucide-react';
 import { Language } from '@/types';
 
@@ -51,25 +51,13 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
     notFound();
   }
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: article.title[isAr ? 'ar' : 'en'],
+  const jsonLd = generateArticleJsonLd({
+    title: article.title[isAr ? 'ar' : 'en'],
     description: article.excerpt[isAr ? 'ar' : 'en'],
-    author: {
-      '@type': 'Person',
-      name: article.author.name,
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Novixa',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://novixa.dev/icon.svg',
-      },
-    },
+    author: article.author.name[isAr ? 'ar' : 'en'],
     datePublished: article.date,
-  };
+    url: `/${lang}/insights/${article.id}`,
+  });
 
   return (
     <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
@@ -119,7 +107,7 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
           </div>
 
           <div className="pt-6 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
-            <span>By {article.author.name} • {article.author.role[isAr ? 'ar' : 'en']}</span>
+            <span>{article.author.name[isAr ? 'ar' : 'en']} • {article.author.role[isAr ? 'ar' : 'en']}</span>
             <Link
               href={`/${lang}/start-project`}
               className="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold transition-all flex items-center gap-2"

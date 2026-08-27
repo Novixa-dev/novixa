@@ -160,6 +160,8 @@ export function generateArticleJsonLd({
 }: {
   title: string;
   description: string;
+  /** Novixa insights are written by internal practice teams, not named
+   * individuals — model the author as an Organization to stay accurate. */
   author: string;
   datePublished: string;
   url: string;
@@ -171,7 +173,7 @@ export function generateArticleJsonLd({
     headline: title,
     description,
     author: {
-      '@type': 'Person',
+      '@type': 'Organization',
       name: author,
     },
     publisher: {
