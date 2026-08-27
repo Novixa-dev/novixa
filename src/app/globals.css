@@ -27,6 +27,12 @@
     outline: 2px solid #3b82f6;
     outline-offset: 2px;
   }
+
+  /* Tailwind's preflight resets <button> to cursor: default; restore the
+     pointer affordance every interactive button should have. */
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 .font-arabic {

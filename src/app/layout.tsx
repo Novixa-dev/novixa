@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { MotionConfig } from 'motion/react';
 import { inter, ibmPlexSansArabic, alexandria } from './fonts';
 import { getSiteUrl } from '@/lib/env';
 import './globals.css';
@@ -36,7 +37,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: SET_LANG_DIR_SCRIPT }} />
       </head>
       <body className="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
-        {children}
+        {/* Respects the OS-level "reduce motion" preference for every
+            motion.* animation site-wide, instead of playing full motion
+            unconditionally regardless of user preference. */}
+        <MotionConfig reducedMotion="user">{children}</MotionConfig>
       </body>
     </html>
   );
