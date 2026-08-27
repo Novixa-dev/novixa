@@ -50,7 +50,7 @@ export const AboutView: React.FC = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-950 border border-blue-800 text-blue-300 text-xs font-semibold">
             <span>{t('عن نوڤيكسا والقيم', 'About Novixa & Core Values')}</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight leading-snug">
             {t('شركة هندسة برمجيات تضع نتائج أعمالك أولاً.', 'A software engineering company focused on real business outcomes.')}
           </h1>
           <p className="text-slate-300 text-base sm:text-lg font-arabic leading-relaxed">

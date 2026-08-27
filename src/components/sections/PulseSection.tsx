@@ -53,7 +53,7 @@ export const PulseSection: React.FC = () => {
             <span>{t('تسليط الضوء على المنتج: Novixa Pulse', 'Product Spotlight: Novixa Pulse')}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white tracking-tight leading-snug">
             {t('نبض — صوت الموظفين،', 'Pulse — Employee Voice,')} <br />
             <span className="text-teal-400">{t('يصل إلى صناع القرار.', 'Reaching Decision-Makers.')}</span>
           </h2>

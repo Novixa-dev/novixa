@@ -25,7 +25,7 @@ export const ProblemTransformation: React.FC = () => {
             <span>{t('تحول نموذج العمل', 'Workflow Transformation')}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
             {t('الأعمال لا تحتاج مزيدًا من الأدوات.', 'Businesses don\'t need more tools.')} <br />
             <span className="text-blue-400">{t('تحتاج نظامًا يعمل معًا.', 'They need a system that works together.')}</span>
           </h2>

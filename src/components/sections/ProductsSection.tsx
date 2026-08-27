@@ -34,7 +34,7 @@ export const ProductsSection: React.FC = () => {
               <Sparkles className="w-3.5 h-3.5" />
               <span>{t('منتجات نوڤيكسا الرقمية (SaaS)', 'Novixa Digital Products')}</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
               {t('منتجات نبنيها لتصبح أنظمة تشغيل حقيقية.', 'Products engineered as scalable operating systems.')}
             </h2>
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed">

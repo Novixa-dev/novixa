@@ -37,7 +37,7 @@ export const ProductsView: React.FC<ProductsViewProps> = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-950 border border-teal-800 text-teal-300 text-xs font-semibold">
             <span>{t('كتالوج المنتجات الرقمية (SaaS)', 'Digital Products Directory')}</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight leading-snug">
             {t('منصات برمجية جاهزة للخدمة والتوسع.', 'Multi-tenant Products Ready for Scale.')}
           </h1>
           <p className="text-slate-300 text-base sm:text-lg font-arabic leading-relaxed">

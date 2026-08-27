@@ -41,7 +41,7 @@ export const WhatWeBuild: React.FC = () => {
               <Layers className="w-3.5 h-3.5" />
               <span>{t('حلول الهندسة البرمجية', 'Core Engineering Solutions')}</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
               {t('نبني أكثر من مجرد مواقع وتطبيقات.', 'We build far more than simple apps.')} <br />
               <span className="text-blue-400">{t('نبني أنظمة تشغيل رقمية حقيقية.', 'We engineer complete digital operating systems.')}</span>
             </h2>

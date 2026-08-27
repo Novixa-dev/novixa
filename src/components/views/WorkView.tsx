@@ -14,7 +14,7 @@ export const WorkView: React.FC = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-950 border border-blue-800 text-blue-300 text-xs font-semibold">
             <span>{t('سيناريوهات معمارية توضيحية', 'Illustrative Architecture Scenarios')}</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight leading-snug">
             {t('كيف نحول مشكلة تشغيلية إلى نظام.', 'How an operational problem becomes a system.')}
           </h1>
           <p className="text-slate-300 text-base sm:text-lg font-arabic leading-relaxed">

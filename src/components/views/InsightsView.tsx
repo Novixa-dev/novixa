@@ -14,7 +14,7 @@ export const InsightsView: React.FC = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-teal-300 text-xs font-semibold">
             <span>{t('مختبر المعرفة الهندسية', 'Engineering Knowledge Lab')}</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight leading-snug">
             {t('رؤى وأبعاد هندسية في بناء النظم الرقمية.', 'Insights & Essays on Digital System Engineering.')}
           </h1>
           <p className="text-slate-300 text-base sm:text-lg font-arabic leading-relaxed">

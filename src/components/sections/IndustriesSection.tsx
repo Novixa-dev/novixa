@@ -41,7 +41,7 @@ export const IndustriesSection: React.FC = () => {
             <span>{t('تخصصات القطاعات', 'Industry Vertical Expertise')}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
             {t('نبني حلولًا تفهم طبيعة عملك.', 'We engineer solutions that understand your domain.')}
           </h2>
 

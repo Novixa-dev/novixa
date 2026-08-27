@@ -25,7 +25,7 @@ export const EngineeringSection: React.FC = () => {
             <span>{t('الفلسفة الهندسية', 'Engineering Philosophy')}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white tracking-tight leading-snug">
             {t('وراء كل تجربة بسيطة،', 'Behind every simple experience,')} <br />
             <span className="text-blue-400">{t('هندسة برمجية قوية ومحكمة.', 'lies a robust engineering core.')}</span>
           </h2>
