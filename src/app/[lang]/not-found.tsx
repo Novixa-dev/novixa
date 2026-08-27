@@ -6,10 +6,6 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-export default function RootNotFound() {
-  return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center font-arabic" dir="rtl">
-      <NotFoundContent />
-    </div>
-  );
+export default function LocaleNotFound() {
+  return <NotFoundContent />;
 }

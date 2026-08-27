@@ -9,6 +9,12 @@ export function generateStaticParams() {
   return [{ lang: 'ar' }, { lang: 'en' }];
 }
 
+// 'ar' and 'en' are the only valid locales. Without this, Next.js falls back
+// to rendering the 'ar' homepage for any garbage single-segment path (e.g.
+// /xyz) since [lang] matches any value — a silent soft-404 that would let
+// search engines index unlimited duplicate-content URLs.
+export const dynamicParams = false;
+
 export default async function LocalizedLayout({
   children,
   params,
