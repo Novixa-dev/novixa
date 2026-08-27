@@ -33,6 +33,30 @@ Its generic "B2B software company" design-system recommendation (light-mode navy
 
 Both fixes were verified with a fresh `tsc --noEmit`, `next build`, and full Playwright regression afterward — all still clean, zero console errors.
 
+## Addendum 2: Dedicated AR/EN Parity and Visual Design Pass
+
+A third pass, done specifically as a designer reviewing the live site in Arabic (not just reading source), found and fixed four more real bilingual/visual defects, plus merged the branch to `main` and pushed to GitHub.
+
+**Bilingual completeness fixes:**
+
+1. **Breadcrumb trail hardcoded in English on every detail page.** The four detail-page templates (`products/[slug]`, `industries/[slug]`, `work/[slug]`, `insights/[slug]`) hardcoded "Home", "Products", "Industries", "Work", "Insights" in English regardless of locale — so all 22 Arabic product/industry/case-study/article pages showed an English breadcrumb above fully Arabic content. Translated per-locale.
+2. **Two content labels in the homepage hero stayed English in Arabic mode** ("WhatsApp & Chats", "Excel Files") while their own sibling description text was correctly bilingual. Translated both — distinguished from the deliberate English terminal/status-readout text used elsewhere in the same panel ("LIVE HIGH SPEED", "Response: 14ms"), which is an intentional "live system" design device and was left as-is.
+3. **The hero's four interactive stat lines were Arabic-only strings shown on both locales** — the *English* homepage was showing Arabic numerals-and-text ("١,٤٢٠ / اليوم", "٨ فروع موحدة") in its own flagship hero section. Split into proper `{ar, en}` pairs.
+
+**Visual/design fix:**
+
+4. **Arabic display headings collided with their own line breaks.** Reviewing the Solutions page in Arabic showed a diacritic mark from a wrapped heading visually overlapping the line below it. Root cause: 13 headings (6 page-hero H1s, 7 section H2s) had no explicit line-height, falling back to Tailwind's tight default. Fixed by adding `leading-snug`, matching the ~7 other headings in the codebase that already had this right. Verified across desktop, tablet, and mobile in both languages — no regressions in the English layout.
+
+**Icon decision:** the user specifically asked to consider Font Awesome icons "when needed." One legitimate, honest use was found — the Hero's "WhatsApp & Chats" card names a real, universally recognized product — and got a proper WhatsApp glyph (`src/components/ui/WhatsAppIcon.tsx`, inlined SVG). Font Awesome as a library was deliberately **not** adopted: most of Novixa's actual tech stack (Next.js, Tailwind, NestJS, ASP.NET) has no official Font Awesome brand icon, so it would only apply to a handful of items and mix icon families with lucide-react (used for every other icon in the UI) — the opposite of the polish being asked for. No social-media or contact icons were added since Novixa has no real social accounts or public phone number on file to link them to; inventing one would be fabrication.
+
+All fixes verified with a fresh `tsc --noEmit`, `next build`, and full Playwright regression (zero console errors, all redirect/404 statuses correct) before merging.
+
+### Branch History Note: Fabricated Testimonials Found on `main`, Not Carried Forward
+
+While preparing to merge, `main` was found to have diverged from this work with one independent commit (`eb7e278`, predating the Next.js migration) that added a `TestimonialsSection` component with **entirely fabricated client testimonials** — invented named individuals, invented companies, invented quotes, invented metrics, and a `verifiedProject: true` flag on data that was never real. This was never part of the Next.js rewrite this report covers, and it directly contradicts the explicit "never fabricate testimonials/clients" instruction this project has been built under throughout (see the Work page's own on-page disclosure: *"these are illustrative scenarios... not verified client testimonials"*).
+
+This content was **not merged forward**. The merge to `main` resolved every conflicting file in favor of this branch's verified, honest Next.js codebase, and the fabricated testimonials component/data was dropped entirely rather than reconciled. Flagging this explicitly rather than silently dropping it, since it means `main` briefly contained fabricated trust-signal content before this merge — worth knowing if anything was ever deployed directly from `main`.
+
 The codebase itself has no known blocking defects: it type-checks cleanly, builds cleanly (58/58 static pages), and every route was verified error-free in a real browser against the production build. The remaining items are business decisions and infrastructure configuration, not code.
 
 ---
