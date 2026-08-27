@@ -30,15 +30,15 @@
 }
 
 .font-arabic {
-  font-family: 'IBM Plex Sans Arabic', 'Alexandria', system-ui, sans-serif;
+  font-family: var(--font-arabic), system-ui, sans-serif;
 }
 
 .font-display {
-  font-family: 'Alexandria', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  font-family: var(--font-display), system-ui, sans-serif;
 }
 
 .font-latin {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-english), system-ui, sans-serif;
 }
 
 /* Crisp technical background patterns */

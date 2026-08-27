@@ -57,7 +57,7 @@ export const Navbar: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-full px-3 py-1 shadow-sm">
+          <nav className="hidden lg:flex items-center gap-1 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-full px-3 py-1 shadow-sm">
             {navItems.map((item) => {
               const isActive = pathname === item.path || (item.path === `/${language}` && (pathname === `/${language}` || pathname === `/${language}/`));
               return (
@@ -77,14 +77,15 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Right Actions */}
-          <div className="hidden md:flex items-center gap-2.5">
+          <div className="hidden lg:flex items-center gap-2.5">
             {/* Search / Command Menu Trigger */}
             <button
               onClick={triggerCommandMenu}
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-white hover:border-slate-700 transition-colors"
               title="Search (Cmd+K)"
+              aria-label={t('البحث في الموقع', 'Search the site')}
             >
-              <Search className="w-3.5 h-3.5" />
+              <Search className="w-3.5 h-3.5" aria-hidden="true" />
               <span className="hidden lg:inline text-[11px] font-mono">⌘K</span>
             </button>
 
@@ -93,6 +94,7 @@ export const Navbar: React.FC = () => {
               onClick={toggleLanguage}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white hover:border-slate-700 transition-all duration-200 font-medium cursor-pointer"
               title={isRtl ? 'Switch to English' : 'التحويل للعربية'}
+              aria-label={isRtl ? 'Switch to English' : 'التحويل للعربية'}
             >
               <Globe className="w-3.5 h-3.5 text-blue-400" />
               <span>{language === 'ar' ? 'English' : 'العربية'}</span>
@@ -109,24 +111,29 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-2">
             <button
               onClick={triggerCommandMenu}
               className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+              aria-label={t('البحث في الموقع', 'Search the site')}
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-4 h-4" aria-hidden="true" />
             </button>
             <button
               onClick={toggleLanguage}
               className="px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold"
+              aria-label={isRtl ? 'Switch to English' : 'التحويل للعربية'}
             >
               {language === 'ar' ? 'EN' : 'ع'}
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white focus:outline-none"
+              aria-label={mobileMenuOpen ? t('إغلاق القائمة', 'Close menu') : t('فتح القائمة', 'Open menu')}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-nav-drawer"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -134,7 +141,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-[65px] bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 p-4 shadow-2xl transition-all duration-300">
+        <div id="mobile-nav-drawer" className="lg:hidden fixed inset-x-0 top-[65px] bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 p-4 shadow-2xl transition-all duration-300">
           <div className="flex flex-col gap-1.5">
             {navItems.map((item) => {
               const isActive = pathname === item.path;

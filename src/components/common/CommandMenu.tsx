@@ -97,22 +97,27 @@ export const CommandMenu: React.FC = () => {
     insightsMatches.length > 0;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn"
       onClick={() => setOpen(false)}
+      role="presentation"
     >
-      <div 
+      <div
         className="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden text-right rtl:text-right ltr:text-left flex flex-col max-h-[80vh]"
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label={t('البحث في الموقع', 'Site search')}
       >
         {/* Search Header */}
         <div className="p-4 border-b border-slate-800 flex items-center gap-3">
-          <Search className="w-5 h-5 text-slate-400 shrink-0" />
+          <Search className="w-5 h-5 text-slate-400 shrink-0" aria-hidden="true" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t('ابحث في الأنظمة والحلول والمنتجات والمقالات...', 'Search solutions, products, industries, essays...')}
+            aria-label={t('ابحث في الأنظمة والحلول والمنتجات والمقالات', 'Search solutions, products, industries, essays')}
             className="w-full bg-transparent border-none text-sm text-white placeholder-slate-500 focus:outline-none font-arabic"
             autoFocus
           />
