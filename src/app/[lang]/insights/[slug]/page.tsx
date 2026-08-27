@@ -68,9 +68,9 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-          <Link href={`/${lang}`} className="hover:text-white">Home</Link>
+          <Link href={`/${lang}`} className="hover:text-white">{isAr ? 'الرئيسية' : 'Home'}</Link>
           <span>/</span>
-          <Link href={`/${lang}/insights`} className="hover:text-white">Insights</Link>
+          <Link href={`/${lang}/insights`} className="hover:text-white">{isAr ? 'المعرفة' : 'Insights'}</Link>
           <span>/</span>
           <span className="text-teal-400">{article.title[isAr ? 'ar' : 'en']}</span>
         </div>

@@ -3,12 +3,13 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
-import { 
-  Sparkles, ArrowLeft, ArrowRight, Shield, Zap, Layers, Cpu, 
-  CheckCircle2, RefreshCw, BarChart3, Database, MessageSquare, 
+import {
+  Sparkles, ArrowLeft, ArrowRight, Shield, Zap, Layers, Cpu,
+  CheckCircle2, RefreshCw, BarChart3, Database,
   Building2, Users, ShoppingCart, Lock
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { WhatsAppIcon } from '../ui/WhatsAppIcon';
 
 export const HeroSection: React.FC = () => {
   const { language, isRtl, t } = useLanguage();
@@ -19,10 +20,10 @@ export const HeroSection: React.FC = () => {
   const [selectedNode, setSelectedNode] = useState<string>('orders');
 
   const nodes = [
-    { id: 'orders', nameAr: 'المبيعات والطلبات', nameEn: 'Orders & Sales', icon: ShoppingCart, count: '1,420 / اليوم' },
-    { id: 'inventory', nameAr: 'المخزون والفروع', nameEn: 'Inventory & Branches', icon: Database, count: '8 فروع موحدة' },
-    { id: 'customers', nameAr: 'العملاء والولاء', nameEn: 'Customers & Loyalty', icon: Users, count: '99.4% رضى' },
-    { id: 'pulse', nameAr: 'نبض التشغيل (AI)', nameEn: 'Pulse Analytics', icon: BarChart3, count: 'تنبؤ لحظي' },
+    { id: 'orders', nameAr: 'المبيعات والطلبات', nameEn: 'Orders & Sales', icon: ShoppingCart, countAr: '1,420 / اليوم', countEn: '1,420 / Today' },
+    { id: 'inventory', nameAr: 'المخزون والفروع', nameEn: 'Inventory & Branches', icon: Database, countAr: '8 فروع موحدة', countEn: '8 Unified Branches' },
+    { id: 'customers', nameAr: 'العملاء والولاء', nameEn: 'Customers & Loyalty', icon: Users, countAr: '99.4% رضى', countEn: '99.4% Satisfaction' },
+    { id: 'pulse', nameAr: 'نبض التشغيل (AI)', nameEn: 'Pulse Analytics', icon: BarChart3, countAr: 'تنبؤ لحظي', countEn: 'Real-time Prediction' },
   ];
 
   return (
@@ -156,8 +157,8 @@ export const HeroSection: React.FC = () => {
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 text-slate-400">
                         <div className="text-slate-200 font-semibold flex items-center gap-1.5 mb-1">
-                          <MessageSquare className="w-3.5 h-3.5 text-rose-400" />
-                          <span>WhatsApp & Chats</span>
+                          <WhatsAppIcon className="w-3.5 h-3.5 text-rose-400" />
+                          <span>{t('واتساب ومحادثات متفرقة', 'WhatsApp & Chats')}</span>
                         </div>
                         <p className="text-[11px] text-slate-400">{t('طلبات ضائعة وبدون أتمتة', 'Lost orders & zero automation')}</p>
                       </div>
@@ -165,7 +166,7 @@ export const HeroSection: React.FC = () => {
                       <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 text-slate-400">
                         <div className="text-slate-200 font-semibold flex items-center gap-1.5 mb-1">
                           <Database className="w-3.5 h-3.5 text-amber-400" />
-                          <span>Excel Files</span>
+                          <span>{t('ملفات إكسل', 'Excel Files')}</span>
                         </div>
                         <p className="text-[11px] text-slate-400">{t('تكرار يدوّي وتعارض مخزون', 'Manual entry & stock conflict')}</p>
                       </div>
@@ -216,7 +217,7 @@ export const HeroSection: React.FC = () => {
                                 <IconComp className="w-3.5 h-3.5 text-blue-400" />
                                 <span>{t(node.nameAr, node.nameEn)}</span>
                               </div>
-                              <div className="text-[10px] text-slate-400 font-mono">{node.count}</div>
+                              <div className="text-[10px] text-slate-400 font-mono">{t(node.countAr, node.countEn)}</div>
                             </button>
                           );
                         })}
