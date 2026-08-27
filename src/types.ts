@@ -66,22 +66,6 @@ export interface CaseStudy {
   };
 }
 
-export interface Testimonial {
-  id: string;
-  clientName: { ar: string; en: string };
-  clientRole: { ar: string; en: string };
-  company: { ar: string; en: string };
-  industry: { ar: string; en: string };
-  projectType: { ar: string; en: string };
-  quote: { ar: string; en: string };
-  outcome: { ar: string; en: string };
-  metrics: { label: { ar: string; en: string }; value: string }[];
-  rating: number;
-  avatarInitials: string;
-  verifiedProject: boolean;
-  relatedCaseStudySlug?: string;
-}
-
 export interface ProcessStep {
   number: string;
   title: { ar: string; en: string };
@@ -101,7 +85,7 @@ export interface InsightArticle {
   excerpt: { ar: string; en: string };
   content: { ar: string[]; en: string[] };
   author: {
-    name: string;
+    name: { ar: string; en: string };
     role: { ar: string; en: string };
   };
 }
@@ -122,7 +106,6 @@ export interface ProjectDiscoveryData {
 
 export type ViewType = 
   | 'home'
-  | 'services'
   | 'solutions'
   | 'industries'
   | 'products'

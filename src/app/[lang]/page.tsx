@@ -1,19 +1,17 @@
 import React from 'react';
-import { constructMetadata, generateOrganizationJsonLd } from '@/lib/metadata';
+import { constructMetadata, generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/lib/metadata';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { ProblemTransformation } from '@/components/sections/ProblemTransformation';
 import { WhatWeBuild } from '@/components/sections/WhatWeBuild';
+import { CompanyGrowthStory } from '@/components/sections/CompanyGrowthStory';
 import { IndustriesSection } from '@/components/sections/IndustriesSection';
 import { ProductsSection } from '@/components/sections/ProductsSection';
 import { PulseSection } from '@/components/sections/PulseSection';
 import { CaseStudiesSection } from '@/components/sections/CaseStudiesSection';
-import { ProcessSection } from '@/components/sections/ProcessSection';
 import { EngineeringSection } from '@/components/sections/EngineeringSection';
 import { WhyNovixaSection } from '@/components/sections/WhyNovixaSection';
-import { FounderSection } from '@/components/sections/FounderSection';
-import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
 import { InsightsSection } from '@/components/sections/InsightsSection';
-import { ProjectDiscoveryWizard } from '@/components/sections/ProjectDiscoveryWizard';
+import { StartProjectCTA } from '@/components/sections/StartProjectCTA';
 import { Language } from '@/types';
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -22,38 +20,41 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const isAr = lang === 'ar';
 
   return constructMetadata({
-    title: isAr ? 'هندسة البرمجيات والأنظمة الرقمية' : 'Enterprise Software Architecture',
+    title: isAr ? 'هندسة البرمجيات والأنظمة الرقمية المتقدمة' : 'Enterprise Software Engineering & Digital Products',
     description: isAr
-      ? 'نوڤيكسا متخصصة في هندسة المنصات البرمجية، أنظمة نقاط البيع والمطاعم، المحركات الذكية، وغرف التحكم التشغيلية في الخليج والشرق الأوسط.'
-      : 'Novixa builds enterprise software systems, POS/KDS hospitality tech, booking engines, and real-time logistics control rooms in the Middle East and GCC.',
+      ? 'نوڤيكسا متخصصة في هندسة المنصات البرمجية، أنظمة نقاط البيع وإدارة المطاعم، المحركات الذكية، ومنصات SaaS السحابية في الخليج والشرق الأوسط.'
+      : 'Novixa builds enterprise software systems, multi-tenant B2B SaaS platforms, POS/KDS tech, and high-concurrency digital architectures across the Middle East and GCC.',
     lang,
     path: '',
   });
 }
 
 export default async function HomePage() {
-  const jsonLd = generateOrganizationJsonLd();
+  const organizationJsonLd = generateOrganizationJsonLd();
+  const websiteJsonLd = generateWebSiteJsonLd();
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
       <HeroSection />
       <ProblemTransformation />
       <WhatWeBuild />
+      <CompanyGrowthStory />
       <IndustriesSection />
       <ProductsSection />
       <PulseSection />
       <CaseStudiesSection />
-      <ProcessSection />
       <EngineeringSection />
       <WhyNovixaSection />
-      <FounderSection />
-      <TestimonialsSection />
       <InsightsSection />
-      <ProjectDiscoveryWizard />
+      <StartProjectCTA />
     </>
   );
 }

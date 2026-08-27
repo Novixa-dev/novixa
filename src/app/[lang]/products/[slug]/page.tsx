@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getProductBySlug, productsCatalog } from '@/lib/content';
-import { constructMetadata } from '@/lib/metadata';
+import { constructMetadata, generateProductJsonLd } from '@/lib/metadata';
 import { CheckCircle2, ArrowLeft, ArrowRight, Sparkles, Shield, Layers } from 'lucide-react';
 import { Language } from '@/types';
 
@@ -51,16 +51,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     notFound();
   }
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
+  const jsonLd = generateProductJsonLd({
     name: product.name[isAr ? 'ar' : 'en'],
     description: product.description[isAr ? 'ar' : 'en'],
-    brand: {
-      '@type': 'Brand',
-      name: 'Novixa',
-    },
-  };
+    category: product.category.en,
+    url: `/${lang}/products/${product.id}`,
+  });
 
   return (
     <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
@@ -71,9 +67,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-          <Link href={`/${lang}`} className="hover:text-white">Home</Link>
+          <Link href={`/${lang}`} className="hover:text-white">{isAr ? 'الرئيسية' : 'Home'}</Link>
           <span>/</span>
-          <Link href={`/${lang}/products`} className="hover:text-white">Products</Link>
+          <Link href={`/${lang}/products`} className="hover:text-white">{isAr ? 'المنتجات' : 'Products'}</Link>
           <span>/</span>
           <span className="text-teal-400">{product.name[isAr ? 'ar' : 'en']}</span>
         </div>
@@ -82,8 +78,22 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-800 bg-slate-900/90 shadow-2xl space-y-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-b border-slate-800 pb-6">
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-950 border border-teal-800 text-teal-300 text-xs font-mono">
-                <span>{product.category[isAr ? 'ar' : 'en']}</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-950 border border-teal-800 text-teal-300 text-xs font-mono">
+                  <span>{product.category[isAr ? 'ar' : 'en']}</span>
+                </div>
+                <div
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono border ${
+                    product.status === 'Available'
+                      ? 'bg-emerald-950 border-emerald-800 text-emerald-300'
+                      : product.status === 'Early Access'
+                        ? 'bg-amber-950 border-amber-800 text-amber-300'
+                        : 'bg-slate-800 border-slate-700 text-slate-300'
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${product.status === 'Available' ? 'bg-emerald-400' : product.status === 'Early Access' ? 'bg-amber-400' : 'bg-slate-400'}`} />
+                  <span>{product.statusLabel[isAr ? 'ar' : 'en']}</span>
+                </div>
               </div>
               <h1 className="text-3xl sm:text-4xl font-extrabold font-display text-white">
                 {product.name[isAr ? 'ar' : 'en']}
@@ -105,9 +115,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
             <div className="space-y-3">
-              <h3 className="text-sm font-bold text-white font-display uppercase tracking-wider">
+              <h2 className="text-sm font-bold text-white font-display uppercase tracking-wider">
                 {isAr ? 'الميزات التشغيلية والتقنية:' : 'Key Operational Features:'}
-              </h3>
+              </h2>
               <ul className="space-y-2 text-xs sm:text-sm text-slate-300 font-arabic">
                 {product.features[isAr ? 'ar' : 'en'].map((f, i) => (
                   <li key={i} className="flex items-start gap-2">
@@ -119,9 +129,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             </div>
 
             <div className="space-y-3 bg-slate-950 p-6 rounded-2xl border border-slate-800">
-              <h3 className="text-sm font-bold text-white font-display uppercase tracking-wider">
+              <h2 className="text-sm font-bold text-white font-display uppercase tracking-wider">
                 {isAr ? 'القطاعات المستهدفة والأثر:' : 'Target Verticals & Impact:'}
-              </h3>
+              </h2>
               <div className="space-y-3 text-xs text-slate-300">
                 <div className="flex flex-wrap gap-2">
                   {product.targetIndustries[isAr ? 'ar' : 'en'].map((ind, i) => (
@@ -131,9 +141,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                   ))}
                 </div>
                 {product.metrics && product.metrics.length > 0 && (
-                  <div className="pt-3 border-t border-slate-800 space-y-1">
-                    <span className="text-[10px] text-slate-400 font-mono uppercase block">{product.metrics[0].label[isAr ? 'ar' : 'en']}</span>
-                    <span className="text-lg font-bold text-teal-300 font-display">{product.metrics[0].value}</span>
+                  <div className="pt-3 border-t border-slate-800 grid grid-cols-1 gap-3">
+                    {product.metrics.map((metric, i) => (
+                      <div key={i} className="space-y-1">
+                        <span className="text-[10px] text-slate-400 font-mono uppercase block">{metric.label[isAr ? 'ar' : 'en']}</span>
+                        <span className="text-lg font-bold text-teal-300 font-display block">{metric.value}</span>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>

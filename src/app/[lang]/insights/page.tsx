@@ -19,5 +19,5 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 }
 
 export default async function InsightsPage() {
-  return <InsightsView onNavigate={() => {}} />;
+  return <InsightsView />;
 }

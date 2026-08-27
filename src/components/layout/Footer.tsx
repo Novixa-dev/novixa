@@ -4,20 +4,18 @@ import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from '../ui/Logo';
-import { ViewType } from '../../types';
 import { BRAND_INFO } from '../../content/data';
 import { ArrowLeft, ArrowRight, Shield, Terminal, Globe, Heart } from 'lucide-react';
 
-interface FooterProps {
-  onNavigate?: (view: ViewType) => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+export const Footer: React.FC = () => {
   const { language, isRtl, t, toggleLanguage } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   return (
     <footer className="bg-slate-950 border-t border-slate-800/80 pt-16 pb-12 relative overflow-hidden text-slate-400 text-sm">
+      {/* Background Subtle Accent */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-blue-600/5 blur-3xl pointer-events-none"></div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800/60">
           {/* Col 1 & 2: Brand Info */}
@@ -33,14 +31,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <span>{t('متاح لاستقبال مشاريع جديدة', 'Accepting New Projects')}</span>
               </div>
               <span className="text-slate-600">|</span>
-              <span className="text-xs text-slate-400 font-mono">GCC & ME</span>
+              <span className="text-xs text-slate-400 font-mono">GCC & Global</span>
             </div>
           </div>
 
           {/* Col 3: Navigation */}
           <div className="space-y-3">
             <h4 className="text-white font-semibold text-sm font-display tracking-wide uppercase">
-              {t('التنقل الرئيسية', 'Navigation')}
+              {t('التنقل الرئيسي', 'Navigation')}
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
@@ -49,8 +47,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </Link>
               </li>
               <li>
-                <Link href={`/${language}/services`} className="hover:text-blue-400 transition-colors">
-                  {t('الخدمات الهندسية', 'Engineering Services')}
+                <Link href={`/${language}/solutions`} className="hover:text-blue-400 transition-colors">
+                  {t('الحلول البرمجية', 'Solutions')}
                 </Link>
               </li>
               <li>
@@ -78,7 +76,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h4>
             <ul className="space-y-2 text-xs">
               <li className="flex items-center gap-2">
-                <Link href={`/${language}/products/pulse-ai`} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/products/pulse`} className="hover:text-blue-400 transition-colors">
                   Novixa Pulse (نبض)
                 </Link>
                 <span className="text-[10px] bg-teal-950 text-teal-400 px-1.5 py-0.5 rounded border border-teal-800/50">
@@ -86,18 +84,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </span>
               </li>
               <li>
-                <Link href={`/${language}/products/restaurant-pos`} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/products/restaurant`} className="hover:text-blue-400 transition-colors">
                   Novixa Restaurant
                 </Link>
               </li>
               <li>
-                <Link href={`/${language}/products/booking-engine`} className="hover:text-blue-400 transition-colors">
+                <Link href={`/${language}/products/booking`} className="hover:text-blue-400 transition-colors">
                   Novixa Booking
                 </Link>
               </li>
               <li>
-                <Link href={`/${language}/products/aqar`} className="hover:text-blue-400 transition-colors">
-                  Novixa Aqar
+                <Link href={`/${language}/products/gaming`} className="hover:text-blue-400 transition-colors">
+                  Novixa Gaming
                 </Link>
               </li>
             </ul>
@@ -147,7 +145,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="flex items-center gap-4 text-slate-400">
             <span className="inline-flex items-center gap-1">
               <Terminal className="w-3.5 h-3.5 text-blue-500" />
-              <span>{t('صُنعت معايير الهندسة العالية', 'Engineered for Growth')}</span>
+              <span>{t('صُنعت بأعلى معايير هندسة البرمجيات', 'Engineered for Growth · novixa.dev')}</span>
             </span>
           </div>
         </div>

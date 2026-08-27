@@ -55,24 +55,29 @@ export const ProjectDiscoveryWizard: React.FC = () => {
     setErrorMessage('');
 
     try {
-      const response = await fetch('/api/leads', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
       if (response.ok && data.success) {
-        setLeadReceiptId(data.leadId || `LEAD-${Date.now()}`);
+        setLeadReceiptId(data.receiptId || `NVX-${Date.now()}`);
         setSubmitted(true);
       } else {
-        setErrorMessage(data.error || t('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.', 'Submission error. Please try again.'));
+        setErrorMessage(
+          data.error || t('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.', 'Submission error. Please try again.')
+        );
       }
     } catch {
-      // Graceful fallback receipt if server network is unreachable
-      setLeadReceiptId(`LEAD-LOC-${Date.now()}`);
-      setSubmitted(true);
+      setErrorMessage(
+        t(
+          'تعذر الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.',
+          'Could not reach the server. Please check your connection and try again.'
+        )
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -80,6 +85,9 @@ export const ProjectDiscoveryWizard: React.FC = () => {
 
   return (
     <section className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden" id="start-project">
+      {/* Background Accent glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[500px] bg-blue-600/10 blur-3xl pointer-events-none"></div>
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
@@ -247,6 +255,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                       value={formData.problem}
                       onChange={(e) => setFormData({ ...formData, problem: e.target.value })}
                       placeholder={t('صف المشكلة باختصار (مثلاً: زحام الطلبات في نهاية الأسبوع، تضارب بيانات المستودع، أخطاء الفوترة اليدوية...)', 'Describe your operational bottleneck briefly...')}
+                      aria-label={t('وصف المشكلة التشغيلية', 'Operational problem description')}
                       rows={4}
                       className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
                     ></textarea>
@@ -320,6 +329,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                       type="text"
                       required
                       placeholder={t('الاسم الكريم', 'Your Name')}
+                      aria-label={t('الاسم الكريم', 'Your Name')}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
@@ -327,6 +337,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                     <input
                       type="text"
                       placeholder={t('اسم الشركة أو المنشأة', 'Company Name')}
+                      aria-label={t('اسم الشركة أو المنشأة', 'Company Name')}
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                       className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
@@ -335,6 +346,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                       type="email"
                       required
                       placeholder={t('البريد الإلكتروني', 'Corporate Email')}
+                      aria-label={t('البريد الإلكتروني', 'Corporate Email')}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
@@ -342,6 +354,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                     <input
                       type="tel"
                       placeholder={t('رقم الجوال / الواتساب', 'Phone / WhatsApp')}
+                      aria-label={t('رقم الجوال / الواتساب', 'Phone / WhatsApp')}
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"

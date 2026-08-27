@@ -19,10 +19,10 @@ export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', showTex
   return (
     <div className={`inline-flex items-center gap-3 select-none ${className}`}>
       {/* Novixa N Geometry Icon */}
-      <div className={`relative flex items-center justify-center rounded-xl bg-slate-900 border border-slate-700 shadow-md group transition-all duration-300 hover:border-blue-500 ${currentSize.icon}`}>
+      <div className={`relative flex items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-slate-900 p-0.5 shadow-lg shadow-blue-900/30 group transition-all duration-300 hover:shadow-blue-600/40 ${currentSize.icon}`}>
         <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center relative overflow-hidden">
           {/* Subtle Grid Accent inside N symbol */}
-          <div className="absolute inset-0 bg-blue-900/10 opacity-60"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent opacity-60"></div>
           
           <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-3/5 h-3/5 text-blue-500 transition-transform duration-300 group-hover:scale-110">
             {/* Geometric N Shape */}
@@ -36,14 +36,9 @@ export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', showTex
 
       {showText && (
         <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <span className={`font-display font-extrabold tracking-tight text-white ${currentSize.text}`}>
-              NOVIXA
-            </span>
-            <span className={`bg-blue-950/80 text-blue-400 border border-blue-800/50 rounded-full font-mono font-medium ${currentSize.badge}`}>
-              io
-            </span>
-          </div>
+          <span className={`font-display font-extrabold tracking-tight text-white ${currentSize.text}`}>
+            NOVIXA
+          </span>
           <span className="text-[10px] font-arabic text-slate-400 tracking-wider font-medium -mt-1 hidden sm:block">
             نوڤيكسا • هندسة البرمجيات
           </span>

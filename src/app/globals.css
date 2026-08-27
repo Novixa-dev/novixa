@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/*
+ * --font-arabic / --font-display / --font-english are supplied at runtime by
+ * next/font (see src/app/fonts.ts + src/app/layout.tsx). They resolve to the
+ * self-hosted, subset font faces — no external Google Fonts request at
+ * runtime, no render-blocking <link> tags, better Core Web Vitals.
+ */
+
+@layer base {
+  body {
+    font-family: var(--font-arabic);
+    background-color: #020617;
+    color: #f8fafc;
+    overflow-x: hidden;
+    line-height: 1.6;
+    letter-spacing: normal;
+  }
+
+  html[lang="en"] body {
+    font-family: var(--font-english);
+    letter-spacing: -0.01em;
+  }
+
+  /* Accessible high-contrast focus rings */
+  *:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+
+  /* Tailwind's preflight resets <button> to cursor: default; restore the
+     pointer affordance every interactive button should have. */
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+.font-arabic {
+  font-family: var(--font-arabic), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+}
+
+.font-latin {
+  font-family: var(--font-english), system-ui, sans-serif;
+}
+
+/* Crisp technical background patterns */
+.bg-grid-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-grid-line-pattern {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.bg-radial-gradient {
+  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.12) 0%, transparent 60%);
+}
+
+/* Precision engineered card style */
+.glass-card {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px -8px rgba(2, 6, 23, 0.8), 0 0 0 1px rgba(59, 130, 246, 0.15);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Skeleton Loading Shimmer Animation */
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(30, 41, 59, 0.65);
+}
+
+.skeleton-shimmer::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.02) 25%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.02) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  content: '';
+  pointer-events: none;
+}
+

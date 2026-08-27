@@ -56,9 +56,9 @@ export default async function IndustryDetailPage({ params }: { params: Promise<{
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-          <Link href={`/${lang}`} className="hover:text-white">Home</Link>
+          <Link href={`/${lang}`} className="hover:text-white">{isAr ? 'الرئيسية' : 'Home'}</Link>
           <span>/</span>
-          <Link href={`/${lang}/industries`} className="hover:text-white">Industries</Link>
+          <Link href={`/${lang}/industries`} className="hover:text-white">{isAr ? 'القطاعات' : 'Industries'}</Link>
           <span>/</span>
           <span className="text-teal-400">{industry.name[isAr ? 'ar' : 'en']}</span>
         </div>

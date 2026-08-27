@@ -2,45 +2,52 @@
 
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { Sparkles, Target, Compass, Layers, ShieldCheck, HeartHandshake, CheckCircle2 } from 'lucide-react';
+import { Target, Compass, Layers, ShieldCheck, HeartHandshake, Code2, CheckCircle2 } from 'lucide-react';
 
 export const WhyNovixaSection: React.FC = () => {
-  const { isRtl, t } = useLanguage();
+  const { t } = useLanguage();
 
   const differentiators = [
     {
       titleAr: 'نفكر كصنّاع منتجات',
       titleEn: 'Product Thinkers',
-      descAr: 'نهتم بالنتيجة النهائية وتجربة العميل الحقيقية، وليس فقط بتنفيذ قائمة مهام مجردة.',
-      descEn: 'We focus on business outcomes and real user adoption, not just checking off a features list.',
+      descAr: 'نهتم بالنتيجة النهائية وتجربة العميل الحقيقية ونمو الإيرادات، وليس فقط بتنفيذ قائمة مهام مجردة.',
+      descEn: 'We focus on business outcomes, user adoption, and revenue growth—not just checking off a task list.',
       icon: Target
     },
     {
       titleAr: 'نبدأ من المشكلة التشغيلية',
       titleEn: 'Problem-First Mindset',
-      descAr: 'نحلل كواليس عمليتك التجارية أولاً لاختيار التقنية الأنسب المجدية اقتصادياً.',
+      descAr: 'نحلل كواليس عمليتك التجارية ونقاط الاحتكاك اليومية أولاً لاختيار المعمارية الأنسب والمجدية اقتصادياً.',
       descEn: 'We dissect your operational friction before choosing technology, ensuring maximum ROI.',
       icon: Compass
     },
     {
-      titleAr: 'نبني للمستقبل والتوسع',
+      titleAr: 'نبني للتوسع والاستدامة',
       titleEn: 'Built for Sustainable Scale',
-      descAr: 'أنظمتنا مصممة لتستوعب زيادة الفروع والزوار بمرونة ودون الحاجة لإعادة البناء.',
-      descEn: 'Architectures engineered to handle multi-branch expansion without costly rewrites.',
+      descAr: 'أنظمتنا مصممة لتستوعب زيادة الفروع والزوار والمستأجرين بمرونة عالية ودون الحاجة لإعادة البناء.',
+      descEn: 'Architectures engineered to handle multi-branch and high-concurrency expansion without costly rewrites.',
       icon: Layers
     },
     {
       titleAr: 'إتقان التفاصيل والجودة',
       titleEn: 'Obsessive Craft & Performance',
-      descAr: 'دقة متناهية في تصميم الواجهات (RTL)، الأمان، وسرعة تحميل بالملي ثانية.',
-      descEn: 'Relentless polish across RTL UX, sub-second load speeds, and SOC2 security standards.',
+      descAr: 'دقة متناهية في تجربة المستخدم العربية (RTL)، معايير الأمان، وسرعة استجابة فائقة بالملي ثانية.',
+      descEn: 'Relentless polish across RTL UX, fast response times, and enterprise-grade security practices.',
       icon: ShieldCheck
     },
     {
-      titleAr: 'شراكة دائمًا بعد الإطلاق',
+      titleAr: 'ملكية تامة للأكواد والمعمارية',
+      titleEn: 'Full Code Ownership & IP',
+      descAr: 'نسلمك مستودعات الكود بالكامل مع توثيق تقني معماري شامل، دون أي قيود أو احتكار للمنصة.',
+      descEn: 'Complete repository access, comprehensive architectural documentation, and zero vendor lock-in.',
+      icon: Code2
+    },
+    {
+      titleAr: 'شراكة والتزام مستمر',
       titleEn: 'Lifetime Tech Partnership',
-      descAr: 'لا نتخلى عنك بعد التسليم؛ نرافق نموك بالتحديثات والصيانة المستمرة.',
-      descEn: 'We don\'t disappear after launch. We back your team with active SLAs and feature upgrades.',
+      descAr: 'لا نتخلى عنك بعد التسليم؛ نرافق نمو أعمالك بالصيانة، اتفاقيات مستوى الخدمة (SLA)، والتحديثات المستمرة.',
+      descEn: 'We don\'t disappear after launch. We back your operations with active SLAs and continuous upgrades.',
       icon: HeartHandshake
     }
   ];
@@ -61,7 +68,7 @@ export const WhyNovixaSection: React.FC = () => {
 
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
             {t(
-              'لسنا مجرد شركة برمجة تبيع ساعات عمل. نحن فريق هندسي متكامل يتبنى أهداف أعمالك ويضمن تحولها إلى أصل تقني متين.',
+              'لسنا مجرد شركة برمجة تبيع ساعات عمل. نحن فريق هندسي متكامل يتبنى أهداف أعمالك ويحولها إلى أصول تقنية مستدامة.',
               'We are not a body-shopping agency. We are product engineers invested in turning your operational vision into a robust technical asset.'
             )}
           </p>

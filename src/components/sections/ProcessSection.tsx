@@ -28,7 +28,7 @@ export const ProcessSection: React.FC = () => {
             <span>{t('منهجية العمل الهندسية', 'Engineering Process')}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
             {t('من الفكرة والمشكلة إلى المنتج الحي.', 'From business problem to live product.')}
           </h2>
 

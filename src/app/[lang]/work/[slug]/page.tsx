@@ -56,9 +56,9 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ lan
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-          <Link href={`/${lang}`} className="hover:text-white">Home</Link>
+          <Link href={`/${lang}`} className="hover:text-white">{isAr ? 'الرئيسية' : 'Home'}</Link>
           <span>/</span>
-          <Link href={`/${lang}/work`} className="hover:text-white">Work</Link>
+          <Link href={`/${lang}/work`} className="hover:text-white">{isAr ? 'أعمالنا' : 'Work'}</Link>
           <span>/</span>
           <span className="text-teal-400">{workItem.title[isAr ? 'ar' : 'en']}</span>
         </div>
@@ -97,17 +97,17 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ lan
           {/* Body Sections */}
           <div className="space-y-6 text-sm text-slate-200 font-arabic leading-relaxed">
             <div>
-              <h3 className="text-base font-bold text-white font-display mb-2">{isAr ? 'التحدي التشغيلي والمعماري:' : 'Operational & Architecture Challenge:'}</h3>
+              <h2 className="text-base font-bold text-white font-display mb-2">{isAr ? 'التحدي التشغيلي والمعماري:' : 'Operational & Architecture Challenge:'}</h2>
               <p>{workItem.challenge[isAr ? 'ar' : 'en']}</p>
             </div>
 
             <div>
-              <h3 className="text-base font-bold text-white font-display mb-2">{isAr ? 'الاستراتيجية البرمجية:' : 'Engineering Strategy:'}</h3>
+              <h2 className="text-base font-bold text-white font-display mb-2">{isAr ? 'الاستراتيجية البرمجية:' : 'Engineering Strategy:'}</h2>
               <p>{workItem.strategy[isAr ? 'ar' : 'en']}</p>
             </div>
 
             <div>
-              <h3 className="text-base font-bold text-white font-display mb-2">{isAr ? 'الميزات والحلول المنفذة:' : 'Delivered Architectural Features:'}</h3>
+              <h2 className="text-base font-bold text-white font-display mb-2">{isAr ? 'الميزات والحلول المنفذة:' : 'Delivered Architectural Features:'}</h2>
               <ul className="space-y-2 text-xs sm:text-sm text-slate-300 font-arabic">
                 {workItem.features[isAr ? 'ar' : 'en'].map((f, i) => (
                   <li key={i} className="flex items-start gap-2">

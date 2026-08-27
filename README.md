@@ -1,64 +1,108 @@
-# Novixa — Full Stack Enterprise AI & Cloud Engineering Platform
+# Novixa — Software Engineering & Digital Products
 
-Novixa is an advanced digital platform and engineering suite providing high-performance software architecture, enterprise cloud solutions, and AI engine integrations.
-
-## Overview
-
-This repository contains the full-stack architecture for **Novixa**, configured for temporary end-to-end development, testing, and deployment validation.
-
-- **Frontend**: React 18, Vite, Tailwind CSS, Lucide Icons, Dual-Language (Arabic/English) with RTL/LTR dynamic layout switching.
-- **Backend / Express Server**: Integrated Node.js + Express API server (`server.ts`) proxying server-side logic and third-party integrations.
-- **Database & Auth**: Client & Server Firebase Auth and Firestore with Firebase Admin SDK (`firebase-admin`).
-- **AI Engine**: Google Gen AI SDK (`@google/genai`) using model `gemini-3.6-flash`.
-- **Email Dispatch**: Resend Email API (`resend`) for server-side transactional emails.
+Novixa (نوڤيكسا) is a modern software engineering and digital products company. This repository contains the official Next.js 15 App Router company website, designed and engineered with high-performance architectures, bilingual Arabic (RTL) / English (LTR) experiences, and full SEO optimization.
 
 ---
 
-## Documentation Index
+## 1. Technology Stack
 
-Detailed engineering documentation is located in the `/docs` directory:
-
-| Document | Description |
-| :--- | :--- |
-| [`docs/architecture.md`](docs/architecture.md) | High-level system architecture and proxy isolation topology |
-| [`docs/environment.md`](docs/environment.md) | Centralized environment variable specifications and validation rules |
-| [`docs/firebase.md`](docs/firebase.md) | Firebase Client SDK & Admin SDK setup and Firestore connectivity |
-| [`docs/authentication.md`](docs/authentication.md) | Firebase Authentication integration and server-side token verification |
-| [`docs/gemini.md`](docs/gemini.md) | Gemini AI SDK integration (@google/genai) and server endpoint proxy |
-| [`docs/resend.md`](docs/resend.md) | Resend email gateway integration and HTML email dispatch |
-| [`docs/security.md`](docs/security.md) | Security model, secret isolation, and CORS/CSRF boundaries |
-| [`docs/development.md`](docs/development.md) | Local development workflow and integration test dashboard usage |
-| [`docs/deployment.md`](docs/deployment.md) | Production build pipeline and Vercel hosting guidelines |
-| [`docs/vercel-environment-variables.md`](docs/vercel-environment-variables.md) | Complete guide to Vercel environment variables configuration |
+- **Framework**: Next.js 15 (App Router, SSG & SSR)
+- **UI & Components**: React 19, TypeScript, Lucide Icons, Motion (Framer Motion)
+- **Styling**: Tailwind CSS v4, custom Precision Engineering design system
+- **Typography**: `next/font/google` (Alexandria for display headings, IBM Plex Sans Arabic for Arabic body, Inter for English body)
+- **Email Service**: Resend API (`resend`) via Next.js Route Handler `POST /api/contact`
+- **SEO & Social**: Dynamic Open Graph generation (`next/og`), JSON-LD structured schemas, dynamic multi-language `sitemap.xml`, and `robots.txt`
 
 ---
 
-## Integration Test Dashboard
+## 2. Directory Structure
 
-A dedicated development-only integration dashboard is available at:
-`/#/en/dev_integration` or `/#/ar/dev_integration`
-
-Use this page to manually test Firebase Auth, Firestore connectivity, Gemini AI generation, and Resend email delivery.
+```
+├── docs/                                  # Engineering & brand documentation
+│   ├── DESIGN_SYSTEM.md                   # Design tokens, color palette, anti-AI guidelines
+│   ├── LAUNCH_READINESS_REPORT.md         # Production readiness audit & route verification
+│   ├── LAUNCH_IMPROVEMENT_PLAN.md         # Priority task tracking (P0-P3)
+│   ├── IMPLEMENTATION_PROGRESS.md         # Milestone progress log
+│   └── DESIGN_AND_ARCHITECTURE_DECISIONS.md # Architectural decisions & rationale
+├── public/                                # Static public assets
+│   ├── icon.svg                           # Brand SVG favicon
+│   └── assets/                            # Brand assets and graphics
+├── src/
+│   ├── app/
+│   │   ├── [lang]/                        # Localized route tree (ar/en)
+│   │   │   ├── page.tsx                   # Homepage (Hero, Transformation, Trajectory, etc.)
+│   │   │   ├── solutions/                 # Solutions catalogue
+│   │   │   ├── products/                  # Digital products directory & [slug] pages
+│   │   │   ├── industries/                # Vertical industry solutions & [slug] pages
+│   │   │   ├── work/                      # Selected work & architectural case studies
+│   │   │   ├── about/                     # About Novixa, values, leadership, trajectory
+│   │   │   ├── insights/                  # Engineering lab articles & [slug] reader
+│   │   │   └── start-project/             # Architectural discovery wizard
+│   │   ├── api/contact/route.ts           # Resend email contact API endpoint
+│   │   ├── fonts.ts                       # Google Fonts optimization via next/font
+│   │   ├── globals.css                    # Tailwind CSS v4 design tokens & utilities
+│   │   ├── layout.tsx                     # Root layout & font variables
+│   │   ├── opengraph-image.tsx            # Dynamic 1200x630 OG social preview generator
+│   │   ├── robots.ts                      # Search engine crawl directives
+│   │   └── sitemap.ts                     # Dynamic multi-language sitemap (57 routes)
+│   ├── components/
+│   │   ├── common/                        # CommandMenu (Cmd+K global search)
+│   │   ├── layout/                        # Navbar, Footer
+│   │   ├── sections/                      # Section components (Hero, GrowthStory, etc.)
+│   │   ├── ui/                            # Logo, Skeleton
+│   │   └── views/                         # Route view wrappers
+│   ├── content/data.ts                    # Bilingual structured data catalogue
+│   ├── context/LanguageContext.tsx        # Arabic / English language state provider
+│   └── lib/                               # Environment & metadata utility helpers
+```
 
 ---
 
-## Local Development Setup
+## 3. Getting Started
 
-1. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
+### Installation
+```bash
+npm install
+```
 
-2. **Configure Local Environment**:
-   Copy `.env.example` to `.env.local` and populate development credentials.
+### Local Development
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) (redirects to `/ar`).
 
-3. **Start Development Server**:
-   ```bash
-   npm run dev
-   ```
+### Production Build & Test
+```bash
+npm run typecheck    # Run TypeScript checks (0 errors)
+npm run build        # Build all 57 static pages for production
+npm run start        # Start the production server locally
+```
 
-4. **Verify Build**:
-   ```bash
-   npm run lint
-   npm run build
-   ```
+---
+
+## 4. Environment Variables
+
+Create `.env.local` for local development:
+```env
+NEXT_PUBLIC_SITE_URL=https://novixa.dev
+RESEND_API_KEY=your_resend_api_key_here
+RESEND_FROM_EMAIL=onboarding@resend.dev
+NOVIXA_CONTACT_EMAIL=hello@novixa.dev
+```
+*Note: If `RESEND_API_KEY` is omitted in development, contact submissions will be logged safely to the server console.*
+
+---
+
+## 5. Deployment
+
+Deploy easily to **Vercel** or any standard Node.js/Docker hosting:
+1. Connect repository on Vercel.
+2. Framework preset: **Next.js**.
+3. Configure `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, and `NOVIXA_CONTACT_EMAIL` in Environment Variables.
+4. Deploy!
+
+---
+
+## 6. License & Copyright
+
+© 2026 Novixa (نوڤيكسا). All rights reserved.
