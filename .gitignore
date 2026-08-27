@@ -15,3 +15,6 @@ tsconfig.tsbuildinfo
 # .claude/skills/ (shared UI/UX reference skills) IS committed.
 .claude/settings.local.json
 .claude/scheduled_tasks.lock
+__pycache__/
+*.pyc
+.coverage
