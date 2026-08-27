@@ -18,6 +18,21 @@ No fabricated content was introduced. Where real information (a named team membe
 
 **READY FOR PRODUCTION** — conditional on completing the manual actions in the checklist below (primarily: setting real environment variables, and a founder/decision-maker choosing whether to invest in a Team page).
 
+## Addendum: Second Rescan (Tools + Two Additional Fixes)
+
+A follow-up pass re-verified every fix above was still intact (fresh `tsc --noEmit`, fresh `next build`, fresh Playwright regression across all routes, redirect/404 status codes re-checked — all still clean), then cross-checked the site against an installed third-party UI/UX reference tool per explicit request.
+
+**Skill installed:** [`ui-ux-pro-max`](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT-licensed), plus its five companion skills (`banner-design`, `brand`, `design`, `design-system`, `slides`, `ui-styling`) from the same repository, into `.claude/skills/`. Before installing, the repository was cloned to a scratch directory and inspected: its actual runtime scripts (`search.py`/`core.py`/`design_system.py`) were confirmed to do local, offline CSV/JSON search only — no network calls, no `eval`/`exec`, no package installation, no OS changes (its own `SKILL.md` states this explicitly, and the code was independently verified rather than taking that at face value). Its own dev-only test suites were excluded from installation, and its MIT license was preserved as `THIRD_PARTY_LICENSE_ui-ux-pro-max-skill.txt`.
+
+Its generic "B2B software company" design-system recommendation (light-mode navy palette, Roboto typography) was deliberately **not applied** — Novixa's existing dark slate/blue/teal engineering identity is a considered, intentional choice from earlier work, and switching to a more generic light B2B look would have made the site *more* templated-feeling, not less, contradicting the actual goal. The tool's per-domain checklists were used as a targeted cross-check instead, which is where the two fixes below came from. Its brand/design-system sub-skills' heavier setup workflows (which generate a parallel design-token pipeline via `docs/brand-guidelines.md`) were not run against Novixa either, since the project already has a working, simpler token approach (Tailwind + CSS custom properties for fonts) and adding a second, redundant system would be unjustified complexity.
+
+**Two real, previously-unverified gaps found and fixed:**
+
+1. **No `prefers-reduced-motion` support anywhere**, despite `motion/react` animations throughout the hero, wizard, and command palette. Fixed with a single `<MotionConfig reducedMotion="user">` wrapper in the root layout (`src/app/layout.tsx`) — Motion's own built-in mechanism for this, rather than editing every animated component individually. Verified: emulating `reducedMotion: reduce` in a real browser produces zero console/page errors.
+2. **Buttons showed the wrong cursor on hover.** Verified via computed style in a real browser that Tailwind's preflight resets `<button>` to `cursor: default`, not `pointer` — confirmed empirically, not assumed. 43 `<button>` elements across 14 files never overrode this. Fixed with one global rule in `globals.css` (`button:not(:disabled) { cursor: pointer }`) rather than touching every call site. Verified: computed cursor on a plain button is now `pointer`.
+
+Both fixes were verified with a fresh `tsc --noEmit`, `next build`, and full Playwright regression afterward — all still clean, zero console errors.
+
 The codebase itself has no known blocking defects: it type-checks cleanly, builds cleanly (58/58 static pages), and every route was verified error-free in a real browser against the production build. The remaining items are business decisions and infrastructure configuration, not code.
 
 ---
