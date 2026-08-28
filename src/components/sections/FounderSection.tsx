@@ -28,7 +28,7 @@ export const FounderSection: React.FC = () => {
             <div className="p-5 sm:p-6 rounded-xl bg-slate-950 border border-slate-800 relative space-y-3">
               <Quote className="w-6 h-6 text-blue-500 opacity-30 absolute top-4 left-4 rtl:left-4 ltr:right-4" />
               <p className="text-sm sm:text-base text-slate-200 font-arabic italic leading-relaxed pt-1">
-                "{t(FOUNDER_INFO.quote.ar, FOUNDER_INFO.quote.en)}"
+                {t('«', '"')}{t(FOUNDER_INFO.quote.ar, FOUNDER_INFO.quote.en)}{t('»', '"')}
               </p>
               <div className="text-xs font-semibold font-mono text-blue-400 pt-1">
                 — {t(FOUNDER_INFO.name.ar, FOUNDER_INFO.name.en)} • {t(FOUNDER_INFO.role.ar, FOUNDER_INFO.role.en)}

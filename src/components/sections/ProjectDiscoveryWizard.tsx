@@ -328,6 +328,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                     <input
                       type="text"
                       required
+                      autoComplete="name"
                       placeholder={t('الاسم الكريم', 'Your Name')}
                       aria-label={t('الاسم الكريم', 'Your Name')}
                       value={formData.name}
@@ -336,6 +337,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                     />
                     <input
                       type="text"
+                      autoComplete="organization"
                       placeholder={t('اسم الشركة أو المنشأة', 'Company Name')}
                       aria-label={t('اسم الشركة أو المنشأة', 'Company Name')}
                       value={formData.company}
@@ -345,6 +347,8 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                     <input
                       type="email"
                       required
+                      autoComplete="email"
+                      spellCheck={false}
                       placeholder={t('البريد الإلكتروني', 'Corporate Email')}
                       aria-label={t('البريد الإلكتروني', 'Corporate Email')}
                       value={formData.email}
@@ -353,6 +357,8 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                     />
                     <input
                       type="tel"
+                      autoComplete="tel"
+                      inputMode="tel"
                       placeholder={t('رقم الجوال / الواتساب', 'Phone / WhatsApp')}
                       aria-label={t('رقم الجوال / الواتساب', 'Phone / WhatsApp')}
                       value={formData.phone}

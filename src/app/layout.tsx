@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { MotionConfig } from 'motion/react';
 import { inter, ibmPlexSansArabic, alexandria } from './fonts';
 import { getSiteUrl } from '@/lib/env';
@@ -10,6 +10,14 @@ export const metadata: Metadata = {
     default: 'Novixa | نوڤيكسا — Software Engineering & Digital Products',
     template: '%s | Novixa',
   },
+};
+
+// Matches the site's dark-only canvas: themeColor tints the mobile browser
+// chrome (address bar) instead of leaving it default white/black, and
+// color-scheme (set in globals.css) themes native form controls/scrollbars
+// to dark instead of the browser's light default.
+export const viewport: Viewport = {
+  themeColor: '#020617',
 };
 
 // Root layout renders once for every locale, but sits above the `[lang]`

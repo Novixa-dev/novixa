@@ -8,6 +8,13 @@
  */
 
 @layer base {
+  html {
+    /* The site is dark-only (no light theme), so tell the browser once
+       instead of leaving it to guess — themes native form controls,
+       scrollbars, and the default page background to dark. */
+    color-scheme: dark;
+  }
+
   body {
     font-family: var(--font-arabic);
     background-color: #020617;
@@ -15,11 +22,25 @@
     overflow-x: hidden;
     line-height: 1.6;
     letter-spacing: normal;
+    /* Stat cards and metric rows sit numbers next to each other
+       throughout the site (hero panel, case studies, product metrics);
+       tabular figures keep digit widths consistent so they align
+       instead of jittering as values change. */
+    font-variant-numeric: tabular-nums;
   }
 
   html[lang="en"] body {
     font-family: var(--font-english);
     letter-spacing: -0.01em;
+  }
+
+  /* Balance heading line-breaks so wrapped titles don't strand a single
+     short word on the last line (a bigger visual tell in Arabic, where
+     ragged wraps disrupt the script's connected flow). Browsers without
+     support just keep normal wrapping — this is a progressive
+     enhancement, not a layout dependency. */
+  h1, h2 {
+    text-wrap: balance;
   }
 
   /* Accessible high-contrast focus rings */

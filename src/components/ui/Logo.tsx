@@ -36,7 +36,7 @@ export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', showTex
 
       {showText && (
         <div className="flex flex-col">
-          <span className={`font-display font-extrabold tracking-tight text-white ${currentSize.text}`}>
+          <span translate="no" className={`font-display font-extrabold tracking-tight text-white ${currentSize.text}`}>
             NOVIXA
           </span>
           <span className="text-[10px] font-arabic text-slate-400 tracking-wider font-medium -mt-1 hidden sm:block">
