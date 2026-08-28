@@ -118,7 +118,7 @@ export const PulseSection: React.FC = () => {
                     onClick={() => setCategory(c)}
                     className={`py-2 px-2 rounded-lg border font-medium text-center transition-all ${
                       category === c
-                        ? 'bg-teal-600 text-white border-teal-500 font-bold'
+                        ? 'bg-teal-700 text-white border-teal-600 font-bold'
                         : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
                     }`}
                   >
@@ -189,7 +189,7 @@ export const PulseSection: React.FC = () => {
 
             <div className="pt-2 text-center flex items-center justify-center gap-1.5">
               <Lock className="w-3 h-3 text-slate-500" />
-              <span className="text-[11px] text-slate-500 font-mono">
+              <span className="text-[11px] text-slate-400 font-mono">
                 {t('التصميم مبني على مبادئ خصوصية وعزل بيانات صارمة.', 'Designed around strict data privacy and isolation principles.')}
               </span>
             </div>

@@ -37,9 +37,10 @@ export const Footer: React.FC = () => {
 
           {/* Col 3: Navigation */}
           <div className="space-y-3">
-            <h4 className="text-white font-semibold text-sm font-display tracking-wide uppercase">
+            <p className="text-white font-semibold text-sm font-display tracking-wide uppercase">
               {t('التنقل الرئيسي', 'Navigation')}
-            </h4>
+            </p>
+            <nav aria-label={t('التنقل الرئيسي', 'Navigation')}>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link href={`/${language}`} className="hover:text-blue-400 transition-colors">
@@ -67,13 +68,15 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
             </ul>
+            </nav>
           </div>
 
           {/* Col 4: Products */}
           <div className="space-y-3">
-            <h4 className="text-white font-semibold text-sm font-display tracking-wide uppercase">
+            <p className="text-white font-semibold text-sm font-display tracking-wide uppercase">
               {t('المنتجات الرقمية', 'Products')}
-            </h4>
+            </p>
+            <nav aria-label={t('المنتجات الرقمية', 'Products')}>
             <ul className="space-y-2 text-xs">
               <li className="flex items-center gap-2">
                 <Link href={`/${language}/products/pulse`} className="hover:text-blue-400 transition-colors">
@@ -99,13 +102,15 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
             </ul>
+            </nav>
           </div>
 
           {/* Col 5: Company & Contact */}
           <div className="space-y-3">
-            <h4 className="text-white font-semibold text-sm font-display tracking-wide uppercase">
+            <p className="text-white font-semibold text-sm font-display tracking-wide uppercase">
               {t('عن الشركة', 'Company')}
-            </h4>
+            </p>
+            <nav aria-label={t('عن الشركة', 'Company')}>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link href={`/${language}/about`} className="hover:text-blue-400 transition-colors">
@@ -123,6 +128,7 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
             </ul>
+            </nav>
 
             <div className="pt-2">
               <button

@@ -34,7 +34,7 @@ export const NotFoundContent: React.FC = () => {
         <div className="pt-4 flex items-center justify-center">
           <Link
             href={`/${language}`}
-            className="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2"
+            className="px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition-all flex items-center justify-center gap-2"
           >
             <Home className="w-4 h-4" />
             <span>{t('العودة للرئيسية', 'Back to Home')}</span>

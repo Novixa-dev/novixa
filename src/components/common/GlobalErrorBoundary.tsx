@@ -94,7 +94,7 @@ export class GlobalErrorBoundary extends React.Component<Props, State> {
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <button
                 onClick={this.handleReset}
-                className="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs transition-all flex items-center gap-2 shadow-lg shadow-teal-900/20 active:scale-95"
+                className="px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition-all flex items-center gap-2 shadow-lg shadow-teal-900/20 active:scale-95"
               >
                 <RefreshCw className="w-4 h-4" />
                 <span>إعادة المحاولة / Retry</span>
@@ -131,7 +131,7 @@ export class GlobalErrorBoundary extends React.Component<Props, State> {
                   </pre>
                 )}
                 {errorInfo?.componentStack && (
-                  <pre className="text-[10px] text-slate-500 mt-2 whitespace-pre-wrap border-t border-slate-900 pt-2">
+                  <pre className="text-[10px] text-slate-400 mt-2 whitespace-pre-wrap border-t border-slate-900 pt-2">
                     Component Stack:{errorInfo.componentStack}
                   </pre>
                 )}

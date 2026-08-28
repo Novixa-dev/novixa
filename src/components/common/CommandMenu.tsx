@@ -313,7 +313,7 @@ export const CommandMenu: React.FC = () => {
           {query && !hasMatches && (
             <div className="p-8 text-center text-slate-400 space-y-2">
               <div className="text-sm font-semibold">{t('لم يتم العثور على نتائج مطابقة', 'No matching results found')}</div>
-              <div className="text-xs text-slate-500 font-arabic">
+              <div className="text-xs text-slate-400 font-arabic">
                 {t('جرب البحث بكلمات أخرى مثل "مطاعم"، "SaaS"، "حجز"، أو "ذكاء اصطناعي"', 'Try searching for terms like "restaurants", "SaaS", "booking", or "AI"')}
               </div>
             </div>

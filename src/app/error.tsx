@@ -34,7 +34,7 @@ export default function ErrorBoundary({
         <div className="pt-2 flex items-center justify-center gap-3">
           <button
             onClick={() => reset()}
-            className="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs transition-all flex items-center gap-2"
+            className="px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition-all flex items-center gap-2"
           >
             إعادة المحاولة / Retry
           </button>

@@ -110,7 +110,7 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
             <span>{article.author.name[isAr ? 'ar' : 'en']} • {article.author.role[isAr ? 'ar' : 'en']}</span>
             <Link
               href={`/${lang}/start-project`}
-              className="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold transition-all flex items-center gap-2"
+              className="px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold transition-all flex items-center gap-2"
             >
               <span>{isAr ? 'مناقشة أفكار المقال مع مهندس' : 'Discuss Architecture with an Architect'}</span>
               <ArrowIcon className="w-4 h-4" />

@@ -105,7 +105,7 @@ export const CompanyGrowthStory: React.FC = () => {
                         <IconComp className="w-5 h-5" />
                       </div>
 
-                      <span className="text-3xl font-black font-display text-slate-800/80 group-hover:text-slate-700 transition-colors">
+                      <span className="text-3xl font-black font-display text-slate-500 group-hover:text-slate-400 transition-colors">
                         0{step.id}
                       </span>
                     </div>

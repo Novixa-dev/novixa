@@ -78,7 +78,7 @@ export default async function IndustryDetailPage({ params }: { params: Promise<{
 
             <Link
               href={`/${lang}/start-project`}
-              className="px-6 py-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-teal-600/30 transition-all flex items-center gap-2"
+              className="px-6 py-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs sm:text-sm shadow-lg shadow-teal-600/30 transition-all flex items-center gap-2"
             >
               <span>{isAr ? 'تخصيص حل لقطاعك' : 'Build for Your Industry'}</span>
               <ArrowIcon className="w-4 h-4" />
