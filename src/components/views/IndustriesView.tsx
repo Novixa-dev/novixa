@@ -26,7 +26,7 @@ export const IndustriesView: React.FC = () => {
         </div>
       </div>
 
-      <IndustriesSection />
+      <IndustriesSection showHeader={false} />
     </div>
   );
 };

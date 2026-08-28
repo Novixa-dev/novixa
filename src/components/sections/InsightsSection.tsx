@@ -10,10 +10,15 @@ import { motion, AnimatePresence } from 'motion/react';
 
 interface InsightsSectionProps {
   onSelectInsight?: (article: InsightArticle) => void;
+  /** The /insights page renders its own page-level H1 and intro (with
+   * a link back to itself that would be redundant here), so it passes
+   * false to skip this section's homepage-teaser header entirely. */
+  showHeader?: boolean;
 }
 
-export const InsightsSection: React.FC<InsightsSectionProps> = ({ 
+export const InsightsSection: React.FC<InsightsSectionProps> = ({
   onSelectInsight,
+  showHeader = true,
 }) => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
@@ -30,31 +35,33 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 text-right rtl:text-right ltr:text-left">
-          <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium">
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>{t('من مختبر نوڤيكسا', 'Novixa Engineering & Insights Lab')}</span>
+        {showHeader && (
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 text-right rtl:text-right ltr:text-left">
+            <div className="space-y-3 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium">
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>{t('من مختبر نوڤيكسا', 'Novixa Engineering & Insights Lab')}</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
+                {t('معرفة هندسية ورؤى في تقنية الأعمال.', 'Engineering insights for modern enterprise.')}
+              </h2>
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                {t(
+                  'مقالات ودراسات ناتجة عن تجاربنا الميدانية في بناء النظم الرقمية وتحويل العمليات المعقدة.',
+                  'Field notes and architectural essays written by our product engineering team.'
+                )}
+              </p>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
-              {t('معرفة هندسية ورؤى في تقنية الأعمال.', 'Engineering insights for modern enterprise.')}
-            </h2>
-            <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-              {t(
-                'مقالات ودراسات ناتجة عن تجاربنا الميدانية في بناء النظم الرقمية وتحويل العمليات المعقدة.',
-                'Field notes and architectural essays written by our product engineering team.'
-              )}
-            </p>
-          </div>
 
-          <Link
-            href={`/${language}/insights`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors self-start md:self-auto"
-          >
-            <span>{t('تصفح مكتبة المقالات بالكامل', 'Browse All Insights')}</span>
-            <ArrowIcon className="w-3.5 h-3.5" />
-          </Link>
-        </div>
+            <Link
+              href={`/${language}/insights`}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors self-start md:self-auto"
+            >
+              <span>{t('تصفح مكتبة المقالات بالكامل', 'Browse All Insights')}</span>
+              <ArrowIcon className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        )}
 
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

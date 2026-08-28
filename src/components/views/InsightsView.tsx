@@ -26,7 +26,7 @@ export const InsightsView: React.FC = () => {
         </div>
       </div>
 
-      <InsightsSection />
+      <InsightsSection showHeader={false} />
     </div>
   );
 };

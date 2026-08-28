@@ -13,10 +13,15 @@ import { motion, AnimatePresence } from 'motion/react';
 
 interface CaseStudiesSectionProps {
   onSelectCaseStudy?: (caseStudy: CaseStudy) => void;
+  /** The /work page renders its own page-level H1 and intro (with a
+   * link back to itself that would be redundant here), so it passes
+   * false to skip this section's homepage-teaser header entirely. */
+  showHeader?: boolean;
 }
 
-export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({ 
+export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
   onSelectCaseStudy,
+  showHeader = true,
 }) => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
@@ -35,31 +40,33 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 text-right rtl:text-right ltr:text-left">
-          <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium">
-              <Briefcase className="w-3.5 h-3.5" />
-              <span>{t('أعمالنا المختارة والمعمارية', 'Selected Engineering Case Studies')}</span>
+        {showHeader && (
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 text-right rtl:text-right ltr:text-left">
+            <div className="space-y-3 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium">
+                <Briefcase className="w-3.5 h-3.5" />
+                <span>{t('أعمالنا المختارة والمعمارية', 'Selected Engineering Case Studies')}</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
+                {t('كيف نتعامل مع مشاكل تشغيلية حقيقية.', 'How we approach real operational problems.')}
+              </h2>
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                {t(
+                  'سيناريوهات معمارية توضيحية — مبنية على مشاكل تشغيلية شائعة في هذه القطاعات — تُظهر كيف نفكر هندسيًا في تحويل التحدي إلى نظام مستقر.',
+                  'Illustrative architecture scenarios — grounded in operational problems common to each sector — showing how we engineer systems end-to-end.'
+                )}
+              </p>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
-              {t('كيف نتعامل مع مشاكل تشغيلية حقيقية.', 'How we approach real operational problems.')}
-            </h2>
-            <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-              {t(
-                'سيناريوهات معمارية توضيحية — مبنية على مشاكل تشغيلية شائعة في هذه القطاعات — تُظهر كيف نفكر هندسيًا في تحويل التحدي إلى نظام مستقر.',
-                'Illustrative architecture scenarios — grounded in operational problems common to each sector — showing how we engineer systems end-to-end.'
-              )}
-            </p>
-          </div>
 
-          <Link
-            href={`/${language}/work`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors self-start md:self-auto"
-          >
-            <span>{t('عرض جميع الأعمال المختارة', 'Explore All Selected Work')}</span>
-            <ArrowIcon className="w-3.5 h-3.5" />
-          </Link>
-        </div>
+            <Link
+              href={`/${language}/work`}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors self-start md:self-auto"
+            >
+              <span>{t('عرض جميع الأعمال المختارة', 'Explore All Selected Work')}</span>
+              <ArrowIcon className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        )}
 
         {/* Case Studies Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

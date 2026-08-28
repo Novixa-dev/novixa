@@ -10,7 +10,13 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-export const IndustriesSection: React.FC = () => {
+interface IndustriesSectionProps {
+  /** The /industries page renders its own page-level H1 and intro, so
+   * it passes false to skip this section's homepage-teaser header. */
+  showHeader?: boolean;
+}
+
+export const IndustriesSection: React.FC<IndustriesSectionProps> = ({ showHeader = true }) => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
@@ -35,23 +41,25 @@ export const IndustriesSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-teal-400 text-xs font-semibold">
-            <Building className="w-3.5 h-3.5" />
-            <span>{t('تخصصات القطاعات', 'Industry Vertical Expertise')}</span>
+        {showHeader && (
+          <div className="text-center max-w-3xl mx-auto space-y-4 mb-14">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-teal-400 text-xs font-semibold">
+              <Building className="w-3.5 h-3.5" />
+              <span>{t('تخصصات القطاعات', 'Industry Vertical Expertise')}</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
+              {t('نبني حلولًا تفهم طبيعة عملك.', 'We engineer solutions that understand your domain.')}
+            </h2>
+
+            <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+              {t(
+                'اختر قطاعك واكتشف كيف نعالج التحديات التشغيلية الخاصة بمجالك ونحتمها إلى كفاءة رقمية وميزانية مربحة.',
+                'Select your industry to see how we solve domain-specific operational hurdles with tailored platform modules.'
+              )}
+            </p>
           </div>
-
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
-            {t('نبني حلولًا تفهم طبيعة عملك.', 'We engineer solutions that understand your domain.')}
-          </h2>
-
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            {t(
-              'اختر قطاعك واكتشف كيف نعالج التحديات التشغيلية الخاصة بمجالك ونحتمها إلى كفاءة رقمية وميزانية مربحة.',
-              'Select your industry to see how we solve domain-specific operational hurdles with tailored platform modules.'
-            )}
-          </p>
-        </div>
+        )}
 
         {/* Industry Buttons Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-10">

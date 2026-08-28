@@ -26,7 +26,7 @@ export const WorkView: React.FC = () => {
         </div>
       </div>
 
-      <CaseStudiesSection />
+      <CaseStudiesSection showHeader={false} />
     </div>
   );
 };
