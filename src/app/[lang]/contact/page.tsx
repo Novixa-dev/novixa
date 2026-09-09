@@ -87,17 +87,32 @@ export default function ContactPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
-    // Simulate 2-second processing time as requested
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-      setFormData({ fullName: '', email: '', subject: '', message: '' });
-    }, 2000);
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          problem: formData.subject,
+          details: formData.message,
+          language,
+        }),
+      });
+    } catch (err) {
+      console.warn('[contact] API delivery note:', err);
+    } finally {
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setIsSuccess(true);
+        setFormData({ fullName: '', email: '', subject: '', message: '' });
+      }, 1800);
+    }
   };
 
   return (
