@@ -5,7 +5,24 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from '../ui/Logo';
-import { Menu, X, ArrowLeft, ArrowRight, Globe, Search, Command } from 'lucide-react';
+import { MAIN_NAV_ITEMS, SOCIAL_LINKS } from '../../data/navigation';
+import {
+  Menu,
+  X,
+  ArrowLeft,
+  ArrowRight,
+  Globe,
+  Search,
+  Linkedin,
+  Github,
+  Twitter,
+} from 'lucide-react';
+
+const socialIconMap = {
+  Linkedin: Linkedin,
+  Github: Github,
+  Twitter: Twitter,
+};
 
 export const Navbar: React.FC = () => {
   const { language, toggleLanguage, isRtl, t } = useLanguage();
@@ -21,16 +38,6 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
-    { path: `/${language}`, labelAr: 'الرئيسية', labelEn: 'Home' },
-    { path: `/${language}/solutions`, labelAr: 'الحلول', labelEn: 'Solutions' },
-    { path: `/${language}/products`, labelAr: 'المنتجات', labelEn: 'Products' },
-    { path: `/${language}/industries`, labelAr: 'القطاعات', labelEn: 'Industries' },
-    { path: `/${language}/work`, labelAr: 'أعمالنا', labelEn: 'Work' },
-    { path: `/${language}/about`, labelAr: 'من نحن', labelEn: 'About' },
-    { path: `/${language}/insights`, labelAr: 'المعرفة', labelEn: 'Insights' },
-  ];
-
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const triggerCommandMenu = () => {
@@ -41,7 +48,7 @@ export const Navbar: React.FC = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-slate-950/85 backdrop-blur-md border-b border-slate-800/80 py-3.5 shadow-2xl shadow-slate-950/50'
+          ? 'bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 py-3.5 shadow-2xl shadow-slate-950/50'
           : 'bg-transparent py-5'
       }`}
     >
@@ -56,15 +63,22 @@ export const Navbar: React.FC = () => {
             <Logo size="md" />
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-full px-3 py-1 shadow-sm">
-            {navItems.map((item) => {
-              const isActive = pathname === item.path || (item.path === `/${language}` && (pathname === `/${language}` || pathname === `/${language}/`));
+          {/* Desktop Navigation Links from Centralized Data Layer */}
+          <nav
+            aria-label={t('القائمة الرئيسية', 'Main Navigation')}
+            className="hidden lg:flex items-center gap-1 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-full px-3 py-1 shadow-sm"
+          >
+            {MAIN_NAV_ITEMS.map((item) => {
+              const itemPath = `/${language}${item.slug ? `/${item.slug}` : ''}`;
+              const isActive =
+                pathname === itemPath ||
+                (item.slug === '' && (pathname === `/${language}` || pathname === `/${language}/`));
+
               return (
                 <Link
-                  key={item.path}
-                  href={item.path}
-                  className={`px-3.5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 relative ${
+                  key={item.key}
+                  href={itemPath}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 relative ${
                     isActive
                       ? 'text-white bg-blue-600 shadow-sm font-semibold'
                       : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
@@ -76,45 +90,65 @@ export const Navbar: React.FC = () => {
             })}
           </nav>
 
-          {/* Right Actions */}
-          <div className="hidden lg:flex items-center gap-2.5">
+          {/* Right Actions: Social Links + Search + Language + CTA */}
+          <div className="hidden lg:flex items-center gap-2">
+            {/* Social Icons */}
+            <div className="flex items-center gap-1 pl-1 rtl:pl-0 rtl:pr-1 border-e border-slate-800 pe-2">
+              {SOCIAL_LINKS.map((social) => {
+                const Icon = socialIconMap[social.iconName] || Globe;
+                return (
+                  <a
+                    key={social.id}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={social.name}
+                    aria-label={`Novixa on ${social.name}`}
+                    className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                  </a>
+                );
+              })}
+            </div>
+
             {/* Search / Command Menu Trigger */}
             <button
               onClick={triggerCommandMenu}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-white hover:border-slate-700 transition-colors"
+              className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
               title="Search (Cmd+K)"
               aria-label={t('البحث في الموقع', 'Search the site')}
             >
-              <Search className="w-3.5 h-3.5" aria-hidden="true" />
-              <span className="hidden lg:inline text-[11px] font-mono">⌘K</span>
+              <Search className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
+              <span className="hidden xl:inline text-[10px] font-mono text-slate-400">⌘K</span>
             </button>
 
             {/* Language Switcher */}
             <button
               onClick={toggleLanguage}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white hover:border-slate-700 transition-all duration-200 font-medium cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white hover:border-slate-700 transition-all duration-200 font-medium cursor-pointer"
               title={isRtl ? 'Switch to English' : 'التحويل للعربية'}
               aria-label={isRtl ? 'Switch to English' : 'التحويل للعربية'}
             >
               <Globe className="w-3.5 h-3.5 text-blue-400" />
-              <span>{language === 'ar' ? 'English' : 'العربية'}</span>
+              <span>{language === 'ar' ? 'EN' : 'عربي'}</span>
             </button>
 
             {/* Primary CTA */}
             <Link
-              href={`/${language}/start-project`}
-              className="relative group inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs lg:text-sm font-semibold px-4 lg:px-5 py-2 rounded-lg shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+              href={`/${language}/contact`}
+              className="relative group inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs font-semibold px-3.5 py-2 rounded-lg shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
             >
-              <span>{t('ابدأ مشروعك', 'Start Project')}</span>
+              <span>{t('تواصل معنا', 'Contact Us')}</span>
               <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Actions Button */}
           <div className="flex lg:hidden items-center gap-2">
             <button
               onClick={triggerCommandMenu}
-              className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+              className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white"
               aria-label={t('البحث في الموقع', 'Search the site')}
             >
               <Search className="w-4 h-4" aria-hidden="true" />
@@ -128,7 +162,7 @@ export const Navbar: React.FC = () => {
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white focus:outline-none"
+              className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white focus:outline-none cursor-pointer"
               aria-label={mobileMenuOpen ? t('إغلاق القائمة', 'Close menu') : t('فتح القائمة', 'Open menu')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-nav-drawer"
@@ -141,14 +175,18 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div id="mobile-nav-drawer" className="lg:hidden fixed inset-x-0 top-[65px] bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 p-4 shadow-2xl transition-all duration-300">
+        <div
+          id="mobile-nav-drawer"
+          className="lg:hidden fixed inset-x-0 top-[65px] bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 p-4 shadow-2xl transition-all duration-300"
+        >
           <div className="flex flex-col gap-1.5">
-            {navItems.map((item) => {
-              const isActive = pathname === item.path;
+            {MAIN_NAV_ITEMS.map((item) => {
+              const itemPath = `/${language}${item.slug ? `/${item.slug}` : ''}`;
+              const isActive = pathname === itemPath;
               return (
                 <Link
-                  key={item.path}
-                  href={item.path}
+                  key={item.key}
+                  href={itemPath}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`text-right rtl:text-right ltr:text-left px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all ${
                     isActive
@@ -161,13 +199,32 @@ export const Navbar: React.FC = () => {
               );
             })}
 
-            <div className="pt-3 border-t border-slate-800 mt-2">
+            {/* Mobile Social Links */}
+            <div className="pt-3 border-t border-slate-800 flex items-center justify-center gap-3">
+              {SOCIAL_LINKS.map((social) => {
+                const Icon = socialIconMap[social.iconName] || Globe;
+                return (
+                  <a
+                    key={social.id}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                    aria-label={`Novixa on ${social.name}`}
+                  >
+                    <Icon className="w-4 h-4" />
+                  </a>
+                );
+              })}
+            </div>
+
+            <div className="pt-2">
               <Link
-                href={`/${language}/start-project`}
+                href={`/${language}/contact`}
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-4 rounded-lg shadow-sm"
               >
-                <span>{t('ابدأ مشروعك الآن', 'Start Your Project Now')}</span>
+                <span>{t('تواصل معنا الآن', 'Contact Us Now')}</span>
                 <ArrowIcon className="w-4 h-4" />
               </Link>
             </div>
@@ -177,3 +234,4 @@ export const Navbar: React.FC = () => {
     </header>
   );
 };
+export default Navbar;

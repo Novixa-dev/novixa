@@ -84,15 +84,15 @@ export const HeroSection: React.FC = () => {
             <div className="pt-6 border-t border-slate-800/80 grid grid-cols-3 gap-4 text-right rtl:text-right ltr:text-left">
               <div>
                 <div className="text-xl sm:text-2xl font-bold font-display text-white">100%</div>
-                <div className="text-xs text-slate-400 font-arabic">{t('معمارية مخصصة', 'Custom Architecture')}</div>
+                <div className="text-xs text-slate-300 font-arabic">{t('معمارية مخصصة', 'Custom Architecture')}</div>
               </div>
               <div>
                 <div className="text-xl sm:text-2xl font-bold font-display text-blue-400">{t('أعلى المعايير', 'High Standard')}</div>
-                <div className="text-xs text-slate-400 font-arabic">{t('معايير أمان موثوقة', 'Security Standards')}</div>
+                <div className="text-xs text-slate-300 font-arabic">{t('معايير أمان موثوقة', 'Security Standards')}</div>
               </div>
               <div>
                 <div className="text-xl sm:text-2xl font-bold font-display text-teal-400">{t('مبني للاستقرار', 'Built for Uptime')}</div>
-                <div className="text-xs text-slate-400 font-arabic">{t('هندسة موثوقة للتشغيل المستمر', 'Reliability-first Architecture')}</div>
+                <div className="text-xs text-slate-300 font-arabic">{t('هندسة موثوقة للتشغيل المستمر', 'Reliability-first Architecture')}</div>
               </div>
             </div>
           </div>
@@ -106,7 +106,7 @@ export const HeroSection: React.FC = () => {
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
-                  <span className="text-xs font-mono text-slate-400 ml-1">novixa-core-engine</span>
+                  <span className="text-xs font-mono text-slate-300 ml-1">novixa-core-engine</span>
                 </div>
 
                 <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-[11px] font-medium">
@@ -115,7 +115,7 @@ export const HeroSection: React.FC = () => {
                     className={`px-2.5 py-1 rounded-md transition-all ${
                       activeTab === 'fragmented'
                         ? 'bg-rose-950 text-rose-300 font-semibold border border-rose-800/50'
-                        : 'text-slate-400 hover:text-white'
+                        : 'text-slate-300 hover:text-white'
                     }`}
                   >
                     {t('أدوات مجزأة', 'Fragmented')}
@@ -125,7 +125,7 @@ export const HeroSection: React.FC = () => {
                     className={`px-2.5 py-1 rounded-md transition-all ${
                       activeTab === 'unified'
                         ? 'bg-blue-600 text-white font-semibold shadow-sm'
-                        : 'text-slate-400 hover:text-white'
+                        : 'text-slate-300 hover:text-white'
                     }`}
                   >
                     {t('نظام نوڤيكسا', 'Novixa Core')}
@@ -155,20 +155,20 @@ export const HeroSection: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 text-slate-400">
+                      <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 text-slate-300">
                         <div className="text-slate-200 font-semibold flex items-center gap-1.5 mb-1">
                           <WhatsAppIcon className="w-3.5 h-3.5 text-rose-400" />
                           <span>{t('واتساب ومحادثات متفرقة', 'WhatsApp & Chats')}</span>
                         </div>
-                        <p className="text-[11px] text-slate-400">{t('طلبات ضائعة وبدون أتمتة', 'Lost orders & zero automation')}</p>
+                        <p className="text-[11px] text-slate-300">{t('طلبات ضائعة وبدون أتمتة', 'Lost orders & zero automation')}</p>
                       </div>
 
-                      <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 text-slate-400">
+                      <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 text-slate-300">
                         <div className="text-slate-200 font-semibold flex items-center gap-1.5 mb-1">
                           <Database className="w-3.5 h-3.5 text-amber-400" />
                           <span>{t('ملفات إكسل', 'Excel Files')}</span>
                         </div>
-                        <p className="text-[11px] text-slate-400">{t('تكرار يدوّي وتعارض مخزون', 'Manual entry & stock conflict')}</p>
+                        <p className="text-[11px] text-slate-300">{t('تكرار يدوّي وتعارض مخزون', 'Manual entry & stock conflict')}</p>
                       </div>
                     </div>
                   </motion.div>
@@ -217,7 +217,7 @@ export const HeroSection: React.FC = () => {
                                 <IconComp className="w-3.5 h-3.5 text-blue-400" />
                                 <span>{t(node.nameAr, node.nameEn)}</span>
                               </div>
-                              <div className="text-[10px] text-slate-400 font-mono">{t(node.countAr, node.countEn)}</div>
+                              <div className="text-[10px] text-slate-300 font-mono">{t(node.countAr, node.countEn)}</div>
                             </button>
                           );
                         })}
@@ -242,12 +242,12 @@ export const HeroSection: React.FC = () => {
               </AnimatePresence>
 
               {/* Bottom System Status */}
-              <div className="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400 font-mono">
+              <div className="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300 font-mono">
                 <span className="flex items-center gap-1.5">
                   <Lock className="w-3 h-3 text-blue-400" />
                   <span>256-Bit Encrypted Data Sync</span>
                 </span>
-                <span className="text-slate-400">Response: 14ms</span>
+                <span className="text-slate-300">Response: 14ms</span>
               </div>
             </div>
           </div>

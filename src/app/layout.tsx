@@ -10,6 +10,14 @@ export const metadata: Metadata = {
     default: 'Novixa | نوڤيكسا — Software Engineering & Digital Products',
     template: '%s | Novixa',
   },
+  icons: {
+    icon: [
+      {
+        url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%23020617'/><path d='M10 8V32M10 8L30 32M30 8V32' stroke='%232563EB' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/><circle cx='30' cy='8' r='3' fill='%2338BDF8'/><circle cx='10' cy='32' r='3' fill='%231D4ED8'/></svg>",
+        type: 'image/svg+xml',
+      },
+    ],
+  },
 };
 
 // Matches the site's dark-only canvas: themeColor tints the mobile browser
@@ -42,6 +50,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${inter.variable} ${ibmPlexSansArabic.variable} ${alexandria.variable} scroll-smooth`}
     >
       <head>
+        <link
+          rel="icon"
+          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%23020617'/><path d='M10 8V32M10 8L30 32M30 8V32' stroke='%232563EB' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/><circle cx='30' cy='8' r='3' fill='%2338BDF8'/><circle cx='10' cy='32' r='3' fill='%231D4ED8'/></svg>"
+          type="image/svg+xml"
+        />
         <script dangerouslySetInnerHTML={{ __html: SET_LANG_DIR_SCRIPT }} />
       </head>
       <body className="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">

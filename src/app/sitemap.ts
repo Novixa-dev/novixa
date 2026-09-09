@@ -5,7 +5,7 @@ import { getSiteUrl } from '@/lib/env';
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = getSiteUrl();
   const languages = ['ar', 'en'];
-  const staticRoutes = ['', 'solutions', 'products', 'industries', 'work', 'insights', 'about', 'start-project'];
+  const staticRoutes = ['', 'about', 'solutions', 'work', 'insights', 'team', 'contact', 'products', 'industries', 'start-project'];
 
   const sitemapEntries: MetadataRoute.Sitemap = [];
 

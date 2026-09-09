@@ -81,7 +81,7 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                   <span className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-slate-900 text-blue-400 border border-slate-800">
                     {cs.industry[isRtl ? 'ar' : 'en']}
                   </span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950 text-slate-400 border border-slate-800">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950 text-slate-300 border border-slate-800">
                     {cs.caseStudyTypeLabel[isRtl ? 'ar' : 'en']}
                   </span>
                 </div>
@@ -103,7 +103,7 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                   {cs.metrics.slice(0, 2).map((m, idx) => (
                     <div key={idx} className="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
                       <div className="text-base sm:text-lg font-bold font-display text-blue-400">{m.value}</div>
-                      <div className="text-[10px] text-slate-400 font-arabic truncate">{m.label[isRtl ? 'ar' : 'en']}</div>
+                      <div className="text-[10px] text-slate-300 font-arabic truncate">{m.label[isRtl ? 'ar' : 'en']}</div>
                     </div>
                   ))}
                 </div>
@@ -111,7 +111,7 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                 {/* Tech Pills */}
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {cs.technologies.slice(0, 4).map((tech, idx) => (
-                    <span key={idx} className="text-[10px] font-mono text-slate-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded">
+                    <span key={idx} className="text-[10px] font-mono text-slate-300 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded">
                       {tech}
                     </span>
                   ))}
@@ -120,7 +120,7 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
 
               {/* Bottom Action */}
               <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
-                <span className="text-xs text-slate-400 font-mono">{cs.location[isRtl ? 'ar' : 'en']}</span>
+                <span className="text-xs text-slate-300 font-mono">{cs.location[isRtl ? 'ar' : 'en']}</span>
 
                 <Link
                   href={`/${language}/work/${cs.id}`}

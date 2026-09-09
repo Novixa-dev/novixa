@@ -1,17 +1,9 @@
 import React from 'react';
 import { constructMetadata, generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/lib/metadata';
 import { HeroSection } from '@/components/sections/HeroSection';
-import { ProblemTransformation } from '@/components/sections/ProblemTransformation';
-import { WhatWeBuild } from '@/components/sections/WhatWeBuild';
-import { CompanyGrowthStory } from '@/components/sections/CompanyGrowthStory';
-import { IndustriesSection } from '@/components/sections/IndustriesSection';
-import { ProductsSection } from '@/components/sections/ProductsSection';
-import { PulseSection } from '@/components/sections/PulseSection';
+import { ServicesSummarySection } from '@/components/sections/ServicesSummarySection';
 import { CaseStudiesSection } from '@/components/sections/CaseStudiesSection';
-import { EngineeringSection } from '@/components/sections/EngineeringSection';
-import { WhyNovixaSection } from '@/components/sections/WhyNovixaSection';
-import { InsightsSection } from '@/components/sections/InsightsSection';
-import { StartProjectCTA } from '@/components/sections/StartProjectCTA';
+import { HomeCTASection } from '@/components/sections/HomeCTASection';
 import { Language } from '@/types';
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -22,8 +14,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return constructMetadata({
     title: isAr ? 'هندسة البرمجيات والأنظمة الرقمية المتقدمة' : 'Enterprise Software Engineering & Digital Products',
     description: isAr
-      ? 'نوڤيكسا متخصصة في هندسة المنصات البرمجية، أنظمة نقاط البيع وإدارة المطاعم، المحركات الذكية، ومنصات SaaS السحابية في الخليج والشرق الأوسط.'
-      : 'Novixa builds enterprise software systems, multi-tenant B2B SaaS platforms, POS/KDS tech, and high-concurrency digital architectures across the Middle East and GCC.',
+      ? 'نوڤيكسا متخصصة في هندسة المنصات البرمجية، محركات SaaS السحابية، والحلول الرقمية عالية الأداء في الخليج والشرق الأوسط.'
+      : 'Novixa builds enterprise software platforms, multi-tenant cloud SaaS engines, and high-concurrency systems across the Middle East and GCC.',
     lang,
     path: '',
   });
@@ -43,18 +35,17 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
+      {/* 1. Hero Section */}
       <HeroSection />
-      <ProblemTransformation />
-      <WhatWeBuild />
-      <CompanyGrowthStory />
-      <IndustriesSection />
-      <ProductsSection />
-      <PulseSection />
+
+      {/* 2. Services Summary Section */}
+      <ServicesSummarySection />
+
+      {/* 3. Portfolio & Case Studies Showcase */}
       <CaseStudiesSection />
-      <EngineeringSection />
-      <WhyNovixaSection />
-      <InsightsSection />
-      <StartProjectCTA />
+
+      {/* 4. Bottom CTA Section pointing to /contact */}
+      <HomeCTASection />
     </>
   );
 }
