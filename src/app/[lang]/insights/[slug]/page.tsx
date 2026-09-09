@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getArticleBySlug, insightsArticles } from '@/lib/content';
-import { constructMetadata, generateArticleJsonLd } from '@/lib/metadata';
+import { constructMetadata, generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/metadata';
 import { BookOpen, ArrowLeft, ArrowRight, Clock, User } from 'lucide-react';
 import { Language } from '@/types';
 
@@ -59,11 +59,21 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
     url: `/${lang}/insights/${article.id}`,
   });
 
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: isAr ? 'الرئيسية' : 'Home', url: `/${lang}` },
+    { name: isAr ? 'مختبر المعرفة' : 'Insights Lab', url: `/${lang}/insights` },
+    { name: article.title[isAr ? 'ar' : 'en'], url: `/${lang}/insights/${article.id}` },
+  ]);
+
   return (
     <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
         {/* Breadcrumb */}

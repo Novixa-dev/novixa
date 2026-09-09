@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getProductBySlug, productsCatalog } from '@/lib/content';
-import { constructMetadata, generateProductJsonLd } from '@/lib/metadata';
+import { constructMetadata, generateProductJsonLd, generateBreadcrumbJsonLd } from '@/lib/metadata';
 import { CheckCircle2, ArrowLeft, ArrowRight, Sparkles, Shield, Layers } from 'lucide-react';
 import { Language } from '@/types';
 
@@ -58,11 +58,21 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     url: `/${lang}/products/${product.id}`,
   });
 
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: isAr ? 'الرئيسية' : 'Home', url: `/${lang}` },
+    { name: isAr ? 'المنتجات الرقمية' : 'Products', url: `/${lang}/products` },
+    { name: product.name[isAr ? 'ar' : 'en'], url: `/${lang}/products/${product.id}` },
+  ]);
+
   return (
     <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
         {/* Breadcrumb */}

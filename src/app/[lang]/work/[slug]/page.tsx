@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getWorkBySlug, caseStudiesCatalog } from '@/lib/content';
-import { constructMetadata } from '@/lib/metadata';
+import { constructMetadata, generateBreadcrumbJsonLd } from '@/lib/metadata';
 import { CheckCircle2, ArrowLeft, ArrowRight, Quote, Briefcase } from 'lucide-react';
 import { Language } from '@/types';
 
@@ -51,8 +51,18 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ lan
     notFound();
   }
 
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: isAr ? 'الرئيسية' : 'Home', url: `/${lang}` },
+    { name: isAr ? 'أعمالنا المختارة' : 'Selected Work', url: `/${lang}/work` },
+    { name: workItem.title[isAr ? 'ar' : 'en'], url: `/${lang}/work/${workItem.id}` },
+  ]);
+
   return (
     <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">

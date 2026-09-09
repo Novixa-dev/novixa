@@ -29,9 +29,17 @@ export default async function LocalizedLayout({
   return (
     <LanguageProvider initialLang={lang}>
       <div className={`min-h-screen flex flex-col font-arabic ${lang === 'en' ? 'font-latin' : ''}`} dir={dir}>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-white text-xs font-semibold"
+        >
+          {lang === 'ar' ? 'تخطي إلى المحتوى الرئيسي' : 'Skip to main content'}
+        </a>
         <Navbar />
         <CommandMenu />
-        <main className="flex-grow">{children}</main>
+        <main id="main-content" tabIndex={-1} className="flex-grow focus:outline-none">
+          {children}
+        </main>
         <Footer />
       </div>
     </LanguageProvider>
