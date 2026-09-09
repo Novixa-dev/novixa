@@ -1,12 +1,18 @@
-<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<svg width="64" height="64" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#2563EB"/>
-      <stop offset="1" stop-color="#0F172A"/>
+    <linearGradient id="g" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="nGrad" x1="14" y1="14" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#2563EB"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="16" fill="url(#g)"/>
-  <path d="M18 14V50M18 14L46 50M46 14V50" stroke="#F8FAFC" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <circle cx="46" cy="14" r="4" fill="#14B8A6"/>
-  <circle cx="18" cy="50" r="4" fill="#60A5FA"/>
+  <rect width="48" height="48" rx="12" fill="url(#g)"/>
+  <path d="M24 4L42 14.5V33.5L24 44L6 33.5V14.5L24 4Z" stroke="#38BDF8" stroke-width="2" stroke-opacity="0.5"/>
+  <path d="M14 34V14L34 34V14" stroke="url(#nGrad)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="14" cy="14" r="3" fill="#38BDF8"/>
+  <circle cx="34" cy="34" r="3" fill="#2563EB"/>
+  <circle cx="24" cy="24" r="1.5" fill="#A5F3FC"/>
 </svg>

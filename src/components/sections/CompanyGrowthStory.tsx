@@ -41,7 +41,7 @@ export const CompanyGrowthStory: React.FC = () => {
       descEn: 'Launching multi-tenant cloud platforms that solve repeatable operational hurdles with recurring enterprise value.',
       badgeAr: 'المرحلة 03: منتجات رقمية',
       badgeEn: 'Stage 03: Product Scale',
-      color: 'indigo'
+      color: 'sky'
     },
     {
       id: 4,
@@ -99,7 +99,7 @@ export const CompanyGrowthStory: React.FC = () => {
                       <div className={`w-12 h-12 rounded-xl flex items-center justify-center border bg-slate-950/90 shadow-sm
                         ${step.color === 'blue' ? 'border-blue-500/40 text-blue-400' : ''}
                         ${step.color === 'teal' ? 'border-teal-500/40 text-teal-400' : ''}
-                        ${step.color === 'indigo' ? 'border-indigo-500/40 text-indigo-400' : ''}
+                        ${step.color === 'sky' ? 'border-sky-500/40 text-sky-400' : ''}
                         ${step.color === 'emerald' ? 'border-emerald-500/40 text-emerald-400' : ''}
                       `}>
                         <IconComp className="w-5 h-5" />

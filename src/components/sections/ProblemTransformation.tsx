@@ -189,7 +189,7 @@ export const ProblemTransformation: React.FC = () => {
 
                   {/* Unified Item 3 */}
                   <div className="p-4 bg-slate-900/90 rounded-xl border border-blue-900/50 text-right rtl:text-right ltr:text-left space-y-2">
-                    <div className="flex items-center gap-2 text-indigo-400 font-bold text-sm font-display">
+                    <div className="flex items-center gap-2 text-sky-400 font-bold text-sm font-display">
                       <CheckCircle className="w-4 h-4 text-emerald-400" />
                       <span>{t('ذكاء تحليلي مباشر', 'Live Executive Analytics')}</span>
                     </div>

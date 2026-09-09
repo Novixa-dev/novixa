@@ -51,6 +51,14 @@ export default async function TeamPage({ params }: { params: Promise<{ lang: str
               ? 'نخبة من مهندسي النظم الموزعة، مطوري الواجهات التفاعلية، وخبراء الذكاء الاصطناعي المكرسين لتحقيق التميز البرمجي والتشغيلي.'
               : 'A dedicated team of distributed systems engineers, full-stack builders, and AI architects committed to technical precision.'}
           </p>
+
+          <div className="pt-1">
+            <span className="inline-block text-[11px] font-mono uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full">
+              {isAr
+                ? 'نموذج هيكلية الكفاءات الهندسية والاستشارية في نوڤيكسا'
+                : 'Novixa Engineering & Advisory Competency Structure'}
+            </span>
+          </div>
         </div>
 
         {/* Team Grid: 3 cols on lg, 2 cols on md, 1 col on mobile */}

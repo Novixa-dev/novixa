@@ -187,6 +187,10 @@ export default function ContactPage() {
                     id="fullName"
                     name="fullName"
                     type="text"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.fullName}
+                    aria-describedby={errors.fullName ? 'fullName-error' : undefined}
                     value={formData.fullName}
                     onChange={handleChange}
                     placeholder={isAr ? 'مثال: أحمد عبد الله' : 'e.g. John Doe'}
@@ -195,7 +199,7 @@ export default function ContactPage() {
                     } rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 transition-all`}
                   />
                   {errors.fullName && (
-                    <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                    <p id="fullName-error" role="alert" className="text-xs text-rose-400 flex items-center gap-1 mt-1">
                       <AlertCircle className="w-3.5 h-3.5" />
                       <span>{errors.fullName}</span>
                     </p>
@@ -211,6 +215,10 @@ export default function ContactPage() {
                     id="email"
                     name="email"
                     type="email"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? 'email-error' : undefined}
                     dir="ltr"
                     value={formData.email}
                     onChange={handleChange}
@@ -220,7 +228,7 @@ export default function ContactPage() {
                     } rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 transition-all`}
                   />
                   {errors.email && (
-                    <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                    <p id="email-error" role="alert" className="text-xs text-rose-400 flex items-center gap-1 mt-1">
                       <AlertCircle className="w-3.5 h-3.5" />
                       <span>{errors.email}</span>
                     </p>
@@ -236,6 +244,10 @@ export default function ContactPage() {
                     id="subject"
                     name="subject"
                     type="text"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.subject}
+                    aria-describedby={errors.subject ? 'subject-error' : undefined}
                     value={formData.subject}
                     onChange={handleChange}
                     placeholder={isAr ? 'مثال: تطوير منصة SaaS سحابية أو استشارة تقنية' : 'e.g. Cloud SaaS Platform Architecture'}
@@ -244,7 +256,7 @@ export default function ContactPage() {
                     } rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 transition-all`}
                   />
                   {errors.subject && (
-                    <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                    <p id="subject-error" role="alert" className="text-xs text-rose-400 flex items-center gap-1 mt-1">
                       <AlertCircle className="w-3.5 h-3.5" />
                       <span>{errors.subject}</span>
                     </p>
@@ -260,6 +272,10 @@ export default function ContactPage() {
                     id="message"
                     name="message"
                     rows={4}
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.message}
+                    aria-describedby={errors.message ? 'message-error' : undefined}
                     value={formData.message}
                     onChange={handleChange}
                     placeholder={
@@ -272,7 +288,7 @@ export default function ContactPage() {
                     } rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 transition-all resize-none`}
                   />
                   {errors.message && (
-                    <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                    <p id="message-error" role="alert" className="text-xs text-rose-400 flex items-center gap-1 mt-1">
                       <AlertCircle className="w-3.5 h-3.5" />
                       <span>{errors.message}</span>
                     </p>
@@ -339,15 +355,15 @@ export default function ContactPage() {
                   </div>
                 </li>
 
-                {/* Phone & WhatsApp */}
+                {/* Direct Channel & Response SLA */}
                 <li className="flex items-start gap-3.5">
                   <div className="w-9 h-9 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs text-slate-300">{isAr ? 'الهاتف وواتساب للأعمال' : 'Business Phone & WhatsApp'}</div>
-                    <div className="text-white font-mono text-xs sm:text-sm font-medium" dir="ltr">
-                      +966 50 123 4567
+                    <div className="text-xs text-slate-300">{isAr ? 'قنوات التواصل المباشرة' : 'Direct Advisory Channel'}</div>
+                    <div className="text-white text-xs sm:text-sm font-medium">
+                      {isAr ? 'عبر نموذج التواصل أو البريد الرسمي (اتفاقية NDA متاحة)' : 'Via secure form or direct email (NDA on request)'}
                     </div>
                   </div>
                 </li>

@@ -71,7 +71,7 @@ export const EngineeringSection: React.FC = () => {
               descAr: 'ربط سلس مع بوابات الدفع وبرامج الفوترة وشركات الشحن.',
               descEn: 'Clean, well-documented endpoints for seamless payment gateway and third-party integrations.',
               icon: Server,
-              color: 'text-indigo-400'
+              color: 'text-teal-400'
             },
           ].map((item, idx) => {
             const IconComp = item.icon;

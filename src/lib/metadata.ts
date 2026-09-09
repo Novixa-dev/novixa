@@ -75,7 +75,12 @@ export function generateOrganizationJsonLd() {
     description:
       'Novixa is a software engineering and digital products company: custom business platforms, SaaS products, and system modernization for the Middle East and GCC.',
     areaServed: ['Yemen', 'Saudi Arabia', 'GCC', 'Middle East'],
-    sameAs: [],
+    email: 'hello@novixa.dev',
+    sameAs: [
+      'https://linkedin.com/company/novixa',
+      'https://github.com/novixa',
+      'https://x.com/novixa',
+    ],
     knowsAbout: [
       'Enterprise Software Architecture',
       'Multi-tenant Cloud Systems',
@@ -83,10 +88,12 @@ export function generateOrganizationJsonLd() {
       'Booking Engines',
       'Real-time Logistics Control',
       'B2B SaaS Engineering',
+      'Practical AI & RAG Solutions',
     ],
     contactPoint: {
       '@type': 'ContactPoint',
-      contactType: 'sales',
+      contactType: 'technical advisory and customer support',
+      email: 'hello@novixa.dev',
       availableLanguage: ['Arabic', 'English'],
     },
   };

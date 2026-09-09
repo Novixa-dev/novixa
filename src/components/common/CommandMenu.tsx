@@ -170,7 +170,7 @@ export const CommandMenu: React.FC = () => {
                   className="p-2.5 rounded-xl bg-slate-950/60 hover:bg-slate-800 border border-slate-800/80 text-right rtl:text-right ltr:text-left flex items-center justify-between text-slate-300 hover:text-white transition-colors"
                 >
                   <span className="flex items-center gap-2">
-                    <Briefcase className="w-3.5 h-3.5 text-indigo-400" />
+                    <Briefcase className="w-3.5 h-3.5 text-sky-400" />
                     <span>{t('الأعمال المختارة', 'Selected Work')}</span>
                   </span>
                   <ArrowIcon className="w-3 h-3 text-slate-500" />
@@ -283,7 +283,7 @@ export const CommandMenu: React.FC = () => {
           {/* Results: Insights */}
           {insightsMatches.length > 0 && (
             <div className="space-y-2">
-              <div className="text-[11px] font-mono uppercase tracking-wider text-indigo-400 px-2 flex items-center gap-1.5">
+              <div className="text-[11px] font-mono uppercase tracking-wider text-sky-400 px-2 flex items-center gap-1.5">
                 <BookOpen className="w-3.5 h-3.5" />
                 <span>{t('مقالات المعرفة', 'Insights Lab')}</span>
               </div>
@@ -302,7 +302,7 @@ export const CommandMenu: React.FC = () => {
                         {art.excerpt[isRtl ? 'ar' : 'en']}
                       </div>
                     </div>
-                    <ArrowIcon className="w-3.5 h-3.5 text-slate-500 group-hover:text-indigo-400 transition-colors" />
+                    <ArrowIcon className="w-3.5 h-3.5 text-slate-500 group-hover:text-sky-400 transition-colors" />
                   </button>
                 ))}
               </div>
