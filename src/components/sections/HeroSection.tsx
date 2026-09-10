@@ -4,250 +4,304 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import {
-  Sparkles, ArrowLeft, ArrowRight, Shield, Zap, Layers, Cpu,
-  CheckCircle2, RefreshCw, BarChart3, Database,
-  Building2, Users, ShoppingCart, Lock
+  ArrowLeft,
+  ArrowRight,
+  Shield,
+  Zap,
+  Layers,
+  Cpu,
+  CheckCircle2,
+  Database,
+  Users,
+  ShoppingCart,
+  Lock,
+  Server,
+  GitBranch,
+  Terminal,
+  Activity,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { WhatsAppIcon } from '../ui/WhatsAppIcon';
 
 export const HeroSection: React.FC = () => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
-  // State for interactive architecture visual demo
-  const [activeTab, setActiveTab] = useState<'fragmented' | 'unified'>('unified');
-  const [selectedNode, setSelectedNode] = useState<string>('orders');
+  const [activeTab, setActiveTab] = useState<'topology' | 'metrics'>('topology');
+  const [selectedNode, setSelectedNode] = useState<string>('gateway');
 
-  const nodes = [
-    { id: 'orders', nameAr: 'المبيعات والطلبات', nameEn: 'Orders & Sales', icon: ShoppingCart, countAr: '1,420 / اليوم', countEn: '1,420 / Today' },
-    { id: 'inventory', nameAr: 'المخزون والفروع', nameEn: 'Inventory & Branches', icon: Database, countAr: '8 فروع موحدة', countEn: '8 Unified Branches' },
-    { id: 'customers', nameAr: 'العملاء والولاء', nameEn: 'Customers & Loyalty', icon: Users, countAr: '99.4% رضى', countEn: '99.4% Satisfaction' },
-    { id: 'pulse', nameAr: 'نبض التشغيل (AI)', nameEn: 'Pulse Analytics', icon: BarChart3, countAr: 'تنبؤ لحظي', countEn: 'Real-time Prediction' },
+  const topologyNodes = [
+    {
+      id: 'gateway',
+      nameAr: '01. بوابة التوزيع (Edge Gateway)',
+      nameEn: '01. Ingestion Edge Gateway',
+      icon: Server,
+      specAr: 'عزل جغرافي • تشفير TLS 1.3',
+      specEn: 'Geo-routing • TLS 1.3 Termination',
+      latency: '1.2ms',
+      detailAr: 'معالجة وتوزيع كافة الطلبات عبر شبكة الحافة الإقليمية مع حماية مدمجة ضد هجمات الحرمان من الخدمة (DDoS).',
+      detailEn: 'Terminates and filters requests at the regional edge with built-in zero-trust rate limiting.',
+    },
+    {
+      id: 'multitenant',
+      nameAr: '02. محرك العزل السحابي (Multi-Tenant)',
+      nameEn: '02. Multi-Tenant Engine',
+      icon: Layers,
+      specAr: 'عزل منطقي تام • سياق ديناميكي',
+      specEn: 'Logical Partitioning • Dynamic Context',
+      latency: '3.4ms',
+      detailAr: 'فصل تام لبيانات وبيئات كل مؤسسة مع تطبيق سياسات الصلاحيات المتقدمة (RBAC) وسجلات التدقيق المالي.',
+      detailEn: 'Strict workspace isolation ensuring zero cross-tenant contamination with auditable RBAC.',
+    },
+    {
+      id: 'queue',
+      nameAr: '03. ناقل الأحداث (Event Mesh & Redis)',
+      nameEn: '03. Event Mesh & Queue',
+      icon: GitBranch,
+      specAr: 'معالجة غير متزامنة • Pub/Sub',
+      specEn: 'Async Pipelines • Redis Cluster',
+      latency: '0.8ms',
+      detailAr: 'معالجة ملايين الأحداث التشغيلية المتزامنة، إشعارات الويب، وطوابير المهام الخلفية دون أي بطء.',
+      detailEn: 'Processes asynchronous webhooks, background jobs, and real-time socket events concurrently.',
+    },
+    {
+      id: 'database',
+      nameAr: '04. قاعدة البيانات المجزأة (PostgreSQL)',
+      nameEn: '04. Sharded PostgreSQL Core',
+      icon: Database,
+      specAr: 'تجزئة أفقية • نسخ متماثلة للقراءة',
+      specEn: 'Row-Level Security • Read Replicas',
+      latency: '2.1ms',
+      detailAr: 'تخزين مشفر وموزع مع أمان على مستوى الصفوف (Row-Level Security) ونسخ احتياطي فوري غير متزامن.',
+      detailEn: 'Zero-lock sharded storage with Row-Level Security and instant immutable snapshot recovery.',
+    },
   ];
 
-  return (
-    <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-slate-950">
-      {/* Background Glowing Grids & Orbs */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-radial-gradient pointer-events-none opacity-80"></div>
-      <div className="absolute -top-24 right-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute top-1/2 left-5 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute inset-0 bg-grid-line-pattern opacity-30 pointer-events-none"></div>
+  const activeNodeInfo = topologyNodes.find((n) => n.id === selectedNode) || topologyNodes[0];
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+  return (
+    <section className="relative pt-28 pb-20 lg:pt-36 lg:pb-28 overflow-hidden bg-slate-950">
+      {/* Crisp Architectural Grid Backdrop - No Random Blur Blobs */}
+      <div className="absolute inset-0 architectural-grid opacity-70 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-transparent to-slate-950 pointer-events-none" />
+
+      {/* Structural Framing Container with Hairline Desktop Boundaries */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10 border-x border-white/[0.05]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center py-6">
           
-          {/* Left / Main Text Side */}
-          <div className="lg:col-span-7 space-y-6 text-right rtl:text-right ltr:text-left">
-            {/* Top Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-              <span>{t('Software Engineering · Digital Systems · Multi-Tenant Cloud', 'Software Engineering · Digital Systems · Multi-Tenant Cloud')}</span>
+          {/* Main Editorial Text Column */}
+          <div className="lg:col-span-7 space-y-7 text-right rtl:text-right ltr:text-left">
+            {/* Architectural Discipline Badge */}
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-slate-900/90 border border-white/[0.08] text-blue-400 text-xs font-mono font-medium tracking-wide">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span translate="no">NOVIXA ARCHITECTURAL SYSTEMS</span>
+              <span className="text-slate-600">|</span>
+              <span className="text-slate-300 font-arabic">{t('هندسة برمجيات المؤسسات', 'Enterprise Engineering')}</span>
             </div>
 
-            {/* Main Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white leading-[1.3] tracking-normal lg:tracking-tight">
-              {t('نبني التقنية التي تجعل', 'Engineered for Scale.')} <br className="hidden sm:inline" />
-              <span className="text-blue-400">
-                {t('أعمالك أقوى وأسرع توسعًا.', 'Digital Systems Powering Modern Business.')}
+            {/* Main Display Headline with Precise Arabic Leading */}
+            <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-extrabold font-display text-white leading-tight lg:leading-snug tracking-normal">
+              {t('نبني الأنظمة البرمجية الموزعة', 'Architecting Resilient Platforms.')} <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-teal-300">
+                {t('التي تدير عمليات الأعمال وتتوسع معها.', 'Engineered for Performance & Scale.')}
               </span>
             </h1>
 
-            {/* Subheadline */}
+            {/* Subheadline - Restrained, Technical, Authoritative */}
             <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl font-arabic font-normal">
               {t(
-                'نحوّل العمليات التشغيلية المعقدة إلى منصات رقمية حديثة، مصممة بأعلى معايير هندسة البرمجيات لتنفذ اليوم وتتوسع مع شركتك غدًا.',
-                'We transform complex operational workflows into resilient enterprise platforms—engineered to execute with high reliability today and scale effortlessly tomorrow.'
+                'شركة هندسة برمجيات متخصصة في بناء المنصات السحابية متعددة المستأجرين (Multi-Tenant SaaS)، محركات العمليات المتزامنة، وحلول الذكاء الاصطناعي التطبيقي لأسواق الشرق الأوسط والخليج العربي.',
+                'A software engineering firm dedicated to building multi-tenant enterprise SaaS platforms, high-throughput transactional engines, and practical AI systems for the Middle East and GCC.'
               )}
             </p>
 
-            {/* CTA Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-3.5">
+            {/* Action Anchors */}
+            <div className="pt-2 flex flex-wrap items-center gap-4">
               <Link
                 href={`/${language}/start-project`}
-                className="group inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-semibold text-sm sm:text-base px-6 py-3 rounded-lg shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                className="group inline-flex items-center gap-2.5 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-semibold text-sm sm:text-base px-6 py-3.5 rounded-xl shadow-lg shadow-blue-600/20 transition-all duration-150"
               >
-                <span>{t('ابدأ مشروعك معنا', 'Start Your Project')}</span>
-                <ArrowIcon className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
+                <span>{t('ابدأ التقييم المعماري لمشروعك', 'Start Architecture Assessment')}</span>
+                <ArrowIcon className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
               </Link>
 
               <Link
-                href={`/${language}/products`}
-                className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 font-medium text-sm sm:text-base px-5 py-3 rounded-lg transition-all duration-200"
+                href={`/${language}/solutions`}
+                className="inline-flex items-center gap-2 bg-slate-900/80 hover:bg-slate-800 border border-white/[0.08] hover:border-white/[0.15] text-slate-200 font-medium text-sm sm:text-base px-5 py-3.5 rounded-xl transition-all duration-150"
               >
                 <Layers className="w-4 h-4 text-blue-400" />
-                <span>{t('استكشف المنتجات الرقمية', 'Explore Digital Products')}</span>
+                <span>{t('منظومة الحلول والخدمات', 'Explore Solutions')}</span>
               </Link>
             </div>
 
-            {/* Proof Points Bar */}
-            <div className="pt-6 border-t border-slate-800/80 grid grid-cols-3 gap-4 text-right rtl:text-right ltr:text-left">
-              <div>
-                <div className="text-xl sm:text-2xl font-bold font-display text-white">100%</div>
-                <div className="text-xs text-slate-300 font-arabic">{t('معمارية مخصصة', 'Custom Architecture')}</div>
+            {/* Verified Architectural Specifications Bar */}
+            <div className="pt-6 border-t border-white/[0.08] grid grid-cols-3 gap-6 text-right rtl:text-right ltr:text-left font-mono">
+              <div className="space-y-1">
+                <div className="text-xl sm:text-2xl font-extrabold font-display text-white">99.99%</div>
+                <div className="text-xs text-slate-300 font-arabic">{t('جاهزية التشغيل السحابي', 'Cloud SLA Uptime')}</div>
               </div>
-              <div>
-                <div className="text-xl sm:text-2xl font-bold font-display text-blue-400">{t('أعلى المعايير', 'High Standard')}</div>
-                <div className="text-xs text-slate-300 font-arabic">{t('معايير أمان موثوقة', 'Security Standards')}</div>
+              <div className="space-y-1">
+                <div className="text-xl sm:text-2xl font-extrabold font-display text-blue-400">&lt; 25ms</div>
+                <div className="text-xs text-slate-300 font-arabic">{t('زمن استجابة الحافة الإقليمية', 'Regional Edge Latency')}</div>
               </div>
-              <div>
-                <div className="text-xl sm:text-2xl font-bold font-display text-teal-400">{t('مبني للاستقرار', 'Built for Uptime')}</div>
-                <div className="text-xs text-slate-300 font-arabic">{t('هندسة موثوقة للتشغيل المستمر', 'Reliability-first Architecture')}</div>
+              <div className="space-y-1">
+                <div className="text-xl sm:text-2xl font-extrabold font-display text-teal-400">Zero-Lock</div>
+                <div className="text-xs text-slate-300 font-arabic">{t('عزل بيانات المؤسسات', 'Multi-Tenant Isolation')}</div>
               </div>
             </div>
           </div>
 
-          {/* Right / Interactive Architecture System Visual */}
+          {/* Right Column: Architectural Command Console & Topology Visual */}
           <div className="lg:col-span-5 relative">
-            <div className="glass-card rounded-2xl p-5 border border-slate-800 shadow-2xl bg-slate-900/90 relative overflow-hidden">
-              {/* Top Control Toggle */}
-              <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-800">
+            <div className="rounded-2xl border border-white/[0.09] bg-slate-900/95 shadow-2xl overflow-hidden">
+              {/* Console Header Bar */}
+              <div className="flex items-center justify-between px-4 py-3 bg-slate-950/90 border-b border-white/[0.07]">
                 <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
-                  <span className="text-xs font-mono text-slate-300 ml-1">novixa-core-engine</span>
+                  <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                  <span className="text-[11px] font-mono text-slate-300 ml-1" translate="no">
+                    novixa://cluster-core-mesh
+                  </span>
                 </div>
 
-                <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-[11px] font-medium">
+                {/* Mode Selector */}
+                <div className="flex items-center gap-1 bg-slate-900 p-0.5 rounded-lg border border-white/[0.07] text-[11px]">
                   <button
-                    onClick={() => setActiveTab('fragmented')}
-                    className={`px-2.5 py-1 rounded-md transition-all ${
-                      activeTab === 'fragmented'
-                        ? 'bg-rose-950 text-rose-300 font-semibold border border-rose-800/50'
-                        : 'text-slate-300 hover:text-white'
+                    onClick={() => setActiveTab('topology')}
+                    className={`px-2.5 py-1 rounded-md transition-colors ${
+                      activeTab === 'topology'
+                        ? 'bg-blue-600 text-white font-medium shadow-xs'
+                        : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    {t('أدوات مجزأة', 'Fragmented')}
+                    {t('المعمارية', 'Topology')}
                   </button>
                   <button
-                    onClick={() => setActiveTab('unified')}
-                    className={`px-2.5 py-1 rounded-md transition-all ${
-                      activeTab === 'unified'
-                        ? 'bg-blue-600 text-white font-semibold shadow-sm'
-                        : 'text-slate-300 hover:text-white'
+                    onClick={() => setActiveTab('metrics')}
+                    className={`px-2.5 py-1 rounded-md transition-colors ${
+                      activeTab === 'metrics'
+                        ? 'bg-blue-600 text-white font-medium shadow-xs'
+                        : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    {t('نظام نوڤيكسا', 'Novixa Core')}
+                    {t('الأداء والضغط', 'Live Metrics')}
                   </button>
                 </div>
               </div>
 
-              {/* Interactive Visual Content */}
-              <AnimatePresence mode="wait">
-                {activeTab === 'fragmented' ? (
-                  <motion.div
-                    key="fragmented"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="space-y-3 py-2"
-                  >
-                    <div className="p-3 bg-rose-950/30 border border-rose-900/50 rounded-xl text-xs text-rose-300 flex items-start gap-2">
-                      <span className="w-2 h-2 rounded-full bg-rose-500 mt-1.5 shrink-0"></span>
-                      <span>
-                        {t(
-                          'تشتت البيانات بين الواتساب وشيتات الإكسل والورق يسبب أخطاء تشغيلية وبطء شديد في المبيعات.',
-                          'Data scattered across WhatsApp, manual spreadsheets, and physical paper leads to constant fulfillment errors.'
-                        )}
+              {/* Console Body */}
+              <div className="p-4 sm:p-5 space-y-4">
+                {activeTab === 'topology' ? (
+                  <div className="space-y-3">
+                    <div className="text-[11px] font-mono text-slate-300 uppercase tracking-wider flex items-center justify-between">
+                      <span>{t('طبقات المعمارية الموزعة (انقر للفحص)', 'Distributed Architecture Nodes (Click to Inspect)')}</span>
+                      <span className="text-emerald-400 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                        Live
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 text-slate-300">
-                        <div className="text-slate-200 font-semibold flex items-center gap-1.5 mb-1">
-                          <WhatsAppIcon className="w-3.5 h-3.5 text-rose-400" />
-                          <span>{t('واتساب ومحادثات متفرقة', 'WhatsApp & Chats')}</span>
-                        </div>
-                        <p className="text-[11px] text-slate-300">{t('طلبات ضائعة وبدون أتمتة', 'Lost orders & zero automation')}</p>
-                      </div>
-
-                      <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 text-slate-300">
-                        <div className="text-slate-200 font-semibold flex items-center gap-1.5 mb-1">
-                          <Database className="w-3.5 h-3.5 text-amber-400" />
-                          <span>{t('ملفات إكسل', 'Excel Files')}</span>
-                        </div>
-                        <p className="text-[11px] text-slate-300">{t('تكرار يدوّي وتعارض مخزون', 'Manual entry & stock conflict')}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="unified"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="space-y-4 py-1"
-                  >
-                    {/* Core Hub */}
-                    <div className="p-4 bg-gradient-to-br from-blue-950/80 via-slate-900 to-slate-950 rounded-xl border border-blue-600/40 relative">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white font-extrabold font-display text-xs">
-                            N
-                          </div>
-                          <div>
-                            <div className="text-xs font-bold text-white font-display">NOVIXA CORE SYSTEM</div>
-                            <div className="text-[10px] text-blue-300 font-mono">Status: Connected & Operational</div>
-                          </div>
-                        </div>
-                        <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 text-[10px] border border-emerald-800 font-mono">
-                          LIVE HIGH SPEED
-                        </span>
-                      </div>
-
-                      {/* Interactive Connected Nodes */}
-                      <div className="grid grid-cols-2 gap-2">
-                        {nodes.map((node) => {
-                          const IconComp = node.icon;
-                          const isSelected = selectedNode === node.id;
-                          return (
-                            <button
-                              key={node.id}
-                              onClick={() => setSelectedNode(node.id)}
-                              className={`p-2.5 rounded-lg border text-right rtl:text-right ltr:text-left transition-all ${
-                                isSelected
-                                  ? 'bg-blue-600/20 border-blue-500 text-white shadow-md'
-                                  : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
-                              }`}
-                            >
-                              <div className="flex items-center gap-1.5 text-xs font-semibold mb-0.5">
-                                <IconComp className="w-3.5 h-3.5 text-blue-400" />
-                                <span>{t(node.nameAr, node.nameEn)}</span>
+                    {/* Interactive Topology Nodes List */}
+                    <div className="space-y-2">
+                      {topologyNodes.map((node) => {
+                        const Icon = node.icon;
+                        const isSelected = selectedNode === node.id;
+                        return (
+                          <button
+                            key={node.id}
+                            onClick={() => setSelectedNode(node.id)}
+                            className={`w-full p-3 rounded-xl border text-right rtl:text-right ltr:text-left transition-all duration-150 flex items-center justify-between cursor-pointer ${
+                              isSelected
+                                ? 'bg-blue-950/40 border-blue-500/50 text-white shadow-xs'
+                                : 'bg-slate-950/60 border-white/[0.06] text-slate-300 hover:border-white/[0.14] hover:bg-slate-950/90'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div
+                                className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border ${
+                                  isSelected
+                                    ? 'bg-blue-600 text-white border-blue-400'
+                                    : 'bg-slate-900 text-blue-400 border-white/[0.06]'
+                                }`}
+                              >
+                                <Icon className="w-4 h-4" />
                               </div>
-                              <div className="text-[10px] text-slate-300 font-mono">{t(node.countAr, node.countEn)}</div>
-                            </button>
-                          );
-                        })}
+                              <div>
+                                <div className="text-xs font-semibold font-display text-white">
+                                  {t(node.nameAr, node.nameEn)}
+                                </div>
+                                <div className="text-[10px] text-slate-400 font-mono">
+                                  {t(node.specAr, node.specEn)}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-[11px] font-mono font-medium text-teal-400 shrink-0">
+                              {node.latency}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Live Node Inspection Console */}
+                    <div className="p-3.5 rounded-xl bg-slate-950/90 border border-white/[0.08] text-xs font-arabic space-y-1">
+                      <div className="flex items-center justify-between text-[11px] font-mono text-blue-400 pb-1 border-b border-white/[0.06]">
+                        <span>[System Inspector]</span>
+                        <span>Latency: {activeNodeInfo.latency}</span>
+                      </div>
+                      <p className="text-slate-300 pt-1 leading-relaxed text-[11px] sm:text-xs">
+                        {t(activeNodeInfo.detailAr, activeNodeInfo.detailEn)}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  /* Metrics Tab */
+                  <div className="space-y-3 py-1 font-mono text-xs">
+                    <div className="text-[11px] text-slate-300 uppercase tracking-wider">
+                      {t('مؤشرات الأداء تحت الحمل العالي', 'System Metrics Under High Concurrency')}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <div className="p-3 bg-slate-950/80 rounded-xl border border-white/[0.06] space-y-1">
+                        <div className="text-[10px] text-slate-400">Throughput (RPS)</div>
+                        <div className="text-lg font-bold text-white font-display">12,850</div>
+                        <div className="text-[10px] text-emerald-400">+14% Headroom</div>
+                      </div>
+
+                      <div className="p-3 bg-slate-950/80 rounded-xl border border-white/[0.06] space-y-1">
+                        <div className="text-[10px] text-slate-400">P99 Latency</div>
+                        <div className="text-lg font-bold text-teal-400 font-display">18.4 ms</div>
+                        <div className="text-[10px] text-slate-400">Sub-50ms Target</div>
+                      </div>
+
+                      <div className="p-3 bg-slate-950/80 rounded-xl border border-white/[0.06] space-y-1">
+                        <div className="text-[10px] text-slate-400">Database Connection Pool</div>
+                        <div className="text-lg font-bold text-white font-display">42 / 200</div>
+                        <div className="text-[10px] text-emerald-400">Healthy (21%)</div>
+                      </div>
+
+                      <div className="p-3 bg-slate-950/80 rounded-xl border border-white/[0.06] space-y-1">
+                        <div className="text-[10px] text-slate-400">Error Rate (5xx)</div>
+                        <div className="text-lg font-bold text-emerald-400 font-display">0.000 %</div>
+                        <div className="text-[10px] text-slate-400">Zero Unhandled Faults</div>
                       </div>
                     </div>
 
-                    {/* Node Insight Detail */}
-                    <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Zap className="w-4 h-4 text-teal-400" />
-                        <span className="text-slate-300">
-                          {selectedNode === 'orders' && t('ربط مباشر بين كيو آر المبيعات والمطبخ', 'Instant order routing to Kitchen POS')}
-                          {selectedNode === 'inventory' && t('مزامنة المستودع تلقائيًا بعد كل عملية بيع', 'Auto ingredient deduction per order')}
-                          {selectedNode === 'customers' && t('ملف عميل موحد مع نقاط الولاء المباشرة', 'Universal loyalty ID and customer history')}
-                          {selectedNode === 'pulse' && t('تصنيف الذكاء الاصطناعي للملاحظات التشغيلية', 'AI sentiment classification on operational logs')}
-                        </span>
-                      </div>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <div className="p-3 bg-slate-950/80 rounded-xl border border-white/[0.06] flex items-center justify-between text-[11px]">
+                      <span className="text-slate-300">Cluster Replication Status:</span>
+                      <span className="text-emerald-400 font-bold">In-Sync • 3 Read Replicas</span>
                     </div>
-                  </motion.div>
+                  </div>
                 )}
-              </AnimatePresence>
 
-              {/* Bottom System Status */}
-              <div className="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300 font-mono">
-                <span className="flex items-center gap-1.5">
-                  <Lock className="w-3 h-3 text-blue-400" />
-                  <span>256-Bit Encrypted Data Sync</span>
-                </span>
-                <span className="text-slate-300">Response: 14ms</span>
+                {/* Console Footer */}
+                <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono text-slate-300">
+                  <span className="flex items-center gap-1.5">
+                    <Lock className="w-3.5 h-3.5 text-blue-400" />
+                    <span>Zero-Trust Security Topology</span>
+                  </span>
+                  <span className="text-emerald-400">All Clusters Active</span>
+                </div>
               </div>
             </div>
           </div>
@@ -257,3 +311,5 @@ export const HeroSection: React.FC = () => {
     </section>
   );
 };
+
+export default HeroSection;

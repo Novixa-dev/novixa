@@ -7,7 +7,7 @@ import { CASE_STUDIES } from '../../content/data';
 import { CaseStudy } from '../../types';
 import { 
   Briefcase, ArrowLeft, ArrowRight, ExternalLink, Quote, 
-  CheckCircle2, Layers, Cpu, X 
+  CheckCircle2, Layers, Cpu, X, Terminal, Database, Shield
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -36,58 +36,66 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden border-t border-slate-900/80">
+      {/* Background subtle architectural grid */}
+      <div className="absolute inset-0 architectural-grid opacity-25 pointer-events-none -z-10" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
         {showHeader && (
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 text-right rtl:text-right ltr:text-left">
             <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium">
-                <Briefcase className="w-3.5 h-3.5" />
-                <span>{t('أعمالنا المختارة والمعمارية', 'Selected Engineering Case Studies')}</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800 text-blue-300 text-xs font-mono font-medium">
+                <Briefcase className="w-3.5 h-3.5 text-blue-400" />
+                <span>{t('أعمالنا ونماذجنا المعمارية', 'Selected Engineering Case Studies')}</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
-                {t('كيف نتعامل مع مشاكل تشغيلية حقيقية.', 'How we approach real operational problems.')}
+              <h2 className="text-2xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
+                {t('كيف نتعامل مع المشاكل التشغيلية المعقدة.', 'How we engineer solutions for real operational hurdles.')}
               </h2>
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-arabic">
                 {t(
-                  'سيناريوهات معمارية توضيحية — مبنية على مشاكل تشغيلية شائعة في هذه القطاعات — تُظهر كيف نفكر هندسيًا في تحويل التحدي إلى نظام مستقر.',
-                  'Illustrative architecture scenarios — grounded in operational problems common to each sector — showing how we engineer systems end-to-end.'
+                  'سيناريوهات معمارية توضيحية — مبنية على متطلبات تشغيلية دقيقة في قطاعات الأعمال الحيوية — تُظهر منهجيتنا الهندسية في تحويل التعقيد إلى استقرار.',
+                  'Illustrative architecture scenarios grounded in real operational constraints across vital enterprise sectors — showing our methodology end-to-end.'
                 )}
               </p>
             </div>
 
             <Link
               href={`/${language}/work`}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors self-start md:self-auto"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors self-start md:self-auto group"
             >
               <span>{t('عرض جميع الأعمال المختارة', 'Explore All Selected Work')}</span>
-              <ArrowIcon className="w-3.5 h-3.5" />
+              <ArrowIcon className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
             </Link>
           </div>
         )}
 
         {/* Case Studies Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {CASE_STUDIES.map((cs) => (
+          {CASE_STUDIES.map((cs, idx) => (
             <div
               key={cs.id}
-              className="glass-card glass-card-hover rounded-2xl p-6 sm:p-7 border border-slate-800 flex flex-col justify-between gap-6 relative group"
+              className="glass-card rounded-2xl p-6 sm:p-7 border border-white/[0.08] bg-slate-900/60 hover:border-blue-500/40 transition-colors duration-300 flex flex-col justify-between gap-6 relative group"
             >
               <div className="space-y-4 text-right rtl:text-right ltr:text-left">
-                {/* Meta Badge */}
+                {/* Meta Header */}
                 <div className="flex items-center justify-between flex-wrap gap-2">
-                  <span className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-slate-900 text-blue-400 border border-slate-800">
-                    {cs.industry[isRtl ? 'ar' : 'en']}
-                  </span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950 text-slate-300 border border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono text-slate-300 bg-slate-950 border border-white/[0.06] px-2 py-0.5 rounded">
+                      ARCH-0{idx + 1}
+                    </span>
+                    <span className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-blue-950/70 text-blue-300 border border-blue-900/60">
+                      {cs.industry[isRtl ? 'ar' : 'en']}
+                    </span>
+                  </div>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950 text-slate-300 border border-white/[0.06]">
                     {cs.caseStudyTypeLabel[isRtl ? 'ar' : 'en']}
                   </span>
                 </div>
 
                 {/* Title */}
-                <h3 className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-blue-400 transition-colors">
+                <h3 className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-blue-300 transition-colors">
                   <Link href={`/${language}/work/${cs.id}`}>
                     {cs.title[isRtl ? 'ar' : 'en']}
                   </Link>
@@ -100,18 +108,18 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
 
                 {/* Metrics Highlights */}
                 <div className="grid grid-cols-2 gap-2 pt-1">
-                  {cs.metrics.slice(0, 2).map((m, idx) => (
-                    <div key={idx} className="p-2.5 bg-slate-950 rounded-xl border border-slate-800">
+                  {cs.metrics.slice(0, 2).map((m, mIdx) => (
+                    <div key={mIdx} className="p-3 bg-slate-950/90 rounded-xl border border-white/[0.06]">
                       <div className="text-base sm:text-lg font-bold font-display text-blue-400">{m.value}</div>
-                      <div className="text-[10px] text-slate-300 font-arabic truncate">{m.label[isRtl ? 'ar' : 'en']}</div>
+                      <div className="text-[11px] text-slate-300 font-arabic truncate mt-0.5">{m.label[isRtl ? 'ar' : 'en']}</div>
                     </div>
                   ))}
                 </div>
 
                 {/* Tech Pills */}
                 <div className="flex flex-wrap gap-1.5 pt-1">
-                  {cs.technologies.slice(0, 4).map((tech, idx) => (
-                    <span key={idx} className="text-[10px] font-mono text-slate-300 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded">
+                  {cs.technologies.slice(0, 4).map((tech, tIdx) => (
+                    <span key={tIdx} className="text-[10px] font-mono text-slate-300 bg-slate-950 border border-white/[0.06] px-2 py-0.5 rounded">
                       {tech}
                     </span>
                   ))}
@@ -119,7 +127,7 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
               </div>
 
               {/* Bottom Action */}
-              <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+              <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
                 <span className="text-xs text-slate-300 font-mono">{cs.location[isRtl ? 'ar' : 'en']}</span>
 
                 <Link
@@ -148,7 +156,8 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
             >
               <button
                 onClick={() => setActiveModalCase(null)}
-                className="absolute top-5 left-5 rtl:left-5 ltr:right-5 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white"
+                className="absolute top-5 left-5 rtl:left-5 ltr:right-5 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                aria-label={isRtl ? 'إغلاق' : 'Close'}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -179,11 +188,11 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
               </div>
 
               <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
-                <span className="text-xs text-slate-400 font-mono">Location: {activeModalCase.location[isRtl ? 'ar' : 'en']}</span>
+                <span className="text-xs text-slate-300 font-mono">Location: {activeModalCase.location[isRtl ? 'ar' : 'en']}</span>
                 <Link
                   href={`/${language}/start-project`}
                   onClick={() => setActiveModalCase(null)}
-                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs"
+                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors"
                 >
                   {t('ناقش مشروعك معنا', 'Consult on Your System')}
                 </Link>

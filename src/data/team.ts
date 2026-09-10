@@ -1,125 +1,158 @@
 /**
- * Novixa Team Data Layer
- * بيانات فريق العمل الأساسي في شركة نوڤيكسا
+ * Novixa Engineering Disciplines & Methodology Data Layer
+ * هيكل التخصصات الهندسية، معايير المعمارية، ونموذج تسليم البرمجيات في نوڤيكسا
+ * Note: Adheres strictly to AGENTS.md anti-fabrication mandate (no fake stock avatars or invented individuals).
  */
 
-export interface TeamMember {
+export interface EngineeringDiscipline {
   id: string;
-  name: string;
-  nameEn?: string;
-  role: string;
-  roleEn?: string;
-  bio: string;
-  bioEn?: string;
-  image: string;
-  linkedin: string;
-  github: string;
-  twitter: string;
+  titleAr: string;
+  titleEn: string;
+  badgeAr: string;
+  badgeEn: string;
+  descriptionAr: string;
+  descriptionEn: string;
+  techStack: string[];
+  keyDeliverablesAr: string[];
+  keyDeliverablesEn: string[];
+  icon: 'Server' | 'Layers' | 'Cpu' | 'ShieldCheck';
 }
 
-export const TEAM_MEMBERS: TeamMember[] = [
+export interface GovernanceStandard {
+  step: string;
+  titleAr: string;
+  titleEn: string;
+  descAr: string;
+  descEn: string;
+  metric: string;
+}
+
+export const ENGINEERING_DISCIPLINES: EngineeringDiscipline[] = [
   {
-    id: 'ahmed-al-farsi',
-    name: 'م. أحمد الفارسي',
-    nameEn: 'Eng. Ahmed Al-Farsi',
-    role: 'المدير التقني (CTO)',
-    roleEn: 'Chief Technology Officer',
-    bio: 'يقود التوجه المعماري والابتكار البرمجي للمنصات السحابية والنظم الموزعة في نوڤيكسا.',
-    bioEn: 'Architecting distributed enterprise platforms and high-throughput cloud engines.',
-    image: 'https://i.pravatar.cc/300?img=11',
-    linkedin: 'https://linkedin.com/company/novixa',
-    github: 'https://github.com/novixa',
-    twitter: 'https://x.com/novixa',
+    id: 'distributed-systems',
+    icon: 'Server',
+    titleAr: 'هندسة النظم الموزعة والسحابة متعددة المستأجرين',
+    titleEn: 'Distributed Cloud & Multi-Tenant Systems',
+    badgeAr: 'معمارية النظم الأساسية',
+    badgeEn: 'Core Systems Architecture',
+    descriptionAr:
+      'تصميم وبناء البنى التحتية السحابية القابلة للتوسع الأفقي، مع عزل أمني صارم لبيانات العملاء وإدارة التوجيه عند الـ Edge وزمن استجابة أقل من 30ms.',
+    descriptionEn:
+      'Engineering horizontal scale cloud infrastructures with strict multi-tenant isolation, edge routing topologies, and predictable sub-30ms latencies.',
+    techStack: ['Go', 'Node.js', 'PostgreSQL', 'Redis', 'Docker / K8s', 'Kafka'],
+    keyDeliverablesAr: [
+      'عزل قواعد البيانات على مستوى المستأجر (Tenant Data Isolation)',
+      'توزيع الأحمال وموازنة الطلبات المتزامنة الضخمة',
+      'توفير استمرارية تشغيلية معتمدة بنسبة 99.99%',
+    ],
+    keyDeliverablesEn: [
+      'Strict tenant data partitioning & encryption',
+      'Dynamic high-concurrency request routing',
+      'SLA-backed 99.99% operational uptime',
+    ],
   },
   {
-    id: 'sara-al-khoury',
-    name: 'سارة الخوري',
-    nameEn: 'Sara Al-Khoury',
-    role: 'مهندسة برمجيات أولى (Lead Full Stack)',
-    roleEn: 'Lead Full Stack Engineer',
-    bio: 'متخصصة في هندسة الواجهات التفاعلية فائقة الأداء وبناء النظم البرمجية السحابية.',
-    bioEn: 'Specialized in sub-second interactive frontends and resilient cloud systems.',
-    image: 'https://i.pravatar.cc/300?img=32',
-    linkedin: 'https://linkedin.com/company/novixa',
-    github: 'https://github.com/novixa',
-    twitter: 'https://x.com/novixa',
+    id: 'frontend-systems',
+    icon: 'Layers',
+    titleAr: 'هندسة الواجهات التفاعلية والأنظمة الميدانية',
+    titleEn: 'High-Performance Client & Offline Systems',
+    badgeAr: 'هندسة واجهات النظم',
+    badgeEn: 'Client-Side Systems',
+    descriptionAr:
+      'تطوير واجهات مستخدم معقدة وأنظمة نقاط بيع (POS) وتطبيقات جوال تعمل بنمط Offline-First مع مزامنة فورية دون تعارض ومعدل 60 إطاراً في الثانية.',
+    descriptionEn:
+      'Building responsive operational dashboards, offline-resilient POS clients, and sub-second web applications optimized for instantaneous interaction.',
+    techStack: ['Next.js 15', 'TypeScript', 'React Native', 'Tailwind CSS', 'IndexedDB', 'WebSockets'],
+    keyDeliverablesAr: [
+      'مرونة العمل دون اتصال (Offline-First Architecture)',
+      'مزامنة البيانات الحية وتحديث الشاشات لحظياً',
+      'تصميم معماري يضمن سرعة التحميل وتوافق الهواتف والأجهزة اللوحية',
+    ],
+    keyDeliverablesEn: [
+      'Zero-drop local caching & offline continuity',
+      'Sub-second real-time state synchronization',
+      'Enterprise design systems built for tablet and desktop scale',
+    ],
   },
   {
-    id: 'omar-al-saeed',
-    name: 'عمر السعيد',
-    nameEn: 'Omar Al-Saeed',
-    role: 'مهندس معمارية السحابة (Cloud Solutions Architect)',
-    roleEn: 'Cloud Solutions Architect',
-    bio: 'خبير في بناء وتوسيع البنى السحابية متعددة المستأجرين مع جاهزية تشغيلية 99.99%.',
-    bioEn: 'Expert in multi-tenant architectures, Kubernetes orchestration, and 99.99% uptime SLAs.',
-    image: 'https://i.pravatar.cc/300?img=12',
-    linkedin: 'https://linkedin.com/company/novixa',
-    github: 'https://github.com/novixa',
-    twitter: 'https://x.com/novixa',
+    id: 'applied-ai',
+    icon: 'Cpu',
+    titleAr: 'الذكاء الاصطناعي التطبيقي وهندسة المعرفة (RAG)',
+    titleEn: 'Applied AI & Enterprise Knowledge Engineering',
+    badgeAr: 'الذكاء الاصطناعي المؤسسي',
+    badgeEn: 'Enterprise RAG & AI',
+    descriptionAr:
+      'دمج نماذج الذكاء الاصطناعي الكبيرة (LLMs) داخل العمليات التشغيلية، وبناء خطوط معالجة واستخراج المستندات (OCR) ومساعدات أعمال آمنة تماماً.',
+    descriptionEn:
+      'Embedding private LLM workflows, automated document processing (OCR), and enterprise retrieval-augmented generation (RAG) into proprietary business logic.',
+    techStack: ['Python', 'LangChain', 'pgvector / Qdrant', 'FastAPI', 'OpenAI / Claude APIs', 'Tesseract'],
+    keyDeliverablesAr: [
+      'استخراج وفهرسة بيانات الفواتير والعقود بدقة تفوق 99%',
+      'مساعدات بحث واستعلام آمنة تعتمد على وثائق المؤسسة الداخلية',
+      'حوكمة تامة وحماية مطلقة للبيانات الحساسة من التسريب',
+    ],
+    keyDeliverablesEn: [
+      '99%+ accurate automated document & invoice extraction',
+      'Private enterprise knowledge search with zero leakage',
+      'Strict corporate data privacy & air-gapped options',
+    ],
   },
   {
-    id: 'layla-al-mansoori',
-    name: 'ليلى المنصوري',
-    nameEn: 'Layla Al-Mansoori',
-    role: 'مديرة تصميم الواجهات وتجربة المستخدم (Lead UI/UX)',
-    roleEn: 'Lead UI/UX Designer',
-    bio: 'تصمم تجارب ومنتجات رقمية تركز على سهولة الاستخدام والدقة البصرية العالية.',
-    bioEn: 'Crafting intuitive digital experiences with architectural precision and restraint.',
-    image: 'https://i.pravatar.cc/300?img=47',
-    linkedin: 'https://linkedin.com/company/novixa',
-    github: 'https://github.com/novixa',
-    twitter: 'https://x.com/novixa',
+    id: 'devsecops',
+    icon: 'ShieldCheck',
+    titleAr: 'أمن المعلومات والحوكمة السحابية (DevSecOps)',
+    titleEn: 'DevSecOps & Zero-Trust Infrastructure',
+    badgeAr: 'الأمان والموثوقية',
+    badgeEn: 'Security & Reliability',
+    descriptionAr:
+      'تطبيق مبادئ انعدام الثقة (Zero-Trust)، وتشفير البيانات في وضع السكون وأثناء النقل، وأتمتة خطوط الاختبار والنشر الآمن (CI/CD) دون انقطاع.',
+    descriptionEn:
+      'Enforcing zero-trust security postures, end-to-end encryption at rest and in transit, and immutable automated CI/CD pipelines with zero-downtime rollouts.',
+    techStack: ['Terraform', 'GitHub Actions', 'Vault', 'Cloudflare Zero Trust', 'Prometheus / Grafana', 'OpenTelemetry'],
+    keyDeliverablesAr: [
+      'تشفير صارم (AES-256 / TLS 1.3) لجميع نقاط الاتصال',
+      'نشر تلقائي آمن مع اختبارات ضغط وحقن أخطاء مستمرة',
+      'مراقبة تشغيلية فورية وتنبيهات استباقية قبل حدوث الأعطال',
+    ],
+    keyDeliverablesEn: [
+      'Bank-grade AES-256 and TLS 1.3 encryption standards',
+      'Automated load-testing and zero-downtime deployments',
+      'Real-time OpenTelemetry observability and proactive alerting',
+    ],
+  },
+];
+
+export const GOVERNANCE_STANDARDS: GovernanceStandard[] = [
+  {
+    step: '01',
+    titleAr: 'التوثيق المعماري الصارم (ADR & RFC)',
+    titleEn: 'Architectural Decision Records (ADRs)',
+    descAr: 'لا يتم كتابة سطر برمجي واحد دون وثيقة معمارية تحدد نموذج البيانات، متطلبات الأمان، وسيناريوهات التوسع.',
+    descEn: 'Every system is preceded by comprehensive RFCs outlining data models, threat vectors, and scale projections.',
+    metric: '100% Spec-First',
   },
   {
-    id: 'dr-karim-abdelaziz',
-    name: 'د. كريم عبد العزيز',
-    nameEn: 'Dr. Karim Abdelaziz',
-    role: 'خبير الذكاء الاصطناعي وهندسة البيانات (AI & Data Architect)',
-    roleEn: 'AI & Data Solutions Architect',
-    bio: 'متخصص في دمج نماذج الذكاء الاصطناعي التطبيقية وتحليل البيانات الضخمة للشركات.',
-    bioEn: 'Pioneering practical generative AI integrations, RAG pipelines, and enterprise data models.',
-    image: 'https://i.pravatar.cc/300?img=60',
-    linkedin: 'https://linkedin.com/company/novixa',
-    github: 'https://github.com/novixa',
-    twitter: 'https://x.com/novixa',
+    step: '02',
+    titleAr: 'اختبارات الإجهاد والتحمل (Stress Testing)',
+    titleEn: 'High-Concurrency Stress Testing',
+    descAr: 'محاكاة أحمال ذروة تفوق 10,000 طلب بالثانية لقياس زمن الاستجابة P99 قبل إطلاق أي نظام للإنتاج الفعلي.',
+    descEn: 'Simulating loads exceeding 10,000 concurrent RPS to measure P99 latency before greenlighting production.',
+    metric: 'P99 < 35ms',
   },
   {
-    id: 'mariam-al-shamsi',
-    name: 'مريم الشامسي',
-    nameEn: 'Mariam Al-Shamsi',
-    role: 'مديرة المنتجات الرقمية (Digital Product Lead)',
-    roleEn: 'Digital Product Lead',
-    bio: 'تقود استراتيجيات إطلاق منتجات SaaS وتنسيق المتطلبات التقنية مع أهداف الأعمال.',
-    bioEn: 'Driving B2B SaaS product roadmaps and aligning technical execution with business metrics.',
-    image: 'https://i.pravatar.cc/300?img=45',
-    linkedin: 'https://linkedin.com/company/novixa',
-    github: 'https://github.com/novixa',
-    twitter: 'https://x.com/novixa',
+    step: '03',
+    titleAr: 'مراجعة الأكواد والفحص الأمني التلقائي',
+    titleEn: 'Static Analysis & Peer Reviews',
+    descAr: 'فحص دوري صارم يشمل التحليل الساكن للأكواد (SAST)، اكتشاف الاعتماديات الضعيفة، ومراجعات ثنائية للسلامة.',
+    descEn: 'Mandatory peer reviews, automated vulnerability scanning, and strict dependency audits on every commit.',
+    metric: 'Zero Critical Vulns',
   },
   {
-    id: 'tariq-al-haddad',
-    name: 'طارق الحداد',
-    nameEn: 'Tariq Al-Haddad',
-    role: 'مهندس أمن المعلومات والأنظمة (DevSecOps Engineer)',
-    roleEn: 'DevSecOps & Systems Engineer',
-    bio: 'يحرص على تطبيق أعلى معايير الحماية والتشفير وأتمتة خطوط النشر الآمن.',
-    bioEn: 'Enforcing zero-trust security topologies, encryption protocols, and automated CI/CD.',
-    image: 'https://i.pravatar.cc/300?img=59',
-    linkedin: 'https://linkedin.com/company/novixa',
-    github: 'https://github.com/novixa',
-    twitter: 'https://x.com/novixa',
-  },
-  {
-    id: 'david-miller',
-    name: 'ديفيد ميلر',
-    nameEn: 'David Miller',
-    role: 'مهندس أداء ونظم موزعة (Distributed Systems Engineer)',
-    roleEn: 'Distributed Systems Engineer',
-    bio: 'يركز على تسريع زمن الاستجابة وتقليل الإبطاء ومعالجة الطلبات المتزامنة الضخمة.',
-    bioEn: 'Optimizing high-concurrency systems, edge compute caches, and low-latency database queries.',
-    image: 'https://i.pravatar.cc/300?img=33',
-    linkedin: 'https://linkedin.com/company/novixa',
-    github: 'https://github.com/novixa',
-    twitter: 'https://x.com/novixa',
+    step: '04',
+    titleAr: 'المراقبة المستمرة واتفاقيات الخدمة (SLAs)',
+    titleEn: 'Continuous Telemetry & SLA Guarantees',
+    descAr: 'تتبع مقاييس الأداء والأخطاء لحظياً مع توفير دعم هندسي مباشر واستجابة للأعطال خلال دقائق معدودة.',
+    descEn: 'Real-time telemetry, automated error triaging, and dedicated architectural incident response.',
+    metric: '99.99% Uptime SLA',
   },
 ];

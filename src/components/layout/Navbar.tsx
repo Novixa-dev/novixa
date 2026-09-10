@@ -46,10 +46,10 @@ export const Navbar: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
         scrolled
-          ? 'bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 py-3.5 shadow-2xl shadow-slate-950/50'
-          : 'bg-transparent py-5'
+          ? 'bg-slate-950/95 backdrop-blur-xl border-white/[0.09] py-3 shadow-xl shadow-black/50'
+          : 'bg-slate-950/80 backdrop-blur-md border-white/[0.05] py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,7 +66,7 @@ export const Navbar: React.FC = () => {
           {/* Desktop Navigation Links from Centralized Data Layer */}
           <nav
             aria-label={t('القائمة الرئيسية', 'Main Navigation')}
-            className="hidden lg:flex items-center gap-1 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-full px-3 py-1 shadow-sm"
+            className="hidden lg:flex items-center gap-1 bg-slate-900/50 border border-white/[0.07] rounded-xl px-2 py-1"
           >
             {MAIN_NAV_ITEMS.map((item) => {
               const itemPath = `/${language}${item.slug ? `/${item.slug}` : ''}`;
@@ -78,10 +78,10 @@ export const Navbar: React.FC = () => {
                 <Link
                   key={item.key}
                   href={itemPath}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 relative ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150 relative ${
                     isActive
-                      ? 'text-white bg-blue-600 shadow-sm font-semibold'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      ? 'text-white bg-blue-600/90 shadow-sm font-semibold'
+                      : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
                   }`}
                 >
                   {t(item.labelAr, item.labelEn)}
@@ -90,8 +90,14 @@ export const Navbar: React.FC = () => {
             })}
           </nav>
 
-          {/* Right Actions: Social Links + Search + Language + CTA */}
+          {/* Right Actions: System Status + Social Links + Search + Language + CTA */}
           <div className="hidden lg:flex items-center gap-2">
+            {/* Architectural System Status Indicator */}
+            <div className="hidden xl:inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-900/60 border border-white/[0.07] text-[11px] font-mono text-slate-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>SLA 99.99%</span>
+            </div>
+
             {/* Social Icons */}
             <div className="flex items-center gap-1 pl-1 rtl:pl-0 rtl:pr-1 border-e border-slate-800 pe-2">
               {SOCIAL_LINKS.map((social) => {
@@ -104,7 +110,7 @@ export const Navbar: React.FC = () => {
                     rel="noopener noreferrer"
                     title={social.name}
                     aria-label={`Novixa on ${social.name}`}
-                    className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                    className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.06] transition-colors"
                   >
                     <Icon className="w-3.5 h-3.5" />
                   </a>
@@ -115,7 +121,7 @@ export const Navbar: React.FC = () => {
             {/* Search / Command Menu Trigger */}
             <button
               onClick={triggerCommandMenu}
-              className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-900/80 border border-white/[0.08] text-xs text-slate-300 hover:text-white hover:border-slate-600 transition-colors cursor-pointer"
               title="Search (Cmd+K)"
               aria-label={t('البحث في الموقع', 'Search the site')}
             >
@@ -126,7 +132,7 @@ export const Navbar: React.FC = () => {
             {/* Language Switcher */}
             <button
               onClick={toggleLanguage}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white hover:border-slate-700 transition-all duration-200 font-medium cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900/80 border border-white/[0.08] text-xs text-slate-300 hover:text-white hover:border-slate-600 transition-colors font-medium cursor-pointer"
               title={isRtl ? 'Switch to English' : 'التحويل للعربية'}
               aria-label={isRtl ? 'Switch to English' : 'التحويل للعربية'}
             >
@@ -137,10 +143,10 @@ export const Navbar: React.FC = () => {
             {/* Primary CTA */}
             <Link
               href={`/${language}/contact`}
-              className="relative group inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs font-semibold px-3.5 py-2 rounded-lg shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+              className="relative group inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-all duration-150"
             >
               <span>{t('تواصل معنا', 'Contact Us')}</span>
-              <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
+              <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
             </Link>
           </div>
 

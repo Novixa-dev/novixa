@@ -1,96 +1,96 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { motion } from 'motion/react';
-import { Linkedin, Github, Twitter } from 'lucide-react';
-import { TeamMember } from '../data/team';
+import { Server, Layers, Cpu, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { EngineeringDiscipline } from '../data/team';
 import { useLanguage } from '../context/LanguageContext';
 
+const iconMap = {
+  Server,
+  Layers,
+  Cpu,
+  ShieldCheck,
+};
+
 interface TeamCardProps {
-  member: TeamMember;
+  member?: any; // Backwards compatibility if needed
+  discipline?: EngineeringDiscipline;
   index?: number;
 }
 
-export const TeamCard: React.FC<TeamCardProps> = ({ member, index = 0 }) => {
-  const { language, t } = useLanguage();
-  const isEn = language === 'en';
+export const TeamCard: React.FC<TeamCardProps> = ({ discipline, index = 0 }) => {
+  const { language, isRtl, t } = useLanguage();
+  const isAr = language === 'ar';
 
-  const displayName = isEn && member.nameEn ? member.nameEn : member.name;
-  const displayRole = isEn && member.roleEn ? member.roleEn : member.role;
-  const displayBio = isEn && member.bioEn ? member.bioEn : member.bio;
+  if (!discipline) return null;
+
+  const IconComponent = iconMap[discipline.icon] || Server;
+  const title = isAr ? discipline.titleAr : discipline.titleEn;
+  const badge = isAr ? discipline.badgeAr : discipline.badgeEn;
+  const description = isAr ? discipline.descriptionAr : discipline.descriptionEn;
+  const deliverables = isAr ? discipline.keyDeliverablesAr : discipline.keyDeliverablesEn;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.45, delay: index * 0.08, ease: 'easeOut' }}
-      className="group glass-card rounded-2xl p-6 sm:p-7 border border-slate-800 bg-slate-900/70 hover:border-blue-400 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center text-center relative overflow-hidden"
+      transition={{ duration: 0.4, delay: index * 0.08, ease: 'easeOut' }}
+      className="group glass-card rounded-2xl p-6 sm:p-8 border border-white/[0.08] bg-slate-900/60 hover:border-blue-500/40 transition-colors duration-300 flex flex-col justify-between relative overflow-hidden text-right rtl:text-right ltr:text-left"
     >
-      {/* Top Subtle Ambient Glow */}
-      <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-blue-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+      <div className="space-y-5">
+        {/* Header with Icon & Category Badge */}
+        <div className="flex items-center justify-between">
+          <div className="w-12 h-12 rounded-xl bg-blue-950/80 border border-blue-800/80 text-blue-400 flex items-center justify-center">
+            <IconComponent className="w-6 h-6" />
+          </div>
+          <span className="text-[11px] font-mono text-blue-300 bg-blue-950/60 border border-blue-900/60 px-3 py-1 rounded-full">
+            {badge}
+          </span>
+        </div>
 
-      {/* Member Avatar */}
-      <div className="relative w-[120px] h-[120px] mb-5 rounded-full p-1 bg-gradient-to-b from-blue-500/30 via-slate-800 to-slate-900 group-hover:from-blue-400 group-hover:to-blue-600 transition-all duration-300 shadow-lg shadow-slate-950/50">
-        <Image
-          src={member.image}
-          alt={displayName}
-          width={120}
-          height={120}
-          className="w-full h-full object-cover rounded-full bg-slate-800"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 rounded-full ring-1 ring-inset ring-white/15 pointer-events-none" />
+        {/* Title */}
+        <div className="space-y-2">
+          <h3 className="text-xl font-bold font-display text-white group-hover:text-blue-300 transition-colors leading-snug">
+            {title}
+          </h3>
+          <p className="text-sm text-slate-300 font-arabic leading-relaxed">
+            {description}
+          </p>
+        </div>
+
+        {/* Deliverables / Standards */}
+        <div className="space-y-2.5 pt-2 border-t border-slate-800/80">
+          <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wider">
+            {t('المخرجات والمعايير المعمارية:', 'Architectural Standards:')}
+          </div>
+          <ul className="space-y-2">
+            {deliverables.map((item, idx) => (
+              <li key={idx} className="flex items-start gap-2 text-xs text-slate-300 font-arabic leading-relaxed">
+                <CheckCircle2 className="w-3.5 h-3.5 text-teal-400 shrink-0 mt-0.5" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      {/* Name and Role */}
-      <h3 className="font-display font-bold text-lg text-white group-hover:text-blue-300 transition-colors tracking-tight">
-        {displayName}
-      </h3>
-      <p className="text-xs font-semibold text-blue-400 font-mono tracking-wide mt-1.5 mb-3 bg-blue-950/60 border border-blue-800/40 px-3 py-1 rounded-full">
-        {displayRole}
-      </p>
-
-      {/* Bio / Experience (High Contrast text-slate-300 for WCAG AA) */}
-      <p className="text-sm text-slate-300 font-arabic leading-relaxed flex-grow max-w-xs mb-5">
-        {displayBio}
-      </p>
-
-      {/* Social Links */}
-      <div className="flex items-center justify-center gap-2.5 pt-4 border-t border-slate-800/80 w-full mt-auto">
-        <a
-          href={member.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${displayName} LinkedIn`}
-          className="p-2 rounded-lg bg-slate-950 text-slate-300 hover:text-white hover:bg-blue-600 hover:border-blue-400 border border-slate-800 transition-all duration-200"
-          title="LinkedIn"
-        >
-          <Linkedin className="w-4 h-4" aria-hidden="true" />
-        </a>
-        <a
-          href={member.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${displayName} GitHub`}
-          className="p-2 rounded-lg bg-slate-950 text-slate-300 hover:text-white hover:bg-blue-600 hover:border-blue-400 border border-slate-800 transition-all duration-200"
-          title="GitHub"
-        >
-          <Github className="w-4 h-4" aria-hidden="true" />
-        </a>
-        <a
-          href={member.twitter}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${displayName} Twitter`}
-          className="p-2 rounded-lg bg-slate-950 text-slate-300 hover:text-white hover:bg-blue-600 hover:border-blue-400 border border-slate-800 transition-all duration-200"
-          title="Twitter (X)"
-        >
-          <Twitter className="w-4 h-4" aria-hidden="true" />
-        </a>
+      {/* Tech Stack Pills */}
+      <div className="pt-5 mt-5 border-t border-slate-800/80">
+        <div className="flex flex-wrap gap-1.5">
+          {discipline.techStack.map((tech, idx) => (
+            <span
+              key={idx}
+              className="text-[10px] font-mono text-slate-300 bg-slate-950 border border-white/[0.06] px-2.5 py-1 rounded-md"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
 };
+
 export default TeamCard;
