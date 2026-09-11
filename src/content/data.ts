@@ -211,7 +211,7 @@ export const PRODUCTS: Product[] = [
     metrics: [
       { label: { ar: 'تأكيد الحضور والمواعيد', en: 'Booking Control & Reminders' }, value: 'تأكيد الحجوزات والتنبيهات التلقائية' }
     ],
-    accentColor: '#8B5CF6',
+    accentColor: '#0EA5E9',
     iconName: 'Calendar'
   },
   {
@@ -245,8 +245,42 @@ export const PRODUCTS: Product[] = [
     metrics: [
       { label: { ar: 'معدل إشغال الصالات', en: 'Arena Utilization' }, value: 'مصمم لرفع معدل الإشغال' }
     ],
-    accentColor: '#EC4899',
+    accentColor: '#2563EB',
     iconName: 'Gamepad2'
+  },
+  {
+    id: 'aqar',
+    slug: 'aqar',
+    name: { ar: 'Novixa Aqar', en: 'Novixa Aqar' },
+    tagline: { ar: 'منصة إدارة الأصول العقارية والمجمعات وبوابات الوسطاء والمستأجرين', en: 'Real estate portfolio, broker orchestration & property engine' },
+    title: { ar: 'نظام إدارة العقارات والمشاريع الاستثمارية وبوابات الوسطاء', en: 'Modern Real Estate Operations & Broker Platform' },
+    description: { ar: 'منصة سحابية متخصصة لإدارة الأصول العقارية، تتبع عقود الإيجار والتحصيل، أرشفة بيانات المستأجرين، وبوابة مخصصة للوسطاء مع تكامل الخرائط.', en: 'Specialized property management engine for real estate portfolios, lease contracts, tenant records, and multi-broker lead routing.' },
+    status: 'In Development',
+    statusLabel: { ar: 'قيد التطوير الشامل', en: 'In Active Build' },
+    category: { ar: 'حلول العقار والاستثمار', en: 'PropTech Engine' },
+    features: {
+      ar: [
+        'إدارة الوحدات السكنية والتجارية وتتبع عقود الإيجار والتحصيل',
+        'بوابة مخصصة للوسطاء العقاريين مع نظام إدارة العمولات',
+        'أرشفة إلكترونية للوثائق وتنبيهات مواعيد تجديد العقود',
+        'خرائط تفاعلية للوحدات المتاحة والمحجوزة والمباعة'
+      ],
+      en: [
+        'Commercial & residential unit leasing and automated payment tracking',
+        'Dedicated broker portal with automated commission calculations',
+        'Digital document archive with automated contract renewal alerts',
+        'Interactive geographic map for available and reserved units'
+      ]
+    },
+    targetIndustries: {
+      ar: ['شركات التطوير العقاري', 'مكاتب إدارة الأملاك والأصول', 'المجمعات السكنية والتجارية'],
+      en: ['Real Estate Developers', 'Property Management Firms', 'Commercial & Residential Complexes']
+    },
+    metrics: [
+      { label: { ar: 'كفاءة تحصيل الإيجارات', en: 'Collection Efficiency' }, value: 'أتمتة دورة التحصيل والتنبيهات' }
+    ],
+    accentColor: '#0D9488',
+    iconName: 'Building2'
   }
 ];
 

@@ -6,7 +6,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from '../ui/Logo';
 import { BRAND_INFO } from '../../content/data';
 import { SOCIAL_LINKS } from '../../data/navigation';
-import { ArrowLeft, ArrowRight, Shield, Terminal, Globe, Linkedin, Github, Twitter } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Shield, Terminal, Globe, Linkedin, Github, Twitter, Lock, Cpu, Zap } from 'lucide-react';
 
 const socialIconMap = {
   Linkedin: Linkedin,
@@ -138,6 +138,11 @@ export const Footer: React.FC = () => {
                     Novixa Gaming
                   </Link>
                 </li>
+                <li>
+                  <Link href={`/${language}/products/aqar`} className="hover:text-blue-400 transition-colors text-slate-300">
+                    Novixa Aqar (عقار)
+                  </Link>
+                </li>
               </ul>
             </nav>
           </div>
@@ -175,6 +180,65 @@ export const Footer: React.FC = () => {
                 <Globe className="w-3.5 h-3.5 text-blue-400" />
                 <span>{t('English Version', 'النسخة العربية')}</span>
               </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Enterprise Trust, Regional Compliance & Data Residency Strip */}
+        <div className="py-8 my-4 border-b border-slate-800/60 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-right rtl:text-right ltr:text-left">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-800/80 flex items-center justify-center text-blue-400 shrink-0 mt-0.5">
+              <Shield className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-white font-display">
+                {t('سيادة البيانات والاستضافة بالخليج', 'Sovereign GCC Data Hosting')}
+              </h4>
+              <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
+                {t('استضافة محلية متوافقة مع متطلبات الحوكمة والخصوصية الإقليمية.', 'Regional hosting complying with local GCC regulatory governance.')}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-800/80 flex items-center justify-center text-blue-400 shrink-0 mt-0.5">
+              <Lock className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-white font-display">
+                {t('حماية الملكية واتفاقيات NDA', 'Mutual NDA & IP Protection')}
+              </h4>
+              <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
+                {t('عقود قانونية صارمة تضمن ملكيتك الكاملة للأصل البرمجي والشيفرة.', 'Strict legal guarantees ensuring full proprietary ownership of code.')}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-800/80 flex items-center justify-center text-blue-400 shrink-0 mt-0.5">
+              <Cpu className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-white font-display">
+                {t('تشفير متقدم TLS 1.3 & AES-256', 'TLS 1.3 & AES-256 Encryption')}
+              </h4>
+              <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
+                {t('حماية فائقة للمعلومات وقنوات الاتصال على مستوى النقل والتخزين.', 'Zero-trust architecture protecting data in transit and at rest.')}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-800/80 flex items-center justify-center text-blue-400 shrink-0 mt-0.5">
+              <Zap className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-white font-display">
+                {t('ضمان الجاهزية SLA 99.99%', '99.99% Availability SLA')}
+              </h4>
+              <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
+                {t('بنية تحتية موزعة عالية التوافر ومقاومة لانقطاع الخدمات المفاجئ.', 'High-availability multi-region cluster ensuring continuous uptime.')}
+              </p>
             </div>
           </div>
         </div>

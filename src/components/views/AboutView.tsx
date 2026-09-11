@@ -80,6 +80,56 @@ export const AboutView: React.FC = () => {
           </div>
         </div>
 
+        {/* Enterprise Governance & Architecture Standards */}
+        <div className="glass-card rounded-3xl p-8 border border-slate-800/80 bg-slate-900/60 space-y-6 text-right rtl:text-right ltr:text-left">
+          <div className="space-y-2">
+            <span className="text-xs font-mono text-teal-400 uppercase block tracking-wider">
+              {t('معايير الحوكمة والنزاهة الهندسية', 'Governance & Engineering Integrity')}
+            </span>
+            <h2 className="text-xl sm:text-2xl font-bold font-display text-white">
+              {t('كيف نضمن الأمان وسيادة البيانات لشركائنا في الخليج؟', 'How We Guarantee Security & Sovereignty for GCC Partners')}
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
+            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
+              <span className="text-xs font-bold text-white block">
+                {t('استضافة سحابية إقليمية', 'Sovereign Cloud Hosting')}
+              </span>
+              <p className="text-xs text-slate-300 font-arabic leading-relaxed">
+                {t('بناء الأنظمة على مراكز بيانات محلية (الرياض ودبي) لضمان الامتثال لسيادة البيانات الإقليمية.', 'Architected on regional datacenters ensuring complete compliance with sovereign GCC data rules.')}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
+              <span className="text-xs font-bold text-white block">
+                {t('حماية الملكية الفكرية (NDA)', 'Mutual NDA & Code IP')}
+              </span>
+              <p className="text-xs text-slate-300 font-arabic leading-relaxed">
+                {t('اتفاقيات عدم إفصاح صارمة وضمان التملّك الحصري للأصل البرمجي والشيفرة وقواعد البيانات لشركتك.', 'Binding NDAs ensuring full ownership of software assets, schemas, and source code.')}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
+              <span className="text-xs font-bold text-white block">
+                {t('التشفير السيبراني المتقدم', 'Strict Cyber Encryption')}
+              </span>
+              <p className="text-xs text-slate-300 font-arabic leading-relaxed">
+                {t('تطبيق بروتوكولات TLS 1.3 وتشفير AES-256 للبيانات المخزنة مع عزل أمني صارم لحركة المرور.', 'Zero-trust network boundaries, TLS 1.3 in transit, and AES-256 for persistent database storage.')}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
+              <span className="text-xs font-bold text-white block">
+                {t('جاهزية تشغيلية 99.99%', '99.99% Availability SLA')}
+              </span>
+              <p className="text-xs text-slate-300 font-arabic leading-relaxed">
+                {t('تصميم البنية الموزعة مع آليات التعافي التلقائي والموازنة لمنع أي انقطاع في أوقات الضغط.', 'Multi-zone container redundancy with automated failover preventing unexpected outages.')}
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <FounderSection />

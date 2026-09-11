@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { PRODUCTS } from '../../content/data';
 import { 
-  Activity, UtensilsCrossed, Calendar, Gamepad2, Sparkles, 
+  Activity, UtensilsCrossed, Calendar, Gamepad2, Sparkles, Building2,
   CheckCircle2, ArrowLeft, ArrowRight, ShieldCheck, Zap, ArrowUpRight 
 } from 'lucide-react';
 import { PulseSection } from '../sections/PulseSection';
@@ -24,6 +24,7 @@ export const ProductsView: React.FC<ProductsViewProps> = () => {
       case 'UtensilsCrossed': return UtensilsCrossed;
       case 'Calendar': return Calendar;
       case 'Gamepad2': return Gamepad2;
+      case 'Building2': return Building2;
       default: return Sparkles;
     }
   };

@@ -5,6 +5,7 @@ import { getArticleBySlug, insightsArticles } from '@/lib/content';
 import { constructMetadata, generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/metadata';
 import { BookOpen, ArrowLeft, ArrowRight, Clock, User } from 'lucide-react';
 import { Language } from '@/types';
+import { AdrSnippetCard } from '@/components/ui/AdrSnippetCard';
 
 export function generateStaticParams() {
   const languages = ['ar', 'en'];
@@ -115,6 +116,9 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
               </p>
             ))}
           </div>
+
+          {/* Architecture Decision Record (ADR) Interactive Card */}
+          <AdrSnippetCard slug={slug} isAr={isAr} />
 
           <div className="pt-6 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
             <span>{article.author.name[isAr ? 'ar' : 'en']} • {article.author.role[isAr ? 'ar' : 'en']}</span>
