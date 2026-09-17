@@ -19,12 +19,12 @@ export interface SocialLink {
 
 export const MAIN_NAV_ITEMS: NavItem[] = [
   { key: 'home', slug: '', labelAr: 'الرئيسية', labelEn: 'Home' },
-  { key: 'about', slug: 'about', labelAr: 'عن الشركة', labelEn: 'About' },
-  { key: 'services', slug: 'solutions', labelAr: 'الخدمات', labelEn: 'Services' },
+  { key: 'services', slug: 'services', labelAr: 'الخدمات', labelEn: 'Services' },
+  { key: 'solutions', slug: 'solutions', labelAr: 'الحلول الجاهزة', labelEn: 'Solutions' },
+  { key: 'products', slug: 'products', labelAr: 'المنتجات', labelEn: 'Products' },
   { key: 'work', slug: 'work', labelAr: 'الأعمال', labelEn: 'Work' },
-  { key: 'insights', slug: 'insights', labelAr: 'المدونة', labelEn: 'Insights' },
-  { key: 'team', slug: 'team', labelAr: 'الفريق', labelEn: 'Team' },
-  { key: 'contact', slug: 'contact', labelAr: 'الاتصال', labelEn: 'Contact' },
+  { key: 'about', slug: 'about', labelAr: 'عن نوڤيكسا', labelEn: 'About' },
+  { key: 'contact', slug: 'contact', labelAr: 'تواصل معنا', labelEn: 'Contact' },
 ];
 
 export const SOCIAL_LINKS: SocialLink[] = [

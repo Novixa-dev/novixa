@@ -5,7 +5,17 @@ import { getSiteUrl } from '@/lib/env';
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = getSiteUrl();
   const languages = ['ar', 'en'];
-  const staticRoutes = ['', 'about', 'solutions', 'work', 'insights', 'team', 'contact', 'products', 'industries', 'start-project'];
+  const staticRoutes = [
+    '',
+    'services',
+    'solutions',
+    'products',
+    'work',
+    'about',
+    'contact',
+    'insights',
+    'start-project',
+  ];
 
   const sitemapEntries: MetadataRoute.Sitemap = [];
 
@@ -17,7 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url,
         lastModified: new Date(),
         changeFrequency: 'weekly',
-        priority: route === '' ? 1.0 : 0.8,
+        priority: route === '' ? 1.0 : route === 'services' || route === 'solutions' || route === 'contact' ? 0.9 : 0.8,
         alternates: {
           languages: {
             ar: `${baseUrl}/ar${route ? `/${route}` : ''}`,
@@ -33,7 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${baseUrl}/${lang}/products/${prod.id}`,
         lastModified: new Date(),
         changeFrequency: 'monthly',
-        priority: 0.7,
+        priority: 0.8,
         alternates: {
           languages: {
             ar: `${baseUrl}/ar/products/${prod.id}`,
@@ -43,23 +53,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
 
-    // Dynamic Industries
-    for (const ind of industriesCatalog) {
-      sitemapEntries.push({
-        url: `${baseUrl}/${lang}/industries/${ind.id}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly',
-        priority: 0.7,
-        alternates: {
-          languages: {
-            ar: `${baseUrl}/ar/industries/${ind.id}`,
-            en: `${baseUrl}/en/industries/${ind.id}`,
-          },
-        },
-      });
-    }
-
-    // Dynamic Work
+    // Dynamic Case Studies (Work)
     for (const cs of caseStudiesCatalog) {
       sitemapEntries.push({
         url: `${baseUrl}/${lang}/work/${cs.id}`,

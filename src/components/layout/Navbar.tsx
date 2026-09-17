@@ -164,7 +164,7 @@ export const Navbar: React.FC = () => {
               href={`/${language}/contact`}
               className="relative group inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-all duration-150"
             >
-              <span>{t('تواصل معنا', 'Contact Us')}</span>
+              <span>{t('ابدأ مشروعك', 'Start Your Project')}</span>
               <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
             </Link>
           </div>
@@ -266,7 +266,7 @@ export const Navbar: React.FC = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-4 rounded-lg shadow-sm"
               >
-                <span>{t('تواصل معنا الآن', 'Contact Us Now')}</span>
+                <span>{t('ابدأ مشروعك الآن', 'Start Your Project Now')}</span>
                 <ArrowIcon className="w-4 h-4" />
               </Link>
             </div>

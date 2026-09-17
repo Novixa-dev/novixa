@@ -3,9 +3,15 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { PROCESS_STEPS } from '../../content/data';
-import { 
-  GitCommit, CheckCircle, ArrowLeft, ArrowRight, ShieldCheck, 
-  Terminal, Sparkles, Clock 
+import {
+  GitCommit,
+  CheckCircle,
+  ArrowLeft,
+  ArrowRight,
+  ShieldCheck,
+  Terminal,
+  Sparkles,
+  Clock,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -15,43 +21,43 @@ export const ProcessSection: React.FC = () => {
 
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
 
-  const activeStep = PROCESS_STEPS[activeStepIndex];
+  const activeStep = PROCESS_STEPS[activeStepIndex] || PROCESS_STEPS[0];
 
   return (
-    <section className="py-20 lg:py-28 bg-slate-900/60 border-y border-slate-800/80 relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-slate-900/40 border-y border-slate-800/80 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-blue-400 text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-semibold">
             <GitCommit className="w-3.5 h-3.5" />
-            <span>{t('منهجية العمل الهندسية', 'Engineering Process')}</span>
+            <span>{t('منهجية العمل والوضوح', 'Engineering & Delivery Lifecycle')}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
-            {t('من الفكرة والمشكلة إلى المنتج الحي.', 'From business problem to live product.')}
+          <h2 className="text-2xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
+            {t('من فهم التحدي إلى الإطلاق المستقر والمساندة.', 'From operational problem to live, stable release.')}
           </h2>
 
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+          <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-arabic">
             {t(
-              'دورة تنفيذ منظمة ومحكمة تضمن تسليم نظامك في الوقت المحدد وبأعلى مستويات الجودة البرمجية.',
-              'A structured 7-stage engineering lifecycle designed for absolute transparency and zero project drift.'
+              'دورة تنفيذ منظمة وشفافة تضمن وضوح النطاق، دقة المواعيد، وخلو النظام من المفاجآت أو الديون التقنية.',
+              'A structured 6-stage engineering lifecycle designed for absolute transparency, punctual milestones, and zero project drift.'
             )}
           </p>
         </div>
 
         {/* Process Steps Bar/Tabs */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mb-8">
           {PROCESS_STEPS.map((step, idx) => {
             const isActive = idx === activeStepIndex;
             return (
               <button
                 key={step.number}
                 onClick={() => setActiveStepIndex(idx)}
-                className={`p-3 rounded-xl border text-center transition-all ${
+                className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
                   isActive
                     ? 'bg-blue-600 border-blue-500 text-white font-bold shadow-lg shadow-blue-600/30'
-                    : 'bg-slate-950/80 border-slate-800 text-slate-400 hover:text-white'
+                    : 'bg-slate-950/80 border-slate-800 text-slate-400 hover:text-white hover:bg-slate-900'
                 }`}
               >
                 <div className="text-[10px] font-mono tracking-wider opacity-80 mb-0.5">{step.number}</div>
@@ -68,12 +74,12 @@ export const ProcessSection: React.FC = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="bg-slate-950 rounded-2xl p-6 sm:p-10 border border-slate-800 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
+            transition={{ duration: 0.15 }}
+            className="bg-slate-950 rounded-2xl p-6 sm:p-10 border border-white/[0.08] shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
           >
             <div className="lg:col-span-8 space-y-5 text-right rtl:text-right ltr:text-left">
               <div className="flex items-center gap-3">
-                <span className="text-3xl font-extrabold font-mono text-blue-500">{activeStep.number}</span>
+                <span className="text-3xl font-extrabold font-mono text-blue-400">{activeStep.number}</span>
                 <div>
                   <h3 className="text-2xl font-extrabold font-display text-white">
                     {t(activeStep.title.ar, activeStep.title.en)}
@@ -88,7 +94,7 @@ export const ProcessSection: React.FC = () => {
                 {t(activeStep.description.ar, activeStep.description.en)}
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 font-arabic">
                 <div className="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
                   <span className="text-[11px] font-mono text-slate-400 uppercase block">{t('المخرج المسلّم (Deliverable):', 'Key Deliverable:')}</span>
                   <span className="text-xs sm:text-sm font-semibold text-white block">{t(activeStep.deliverable.ar, activeStep.deliverable.en)}</span>
@@ -101,39 +107,17 @@ export const ProcessSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Navigation & Progress Controls */}
-            <div className="lg:col-span-4 bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between gap-6 text-center">
-              <div>
-                <span className="text-xs font-mono text-slate-400 block mb-2">
-                  {t('تقدم مرحلة التنفيذ', 'Lifecycle Progress')}
-                </span>
-                <div className="w-full bg-slate-950 rounded-full h-3 p-0.5 border border-slate-800 mb-2">
-                  <div 
-                    className="bg-blue-500 h-full rounded-full transition-all duration-300" 
-                    style={{ width: `${((activeStepIndex + 1) / PROCESS_STEPS.length) * 100}%` }}
-                  ></div>
-                </div>
-                <span className="text-xs text-slate-300 font-mono">
-                  {activeStepIndex + 1} / {PROCESS_STEPS.length} {t('المراحل الهندسية', 'Stages')}
-                </span>
+            <div className="lg:col-span-4 bg-slate-900/60 p-6 rounded-2xl border border-slate-800/80 space-y-4 text-center">
+              <div className="w-12 h-12 rounded-xl bg-blue-950 border border-blue-800 text-blue-400 flex items-center justify-center mx-auto">
+                <ShieldCheck className="w-6 h-6" />
               </div>
-
-              <div className="flex items-center justify-between gap-2">
-                <button
-                  disabled={activeStepIndex === 0}
-                  onClick={() => setActiveStepIndex(Math.max(0, activeStepIndex - 1))}
-                  className="px-4 py-2 rounded-xl bg-slate-950 hover:bg-slate-800 disabled:opacity-40 border border-slate-800 text-xs text-white transition-all font-semibold"
-                >
-                  {t('المرحلة السابقة', 'Previous Stage')}
-                </button>
-
-                <button
-                  disabled={activeStepIndex === PROCESS_STEPS.length - 1}
-                  onClick={() => setActiveStepIndex(Math.min(PROCESS_STEPS.length - 1, activeStepIndex + 1))}
-                  className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-40 text-xs text-white transition-all font-semibold"
-                >
-                  {t('المرحلة التالية', 'Next Stage')}
-                </button>
+              <div className="space-y-1 font-arabic">
+                <h4 className="text-sm font-bold text-white font-display">
+                  {t('ضمان الشفافية والانضباط', 'Transparent Milestone Delivery')}
+                </h4>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {t('تقارير إنجاز منتظمة وعروض حية للمرحلة قبل الانتقال للمرحلة التالية.', 'Regular demo reviews and written approvals before moving to subsequent stages.')}
+                </p>
               </div>
             </div>
           </motion.div>

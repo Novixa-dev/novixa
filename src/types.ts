@@ -1,6 +1,50 @@
 export type Language = 'ar' | 'en';
 
-export type ProductStatus = 'Available' | 'In Development' | 'Early Access' | 'Coming Soon';
+export type ProductStatus = 'LIVE' | 'DEMO' | 'IN DEVELOPMENT' | 'PLANNED' | 'Available' | 'Early Access' | 'Coming Soon';
+
+export interface PackageTier {
+  id: string;
+  name: { ar: string; en: string };
+  tagline: { ar: string; en: string };
+  priceBadge: { ar: string; en: string };
+  features: { ar: string[]; en: string[] };
+  idealFor: { ar: string; en: string };
+  isPopular?: boolean;
+}
+
+export interface ServiceItem {
+  id: string;
+  slug: string;
+  title: { ar: string; en: string };
+  subtitle: { ar: string; en: string };
+  description: { ar: string; en: string };
+  scopeTitle: { ar: string; en: string };
+  capabilities: { ar: string[]; en: string[] };
+  deliverables: { ar: string[]; en: string[] };
+  businessValue: { ar: string; en: string };
+  iconName: string;
+  category: 'engineering' | 'modernization' | 'infrastructure' | 'operations' | 'ai';
+  categoryBadge: { ar: string; en: string };
+}
+
+export interface ReadySolution {
+  id: string;
+  slug: string;
+  name: { ar: string; en: string };
+  tagline: { ar: string; en: string };
+  category: { ar: string; en: string };
+  targetAudience: { ar: string; en: string };
+  problem: { ar: string; en: string };
+  solutionSummary: { ar: string; en: string };
+  deliveryDays: { ar: string; en: string };
+  deliveryTimelineBadge: { ar: string; en: string };
+  features: { ar: string[]; en: string[] };
+  businessImpact: { ar: string; en: string };
+  packages?: PackageTier[];
+  iconName: string;
+  badge: { ar: string; en: string };
+  demoAvailable: boolean;
+}
 
 export interface Product {
   id: string;
@@ -12,9 +56,16 @@ export interface Product {
   status: ProductStatus;
   statusLabel: { ar: string; en: string };
   category: { ar: string; en: string };
+  targetAudience?: { ar: string; en: string };
+  problemSolved?: { ar: string; en: string };
+  businessValue?: { ar: string; en: string };
   features: { ar: string[]; en: string[] };
   targetIndustries: { ar: string[]; en: string[] };
   metrics?: { label: { ar: string; en: string }; value: string }[];
+  deploymentOptions?: { ar: string[]; en: string[] };
+  customizationOptions?: { ar: string[]; en: string[] };
+  supportIncluded?: { ar: string[]; en: string[] };
+  demoUrl?: string;
   accentColor: string;
   iconName: string;
 }
@@ -97,6 +148,7 @@ export interface ProjectDiscoveryData {
   existingSystem: string;
   name: string;
   company: string;
+  businessType?: string;
   email: string;
   phone: string;
   budgetRange: string;
@@ -106,6 +158,7 @@ export interface ProjectDiscoveryData {
 
 export type ViewType = 
   | 'home'
+  | 'services'
   | 'solutions'
   | 'industries'
   | 'products'
@@ -115,4 +168,4 @@ export type ViewType =
   | 'insights'
   | 'insight-detail'
   | 'start'
-  | 'dev_integration';
+  | 'contact';

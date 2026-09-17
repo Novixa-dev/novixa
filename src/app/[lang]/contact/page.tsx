@@ -14,23 +14,31 @@ import {
   ShieldCheck,
   ArrowLeft,
   ArrowRight,
-  FileCheck,
+  Lock,
   Cpu,
   Workflow,
-  Lock,
+  Sparkles,
+  Server,
+  Zap,
 } from 'lucide-react';
 
 interface FormData {
   fullName: string;
   email: string;
-  subject: string;
+  phone: string;
+  company: string;
+  businessType: string;
+  serviceNeeded: string;
+  timeline: string;
+  budgetRange: string;
   message: string;
 }
 
 interface FormErrors {
   fullName?: string;
   email?: string;
-  subject?: string;
+  phone?: string;
+  serviceNeeded?: string;
   message?: string;
 }
 
@@ -42,7 +50,12 @@ export default function ContactPage() {
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     email: '',
-    subject: '',
+    phone: '',
+    company: '',
+    businessType: '',
+    serviceNeeded: 'custom-software',
+    timeline: '1-month',
+    budgetRange: '',
     message: '',
   });
 
@@ -66,23 +79,23 @@ export default function ContactPage() {
       newErrors.email = isAr ? 'صيغة البريد الإلكتروني غير صحيحة.' : 'Please enter a valid email address.';
     }
 
-    if (!formData.subject.trim()) {
-      newErrors.subject = isAr ? 'يرجى كتابة موضوع الرسالة.' : 'Subject is required.';
-    } else if (formData.subject.trim().length < 3) {
-      newErrors.subject = isAr ? 'الموضوع يجب أن يحتوي على 3 أحرف على الأقل.' : 'Subject must be at least 3 characters.';
+    if (!formData.phone.trim()) {
+      newErrors.phone = isAr ? 'يرجى إدخال رقم الهاتف أو الواتساب للتواصل.' : 'Phone or WhatsApp number is required.';
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = isAr ? 'يرجى كتابة نص الرسالة.' : 'Message is required.';
+      newErrors.message = isAr ? 'يرجى توضيح متطلباتك أو طبيعة مشروعك.' : 'Project details are required.';
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = isAr ? 'الرسالة يجب أن لا تقل عن 10 أحرف للتوضيح.' : 'Message must be at least 10 characters.';
+      newErrors.message = isAr ? 'يرجى كتابة 10 أحرف على الأقل لشرح الفكرة.' : 'Please provide at least 10 characters.';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name as keyof FormErrors]) {
@@ -102,7 +115,13 @@ export default function ContactPage() {
         body: JSON.stringify({
           name: formData.fullName,
           email: formData.email,
-          problem: formData.subject,
+          phone: formData.phone,
+          company: formData.company,
+          businessType: formData.businessType,
+          serviceNeeded: formData.serviceNeeded,
+          timeline: formData.timeline,
+          budgetRange: formData.budgetRange,
+          problem: formData.serviceNeeded,
           details: formData.message,
           language,
         }),
@@ -113,8 +132,18 @@ export default function ContactPage() {
       setTimeout(() => {
         setIsSubmitting(false);
         setIsSuccess(true);
-        setFormData({ fullName: '', email: '', subject: '', message: '' });
-      }, 1800);
+        setFormData({
+          fullName: '',
+          email: '',
+          phone: '',
+          company: '',
+          businessType: '',
+          serviceNeeded: 'custom-software',
+          timeline: '1-month',
+          budgetRange: '',
+          message: '',
+        });
+      }, 1200);
     }
   };
 
@@ -123,103 +152,54 @@ export default function ContactPage() {
       {/* Background Architectural Grid Pattern */}
       <div className="absolute inset-0 architectural-grid opacity-25 pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+        
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-4">
+        <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-blue-800 text-blue-300 text-xs font-semibold">
             <MessageSquare className="w-3.5 h-3.5 text-blue-400" />
-            <span>{isAr ? 'الاستشارات الهندسية المباشرة' : 'Direct Engineering Advisory'}</span>
+            <span>{t('ابدأ مشروعك أو اطلب استشارة', 'Start Your Project or Request Consultation')}</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight leading-snug">
-            {isAr ? 'دعنا نتحدث عن مشروعك التقني القادم.' : 'Let’s discuss your next engineering milestone.'}
+            {t('دعنا نحول متطلبات أعمالك إلى برمجيات عملية.', 'Let’s turn your operational needs into practical software.')}
           </h1>
 
           <p className="text-slate-300 text-base sm:text-lg font-arabic leading-relaxed">
-            {isAr
-              ? 'سواء كنت ترغب في بناء منصة سحابية جديدة أو فحص أمان نظامك الحالي، مهندسونا المعماريون مستعدون لدراسة متطلباتك.'
-              : 'Whether building a greenfield platform or auditing existing architecture, our engineering leads are ready.'}
+            {t(
+              'سواء كنت ترغب في بناء نظام برمجي مخصص، تهيئة حل جاهز (مطاعم، حجوزات، عقارات)، أو إعداد بنية تحتية سحابية، فريقنا مستعد لمساعدتك.',
+              'Whether you need custom full-stack software, a turnkey ready-made system, cloud deployment, or ongoing maintenance, our engineering leads are ready.'
+            )}
           </p>
-        </div>
-
-        {/* 3-Step Architectural Discovery Roadmap (Balances Desktop Layout) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              step: '01',
-              icon: Lock,
-              titleAr: 'توقيع اتفاقية السرية (NDA) ودراسة النطاق',
-              titleEn: 'NDA & Architectural Scoping',
-              descAr: 'نضمن سرية بياناتك بالكامل ونبدأ بجلسة استكشاف فنية لتحليل متطلبات النظام والأحمال المتوقعة.',
-              descEn: 'Strict mutual NDA execution followed by a deep-dive technical session into throughput and scale.',
-            },
-            {
-              step: '02',
-              icon: Cpu,
-              titleAr: 'صياغة وثيقة المعمارية (RFC & Topology)',
-              titleEn: 'Architecture RFC & Topology Spec',
-              descAr: 'نقدم لك تصميماً معمارياً مفصلاً يحدد البنية التحتية، نموذج البيانات، وخطة التوسع ومؤشرات الأداء.',
-              descEn: 'Delivering a concrete architectural blueprint detailing database partitioning, APIs, and P99 latency SLAs.',
-            },
-            {
-              step: '03',
-              icon: Workflow,
-              titleAr: 'التنفيذ على مراحل والتسليم المستقر',
-              titleEn: 'Phased Delivery & Continuous SLA',
-              descAr: 'تطوير بنظام الفرق المخصصة مع اختبارات إجهاد صارمة قبل الإطلاق وضمان تشغيلي 99.99%.',
-              descEn: 'Pod-based agile execution with automated stress testing up to 10k RPS and 99.99% uptime guarantees.',
-            },
-          ].map((item, idx) => {
-            const StepIcon = item.icon;
-            return (
-              <div
-                key={idx}
-                className="p-6 rounded-2xl bg-slate-900/60 border border-white/[0.08] flex flex-col justify-between space-y-4 text-right rtl:text-right ltr:text-left relative overflow-hidden"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-xl bg-blue-950/80 border border-blue-800 text-blue-400 flex items-center justify-center">
-                    <StepIcon className="w-5 h-5" />
-                  </div>
-                  <span className="text-xl font-bold font-mono text-blue-400/80">{item.step}</span>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-base font-bold font-display text-white">
-                    {item[isAr ? 'titleAr' : 'titleEn']}
-                  </h3>
-                  <p className="text-xs text-slate-300 font-arabic leading-relaxed">
-                    {item[isAr ? 'descAr' : 'descEn']}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
         </div>
 
         {/* Main Grid: Form Column & Sidebar Information Column */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
           {/* Form Column */}
-          <div className="lg:col-span-7 glass-card rounded-2xl p-6 sm:p-10 border border-white/[0.08] bg-slate-900/80 shadow-2xl relative">
+          <div className="lg:col-span-7 glass-card rounded-2xl p-6 sm:p-10 border border-white/[0.08] bg-slate-900/80 shadow-2xl relative text-right rtl:text-right ltr:text-left">
             {isSuccess ? (
-              <div className="py-12 px-4 text-center space-y-5 animate-in fade-in zoom-in duration-300">
+              <div className="py-12 px-4 text-center space-y-5 animate-in fade-in zoom-in duration-300 font-arabic">
                 <div className="w-16 h-16 rounded-full bg-emerald-950/80 border border-emerald-500/50 text-emerald-400 flex items-center justify-center mx-auto shadow-lg shadow-emerald-900/30">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <div className="space-y-2">
                   <h2 className="text-2xl font-bold font-display text-white">
-                    {isAr ? 'تم استلام استفسارك بنجاح!' : 'Inquiry Received Successfully!'}
+                    {t('تم استلام طلبك بنجاح!', 'Your request has been received.')}
                   </h2>
-                  <p className="text-slate-300 text-sm max-w-md mx-auto font-arabic leading-relaxed">
-                    {isAr
-                      ? 'شكراً لتواصلك معنا. قام فريقنا الهندسي باستلام طلبك وسيتواصل معك أحد مستشارينا المعماريين خلال 24 ساعة عمل.'
-                      : 'Thank you for reaching out. Our solutions architecture team will follow up within 24 business hours.'}
+                  <p className="text-slate-300 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+                    {t(
+                      'شكراً لتواصلك معنا. سنراجع تفاصيل مشروعك واحتياجاتك وسيتواصل معك أحد مهندسينا المعماريين.',
+                      'Thank you for reaching out. We will review your project details and contact you.'
+                    )}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setIsSuccess(false)}
-                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-xl transition-colors shadow-md shadow-blue-600/30"
+                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-xl transition-colors shadow-md cursor-pointer"
                 >
-                  <span>{isAr ? 'إرسال استفسار آخر' : 'Send Another Message'}</span>
+                  <span>{t('إرسال طلب أو استفسار آخر', 'Send Another Inquiry')}</span>
                   <ArrowIcon className="w-4 h-4" />
                 </button>
               </div>
@@ -227,124 +207,218 @@ export default function ContactPage() {
               <form onSubmit={handleSubmit} noValidate className="space-y-6">
                 <div className="border-b border-slate-800 pb-4 mb-2">
                   <h2 className="text-xl font-bold font-display text-white">
-                    {isAr ? 'نموذج الاستشارة المعمارية المباشرة' : 'Direct Architectural Inquiry'}
+                    {t('نموذج طلب مشروع أو استشارة برمجية', 'Project Inquiry & Software Scoping Form')}
                   </h2>
-                  <p className="text-xs text-slate-300 mt-1 font-arabic">
-                    {isAr ? 'املأ الحقول أدناه وسيتواصل معك مهندس حلول متخصص خلال 24 ساعة.' : 'Provide your project details and a solutions engineer will reach out within 24 hours.'}
+                  <p className="text-xs text-slate-400 mt-1 font-arabic">
+                    {t('املأ التفاصيل أدناه وسيقوم فريقنا الهندسي بمراجعة المتطلبات والتواصل معك.', 'Provide your requirements below and our engineering team will follow up directly.')}
                   </p>
                 </div>
 
-                {/* Full Name */}
-                <div className="space-y-1.5">
-                  <label htmlFor="fullName" className="block text-xs font-semibold text-slate-200">
-                    {isAr ? 'الاسم الكامل *' : 'Full Name *'}
-                  </label>
-                  <input
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.fullName}
-                    aria-describedby={errors.fullName ? 'fullName-error' : undefined}
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    placeholder={isAr ? 'مثال: م. عبد الله الشمري' : 'e.g. John Doe'}
-                    className={`w-full bg-slate-950 border ${
-                      errors.fullName ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-800 focus:border-blue-500 focus:ring-blue-500/20'
-                    } rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 transition-all`}
-                  />
-                  {errors.fullName && (
-                    <p id="fullName-error" role="alert" className="text-xs text-rose-400 flex items-center gap-1 mt-1">
-                      <AlertCircle className="w-3.5 h-3.5" />
-                      <span>{errors.fullName}</span>
-                    </p>
-                  )}
+                {/* Name & Phone Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Full Name */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="fullName" className="block text-xs font-semibold text-slate-200">
+                      {t('الاسم الكامل *', 'Full Name *')}
+                    </label>
+                    <input
+                      id="fullName"
+                      name="fullName"
+                      type="text"
+                      required
+                      value={formData.fullName}
+                      onChange={handleChange}
+                      placeholder={isAr ? 'مثال: محمد العمري' : 'e.g. John Smith'}
+                      className={`w-full bg-slate-950 border ${
+                        errors.fullName ? 'border-rose-500' : 'border-slate-800 focus:border-blue-500'
+                      } rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic`}
+                    />
+                    {errors.fullName && (
+                      <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        <span>{errors.fullName}</span>
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Phone / WhatsApp */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="phone" className="block text-xs font-semibold text-slate-200">
+                      {t('رقم الهاتف / الواتساب *', 'Phone or WhatsApp *')}
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      dir="ltr"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+967..."
+                      className={`w-full bg-slate-950 border ${
+                        errors.phone ? 'border-rose-500' : 'border-slate-800 focus:border-blue-500'
+                      } rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all`}
+                    />
+                    {errors.phone && (
+                      <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        <span>{errors.phone}</span>
+                      </p>
+                    )}
+                  </div>
                 </div>
 
-                {/* Email Address */}
-                <div className="space-y-1.5">
-                  <label htmlFor="email" className="block text-xs font-semibold text-slate-200">
-                    {isAr ? 'البريد الإلكتروني المهني *' : 'Work Email Address *'}
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.email}
-                    aria-describedby={errors.email ? 'email-error' : undefined}
-                    dir="ltr"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="name@company.com"
-                    className={`w-full bg-slate-950 border ${
-                      errors.email ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-800 focus:border-blue-500 focus:ring-blue-500/20'
-                    } rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 transition-all`}
-                  />
-                  {errors.email && (
-                    <p id="email-error" role="alert" className="text-xs text-rose-400 flex items-center gap-1 mt-1">
-                      <AlertCircle className="w-3.5 h-3.5" />
-                      <span>{errors.email}</span>
-                    </p>
-                  )}
+                {/* Email & Company */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Email */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="email" className="block text-xs font-semibold text-slate-200">
+                      {t('البريد الإلكتروني *', 'Email Address *')}
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      dir="ltr"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="name@company.com"
+                      className={`w-full bg-slate-950 border ${
+                        errors.email ? 'border-rose-500' : 'border-slate-800 focus:border-blue-500'
+                      } rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all`}
+                    />
+                    {errors.email && (
+                      <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        <span>{errors.email}</span>
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Company */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="company" className="block text-xs font-semibold text-slate-200">
+                      {t('اسم الشركة أو المؤسسة', 'Company Name (Optional)')}
+                    </label>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      value={formData.company}
+                      onChange={handleChange}
+                      placeholder={isAr ? 'مثال: شركة الأفق للتجارة' : 'e.g. Horizon Trading'}
+                      className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic"
+                    />
+                  </div>
                 </div>
 
-                {/* Subject */}
-                <div className="space-y-1.5">
-                  <label htmlFor="subject" className="block text-xs font-semibold text-slate-200">
-                    {isAr ? 'الموضوع أو نطاق المنظومة *' : 'Subject or Architecture Scope *'}
-                  </label>
-                  <input
-                    id="subject"
-                    name="subject"
-                    type="text"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!errors.subject}
-                    aria-describedby={errors.subject ? 'subject-error' : undefined}
-                    value={formData.subject}
-                    onChange={handleChange}
-                    placeholder={isAr ? 'مثال: منصة SaaS متعددة المستأجرين أو فحص أداء البنية التحتية' : 'e.g. Multi-Tenant SaaS Platform'}
-                    className={`w-full bg-slate-950 border ${
-                      errors.subject ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-800 focus:border-blue-500 focus:ring-blue-500/20'
-                    } rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 transition-all`}
-                  />
-                  {errors.subject && (
-                    <p id="subject-error" role="alert" className="text-xs text-rose-400 flex items-center gap-1 mt-1">
-                      <AlertCircle className="w-3.5 h-3.5" />
-                      <span>{errors.subject}</span>
-                    </p>
-                  )}
+                {/* Service Needed & Business Type */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Service Requirement */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="serviceNeeded" className="block text-xs font-semibold text-slate-200">
+                      {t('ما الخدمة أو الحل المطلوب؟ *', 'What Do You Need? *')}
+                    </label>
+                    <select
+                      id="serviceNeeded"
+                      name="serviceNeeded"
+                      value={formData.serviceNeeded}
+                      onChange={handleChange}
+                      className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic"
+                    >
+                      <option value="custom-software">{isAr ? 'تطوير برمجيات مخصصة (Custom Software)' : 'Custom Software Development'}</option>
+                      <option value="ready-restaurant">{isAr ? 'حل جاهز: نظام المطاعم والمقاهي' : 'Ready Solution: Restaurant & Cafe'}</option>
+                      <option value="ready-booking">{isAr ? 'حل جاهز: نظام حجز المواعيد' : 'Ready Solution: Booking & Appointments'}</option>
+                      <option value="ready-crm">{isAr ? 'حل جاهز: نظام إدارة المبيعات والعملاء (CRM)' : 'Ready Solution: CRM & Sales'}</option>
+                      <option value="ready-inventory">{isAr ? 'حل جاهز: نظام إدارة المخزون والمستودعات' : 'Ready Solution: Inventory Control'}</option>
+                      <option value="ready-clinic">{isAr ? 'حل جاهز: نظام العيادات والملف الطبي' : 'Ready Solution: Medical Clinics'}</option>
+                      <option value="ready-property">{isAr ? 'حل جاهز: نظام العقارات (Novixa Aqar)' : 'Ready Solution: Real Estate Hub'}</option>
+                      <option value="modernization">{isAr ? 'تحديث وتطوير نظام قديم (Modernization)' : 'System Modernization'}</option>
+                      <option value="deployment-hosting">{isAr ? 'نشر واستضافة سحابية مدارة' : 'Cloud Deployment & Managed Hosting'}</option>
+                      <option value="maintenance">{isAr ? 'صيانة ودعم فني مستمر (SLA)' : 'Maintenance & Ongoing Support'}</option>
+                      <option value="consultation">{isAr ? 'استشارة معمارية وتقييم تقني' : 'Technical Architecture Consultation'}</option>
+                    </select>
+                  </div>
+
+                  {/* Business Type */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="businessType" className="block text-xs font-semibold text-slate-200">
+                      {t('نوع النشاط التجاري', 'Business Vertical')}
+                    </label>
+                    <input
+                      id="businessType"
+                      name="businessType"
+                      type="text"
+                      value={formData.businessType}
+                      onChange={handleChange}
+                      placeholder={isAr ? 'مثال: مطاعم، عيادة، تجارة جملة، عقار...' : 'e.g. F&B, Healthcare, Retail, PropTech'}
+                      className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic"
+                    />
+                  </div>
                 </div>
 
-                {/* Message */}
+                {/* Timeline & Budget Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Timeline */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="timeline" className="block text-xs font-semibold text-slate-200">
+                      {t('الجدول الزمني المتوقع للإطلاق', 'Estimated Timeline')}
+                    </label>
+                    <select
+                      id="timeline"
+                      name="timeline"
+                      value={formData.timeline}
+                      onChange={handleChange}
+                      className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic"
+                    >
+                      <option value="asap">{isAr ? 'فوراً (خلال 1 - 2 أسبوع)' : 'Immediately (1–2 weeks)'}</option>
+                      <option value="1-month">{isAr ? 'خلال شهر' : 'Within a month'}</option>
+                      <option value="1-3-months">{isAr ? 'خلال 1 إلى 3 أشهر' : '1–3 months'}</option>
+                      <option value="flexible">{isAr ? 'مرن / قيد التخطيط' : 'Flexible / Planning phase'}</option>
+                    </select>
+                  </div>
+
+                  {/* Budget */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="budgetRange" className="block text-xs font-semibold text-slate-200">
+                      {t('الميزانية التقديرية (اختياري)', 'Estimated Budget (Optional)')}
+                    </label>
+                    <input
+                      id="budgetRange"
+                      name="budgetRange"
+                      type="text"
+                      value={formData.budgetRange}
+                      onChange={handleChange}
+                      placeholder={isAr ? 'مثال: باقة أساسية، أو ميزانية مخصصة' : 'e.g. Starter tier / Custom quote'}
+                      className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic"
+                    />
+                  </div>
+                </div>
+
+                {/* Message / Details */}
                 <div className="space-y-1.5">
                   <label htmlFor="message" className="block text-xs font-semibold text-slate-200">
-                    {isAr ? 'تفاصيل المتطلبات أو التحديات التشغيلية *' : 'Operational Requirements & Scale Targets *'}
+                    {t('تفاصيل المتطلبات أو التحديات التشغيلية *', 'Project Details & Specific Requirements *')}
                   </label>
                   <textarea
                     id="message"
                     name="message"
                     rows={4}
                     required
-                    aria-required="true"
-                    aria-invalid={!!errors.message}
-                    aria-describedby={errors.message ? 'message-error' : undefined}
                     value={formData.message}
                     onChange={handleChange}
                     placeholder={
                       isAr
-                        ? 'وضح باختصار أهدافك، حجم المعاملات المتوقع، التحديات التقنية، أو الأنظمة المراد التكامل معها...'
-                        : 'Describe target throughput, legacy integrations, uptime requirements, and timelines...'
+                        ? 'وضح باختصار فكرة مشروعك، عدد الفروع أو المستخدمين، أو الأنظمة المطلوب التكامل معها...'
+                        : 'Describe your core workflows, number of locations/users, or tools to integrate...'
                     }
                     className={`w-full bg-slate-950 border ${
-                      errors.message ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-800 focus:border-blue-500 focus:ring-blue-500/20'
-                    } rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 transition-all resize-none font-arabic`}
+                      errors.message ? 'border-rose-500' : 'border-slate-800 focus:border-blue-500'
+                    } rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all resize-none font-arabic`}
                   />
                   {errors.message && (
-                    <p id="message-error" role="alert" className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                    <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
                       <AlertCircle className="w-3.5 h-3.5" />
                       <span>{errors.message}</span>
                     </p>
@@ -360,11 +434,11 @@ export default function ContactPage() {
                   {isSubmitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      <span>{isAr ? 'جاري الإرسال...' : 'Sending inquiry...'}</span>
+                      <span>{t('جاري الإرسال...', 'Sending request...')}</span>
                     </>
                   ) : (
                     <>
-                      <span>{isAr ? 'إرسال طلب الاستشارة المعمارية' : 'Submit Architectural Inquiry'}</span>
+                      <span>{t('إرسال طلب المشروع والاستشارة', 'Submit Project Request')}</span>
                       <Send className="w-4 h-4 rtl:rotate-180" />
                     </>
                   )}
@@ -373,27 +447,47 @@ export default function ContactPage() {
             )}
           </div>
 
-          {/* Sidebar Column: Contact Details & Architectural Guarantees */}
-          <div className="lg:col-span-5 space-y-6">
+          {/* Sidebar Column: Direct Contacts & Governance */}
+          <div className="lg:col-span-5 space-y-6 text-right rtl:text-right ltr:text-left">
+            
             {/* Quick Contact Card */}
             <div className="glass-card rounded-2xl p-6 sm:p-8 border border-white/[0.08] bg-slate-900/80 space-y-6">
               <h2 className="text-lg font-bold font-display text-white border-b border-slate-800 pb-3">
-                {isAr ? 'قنوات التواصل المباشرة' : 'Direct Advisory Channels'}
+                {t('قنوات التواصل المباشرة', 'Direct Advisory Channels')}
               </h2>
 
-              <ul className="space-y-4 text-sm">
+              <ul className="space-y-4 text-sm font-arabic">
                 {/* Email */}
                 <li className="flex items-start gap-3.5">
                   <div className="w-9 h-9 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
                     <Mail className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs text-slate-300 font-arabic">{isAr ? 'البريد الإلكتروني المباشر' : 'Direct Email'}</div>
+                    <div className="text-xs text-slate-400">{t('البريد الإلكتروني المباشر', 'Direct Email')}</div>
                     <a
                       href="mailto:hello@novixa.dev"
                       className="text-white hover:text-blue-400 font-mono text-xs sm:text-sm font-semibold transition-colors"
                     >
                       hello@novixa.dev
+                    </a>
+                  </div>
+                </li>
+
+                {/* WhatsApp Option */}
+                <li className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-950/80 border border-emerald-800/60 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                    <Phone className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-400">{t('المراسلة المباشرة عبر الواتساب', 'Direct WhatsApp Channel')}</div>
+                    <a
+                      href="https://wa.me/967770000000"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-emerald-400 hover:text-emerald-300 font-mono text-xs sm:text-sm font-semibold transition-colors inline-flex items-center gap-1 mt-0.5"
+                    >
+                      <span>{t('تواصل معنا عبر الواتساب', 'Chat on WhatsApp')}</span>
+                      <ArrowIcon className="w-3.5 h-3.5" />
                     </a>
                   </div>
                 </li>
@@ -404,35 +498,22 @@ export default function ContactPage() {
                     <MapPin className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs text-slate-300 font-arabic">{isAr ? 'المقر والنطاق الجغرافي' : 'Regional Presence'}</div>
-                    <div className="text-white text-xs sm:text-sm font-medium font-arabic">
-                      {isAr ? 'الشرق الأوسط ودول مجلس التعاون الخليجي (الرياض، دبي، مسقط)' : 'Middle East & GCC (Riyadh, Dubai, Muscat)'}
+                    <div className="text-xs text-slate-400">{t('النطاق الجغرافي والخدمة', 'Regional Presence')}</div>
+                    <div className="text-white text-xs sm:text-sm font-medium">
+                      {t('اليمن • المملكة العربية السعودية • الخليج العربي', 'Yemen • Saudi Arabia • GCC Region')}
                     </div>
                   </div>
                 </li>
 
-                {/* Direct Channel & Response SLA */}
+                {/* NDA Pledge */}
                 <li className="flex items-start gap-3.5">
                   <div className="w-9 h-9 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
-                    <Phone className="w-4 h-4" />
+                    <Lock className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs text-slate-300 font-arabic">{isAr ? 'اتفاقية السرية (NDA)' : 'Confidentiality (NDA)'}</div>
-                    <div className="text-white text-xs sm:text-sm font-medium font-arabic">
-                      {isAr ? 'اتفاقية سرية متبادلة وفورية قبل أي مشاركة للأكواد أو البيانات' : 'Mutual NDA signed prior to any code or architecture disclosure'}
-                    </div>
-                  </div>
-                </li>
-
-                {/* Working Hours */}
-                <li className="flex items-start gap-3.5">
-                  <div className="w-9 h-9 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-slate-300 font-arabic">{isAr ? 'ساعات العمل الرسمية والـ SLA' : 'Response SLA & Hours'}</div>
-                    <div className="text-white text-xs sm:text-sm font-medium font-arabic">
-                      {isAr ? 'الأحد - الخميس: 9:00 ص - 6:00 م (الرد خلال 24 ساعة)' : 'Sunday - Thursday: 9:00 AM - 6:00 PM (24h response SLA)'}
+                    <div className="text-xs text-slate-400">{t('اتفاقية السرية (NDA)', 'Mutual NDA')}</div>
+                    <div className="text-white text-xs sm:text-sm font-medium">
+                      {t('نوقع اتفاقيات سرية متبادلة لحماية فكرة مشروعك وبياناتك.', 'Mutual NDAs signed before code or business disclosure.')}
                     </div>
                   </div>
                 </li>
@@ -440,19 +521,23 @@ export default function ContactPage() {
             </div>
 
             {/* Architecture Governance & Sovereignty Banner */}
-            <div className="glass-card rounded-2xl p-6 border border-white/[0.08] bg-slate-900/60 space-y-3">
+            <div className="glass-card rounded-2xl p-6 border border-white/[0.08] bg-slate-900/60 space-y-3 font-arabic">
               <div className="flex items-center gap-2 text-xs font-mono text-blue-400">
                 <ShieldCheck className="w-4 h-4 text-teal-400" />
-                <span>{isAr ? 'ضمان السيادة وحماية البيانات' : 'Data Sovereignty & Security Guarantee'}</span>
+                <span>{t('ضمان الجودة والسيادة التقنية', 'Engineering & Data Sovereignty Guarantee')}</span>
               </div>
-              <p className="text-xs text-slate-300 font-arabic leading-relaxed">
-                {isAr
-                  ? 'نوڤيكسا تلتزم بالمعايير الإقليمية لسيادة البيانات وتخزينها محلياً داخل مراكز بيانات الخليج العربي، مع تشفير شامل وتوافق تام مع لوائح الهيئات التنظيمية.'
-                  : 'All architectures are engineered for strict GCC data residency compliance, local cloud hosting, and end-to-end cryptographic integrity.'}
+              <p className="text-xs text-slate-300 leading-relaxed">
+                {t(
+                  'نوڤيكسا تلتزم بالمعايير الإقليمية لسيادة البيانات مع تشفير شامل للأصول البرمجية وتوفير خيارات الاستضافة المدارة المحلية.',
+                  'Novixa builds systems adhering to GCC data residency rules, end-to-end cryptographic encryption, and managed regional deployments.'
+                )}
               </p>
             </div>
+
           </div>
+
         </div>
+
       </div>
     </div>
   );

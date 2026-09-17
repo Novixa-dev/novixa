@@ -1,8 +1,16 @@
 import React from 'react';
 import { constructMetadata, generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/lib/metadata';
 import { HeroSection } from '@/components/sections/HeroSection';
+import { DualEngineSection } from '@/components/sections/DualEngineSection';
+import { ProblemTransformation } from '@/components/sections/ProblemTransformation';
 import { ServicesSummarySection } from '@/components/sections/ServicesSummarySection';
+import { ReadySolutionsSection } from '@/components/sections/ReadySolutionsSection';
+import { ProductsSection } from '@/components/sections/ProductsSection';
 import { CaseStudiesSection } from '@/components/sections/CaseStudiesSection';
+import { WhyNovixaSection } from '@/components/sections/WhyNovixaSection';
+import { ProcessSection } from '@/components/sections/ProcessSection';
+import { DeploymentHostingSection } from '@/components/sections/DeploymentHostingSection';
+import { MaintenanceSupportSection } from '@/components/sections/MaintenanceSupportSection';
 import { HomeCTASection } from '@/components/sections/HomeCTASection';
 import { Language } from '@/types';
 
@@ -12,10 +20,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const isAr = lang === 'ar';
 
   return constructMetadata({
-    title: isAr ? 'هندسة البرمجيات والأنظمة الرقمية المتقدمة' : 'Enterprise Software Engineering & Digital Products',
+    title: isAr
+      ? 'نوڤيكسا | هندسة البرمجيات، الحلول الجاهزة، والنشر السحابي المدار'
+      : 'Novixa | Software Engineering, Productized Solutions & Managed Hosting',
     description: isAr
-      ? 'نوڤيكسا متخصصة في هندسة المنصات البرمجية، محركات SaaS السحابية، والحلول الرقمية عالية الأداء في الخليج والشرق الأوسط.'
-      : 'Novixa builds enterprise software platforms, multi-tenant cloud SaaS engines, and high-concurrency systems across the Middle East and GCC.',
+      ? 'نبني الأنظمة والمنتجات الرقمية التي تجعل أعمالك تعمل بشكل أفضل. حلول برمجية مخصصة وجاهزة للأعمال في اليمن والخليج مع استضافة سحابية مدارة وصيانة مستمرة.'
+      : 'We build the software systems and digital products that help businesses operate better. Custom software, turnkey business solutions, cloud deployment, and managed hosting for Yemen, GCC, and beyond.',
     lang,
     path: '',
   });
@@ -35,16 +45,41 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
-      {/* 1. Hero Section */}
+      
+      {/* 1. Hero: What Novixa is + Value Proposition + Dual CTAs */}
       <HeroSection />
 
-      {/* 2. Services Summary Section */}
+      {/* 2. Dual Engine: Custom Engineering vs Ready Turnkey Solutions */}
+      <DualEngineSection />
+
+      {/* 3. Problem Transformation: Disconnected Chaos vs Unified Software Engine */}
+      <ProblemTransformation />
+
+      {/* 4. Core Services: 9 Customer-Facing Engineering & Operations Services */}
       <ServicesSummarySection />
 
-      {/* 3. Portfolio & Case Studies Showcase */}
+      {/* 5. Ready Solutions: 8 Reusable Turnkey Business Software Foundations (5–14 Days) */}
+      <ReadySolutionsSection />
+
+      {/* 6. Proprietary Products: Transparent Status Badges (Aqar, Restaurant, Booking, Pulse) */}
+      <ProductsSection />
+
+      {/* 7. Selected Work: Honestly Labeled Demonstrations & Prototypes */}
       <CaseStudiesSection />
 
-      {/* 4. Bottom CTA Section pointing to /contact */}
+      {/* 8. Why Novixa: Real Code Ownership, Problem-First, Anti-Agency Value */}
+      <WhyNovixaSection />
+
+      {/* 9. Engagement Process: 6-Stage Transparent Lifecycle */}
+      <ProcessSection />
+
+      {/* 10. Deployment & Hosting: "Deployment, Hosting & Operations" */}
+      <DeploymentHostingSection />
+
+      {/* 11. Maintenance & Support: Continuous SLA, Security Patches, Monitoring */}
+      <MaintenanceSupportSection />
+
+      {/* 12. Final High-Conversion CTA: Start Project OR Explore Ready Solutions */}
       <HomeCTASection />
     </>
   );
