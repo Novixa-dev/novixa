@@ -9,27 +9,76 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
+/**
+ * Every visible option pairs an Arabic label with an English one. Previously
+ * the option arrays held bare Arabic strings that were rendered verbatim, so
+ * `/en` visitors read Arabic buttons — and that same Arabic string was the
+ * value emailed to Novixa regardless of the visitor's language.
+ */
+type Choice = { value: string; ar: string; en: string };
+
+const PROJECT_TYPES: Choice[] = [
+  { value: 'business-platform', ar: 'منصة أعمال', en: 'Business Platform' },
+  { value: 'saas-product', ar: 'منتج سحابي (SaaS)', en: 'SaaS Product' },
+  { value: 'digital-commerce', ar: 'متجر إلكتروني', en: 'Digital Commerce' },
+  { value: 'booking-engine', ar: 'نظام حجوزات', en: 'Booking Engine' },
+  { value: 'practical-ai', ar: 'حلول ذكاء اصطناعي', en: 'Practical AI' },
+  { value: 'custom-system', ar: 'برمجيات مخصصة', en: 'Custom System' },
+];
+
+const INDUSTRY_CHOICES: Choice[] = [
+  { value: 'hospitality', ar: 'المطاعم والضيافة', en: 'Restaurants & Hospitality' },
+  { value: 'healthcare', ar: 'الرعاية الصحية والعيادات', en: 'Healthcare & Clinics' },
+  { value: 'retail', ar: 'التجارة والتجزئة', en: 'Commerce & Retail' },
+  { value: 'gaming', ar: 'الألعاب والترفيه', en: 'Gaming & Entertainment' },
+  { value: 'hotels', ar: 'الفنادق والخدمات', en: 'Hotels & Services' },
+  { value: 'b2b', ar: 'شركات ومؤسسات B2B', en: 'B2B Companies' },
+];
+
+const EXISTING_SYSTEMS: Choice[] = [
+  { value: 'fragmented-tools', ar: 'أدوات مجزأة (واتساب / إكسل)', en: 'Fragmented tools (WhatsApp / Excel)' },
+  { value: 'legacy-rewrite', ar: 'نظام قديم يحتاج تحديث شامل', en: 'Legacy app needing a full rewrite' },
+  { value: 'greenfield', ar: 'مشروع جديد بالكامل من الصفر', en: 'Brand new greenfield project' },
+];
+
+const TIMELINES: Choice[] = [
+  { value: 'asap', ar: 'في أقرب وقت ممكن', en: 'As soon as possible' },
+  { value: 'within-2-months', ar: 'خلال شهرين', en: 'Within two months' },
+  { value: 'this-quarter', ar: 'خلال هذا الربع', en: 'This quarter' },
+  { value: 'exploring', ar: 'ما زلنا نستكشف الخيارات', en: 'Still exploring options' },
+];
+
+const BUDGET_RANGES = ['$5k - $10k', '$10k - $25k', '$25k+'];
+
 export const ProjectDiscoveryWizard: React.FC = () => {
-  const { isRtl, t } = useLanguage();
+  const { isRtl, t, language } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
   const BackArrowIcon = isRtl ? ArrowRight : ArrowLeft;
 
   const [step, setStep] = useState<number>(1);
   const totalSteps = 5;
 
+  const label = (choice: Choice) => (isRtl ? choice.ar : choice.en);
+  const labelFor = (choices: Choice[], value: string) => {
+    const match = choices.find((choice) => choice.value === value);
+    return match ? `${match.en}${match.ar !== match.en ? ` / ${match.ar}` : ''}` : value;
+  };
+
   const [formData, setFormData] = useState<ProjectDiscoveryData>({
-    projectType: 'منصة أعمال (Business Platform)',
-    industry: 'المطاعم والضيافة',
+    projectType: PROJECT_TYPES[0].value,
+    industry: INDUSTRY_CHOICES[0].value,
     problem: '',
-    existingSystem: 'أدوات مجزأة (واتساب / إكسل)',
+    existingSystem: EXISTING_SYSTEMS[0].value,
     name: '',
     company: '',
     email: '',
     phone: '',
     budgetRange: '$10k - $25k',
-    timeline: 'خلال شهرين',
+    timeline: TIMELINES[1].value,
     details: ''
   });
+  // Spam trap — invisible to real visitors, blind-filled by bots.
+  const [honeypot, setHoneypot] = useState('');
 
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -55,10 +104,20 @@ export const ProjectDiscoveryWizard: React.FC = () => {
     setErrorMessage('');
 
     try {
+      // Send the human-readable label, not the internal slug — the inbox
+      // needs "Booking Engine", not "booking-engine".
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          projectType: labelFor(PROJECT_TYPES, formData.projectType),
+          industry: labelFor(INDUSTRY_CHOICES, formData.industry),
+          existingSystem: labelFor(EXISTING_SYSTEMS, formData.existingSystem),
+          timeline: labelFor(TIMELINES, formData.timeline),
+          website: honeypot,
+          language,
+        }),
       });
 
       const data = await response.json();
@@ -111,9 +170,16 @@ export const ProjectDiscoveryWizard: React.FC = () => {
           {!submitted && (
             <div className="flex items-center justify-center gap-3 pt-4 font-mono text-xs text-blue-400">
               <span>{t('الخطوة', 'Step')} 0{step} / 0{totalSteps}</span>
-              <div className="w-32 bg-slate-950 rounded-full h-1.5 p-0.5 border border-slate-800">
-                <div 
-                  className="bg-blue-500 h-full rounded-full transition-all duration-300" 
+              <div
+                className="w-32 bg-slate-950 rounded-full h-1.5 p-0.5 border border-slate-800"
+                role="progressbar"
+                aria-valuenow={step}
+                aria-valuemin={1}
+                aria-valuemax={totalSteps}
+                aria-label={t('تقدّم نموذج المشروع', 'Project form progress')}
+              >
+                <div
+                  className="bg-blue-500 h-full rounded-full transition-all duration-300"
                   style={{ width: `${(step / totalSteps) * 100}%` }}
                 ></div>
               </div>
@@ -147,8 +213,8 @@ export const ProjectDiscoveryWizard: React.FC = () => {
 
               <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 max-w-md mx-auto space-y-1 font-mono text-right rtl:text-right ltr:text-left">
                 <div className="text-blue-400 font-bold mb-1">PROPOSAL BRIEF RECEIPT: #{leadReceiptId}</div>
-                <div>Type: {formData.projectType}</div>
-                <div>Industry: {formData.industry}</div>
+                <div>Type: {labelFor(PROJECT_TYPES, formData.projectType)}</div>
+                <div>Industry: {labelFor(INDUSTRY_CHOICES, formData.industry)}</div>
                 <div>Budget: {formData.budgetRange}</div>
               </div>
 
@@ -177,25 +243,19 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   </h3>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs sm:text-sm">
-                    {[
-                      'منصة أعمال (Business Platform)',
-                      'منتج سحابي (SaaS Product)',
-                      'متجر إلكتروني (Digital Commerce)',
-                      'نظام حجوزات (Booking Engine)',
-                      'حلول ذكاء اصطناعي (Practical AI)',
-                      'برمجيات مخصصة (Custom System)',
-                    ].map((typeOption) => (
+                    {PROJECT_TYPES.map((choice) => (
                       <button
-                        key={typeOption}
+                        key={choice.value}
                         type="button"
-                        onClick={() => setFormData({ ...formData, projectType: typeOption })}
+                        aria-pressed={formData.projectType === choice.value}
+                        onClick={() => setFormData({ ...formData, projectType: choice.value })}
                         className={`p-3.5 rounded-xl border text-right rtl:text-right ltr:text-left font-medium transition-all ${
-                          formData.projectType === typeOption
+                          formData.projectType === choice.value
                             ? 'bg-blue-600 text-white border-blue-500 font-bold shadow-sm'
                             : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'
                         }`}
                       >
-                        {typeOption}
+                        {label(choice)}
                       </button>
                     ))}
                   </div>
@@ -214,25 +274,19 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   </h3>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs sm:text-sm">
-                    {[
-                      'المطاعم والضيافة',
-                      'الرعاية الصحية والعيادات',
-                      'التجارة والتجزئة',
-                      'الألعاب والترفيه',
-                      'الفنادق والخدمات',
-                      'شركات ومؤسسات B2B',
-                    ].map((indOption) => (
+                    {INDUSTRY_CHOICES.map((choice) => (
                       <button
-                        key={indOption}
+                        key={choice.value}
                         type="button"
-                        onClick={() => setFormData({ ...formData, industry: indOption })}
+                        aria-pressed={formData.industry === choice.value}
+                        onClick={() => setFormData({ ...formData, industry: choice.value })}
                         className={`p-3.5 rounded-xl border text-right rtl:text-right ltr:text-left font-medium transition-all ${
-                          formData.industry === indOption
+                          formData.industry === choice.value
                             ? 'bg-blue-600 text-white border-blue-500 font-bold shadow-sm'
                             : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'
                         }`}
                       >
-                        {indOption}
+                        {label(choice)}
                       </button>
                     ))}
                   </div>
@@ -275,34 +329,56 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   </h3>
 
                   <div className="space-y-2">
-                    <label className="text-xs text-slate-300 font-semibold block">
+                    <label htmlFor="existing-system" className="text-xs text-slate-300 font-semibold block">
                       {t('هل لديك نظام تشغيلي حالي؟', 'Do you have a current system?')}
                     </label>
                     <select
+                      id="existing-system"
                       value={formData.existingSystem}
                       onChange={(e) => setFormData({ ...formData, existingSystem: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs sm:text-sm text-white focus:outline-none focus:border-blue-500"
                     >
-                      <option value="أدوات مجزأة (واتساب / إكسل)">{t('أدوات مجزأة (واتساب / إكسل)', 'Fragmented tools (WhatsApp / Excel)')}</option>
-                      <option value="نظام قديم يحتاج تحديث شامل">{t('نظام قديم يحتاج تحديث شامل', 'Legacy app needing full rewrite')}</option>
-                      <option value="مشروع جديد بالكامل">{t('مشروع جديد بالكامل من الصفر', 'Brand new greenfield project')}</option>
+                      {EXISTING_SYSTEMS.map((choice) => (
+                        <option key={choice.value} value={choice.value}>
+                          {label(choice)}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs text-slate-300 font-semibold block">
-                      {t('نطاق الميزانية التقديرية للاستثمار:', 'Estimated Budget Range:')}
+                    <label htmlFor="timeline" className="text-xs text-slate-300 font-semibold block">
+                      {t('الإطار الزمني المستهدف للإطلاق:', 'Target timeline to launch:')}
                     </label>
-                    <div className="grid grid-cols-3 gap-2 text-xs">
-                      {['$5k - $10k', '$10k - $25k', '$25k+'].map((b) => (
+                    <select
+                      id="timeline"
+                      value={formData.timeline}
+                      onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs sm:text-sm text-white focus:outline-none focus:border-blue-500"
+                    >
+                      {TIMELINES.map((choice) => (
+                        <option key={choice.value} value={choice.value}>
+                          {label(choice)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <span className="text-xs text-slate-300 font-semibold block" id="budget-label">
+                      {t('نطاق الميزانية التقديرية للاستثمار:', 'Estimated Budget Range:')}
+                    </span>
+                    <div className="grid grid-cols-3 gap-2 text-xs" role="group" aria-labelledby="budget-label">
+                      {BUDGET_RANGES.map((b) => (
                         <button
                           key={b}
                           type="button"
+                          aria-pressed={formData.budgetRange === b}
                           onClick={() => setFormData({ ...formData, budgetRange: b })}
                           className={`py-2.5 px-3 rounded-xl border text-center font-mono font-bold transition-all ${
                             formData.budgetRange === b
                               ? 'bg-blue-600 text-white border-blue-500'
-                              : 'bg-slate-950 border-slate-800 text-slate-400'
+                              : 'bg-slate-950 border-slate-800 text-slate-300'
                           }`}
                         >
                           {b}
@@ -369,8 +445,25 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                 </motion.div>
               )}
 
+              {/* Honeypot — hidden from sighted users and assistive tech alike. */}
+              <div aria-hidden="true" className="absolute w-px h-px -m-px overflow-hidden opacity-0 pointer-events-none">
+                <label htmlFor="discovery-website">Website</label>
+                <input
+                  id="discovery-website"
+                  name="website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
+
               {errorMessage && (
-                <div className="p-3 rounded-lg bg-rose-950/80 border border-rose-800 text-rose-300 text-xs font-arabic">
+                <div
+                  role="alert"
+                  className="p-3 rounded-lg bg-rose-950/80 border border-rose-800 text-rose-200 text-xs font-arabic"
+                >
                   {errorMessage}
                 </div>
               )}
