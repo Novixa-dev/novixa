@@ -8,22 +8,58 @@ export function getSiteUrl(): string {
   return 'https://novixa.dev';
 }
 
+/**
+ * Builds the URL of the generated social card for a page.
+ *
+ * A page that returns its own `openGraph` object from `generateMetadata`
+ * replaces the inherited one wholesale, which is why the file-based
+ * `app/opengraph-image.tsx` never reached any page here and every share
+ * rendered as a bare text card. Setting `images` explicitly on both
+ * `openGraph` and `twitter` is what actually puts a card on the page.
+ */
+export function buildOgImageUrl({
+  title,
+  description,
+  lang,
+  eyebrow,
+}: {
+  title: string;
+  description: string;
+  lang: 'ar' | 'en';
+  eyebrow?: string;
+}): string {
+  const params = new URLSearchParams({ t: title, d: description, l: lang });
+  if (eyebrow) params.set('k', eyebrow);
+  return `${getSiteUrl()}/og?${params.toString()}`;
+}
+
 export function constructMetadata({
   title,
   description,
   lang,
   path = '',
+  eyebrow,
 }: {
   title: string;
   description: string;
   lang: 'ar' | 'en';
   path?: string;
+  /** Short pill label on the generated social card (e.g. a section name). */
+  eyebrow?: string;
 }): Metadata {
   const baseUrl = getSiteUrl();
   const cleanPath = path ? (path.startsWith('/') ? path : `/${path}`) : '';
   const canonicalUrl = `${baseUrl}/${lang}${cleanPath}`;
   const alternateAr = `${baseUrl}/ar${cleanPath}`;
   const alternateEn = `${baseUrl}/en${cleanPath}`;
+  const ogImageUrl = buildOgImageUrl({ title, description, lang, eyebrow });
+  const ogImage = {
+    url: ogImageUrl,
+    width: 1200,
+    height: 630,
+    alt: title,
+    type: 'image/png',
+  };
 
   return {
     title,
@@ -42,12 +78,15 @@ export function constructMetadata({
       url: canonicalUrl,
       siteName: 'Novixa | نوڤيكسا',
       locale: lang === 'ar' ? 'ar_SA' : 'en_US',
+      alternateLocale: lang === 'ar' ? ['en_US'] : ['ar_SA'],
       type: 'website',
+      images: [ogImage],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${title} | Novixa`,
       description,
+      images: [ogImageUrl],
     },
     robots: {
       index: true,
@@ -144,12 +183,8 @@ export function generateProductJsonLd({
     description,
     applicationCategory: category || 'BusinessApplication',
     operatingSystem: 'Web, Cloud, iOS, Android',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-      availability: 'https://schema.org/OnlineOnly',
-    },
+    // No `offers` block: Novixa does not publish a price for these products,
+    // and the previous `price: '0'` told search engines they were free.
     brand: {
       '@type': 'Brand',
       name: 'Novixa',
@@ -196,3 +231,31 @@ export function generateArticleJsonLd({
   };
 }
 
+export function generateContactPageJsonLd(lang: 'ar' | 'en') {
+  const baseUrl = getSiteUrl();
+  const isAr = lang === 'ar';
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    '@id': `${baseUrl}/${lang}/contact`,
+    url: `${baseUrl}/${lang}/contact`,
+    inLanguage: lang,
+    name: isAr ? 'تواصل مع نوڤيكسا' : 'Contact Novixa',
+    mainEntity: {
+      '@type': 'Organization',
+      name: 'Novixa',
+      alternateName: 'نوڤيكسا',
+      url: baseUrl,
+      email: 'hello@novixa.dev',
+      contactPoint: [
+        {
+          '@type': 'ContactPoint',
+          contactType: 'sales',
+          email: 'hello@novixa.dev',
+          availableLanguage: ['Arabic', 'English'],
+          areaServed: ['YE', 'SA', 'AE', 'QA', 'KW', 'OM', 'BH'],
+        },
+      ],
+    },
+  };
+}
