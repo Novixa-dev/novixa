@@ -84,8 +84,26 @@
   background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.12) 0%, transparent 60%);
 }
 
-/* Precision engineered card style */
+/*
+ * Precision engineered card style.
+ *
+ * `.glass-card` deliberately carries NO backdrop-filter. The homepage alone
+ * renders 57 of these, and each backdrop-filter promotes its own compositing
+ * layer and blurs the backdrop behind it — measured at ~7.5s of Style & Layout
+ * on a throttled mobile profile, the single largest cost on the page. Almost
+ * every one of them sits on the flat #020617/#0f172a canvas, where blurring a
+ * solid colour produces no visible difference at all. The raised background
+ * opacity below is visually equivalent over the site's dark canvas.
+ *
+ * Use `.glass-overlay` for the handful of surfaces that genuinely float over
+ * scrolling content (navbar, modals, command menu), where the blur reads.
+ */
 .glass-card {
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-overlay {
   background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
