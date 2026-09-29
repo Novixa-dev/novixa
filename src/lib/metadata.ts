@@ -254,3 +254,81 @@ export function generateContactPageJsonLd(lang: 'ar' | 'en') {
     },
   };
 }
+
+export function generateServiceJsonLd({
+  name,
+  description,
+  serviceType,
+  url,
+  lang,
+}: {
+  name: string;
+  description: string;
+  serviceType?: string;
+  url: string;
+  lang: 'ar' | 'en';
+}) {
+  const baseUrl = getSiteUrl();
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name,
+    description,
+    serviceType,
+    inLanguage: lang,
+    // No `offers` block: Novixa does not publish prices for these engagements,
+    // and an invented or zero price would be a false claim to search engines.
+    provider: {
+      '@type': 'Organization',
+      name: 'Novixa',
+      url: baseUrl,
+    },
+    areaServed: ['YE', 'SA', 'AE', 'QA', 'KW', 'OM', 'BH'],
+    availableLanguage: ['Arabic', 'English'],
+    url: url.startsWith('http') ? url : `${baseUrl}${url.startsWith('/') ? url : `/${url}`}`,
+  };
+}
+
+/**
+ * Marks up a question list as a rich result.
+ *
+ * Only for questions that are genuinely answered on the page — Google treats
+ * FAQPage markup that does not match visible content as a policy violation,
+ * and it is the kind of shortcut that costs a site its rich results entirely.
+ */
+export function generateFaqJsonLd(items: Array<{ question: string; answer: string }>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+/** A catalog listing — helps search engines understand a hub page's children. */
+export function generateItemListJsonLd(
+  items: Array<{ name: string; url: string }>,
+  listName: string
+) {
+  const baseUrl = getSiteUrl();
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: listName,
+    numberOfItems: items.length,
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      url: item.url.startsWith('http')
+        ? item.url
+        : `${baseUrl}${item.url.startsWith('/') ? item.url : `/${item.url}`}`,
+    })),
+  };
+}

@@ -131,8 +131,13 @@ export const ServicesView: React.FC = () => {
 
                   {/* Title & Subtitle */}
                   <div className="space-y-1.5">
-                    <h2 className="text-lg sm:text-xl font-bold font-display text-white group-hover:text-blue-200 transition-colors">
-                      {t(service.title.ar, service.title.en)}
+                    <h2 className="text-lg sm:text-xl font-bold font-display text-white">
+                      <Link
+                        href={`/${language}/services/${service.slug}`}
+                        className="group-hover:text-blue-200 transition-colors focus:outline-none focus-visible:underline"
+                      >
+                        {t(service.title.ar, service.title.en)}
+                      </Link>
                     </h2>
                     <p className="text-xs text-slate-400 font-arabic leading-relaxed">
                       {t(service.subtitle.ar, service.subtitle.en)}
@@ -173,11 +178,17 @@ export const ServicesView: React.FC = () => {
                 {/* Bottom Action */}
                 <div className="pt-4 border-t border-slate-800 space-y-2">
                   <Link
-                    href={`/${language}/contact?service=${service.slug}`}
+                    href={`/${language}/services/${service.slug}`}
                     className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs py-2.5 px-4 rounded-xl shadow-md transition-colors cursor-pointer"
                   >
-                    <span>{t('طلب استشارة لهذه الخدمة', 'Request Consultation')}</span>
+                    <span>{t('تفاصيل الخدمة والمخرجات', 'Scope & deliverables')}</span>
                     <ArrowIcon className="w-3.5 h-3.5" />
+                  </Link>
+                  <Link
+                    href={`/${language}/start-project?service=${service.slug}`}
+                    className="w-full inline-flex items-center justify-center gap-2 text-slate-300 hover:text-white font-medium text-xs py-2 px-4 rounded-xl border border-white/[0.07] hover:bg-slate-800/60 transition-colors"
+                  >
+                    <span>{t('طلب استشارة لهذه الخدمة', 'Request consultation')}</span>
                   </Link>
                 </div>
               </div>

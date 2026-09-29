@@ -306,7 +306,18 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-300">
           <div className="flex items-center gap-2">
-            <span>© {new Date().getFullYear()} {BRAND_INFO.name}. {t('جميع الحقوق محفوظة.', 'All rights reserved.')}</span>
+            <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span>© {new Date().getFullYear()} {BRAND_INFO.name}. {t('جميع الحقوق محفوظة.', 'All rights reserved.')}</span>
+              <Link href={`/${language}/legal/privacy`} className="hover:text-blue-400 transition-colors">
+                {t('سياسة الخصوصية', 'Privacy')}
+              </Link>
+              <Link href={`/${language}/legal/terms`} className="hover:text-blue-400 transition-colors">
+                {t('شروط الاستخدام', 'Terms')}
+              </Link>
+              <Link href={`/${language}/faq`} className="hover:text-blue-400 transition-colors">
+                {t('الأسئلة الشائعة', 'FAQ')}
+              </Link>
+            </span>
           </div>
 
           <div className="flex items-center gap-4 text-slate-300">

@@ -113,7 +113,15 @@ export const SolutionsView: React.FC = () => {
                       {t(selectedSolution.category.ar, selectedSolution.category.en)}
                     </span>
                     <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">
-                      {t(selectedSolution.name.ar, selectedSolution.name.en)}
+                      {/* This page switches solutions in client state, so the
+                          selected solution has no URL of its own. Link to its
+                          detail route so it can be shared, linked and indexed. */}
+                      <Link
+                        href={`/${language}/solutions/${selectedSolution.slug}`}
+                        className="hover:text-teal-200 transition-colors focus:outline-none focus-visible:underline"
+                      >
+                        {t(selectedSolution.name.ar, selectedSolution.name.en)}
+                      </Link>
                     </h2>
                   </div>
                 </div>
@@ -132,10 +140,10 @@ export const SolutionsView: React.FC = () => {
                 </div>
 
                 <Link
-                  href={`/${language}/contact?solution=${selectedSolution.slug}`}
+                  href={`/${language}/solutions/${selectedSolution.slug}`}
                   className="inline-flex items-center justify-center gap-2 bg-teal-700 hover:bg-teal-800 text-white font-semibold text-xs sm:text-sm px-6 py-3.5 rounded-xl shadow-lg shadow-teal-700/20 transition-all cursor-pointer"
                 >
-                  <span>{t('طلب عرض تجريبي واستشارة', 'Request Demo & Consultation')}</span>
+                  <span>{t('الصفحة الكاملة والباقات', 'Full page & tiers')}</span>
                   <ArrowIcon className="w-4 h-4" />
                 </Link>
               </div>
