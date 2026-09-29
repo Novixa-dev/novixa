@@ -53,7 +53,11 @@ export const ProcessSection: React.FC = () => {
                     : 'bg-slate-950/80 border-slate-800 text-slate-400 hover:text-white hover:bg-slate-900'
                 }`}
               >
-                <div className="text-[10px] font-mono tracking-wider opacity-80 mb-0.5">{step.number}</div>
+                {/* No `opacity-80` here: on the inactive chip it dropped
+                    slate-400 on slate-950 to 4.0:1, under the 4.5:1 floor for
+                    text this small. The mono face and smaller size already
+                    make the step number read as secondary. */}
+                <div className="text-[10px] font-mono tracking-wider mb-0.5">{step.number}</div>
                 <div className="font-display text-xs truncate">{t(step.title.ar, step.title.en)}</div>
               </button>
             );

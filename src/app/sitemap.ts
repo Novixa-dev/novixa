@@ -30,6 +30,7 @@ const STATIC_ROUTES: RouteSpec[] = [
   { path: 'contact', priority: 0.9, changeFrequency: 'monthly' },
   { path: 'start-project', priority: 0.9, changeFrequency: 'monthly' },
   { path: 'products', priority: 0.8, changeFrequency: 'weekly' },
+  { path: 'dashboard', priority: 0.8, changeFrequency: 'monthly' },
   { path: 'industries', priority: 0.8, changeFrequency: 'monthly' },
   { path: 'work', priority: 0.8, changeFrequency: 'monthly' },
   { path: 'about', priority: 0.7, changeFrequency: 'monthly' },

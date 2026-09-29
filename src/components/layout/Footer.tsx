@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from '../ui/Logo';
 import { BRAND_INFO } from '../../content/data';
+import { CONTACT_EMAIL } from '@/lib/contact-channels';
 import { SOCIAL_LINKS } from '../../data/navigation';
 import {
   Shield,
@@ -201,8 +202,18 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link href={`/${language}/industries`} className="hover:text-blue-400 transition-colors text-slate-300">
+                    {t('القطاعات التي نخدمها', 'Industries We Serve')}
+                  </Link>
+                </li>
+                <li>
                   <Link href={`/${language}/insights`} className="hover:text-blue-400 transition-colors text-slate-300">
                     {t('المقالات والرؤى الهندسية', 'Engineering Insights')}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${language}/dashboard`} className="hover:text-blue-400 transition-colors text-slate-300">
+                    {t('لوحة التشغيل التفاعلية', 'Interactive Operations Console')}
                   </Link>
                 </li>
                 <li>
@@ -212,10 +223,10 @@ export const Footer: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="mailto:hello@novixa.dev"
+                    href={`mailto:${CONTACT_EMAIL}`}
                     className="hover:text-blue-400 transition-colors font-mono text-slate-400 block pt-1"
                   >
-                    hello@novixa.dev
+                    {CONTACT_EMAIL}
                   </a>
                 </li>
               </ul>
@@ -240,9 +251,9 @@ export const Footer: React.FC = () => {
               <Shield className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white font-display">
+              <p className="text-xs font-bold text-white font-display">
                 {t('سيادة البيانات والاستضافة الإقليمية', 'Sovereign Cloud & Regional Hosting')}
-              </h4>
+              </p>
               <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
                 {t('استضافة محلية مهيأة ومتوافقة مع متطلبات الحوكمة والخصوصية الإقليمية.', 'Regional cloud environments complying with local data governance.')}
               </p>
@@ -254,9 +265,9 @@ export const Footer: React.FC = () => {
               <Lock className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white font-display">
+              <p className="text-xs font-bold text-white font-display">
                 {t('حماية الملكية واتفاقيات السرية (NDA)', 'Mutual NDA & Code Ownership')}
-              </h4>
+              </p>
               <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
                 {t('عقود قانونية واضحة تضمن ملكيتك الكاملة للأصل البرمجي وسرية العمليات.', 'Clear contracts ensuring full proprietary ownership of delivered software.')}
               </p>
@@ -268,9 +279,9 @@ export const Footer: React.FC = () => {
               <Cpu className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white font-display">
+              <p className="text-xs font-bold text-white font-display">
                 {t('تشفير متقدم TLS 1.3 & AES-256', 'TLS 1.3 & AES-256 Encryption')}
-              </h4>
+              </p>
               <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
                 {t('حماية فائقة للمعلومات وقنوات الاتصال على مستوى النقل والتخزين.', 'Zero-trust architecture protecting data in transit and at rest.')}
               </p>
@@ -282,9 +293,9 @@ export const Footer: React.FC = () => {
               <Zap className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white font-display">
+              <p className="text-xs font-bold text-white font-display">
                 {t('ضمان الجاهزية SLA 99.99%', '99.99% Availability SLA')}
-              </h4>
+              </p>
               <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
                 {t('بنية تحتية موزعة ومراقبة تضمن استقرارك التشغيلي على مدار الساعة.', 'Monitored cloud infrastructure ensuring rock-solid business continuity.')}
               </p>
