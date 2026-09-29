@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og';
+import { getSiteUrl } from '@/lib/site';
 
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -135,7 +136,7 @@ export default function OpengraphImage() {
             <span>• Applied AI &amp; Automation</span>
           </div>
           <div style={{ color: '#38BDF8', fontSize: 16, fontWeight: 700, letterSpacing: '0.02em' }}>
-            novixa.dev
+            {new URL(getSiteUrl()).host}
           </div>
         </div>
       </div>

@@ -1,12 +1,7 @@
 import { Metadata } from 'next';
+import { getSiteUrl } from './site';
 
-export function getSiteUrl(): string {
-  if (typeof process !== 'undefined' && process.env) {
-    if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '');
-    if (process.env.SITE_URL) return process.env.SITE_URL.replace(/\/$/, '');
-  }
-  return 'https://novixa.dev';
-}
+export { getSiteUrl };
 
 /**
  * Builds the URL of the generated social card for a page.
