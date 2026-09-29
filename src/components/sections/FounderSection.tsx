@@ -3,10 +3,10 @@
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { FOUNDER_INFO } from '../../content/data';
-import { Quote, Terminal, Shield, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Quote, Terminal } from 'lucide-react';
 
 export const FounderSection: React.FC = () => {
-  const { isRtl, t } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <section className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden">

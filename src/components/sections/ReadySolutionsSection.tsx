@@ -17,7 +17,6 @@ import {
   ArrowRight,
   Clock,
   CheckCircle2,
-  Sparkles,
   Zap,
 } from 'lucide-react';
 

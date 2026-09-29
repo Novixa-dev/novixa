@@ -38,6 +38,10 @@ export default function ErrorBoundary({
           >
             إعادة المحاولة / Retry
           </button>
+          {/* Deliberately a plain anchor, not `next/link`: this is the root
+              error boundary, so the router itself may be the failed subtree.
+              A full document load is the only reliable way back. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a
             href="/ar"
             className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs transition-all flex items-center gap-2"

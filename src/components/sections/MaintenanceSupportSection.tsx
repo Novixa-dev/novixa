@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   ArrowLeft,
   ArrowRight,
-  Clock,
   Activity,
   LifeBuoy,
 } from 'lucide-react';

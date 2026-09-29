@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getWorkBySlug, caseStudiesCatalog } from '@/lib/content';
 import { constructMetadata, generateBreadcrumbJsonLd } from '@/lib/metadata';
-import { CheckCircle2, ArrowLeft, ArrowRight, Quote, Briefcase } from 'lucide-react';
+import { CheckCircle2, ArrowLeft, ArrowRight, Quote } from 'lucide-react';
 import { Language } from '@/types';
 
 export function generateStaticParams() {

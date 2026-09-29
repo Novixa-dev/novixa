@@ -12,11 +12,8 @@ import {
   ArrowLeft,
   ArrowRight,
   HardDrive,
-  Mail,
   Activity,
   CheckCircle2,
-  Cpu,
-  RefreshCw,
 } from 'lucide-react';
 
 export const DeploymentHostingSection: React.FC = () => {

@@ -6,29 +6,18 @@ import { useLanguage } from '../../context/LanguageContext';
 import {
   ArrowLeft,
   ArrowRight,
-  Shield,
   Zap,
   Layers,
   Cpu,
-  CheckCircle2,
   Database,
-  Users,
-  ShoppingCart,
-  Lock,
   Server,
   GitBranch,
-  Terminal,
-  Activity,
-  Sparkles,
   LayoutGrid,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 
 export const HeroSection: React.FC = () => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
-
-  const [activeTab, setActiveTab] = useState<'custom' | 'ready'>('custom');
   const [selectedNode, setSelectedNode] = useState<string>('gateway');
 
   const topologyNodes = [

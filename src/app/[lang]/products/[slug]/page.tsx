@@ -7,14 +7,9 @@ import {
   CheckCircle2,
   ArrowLeft,
   ArrowRight,
-  Sparkles,
   Shield,
-  Layers,
   Server,
   Wrench,
-  Cpu,
-  Clock,
-  Zap,
 } from 'lucide-react';
 import { Language } from '@/types';
 

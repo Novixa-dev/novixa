@@ -4,9 +4,17 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { INDUSTRIES } from '../../content/data';
-import { 
-  Utensils, HeartPulse, Store, Gamepad, Building, ShieldCheck, 
-  AlertCircle, CheckCircle2, ArrowLeft, ArrowRight, Layers 
+import {
+  Utensils,
+  HeartPulse,
+  Store,
+  Gamepad,
+  Building,
+  ShieldCheck,
+  AlertCircle,
+  CheckCircle2,
+  ArrowLeft,
+  ArrowRight,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 

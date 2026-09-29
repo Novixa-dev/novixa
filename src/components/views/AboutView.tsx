@@ -5,18 +5,8 @@ import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { FounderSection } from '../sections/FounderSection';
 import {
-  ShieldCheck,
-  Code2,
-  Zap,
-  Globe,
   ArrowLeft,
   ArrowRight,
-  CheckCircle2,
-  Layers,
-  Lock,
-  Cpu,
-  Workflow,
-  Server,
 } from 'lucide-react';
 
 export const AboutView: React.FC = () => {

@@ -5,19 +5,12 @@ import { useLanguage } from '../../context/LanguageContext';
 import { PROCESS_STEPS } from '../../content/data';
 import {
   GitCommit,
-  CheckCircle,
-  ArrowLeft,
-  ArrowRight,
   ShieldCheck,
-  Terminal,
-  Sparkles,
-  Clock,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export const ProcessSection: React.FC = () => {
-  const { isRtl, t } = useLanguage();
-  const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
+  const { t } = useLanguage();
 
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
 

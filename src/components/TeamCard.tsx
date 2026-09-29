@@ -14,13 +14,12 @@ const iconMap = {
 };
 
 interface TeamCardProps {
-  member?: any; // Backwards compatibility if needed
   discipline?: EngineeringDiscipline;
   index?: number;
 }
 
 export const TeamCard: React.FC<TeamCardProps> = ({ discipline, index = 0 }) => {
-  const { language, isRtl, t } = useLanguage();
+  const { language, t } = useLanguage();
   const isAr = language === 'ar';
 
   if (!discipline) return null;

@@ -17,9 +17,7 @@ import {
   ArrowRight,
   Clock,
   CheckCircle2,
-  Sparkles,
   Zap,
-  Tag,
   Check,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';

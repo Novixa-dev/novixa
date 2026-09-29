@@ -9,13 +9,7 @@ import {
   CheckCircle2,
   ArrowLeft,
   ArrowRight,
-  ShieldCheck,
-  Clock,
   Layers,
-  Sparkles,
-  Server,
-  Workflow,
-  XCircle,
 } from 'lucide-react';
 
 export const DualEngineSection: React.FC = () => {

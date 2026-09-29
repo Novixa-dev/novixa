@@ -1,18 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { CASE_STUDIES } from '../../content/data';
-import { CaseStudy } from '../../types';
-import { 
-  Briefcase, ArrowLeft, ArrowRight, ExternalLink, Quote, 
-  CheckCircle2, Layers, Cpu, X, Terminal, Database, Shield
+import {
+  Briefcase,
+  ArrowLeft,
+  ArrowRight,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 
 interface CaseStudiesSectionProps {
-  onSelectCaseStudy?: (caseStudy: CaseStudy) => void;
   /** The /work page renders its own page-level H1 and intro (with a
    * link back to itself that would be redundant here), so it passes
    * false to skip this section's homepage-teaser header entirely. */
@@ -20,20 +18,10 @@ interface CaseStudiesSectionProps {
 }
 
 export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
-  onSelectCaseStudy,
   showHeader = true,
 }) => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
-
-  const [activeModalCase, setActiveModalCase] = useState<CaseStudy | null>(null);
-
-  const handleOpenDetail = (cs: CaseStudy) => {
-    if (onSelectCaseStudy) {
-      onSelectCaseStudy(cs);
-    }
-    setActiveModalCase(cs);
-  };
 
   return (
     <section className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden border-t border-slate-900/80">
@@ -144,63 +132,6 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
 
       </div>
 
-      {/* Full Editorial Case Study Modal */}
-      <AnimatePresence>
-        {activeModalCase && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 shadow-2xl space-y-6 text-right rtl:text-right ltr:text-left relative"
-            >
-              <button
-                onClick={() => setActiveModalCase(null)}
-                className="absolute top-5 left-5 rtl:left-5 ltr:right-5 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition-colors"
-                aria-label={isRtl ? 'إغلاق' : 'Close'}
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="space-y-2 pt-2">
-                <span className="px-3 py-1 rounded-full text-xs font-mono bg-slate-950 text-blue-400 border border-slate-800">
-                  {activeModalCase.industry[isRtl ? 'ar' : 'en']} • {activeModalCase.caseStudyTypeLabel[isRtl ? 'ar' : 'en']}
-                </span>
-                <h2 className="text-xl sm:text-2xl font-extrabold font-display text-white">
-                  {activeModalCase.title[isRtl ? 'ar' : 'en']}
-                </h2>
-              </div>
-
-              <div className="space-y-4 text-xs sm:text-sm text-slate-300 font-arabic leading-relaxed">
-                <div>
-                  <div className="font-bold text-white mb-1">{t('التحدي التشغيلي:', 'The Operational Challenge:')}</div>
-                  <p className="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                    {activeModalCase.challenge[isRtl ? 'ar' : 'en']}
-                  </p>
-                </div>
-
-                <div>
-                  <div className="font-bold text-white mb-1">{t('المعمارية والحل التقني:', 'The Engineered Architecture:')}</div>
-                  <p className="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                    {activeModalCase.solution[isRtl ? 'ar' : 'en']}
-                  </p>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
-                <span className="text-xs text-slate-300 font-mono">Location: {activeModalCase.location[isRtl ? 'ar' : 'en']}</span>
-                <Link
-                  href={`/${language}/start-project`}
-                  onClick={() => setActiveModalCase(null)}
-                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors"
-                >
-                  {t('ناقش مشروعك معنا', 'Consult on Your System')}
-                </Link>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };

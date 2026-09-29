@@ -29,7 +29,9 @@ export const BRAND_INFO = {
     en: 'Practical business software for Yemen, the GCC and beyond.',
   },
   email: 'hello@novixa.dev',
-  whatsappUrl: 'https://wa.me/967770000000',
+  // The WhatsApp channel is configured through NEXT_PUBLIC_WHATSAPP_NUMBER
+  // (see src/lib/contact-channels.ts) rather than hardcoded here: this field
+  // previously held a placeholder number that nobody owns.
   location: {
     ar: 'اليمن • المملكة العربية السعودية • الخليج العربي',
     en: 'Yemen • Saudi Arabia • GCC & Beyond',

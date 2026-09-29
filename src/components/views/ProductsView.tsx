@@ -14,12 +14,7 @@ import {
   CheckCircle2,
   ArrowLeft,
   ArrowRight,
-  ShieldCheck,
-  Zap,
   ArrowUpRight,
-  Server,
-  Wrench,
-  Layers,
 } from 'lucide-react';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {

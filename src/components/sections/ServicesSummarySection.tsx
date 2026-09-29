@@ -17,7 +17,6 @@ import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
-  Cpu,
   ShieldCheck,
   Zap,
 } from 'lucide-react';

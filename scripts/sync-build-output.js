@@ -21,7 +21,7 @@ function syncOutput() {
           fs.symlinkSync(distDir, nextDir, 'junction');
           console.log('[sync-build-output] Created junction from dist to .next');
           return;
-        } catch (symErr) {
+        } catch (_symErr) {
           fs.cpSync(distDir, nextDir, { recursive: true });
           console.log('[sync-build-output] Copied dist to .next');
           return;
@@ -40,7 +40,7 @@ function syncOutput() {
           fs.symlinkSync(nextDir, distDir, 'junction');
           console.log('[sync-build-output] Created junction from .next to dist');
           return;
-        } catch (symErr) {
+        } catch (_symErr) {
           fs.cpSync(nextDir, distDir, { recursive: true });
           console.log('[sync-build-output] Copied .next to dist');
           return;

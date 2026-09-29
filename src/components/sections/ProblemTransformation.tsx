@@ -2,15 +2,20 @@
 
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { 
-  FileSpreadsheet, MessageCircle, AlertTriangle, CheckCircle, 
-  ArrowLeft, ArrowRight, Layers, Sparkles, Workflow, Clock, Ban
+import {
+  FileSpreadsheet,
+  MessageCircle,
+  AlertTriangle,
+  CheckCircle,
+  Sparkles,
+  Workflow,
+  Clock,
+  Ban,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export const ProblemTransformation: React.FC = () => {
-  const { isRtl, t } = useLanguage();
-  const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
+  const { t } = useLanguage();
 
   const [mode, setMode] = useState<'fragmented' | 'unified'>('unified');
 

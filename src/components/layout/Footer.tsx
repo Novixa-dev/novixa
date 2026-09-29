@@ -4,11 +4,9 @@ import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from '../ui/Logo';
-import { BRAND_INFO, SERVICES, READY_SOLUTIONS, PRODUCTS } from '../../content/data';
+import { BRAND_INFO } from '../../content/data';
 import { SOCIAL_LINKS } from '../../data/navigation';
 import {
-  ArrowLeft,
-  ArrowRight,
   Shield,
   Terminal,
   Globe,
@@ -18,8 +16,6 @@ import {
   Lock,
   Cpu,
   Zap,
-  Server,
-  CloudCheck,
 } from 'lucide-react';
 
 const socialIconMap = {
@@ -29,8 +25,7 @@ const socialIconMap = {
 };
 
 export const Footer: React.FC = () => {
-  const { language, isRtl, t, toggleLanguage } = useLanguage();
-  const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
+  const { language, t, toggleLanguage } = useLanguage();
 
   return (
     <footer className="bg-slate-950 border-t border-slate-800/80 pt-16 pb-12 relative overflow-hidden text-slate-300 text-sm">

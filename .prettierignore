@@ -1,0 +1,8 @@
+node_modules
+.next
+dist
+package-lock.json
+public/fonts
+novixa-images-to-use
+.claude
+src/app/og/*.ttf
