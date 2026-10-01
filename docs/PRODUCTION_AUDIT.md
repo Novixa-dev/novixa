@@ -207,6 +207,49 @@ Lighthouse instead, which reports 100 on every touched page. A tool assignment,
 not a coverage gap. A manual contrast pass over the glass surfaces remains
 worthwhile.
 
+### P2-7 · No real app icons; manifest not installable — FIXED
+
+`public/` contained only `fonts/`. There was no `favicon.ico`, no PNG icons at
+any size, and the manifest declared `display: 'browser'` with a single SVG — so
+the site could not be added to a home screen, and browsers that request
+`/favicon.ico` by convention got a 404.
+
+*Fix:* 192/512 icons plus maskable variants (artwork inside an 80% safe zone, so
+Android's launcher crop does not clip the logo), a 180px Apple touch icon, and a
+`favicon.ico`. Manifest is now `standalone`, `lang: ar`, `dir: rtl`.
+
+### P3-0 · Mobile performance is 72, bottlenecked on the main thread — PARTIALLY ACTED ON
+
+Lighthouse, throttled mobile, `/ar`:
+
+| Metric | Value | Reading |
+|---|---|---|
+| CLS | **0** | The font work holds — no layout movement at all |
+| FCP | 1.3 s | Good |
+| LCP | 5.1 s | **Poor.** 92% of it is *render delay*, not network — the H1 is in the HTML at 460 ms and does not paint for five seconds |
+| TBT | 360 ms | Needs work |
+
+The cause is main-thread work, not bytes: Style & Layout 1290 ms, Script
+Evaluation 838 ms. The homepage renders twelve sections, nearly all of them
+client components because they call `useLanguage()`.
+
+**What was tried and kept:** Inter is no longer preloaded. It only applies under
+`html[lang="en"]`, but the root layout declares fonts once for both locales, so
+four faces (~48 kB) sat on the critical path of every Arabic page — the default
+locale — where they can never be used.
+
+**What was tried and reverted:** code-splitting the ten below-the-fold sections
+with `next/dynamic`. Measured before and after: the score went **72 → 66** and
+TBT **330 → 570 ms**. The chunks still all load, so splitting added per-chunk
+evaluation overhead without removing work. Reverted.
+
+**What would actually fix it, not attempted here:** converting the presentational
+sections to server components by passing `lang` as a prop instead of calling
+`useLanguage()`. That removes them from the client bundle entirely rather than
+rearranging it. It touches a dozen components and is the wrong thing to land at
+the end of a session alongside unrelated work — it needs its own change and its
+own before/after measurement.
+
 ### P3-2 · Thin editorial content — NOT ACTED ON
 
 Two insight articles and four industries. Both clusters are structurally sound
@@ -231,7 +274,8 @@ forward-compatible — `next lint` is removed in 16.
 | `npm run test` (Vitest) | 78 passed |
 | `npm run test:e2e` (Playwright) | 117 passed — desktop, tablet, mobile |
 | `npm run build` | clean, 90 routes |
-| Lighthouse a11y / best-practices / SEO | **100 / 100 / 100** on `/ar`, `/en`, `/ar/dashboard`, `/en/dashboard`, `/ar/contact`, `/ar/products`, `/ar/faq`, `/ar/services/custom-software`, `/ar/solutions/restaurant-system`, `/ar/legal/privacy` |
+| Lighthouse a11y / best-practices / SEO | **100 / 100 / 100** on `/ar`, `/en`, `/ar/dashboard`, `/en/dashboard`, `/ar/contact`, `/ar/products`, `/ar/solutions`, `/ar/faq`, `/ar/start-project`, `/ar/services/custom-software`, `/ar/solutions/restaurant-system`, `/ar/legal/privacy` |
+| Lighthouse performance (throttled mobile, `/ar`) | **72** — CLS 0, FCP 1.3 s, LCP 5.1 s, TBT 360 ms. See P3-0 |
 
 ---
 

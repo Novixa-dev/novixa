@@ -128,12 +128,24 @@ axe cannot composite them (`PRODUCTION_AUDIT.md` P3-1). Lighthouse reports 100,
 but a human check over `glass-card` / `glass-overlay` at the smallest type sizes
 is still worth doing.
 
-### R5 — Editorial depth · **content task, not engineering**
+### R5 — Server-component refactor of the presentational sections · **ready to do, own change**
+The measured bottleneck (`PRODUCTION_AUDIT.md` P3-0): LCP 5.1 s whose delay is
+92% render, from 1290 ms of Style & Layout and 838 ms of script evaluation.
+Nearly every homepage section is a client component solely because it calls
+`useLanguage()`. Passing `lang` as a prop and reading a server-side `t` would
+remove them from the client bundle outright.
+
+Not bundled here on purpose. Code-splitting was tried first as the cheaper
+option and measured *worse* (72 → 66, TBT 330 → 570 ms) — it rearranged the work
+instead of removing it, and was reverted. The real fix touches a dozen
+components and deserves its own change with its own before/after numbers.
+
+### R6 — Editorial depth · **content task, not engineering**
 Two insight articles and four industries. Both clusters are sound but shallow for
 the terms they target. Needs someone who can write with authority about the
 Yemeni and GCC market — not something to generate.
 
-### R6 — Next.js 16 migration · **separate change**
+### R7 — Next.js 16 migration · **separate change**
 Deliberately not bundled here: a framework migration alongside a feature and
 content pass makes any regression hard to attribute. The ESLint work already done
 is forward-compatible, since `next lint` is removed in 16.

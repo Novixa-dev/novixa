@@ -75,7 +75,21 @@ export const inter = localFont({
   ],
   variable: '--font-english',
   display: 'swap',
-  preload: true,
+  // Not preloaded. Inter is applied only under `html[lang="en"]`, but the
+  // root layout declares every font once for both locales, so preloading it
+  // put four faces (~180 kB) on the critical path of every *Arabic* page —
+  // the default and primary locale — where they can never be used.
+  //
+  // Lighthouse measured 11 font preloads competing for bandwidth while the
+  // hero H1 waited: 92% of a 5.4 s LCP was render delay, not network latency.
+  // Dropping these four removes a third of that contention from the pages
+  // most visitors land on.
+  //
+  // The cost falls on English pages, where Inter now loads without a preload
+  // hint. `display: swap` plus the metric-matched Arial fallback below keeps
+  // that swap from moving the layout, which is why this trade is acceptable
+  // in this direction and would not be in the other.
+  preload: false,
   fallback: ['system-ui', 'Segoe UI', 'Arial', 'sans-serif'],
   adjustFontFallback: 'Arial',
 });
