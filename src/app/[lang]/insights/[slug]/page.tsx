@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getArticleBySlug, insightsArticles } from '@/lib/content';
 import { constructMetadata, generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/metadata';
-import { BookOpen, ArrowLeft, ArrowRight, Clock, User } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Clock } from 'lucide-react';
 import { Language } from '@/types';
 import { AdrSnippetCard } from '@/components/ui/AdrSnippetCard';
 

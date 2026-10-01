@@ -43,10 +43,24 @@
     text-wrap: balance;
   }
 
-  /* Accessible high-contrast focus rings */
+  /*
+   * Focus ring.
+   *
+   * A bare 2px outline is the usual default, but on this canvas it fails in
+   * two places: on the blue primary buttons a blue outline nearly disappears
+   * into the button, and on controls whose own background is semi-transparent
+   * the outline sits directly against the content behind it.
+   *
+   * Pairing the outline with a dark offset ring gives a visible boundary on
+   * every surface the site uses — the dark ring separates the blue outline
+   * from whatever is underneath, so the indicator reads the same on a button,
+   * a card and the page background.
+   */
   *:focus-visible {
     outline: 2px solid #3b82f6;
     outline-offset: 2px;
+    box-shadow: 0 0 0 2px #020617;
+    border-radius: inherit;
   }
 
   /* Tailwind's preflight resets <button> to cursor: default; restore the

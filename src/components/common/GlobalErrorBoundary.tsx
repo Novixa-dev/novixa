@@ -41,7 +41,9 @@ export class GlobalErrorBoundary extends React.Component<Props, State> {
 
     // Centralized logging
     logger.logError(error, {
-      componentStack: errorInfo.componentStack,
+      // React types this as `string | null | undefined`; normalise the null
+      // away so the log payload carries one "absent" representation.
+      componentStack: errorInfo.componentStack ?? undefined,
       source: 'GlobalErrorBoundary',
     });
   }

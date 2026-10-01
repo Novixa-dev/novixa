@@ -18,6 +18,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   });
 }
 
-export default async function AboutPage() {
-  return <AboutView />;
+export default async function AboutPage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang: paramLang } = await params;
+  const lang: Language = paramLang === 'en' ? 'en' : 'ar';
+  return <AboutView lang={lang} />;
 }

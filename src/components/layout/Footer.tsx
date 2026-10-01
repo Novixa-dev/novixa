@@ -4,11 +4,10 @@ import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from '../ui/Logo';
-import { BRAND_INFO, SERVICES, READY_SOLUTIONS, PRODUCTS } from '../../content/data';
+import { BRAND_INFO } from '../../content/data';
+import { CONTACT_EMAIL } from '@/lib/contact-channels';
 import { SOCIAL_LINKS } from '../../data/navigation';
 import {
-  ArrowLeft,
-  ArrowRight,
   Shield,
   Terminal,
   Globe,
@@ -18,8 +17,6 @@ import {
   Lock,
   Cpu,
   Zap,
-  Server,
-  CloudCheck,
 } from 'lucide-react';
 
 const socialIconMap = {
@@ -29,8 +26,7 @@ const socialIconMap = {
 };
 
 export const Footer: React.FC = () => {
-  const { language, isRtl, t, toggleLanguage } = useLanguage();
-  const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
+  const { language, t, toggleLanguage } = useLanguage();
 
   return (
     <footer className="bg-slate-950 border-t border-slate-800/80 pt-16 pb-12 relative overflow-hidden text-slate-300 text-sm">
@@ -206,8 +202,18 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link href={`/${language}/industries`} className="hover:text-blue-400 transition-colors text-slate-300">
+                    {t('القطاعات التي نخدمها', 'Industries We Serve')}
+                  </Link>
+                </li>
+                <li>
                   <Link href={`/${language}/insights`} className="hover:text-blue-400 transition-colors text-slate-300">
                     {t('المقالات والرؤى الهندسية', 'Engineering Insights')}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${language}/dashboard`} className="hover:text-blue-400 transition-colors text-slate-300">
+                    {t('لوحة التشغيل التفاعلية', 'Interactive Operations Console')}
                   </Link>
                 </li>
                 <li>
@@ -217,10 +223,10 @@ export const Footer: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="mailto:hello@novixa.dev"
+                    href={`mailto:${CONTACT_EMAIL}`}
                     className="hover:text-blue-400 transition-colors font-mono text-slate-400 block pt-1"
                   >
-                    hello@novixa.dev
+                    {CONTACT_EMAIL}
                   </a>
                 </li>
               </ul>
@@ -232,7 +238,15 @@ export const Footer: React.FC = () => {
                 className="inline-flex items-center gap-2 text-xs text-slate-200 hover:text-white bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg cursor-pointer transition-colors hover:border-slate-700"
               >
                 <Globe className="w-3.5 h-3.5 text-blue-400" />
-                <span>{language === 'ar' ? 'Switch to English' : 'التحويل للعربية'}</span>
+                {/* The control names the language it switches *to*, in that
+                    language, so a speaker of it recognises the label. The
+                    `lang` attribute keeps screen-reader pronunciation correct
+                    for whichever side is showing. */}
+                {language === 'ar' ? (
+                  <span lang="en">Switch to English</span>
+                ) : (
+                  <span lang="ar">التحويل للعربية</span>
+                )}
               </button>
             </div>
           </div>
@@ -245,9 +259,9 @@ export const Footer: React.FC = () => {
               <Shield className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white font-display">
+              <p className="text-xs font-bold text-white font-display">
                 {t('سيادة البيانات والاستضافة الإقليمية', 'Sovereign Cloud & Regional Hosting')}
-              </h4>
+              </p>
               <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
                 {t('استضافة محلية مهيأة ومتوافقة مع متطلبات الحوكمة والخصوصية الإقليمية.', 'Regional cloud environments complying with local data governance.')}
               </p>
@@ -259,9 +273,9 @@ export const Footer: React.FC = () => {
               <Lock className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white font-display">
+              <p className="text-xs font-bold text-white font-display">
                 {t('حماية الملكية واتفاقيات السرية (NDA)', 'Mutual NDA & Code Ownership')}
-              </h4>
+              </p>
               <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
                 {t('عقود قانونية واضحة تضمن ملكيتك الكاملة للأصل البرمجي وسرية العمليات.', 'Clear contracts ensuring full proprietary ownership of delivered software.')}
               </p>
@@ -273,9 +287,9 @@ export const Footer: React.FC = () => {
               <Cpu className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white font-display">
+              <p className="text-xs font-bold text-white font-display">
                 {t('تشفير متقدم TLS 1.3 & AES-256', 'TLS 1.3 & AES-256 Encryption')}
-              </h4>
+              </p>
               <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
                 {t('حماية فائقة للمعلومات وقنوات الاتصال على مستوى النقل والتخزين.', 'Zero-trust architecture protecting data in transit and at rest.')}
               </p>
@@ -287,9 +301,9 @@ export const Footer: React.FC = () => {
               <Zap className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white font-display">
+              <p className="text-xs font-bold text-white font-display">
                 {t('ضمان الجاهزية SLA 99.99%', '99.99% Availability SLA')}
-              </h4>
+              </p>
               <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
                 {t('بنية تحتية موزعة ومراقبة تضمن استقرارك التشغيلي على مدار الساعة.', 'Monitored cloud infrastructure ensuring rock-solid business continuity.')}
               </p>
@@ -300,7 +314,18 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-300">
           <div className="flex items-center gap-2">
-            <span>© {new Date().getFullYear()} {BRAND_INFO.name}. {t('جميع الحقوق محفوظة.', 'All rights reserved.')}</span>
+            <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span>© {new Date().getFullYear()} {BRAND_INFO.name}. {t('جميع الحقوق محفوظة.', 'All rights reserved.')}</span>
+              <Link href={`/${language}/legal/privacy`} className="hover:text-blue-400 transition-colors">
+                {t('سياسة الخصوصية', 'Privacy')}
+              </Link>
+              <Link href={`/${language}/legal/terms`} className="hover:text-blue-400 transition-colors">
+                {t('شروط الاستخدام', 'Terms')}
+              </Link>
+              <Link href={`/${language}/faq`} className="hover:text-blue-400 transition-colors">
+                {t('الأسئلة الشائعة', 'FAQ')}
+              </Link>
+            </span>
           </div>
 
           <div className="flex items-center gap-4 text-slate-300">

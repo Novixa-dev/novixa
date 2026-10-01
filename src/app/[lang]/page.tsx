@@ -31,7 +31,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   });
 }
 
-export default async function HomePage() {
+export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang: paramLang } = await params;
+  const lang: Language = paramLang === 'en' ? 'en' : 'ar';
   const organizationJsonLd = generateOrganizationJsonLd();
   const websiteJsonLd = generateWebSiteJsonLd();
 
@@ -50,7 +52,7 @@ export default async function HomePage() {
       <HeroSection />
 
       {/* 2. Dual Engine: Custom Engineering vs Ready Turnkey Solutions */}
-      <DualEngineSection />
+      <DualEngineSection lang={lang} />
 
       {/* 3. Problem Transformation: Disconnected Chaos vs Unified Software Engine */}
       <ProblemTransformation />
@@ -59,28 +61,28 @@ export default async function HomePage() {
       <ServicesSummarySection />
 
       {/* 5. Ready Solutions: 8 Reusable Turnkey Business Software Foundations (5–14 Days) */}
-      <ReadySolutionsSection />
+      <ReadySolutionsSection lang={lang} />
 
       {/* 6. Proprietary Products: Transparent Status Badges (Aqar, Restaurant, Booking, Pulse) */}
-      <ProductsSection />
+      <ProductsSection lang={lang} />
 
       {/* 7. Selected Work: Honestly Labeled Demonstrations & Prototypes */}
-      <CaseStudiesSection />
+      <CaseStudiesSection lang={lang} />
 
       {/* 8. Why Novixa: Real Code Ownership, Problem-First, Anti-Agency Value */}
-      <WhyNovixaSection />
+      <WhyNovixaSection lang={lang} />
 
       {/* 9. Engagement Process: 6-Stage Transparent Lifecycle */}
       <ProcessSection />
 
       {/* 10. Deployment & Hosting: "Deployment, Hosting & Operations" */}
-      <DeploymentHostingSection />
+      <DeploymentHostingSection lang={lang} />
 
       {/* 11. Maintenance & Support: Continuous SLA, Security Patches, Monitoring */}
-      <MaintenanceSupportSection />
+      <MaintenanceSupportSection lang={lang} />
 
       {/* 12. Final High-Conversion CTA: Start Project OR Explore Ready Solutions */}
-      <HomeCTASection />
+      <HomeCTASection lang={lang} />
     </>
   );
 }

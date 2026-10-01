@@ -4,7 +4,7 @@ import { TeamCard } from '@/components/TeamCard';
 import { ENGINEERING_DISCIPLINES, GOVERNANCE_STANDARDS } from '@/data/team';
 import { Language } from '@/types';
 import Link from 'next/link';
-import { Terminal, Shield, ArrowLeft, ArrowRight, Layers, Award, CheckCircle2, GitBranch } from 'lucide-react';
+import { Shield, ArrowLeft, ArrowRight, Layers, CheckCircle2, GitBranch } from 'lucide-react';
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   const { lang: paramLang } = await params;

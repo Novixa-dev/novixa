@@ -1,8 +1,7 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import { READY_SOLUTIONS } from '../../content/data';
 import {
   UtensilsCrossed,
@@ -17,7 +16,6 @@ import {
   ArrowRight,
   Clock,
   CheckCircle2,
-  Sparkles,
   Zap,
 } from 'lucide-react';
 
@@ -32,8 +30,8 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   ShieldCheck,
 };
 
-export const ReadySolutionsSection: React.FC = () => {
-  const { language, isRtl, t } = useLanguage();
+export const ReadySolutionsSection = ({ lang }: { lang: Language }) => {
+  const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   return (

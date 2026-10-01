@@ -18,6 +18,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   });
 }
 
-export default async function InsightsPage() {
-  return <InsightsView />;
+export default async function InsightsPage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang: paramLang } = await params;
+  const lang: Language = paramLang === 'en' ? 'en' : 'ar';
+  return <InsightsView lang={lang} />;
 }

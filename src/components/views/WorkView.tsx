@@ -1,11 +1,10 @@
-'use client';
-
 import React from 'react';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import { CaseStudiesSection } from '../sections/CaseStudiesSection';
 
-export const WorkView: React.FC = () => {
-  const { t } = useLanguage();
+export const WorkView = ({ lang }: { lang: Language }) => {
+  const { t } = createTranslator(lang);
 
   return (
     <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
@@ -26,7 +25,7 @@ export const WorkView: React.FC = () => {
         </div>
       </div>
 
-      <CaseStudiesSection showHeader={false} />
+      <CaseStudiesSection lang={lang} showHeader={false} />
     </div>
   );
 };

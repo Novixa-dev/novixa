@@ -9,9 +9,10 @@ Novixa (نوڤيكسا) is a modern software engineering and digital products co
 - **Framework**: Next.js 15.5 (App Router, Static Site Generation [SSG] & Server Components)
 - **UI & Runtime**: React 19, TypeScript 5.8, Lucide React Icons, Motion (Framer Motion)
 - **Styling**: Tailwind CSS v4, Architectural Precision dark-only design system
-- **Typography**: `next/font/google` (Alexandria for display headings, IBM Plex Sans Arabic for Arabic body, Inter for English body)
-- **Email Engine**: Resend API (`resend`) via Next.js Route Handler `POST /api/contact` with XSS sanitization and fallback logging
-- **SEO & Social**: Dynamic Open Graph generation (`next/og`), JSON-LD structured organization schemas, multi-language `sitemap.xml` (65 routes), and crawler `robots.txt`
+- **Typography**: self-hosted via `next/font/local` — Alexandria (display), IBM Plex Sans Arabic (Arabic body), Inter (English body); no runtime Google Fonts request
+- **Email Engine**: Resend API via `POST /api/contact` — honeypot, in-process rate limit, HTML escaping, and a truthful `delivered` flag when no provider is configured
+- **Testing**: Vitest (unit) · Playwright + axe-core (browser, three viewports) · ESLint 9 · GitHub Actions
+- **SEO & Social**: Dynamic Open Graph generation (`next/og`), JSON-LD structured organization schemas, multi-language `sitemap.xml` (90 routes), and crawler `robots.txt`
 - **Security**: Strict-Transport-Security (HSTS), X-Content-Type-Options, X-Frame-Options, Permissions-Policy, Referrer-Policy
 
 ---
@@ -82,12 +83,25 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) (redirects permanently to `/ar`).
 
-### Production Validation & Build
+### Validation
+
 ```bash
-npm run typecheck    # Run TypeScript checks (0 errors)
-npm run build        # Build all 65 static pages & routes for production
-npm run start        # Start the production server locally
+npm run verify       # typecheck → lint → unit tests → build → browser tests
 ```
+
+Or individually:
+
+```bash
+npm run typecheck    # TypeScript, strict
+npm run lint         # ESLint 9 (flat config)
+npm run test         # Vitest — content integrity, URL resolution, sitemap/route drift
+npm run build        # 90 routes across both locales
+npm run test:e2e     # Playwright — desktop, tablet, mobile
+npm run start        # Serve the production build locally
+```
+
+`test:e2e` starts its own production server and always starts a fresh one; see
+`docs/QA_RELEASE_CHECKLIST.md` §7 for why that is not negotiable.
 
 ---
 
@@ -129,12 +143,22 @@ pm2 start npm --name "novixa-web" -- start -- -p 3000
 
 ---
 
-## 6. Documentation & Audits
+## 6. Documentation
 
-- [`NOVIXA_PRODUCTION_AND_DEPLOYMENT_REPORT.md`](./NOVIXA_PRODUCTION_AND_DEPLOYMENT_REPORT.md) — Comprehensive production readiness & security audit
-- [`DEPLOYMENT_GUIDE.md`](./DEPLOYMENT_GUIDE.md) — Production operations & deployment manual
-- [`docs/DESIGN_SYSTEM.md`](./docs/DESIGN_SYSTEM.md) — Design tokens & typography rules
-- [`docs/LAUNCH_READINESS_REPORT.md`](./docs/LAUNCH_READINESS_REPORT.md) — Route verification & checks
+Three documents are kept in step with the code. Read them in this order:
+
+- [`docs/PRODUCTION_AUDIT.md`](./docs/PRODUCTION_AUDIT.md) — current architecture, every defect found, its evidence, and what was done about it
+- [`docs/IMPLEMENTATION_PLAN.md`](./docs/IMPLEMENTATION_PLAN.md) — prioritised work, what has landed, what remains, and the reasoning behind the non-obvious calls
+- [`docs/QA_RELEASE_CHECKLIST.md`](./docs/QA_RELEASE_CHECKLIST.md) — what is verified automatically, what needs a person, and the release gate
+
+Also:
+
+- [`AGENTS.md`](./AGENTS.md) — design and engineering decisions that must not be re-derived
+- [`DEPLOYMENT_GUIDE.md`](./DEPLOYMENT_GUIDE.md) — deployment operations
+- [`docs/DESIGN_SYSTEM.md`](./docs/DESIGN_SYSTEM.md) — design tokens and typography rules
+
+Superseded audit reports are kept in [`docs/archive/`](./docs/archive/) for
+history. They describe earlier states of the project and are not current.
 
 ---
 

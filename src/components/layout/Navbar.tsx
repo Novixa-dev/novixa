@@ -79,7 +79,7 @@ export const Navbar: React.FC = () => {
           {/* Desktop Navigation Links from Centralized Data Layer */}
           <nav
             aria-label={t('القائمة الرئيسية', 'Main Navigation')}
-            className="hidden lg:flex items-center gap-1 bg-slate-900/50 border border-white/[0.07] rounded-xl px-2 py-1"
+            className="hidden xl:flex items-center gap-1 bg-slate-900/50 border border-white/[0.07] rounded-xl px-2 py-1"
           >
             {MAIN_NAV_ITEMS.map((item) => {
               const itemPath = `/${language}${item.slug ? `/${item.slug}` : ''}`;
@@ -104,11 +104,11 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Right Actions: System Status + Social Links + Search + Language + CTA */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden xl:flex items-center gap-2">
             {/* Architectural System Status Indicator (Interactive) */}
             <button
               onClick={() => setTelemetryOpen(true)}
-              className="hidden xl:inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-900/60 hover:bg-slate-800/80 border border-white/[0.07] hover:border-emerald-500/40 text-[11px] font-mono text-slate-300 transition-all cursor-pointer group"
+              className="hidden 2xl:inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-900/60 hover:bg-slate-800/80 border border-white/[0.07] hover:border-emerald-500/40 text-[11px] font-mono text-slate-300 transition-all cursor-pointer group"
               title={t('عرض فاحص كفاءة السحابة والمناطق', 'Inspect Edge Telemetry & SLA')}
               aria-haspopup="dialog"
               aria-expanded={telemetryOpen}
@@ -145,7 +145,7 @@ export const Navbar: React.FC = () => {
               aria-label={t('البحث في الموقع', 'Search the site')}
             >
               <Search className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
-              <span className="hidden xl:inline text-[10px] font-mono text-slate-400">⌘K</span>
+              <span className="hidden 2xl:inline text-[10px] font-mono text-slate-400">⌘K</span>
             </button>
 
             {/* Language Switcher */}
@@ -170,7 +170,7 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile Actions Button */}
-          <div className="flex lg:hidden items-center gap-2">
+          <div className="flex xl:hidden items-center gap-2">
             <button
               onClick={triggerCommandMenu}
               className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white"
@@ -202,7 +202,7 @@ export const Navbar: React.FC = () => {
       {mobileMenuOpen && (
         <div
           id="mobile-nav-drawer"
-          className="lg:hidden fixed inset-x-0 top-[65px] bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 p-4 shadow-2xl transition-all duration-300"
+          className="xl:hidden fixed inset-x-0 top-[65px] bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 p-4 shadow-2xl transition-all duration-300"
         >
           <div className="flex flex-col gap-1.5">
             {MAIN_NAV_ITEMS.map((item) => {

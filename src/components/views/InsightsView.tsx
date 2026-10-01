@@ -1,11 +1,10 @@
-'use client';
-
 import React from 'react';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import { InsightsSection } from '../sections/InsightsSection';
 
-export const InsightsView: React.FC = () => {
-  const { t } = useLanguage();
+export const InsightsView = ({ lang }: { lang: Language }) => {
+  const { t } = createTranslator(lang);
 
   return (
     <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
@@ -26,7 +25,7 @@ export const InsightsView: React.FC = () => {
         </div>
       </div>
 
-      <InsightsSection showHeader={false} />
+      <InsightsSection lang={lang} showHeader={false} />
     </div>
   );
 };

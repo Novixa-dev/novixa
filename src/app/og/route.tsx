@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
+import { getSiteUrl } from '@/lib/site';
 
 export const runtime = 'nodejs';
 
@@ -203,7 +204,7 @@ export async function GET(request: NextRequest) {
             <span>·</span>
             <span>{isAr ? 'عربي / English' : 'Arabic / English'}</span>
           </div>
-          <div style={{ color: '#38BDF8', fontSize: 18 }}>novixa.dev</div>
+          <div style={{ color: '#38BDF8', fontSize: 18 }}>{new URL(getSiteUrl()).host}</div>
         </div>
       </div>
     ),
