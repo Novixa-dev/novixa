@@ -238,7 +238,15 @@ export const Footer: React.FC = () => {
                 className="inline-flex items-center gap-2 text-xs text-slate-200 hover:text-white bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg cursor-pointer transition-colors hover:border-slate-700"
               >
                 <Globe className="w-3.5 h-3.5 text-blue-400" />
-                <span>{language === 'ar' ? 'Switch to English' : 'التحويل للعربية'}</span>
+                {/* The control names the language it switches *to*, in that
+                    language, so a speaker of it recognises the label. The
+                    `lang` attribute keeps screen-reader pronunciation correct
+                    for whichever side is showing. */}
+                {language === 'ar' ? (
+                  <span lang="en">Switch to English</span>
+                ) : (
+                  <span lang="ar">التحويل للعربية</span>
+                )}
               </button>
             </div>
           </div>

@@ -5,6 +5,10 @@ on:
     branches: [main]
   pull_request:
 
+# Least privilege: this workflow only reads the repository.
+permissions:
+  contents: read
+
 # A newer push to the same branch makes an in-flight run obsolete.
 concurrency:
   group: ci-${{ github.ref }}
@@ -42,3 +46,18 @@ jobs:
           # Pinned so the build is reproducible and the prerendered canonical
           # URLs in the artifact match production rather than the runner.
           NEXT_PUBLIC_SITE_URL: https://novixa.dev
+
+      - name: Install Playwright browser
+        # Only Chromium, and only its own deps — the suite runs one engine.
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

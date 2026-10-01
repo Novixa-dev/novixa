@@ -76,7 +76,7 @@ export const SolutionsView: React.FC = () => {
               <button
                 key={sol.id}
                 onClick={() => setSelectedSolutionId(sol.id)}
-                className={`p-3 rounded-xl border text-center transition-all duration-150 flex flex-col items-center gap-2 cursor-pointer ${
+                className={`p-3 rounded-xl border text-center transition-all duration-150 flex flex-col items-center gap-2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
                   isSelected
                     ? 'bg-teal-700 border-teal-800 text-white font-bold shadow-lg shadow-teal-700/20'
                     : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800'

@@ -94,7 +94,14 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ lan
             </div>
           </div>
 
-          {/* Metrics */}
+          {/* Metrics — modelled, not measured. See the note in
+              CaseStudiesSection: the figures need the marker, not just the
+              card, because that is where the eye lands. */}
+          <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wide">
+            {isAr
+              ? 'أرقام توضيحية تصف السيناريو المعماري، وليست نتائج عميل مقاسة'
+              : 'Modelled figures describing the architectural scenario — not measured client results'}
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {workItem.metrics.map((m, i) => (
               <div key={i} className="p-4 bg-slate-950 rounded-2xl border border-slate-800">

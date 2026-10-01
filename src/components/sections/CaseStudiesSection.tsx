@@ -94,8 +94,14 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                   {cs.challenge[isRtl ? 'ar' : 'en']}
                 </p>
 
-                {/* Metrics Highlights */}
-                <div className="grid grid-cols-2 gap-2 pt-1">
+                {/* Metrics Highlights — explicitly modelled, not measured.
+                    The card's type badge says "Product Demonstration" /
+                    "Concept Architecture"; without a marker on the figures
+                    themselves a reader takes them for client results. */}
+                <div className="text-[10px] font-mono text-slate-400 pt-1 uppercase tracking-wide">
+                  {t('أرقام توضيحية للسيناريو', 'Modelled scenario figures')}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
                   {cs.metrics.slice(0, 2).map((m, mIdx) => (
                     <div key={mIdx} className="p-3 bg-slate-950/90 rounded-xl border border-white/[0.06]">
                       <div className="text-base sm:text-lg font-bold font-display text-blue-400">{m.value}</div>

@@ -153,7 +153,7 @@ export const ProductsView: React.FC = () => {
                   {prod.metrics && prod.metrics.length > 0 && (
                     <div className="space-y-1 p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center">
                       <span className="text-[10px] text-slate-400 font-mono uppercase block">{prod.metrics[0].label[isRtl ? 'ar' : 'en']}</span>
-                      <span className="text-xl font-extrabold font-display text-blue-400 block">{prod.metrics[0].value}</span>
+                      <span className="text-xl font-extrabold font-display text-blue-400 block">{prod.metrics[0].value[isRtl ? 'ar' : 'en']}</span>
                     </div>
                   )}
 

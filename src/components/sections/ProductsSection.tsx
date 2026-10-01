@@ -140,7 +140,7 @@ export const ProductsSection: React.FC = () => {
                     <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-around text-center">
                       {prod.metrics.map((m, idx) => (
                         <div key={idx}>
-                          <div className="text-base sm:text-lg font-bold font-display text-blue-400">{m.value}</div>
+                          <div className="text-base sm:text-lg font-bold font-display text-blue-400">{m.value[isRtl ? 'ar' : 'en']}</div>
                           <div className="text-[10px] text-slate-400 font-arabic">{m.label[isRtl ? 'ar' : 'en']}</div>
                         </div>
                       ))}

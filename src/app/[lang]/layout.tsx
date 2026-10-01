@@ -3,6 +3,8 @@ import { LanguageProvider } from '@/context/LanguageContext';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { CommandMenu } from '@/components/common/CommandMenu';
+import { NavigationProgress } from '@/components/common/NavigationProgress';
+import { BackToTop } from '@/components/common/BackToTop';
 import { Language } from '@/types';
 
 export function generateStaticParams() {
@@ -35,12 +37,14 @@ export default async function LocalizedLayout({
         >
           {lang === 'ar' ? 'تخطي إلى المحتوى الرئيسي' : 'Skip to main content'}
         </a>
+        <NavigationProgress />
         <Navbar />
         <CommandMenu />
         <main id="main-content" tabIndex={-1} className="flex-grow focus:outline-none">
           {children}
         </main>
         <Footer />
+        <BackToTop />
       </div>
     </LanguageProvider>
   );
