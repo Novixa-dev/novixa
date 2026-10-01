@@ -102,6 +102,7 @@ SoftwareApplication · Article · ContactPage · FAQPage · ItemList.
 | ⚠️ `RESEND_API_KEY` + `RESEND_FROM_EMAIL` | Without them the API logs and returns `delivered: false`. From-address must be on a domain verified in Resend |
 | ⚠️ `NEXT_PUBLIC_WHATSAPP_NUMBER` | Channel stays hidden until set — correct, but the channel is absent |
 | 👤 `NEXT_PUBLIC_VITALS_ENDPOINT` | Optional. Field Core Web Vitals report nowhere until a destination is chosen |
+| ⚠️ **Vercel can deploy at all** | **Currently blocked.** `Cannot deploy from a private GitHub organization repository on the Hobby plan` — production is frozen on an older build and no change in this repository can reach it until the plan or repository visibility changes |
 | ⚠️ GitHub Actions executing | Run `36635306000` failed in 4s with no logs; all steps pass locally. Check Actions billing / spending limit / allowed-actions policy |
 | ✅ Security headers | HSTS, nosniff, frame options, referrer policy, permissions policy |
 | 👤 Custom domain + HTTPS | |
