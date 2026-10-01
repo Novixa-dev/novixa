@@ -1,8 +1,7 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import { CASE_STUDIES } from '../../content/data';
 import {
   Briefcase,
@@ -11,6 +10,7 @@ import {
 } from 'lucide-react';
 
 interface CaseStudiesSectionProps {
+  lang: Language;
   /** The /work page renders its own page-level H1 and intro (with a
    * link back to itself that would be redundant here), so it passes
    * false to skip this section's homepage-teaser header entirely. */
@@ -18,9 +18,10 @@ interface CaseStudiesSectionProps {
 }
 
 export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
+  lang,
   showHeader = true,
 }) => {
-  const { language, isRtl, t } = useLanguage();
+  const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   return (

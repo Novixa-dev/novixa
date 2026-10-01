@@ -94,7 +94,8 @@ The footer's four trust badges were `h4` with no `h3` anywhere above them. The
 footer is on every page, so every page failed heading order.
 
 *Evidence:* Lighthouse `heading-order`; `/ar` measured **94** on accessibility,
-not the 100 recorded in `AGENTS.md`.
+not the 100 recorded in `AGENTS.md`. (Accessibility scoring is deterministic —
+unlike performance, a single run is sufficient there.)
 *Fix:* they are assurance labels, not document sections — now `<p><strong>`.
 
 ### P1-5 · Nav CTA clipped at tablet width — FIXED
@@ -218,37 +219,60 @@ the site could not be added to a home screen, and browsers that request
 Android's launcher crop does not clip the logo), a 180px Apple touch icon, and a
 `favicon.ico`. Manifest is now `standalone`, `lang: ar`, `dir: rtl`.
 
-### P3-0 · Mobile performance is 72, bottlenecked on the main thread — PARTIALLY ACTED ON
+### P3-0 · Mobile performance is 78; the bottleneck is layout, not JavaScript — PARTIALLY ACTED ON
 
-Lighthouse, throttled mobile, `/ar`:
+Lighthouse, throttled mobile, `/ar`, **median of 7 runs**:
 
 | Metric | Value | Reading |
 |---|---|---|
 | CLS | **0** | The font work holds — no layout movement at all |
-| FCP | 1.3 s | Good |
-| LCP | 5.1 s | **Poor.** 92% of it is *render delay*, not network — the H1 is in the HTML at 460 ms and does not paint for five seconds |
-| TBT | 360 ms | Needs work |
+| FCP | 1.4 s | Good |
+| LCP | 4.9 s | **Poor.** 92% of it is *render delay*, not network — the H1 is in the HTML at 460 ms and does not paint for five seconds |
+| TBT | 193 ms | Acceptable |
 
-The cause is main-thread work, not bytes: Style & Layout 1290 ms, Script
-Evaluation 838 ms. The homepage renders twelve sections, nearly all of them
-client components because they call `useLanguage()`.
+**Correction to an earlier figure in this document:** a performance score of 72
+was recorded from a single run. The median of seven is **78**; individual runs
+on this container range 73–83. A single Lighthouse run is not a measurement
+here, and the 72 should not be cited.
 
-**What was tried and kept:** Inter is no longer preloaded. It only applies under
-`html[lang="en"]`, but the root layout declares fonts once for both locales, so
-four faces (~48 kB) sat on the critical path of every Arabic page — the default
-locale — where they can never be used.
+The cause is main-thread work, and specifically **Style & Layout (~1300–1500 ms)**
+rather than script. The homepage lays out twelve full sections.
 
-**What was tried and reverted:** code-splitting the ten below-the-fold sections
-with `next/dynamic`. Measured before and after: the score went **72 → 66** and
-TBT **330 → 570 ms**. The chunks still all load, so splitting added per-chunk
-evaluation overhead without removing work. Reverted.
+**Tried and kept — architectural, not a measured win.** Ten presentational
+sections and six views were client components solely because they called
+`useLanguage()`, a hook. A server-side `createTranslator(lang)` lets them take
+the locale as a prop and leave the client bundle entirely.
 
-**What would actually fix it, not attempted here:** converting the presentational
-sections to server components by passing `lang` as a prop instead of calling
-`useLanguage()`. That removes them from the client bundle entirely rather than
-rearranging it. It touches a dozen components and is the wrong thing to land at
-the end of a session alongside unrelated work — it needs its own change and its
-own before/after measurement.
+Deterministic result, straight from the build:
+
+| Route | First-load JS before | after |
+|---|---|---|
+| `/[lang]` (home) | 208 kB (22.7 kB page) | **193 kB** (10.8 kB page) |
+| `/[lang]/work` | 188 kB (6.1 kB) | **106 kB** (200 B) |
+| `/[lang]/about` | 142 kB (5.7 kB) | **106 kB** (200 B) |
+| `/[lang]/products` | 141 kB (4.3 kB) | **106 kB** (200 B) |
+
+Lighthouse result, median of 7 runs each side: **78 → 78**. LCP 4.9 s → 5.1 s,
+TBT 193 ms → 188 ms. No measurable change.
+
+That is the honest outcome and it is worth stating plainly: removing JavaScript
+removed JavaScript. It did not move the score, because the bottleneck is the
+cost of laying out a very long page, not of evaluating script. The change is
+kept because 36 kB less JS delivered, parsed and hydrated on three routes is a
+real saving for a visitor on a slow connection — and because a static section
+being a client component was wrong regardless — but it is **not** presented as
+a performance win.
+
+**Tried and reverted:** code-splitting the ten below-the-fold sections with
+`next/dynamic`. Measured worse on the runs available at the time (TBT
+330 → 570 ms); the chunks still all load, so splitting added per-chunk
+evaluation overhead without removing work.
+
+**What would actually move LCP, not attempted here:** reducing how much DOM the
+homepage lays out before the hero can paint. Twelve sections of markup is the
+cost; deferring the below-the-fold DOM itself (not merely its JavaScript) is
+the lever. That is a content-structure decision as much as a technical one and
+belongs in its own change, with the median-of-7 protocol used above.
 
 ### P3-2 · Thin editorial content — NOT ACTED ON
 
@@ -275,7 +299,7 @@ forward-compatible — `next lint` is removed in 16.
 | `npm run test:e2e` (Playwright) | 117 passed — desktop, tablet, mobile |
 | `npm run build` | clean, 90 routes |
 | Lighthouse a11y / best-practices / SEO | **100 / 100 / 100** on `/ar`, `/en`, `/ar/dashboard`, `/en/dashboard`, `/ar/contact`, `/ar/products`, `/ar/solutions`, `/ar/faq`, `/ar/start-project`, `/ar/services/custom-software`, `/ar/solutions/restaurant-system`, `/ar/legal/privacy` |
-| Lighthouse performance (throttled mobile, `/ar`) | **72** — CLS 0, FCP 1.3 s, LCP 5.1 s, TBT 360 ms. See P3-0 |
+| Lighthouse performance (throttled mobile, `/ar`) | **78** (median of 7; range 73–83) — CLS 0, FCP 1.4 s, LCP 4.9 s, TBT 193 ms. See P3-0 |
 
 ---
 

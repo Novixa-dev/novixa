@@ -1,11 +1,10 @@
-'use client';
-
 import React from 'react';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import { IndustriesSection } from '../sections/IndustriesSection';
 
-export const IndustriesView: React.FC = () => {
-  const { t } = useLanguage();
+export const IndustriesView = ({ lang }: { lang: Language }) => {
+  const { t } = createTranslator(lang);
 
   return (
     <div className="pt-28 pb-20 bg-slate-950 min-h-screen">

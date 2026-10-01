@@ -1,16 +1,15 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import { FounderSection } from '../sections/FounderSection';
 import {
   ArrowLeft,
   ArrowRight,
 } from 'lucide-react';
 
-export const AboutView: React.FC = () => {
-  const { language, isRtl, t } = useLanguage();
+export const AboutView = ({ lang }: { lang: Language }) => {
+  const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const values = [
@@ -109,7 +108,7 @@ export const AboutView: React.FC = () => {
         </div>
 
         {/* Founding Philosophy & Quote Section */}
-        <FounderSection />
+        <FounderSection lang={lang} />
 
         {/* Core Values Grid */}
         <div className="space-y-6">

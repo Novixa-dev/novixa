@@ -1,8 +1,7 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import {
   Code2,
   Zap,
@@ -12,8 +11,8 @@ import {
   Layers,
 } from 'lucide-react';
 
-export const DualEngineSection: React.FC = () => {
-  const { language, isRtl, t } = useLanguage();
+export const DualEngineSection = ({ lang }: { lang: Language }) => {
+  const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   return (

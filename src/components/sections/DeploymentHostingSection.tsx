@@ -1,8 +1,7 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import {
   Server,
   CloudCheck,
@@ -16,8 +15,8 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 
-export const DeploymentHostingSection: React.FC = () => {
-  const { language, isRtl, t } = useLanguage();
+export const DeploymentHostingSection = ({ lang }: { lang: Language }) => {
+  const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const infrastructurePillars = [

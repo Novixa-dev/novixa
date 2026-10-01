@@ -1,8 +1,7 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import { PRODUCTS } from '../../content/data';
 import {
   Activity,
@@ -26,8 +25,8 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Sparkles,
 };
 
-export const ProductsView: React.FC = () => {
-  const { language, isRtl, t } = useLanguage();
+export const ProductsView = ({ lang }: { lang: Language }) => {
+  const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const getStatusBadgeClass = (status: string) => {

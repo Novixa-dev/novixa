@@ -128,17 +128,30 @@ axe cannot composite them (`PRODUCTION_AUDIT.md` P3-1). Lighthouse reports 100,
 but a human check over `glass-card` / `glass-overlay` at the smallest type sizes
 is still worth doing.
 
-### R5 — Server-component refactor of the presentational sections · **ready to do, own change**
-The measured bottleneck (`PRODUCTION_AUDIT.md` P3-0): LCP 5.1 s whose delay is
-92% render, from 1290 ms of Style & Layout and 838 ms of script evaluation.
-Nearly every homepage section is a client component solely because it calls
-`useLanguage()`. Passing `lang` as a prop and reading a server-side `t` would
-remove them from the client bundle outright.
+### R5 — Server-component refactor · **DONE, and it did not do what was expected**
+Ten presentational sections and six views now take `lang` as a prop and use a
+server-side `createTranslator()` instead of the `useLanguage()` hook, so they
+leave the client bundle entirely.
 
-Not bundled here on purpose. Code-splitting was tried first as the cheaper
-option and measured *worse* (72 → 66, TBT 330 → 570 ms) — it rearranged the work
-instead of removing it, and was reverted. The real fix touches a dozen
-components and deserves its own change with its own before/after numbers.
+First-load JS: home 208 → **193 kB**, `/work` 188 → **106 kB**, `/about`
+142 → **106 kB**, `/products` 141 → **106 kB**.
+
+Lighthouse, median of 7 runs each side: **78 → 78**. No measurable change.
+
+The expectation was wrong, and the measurement is what revealed it: the
+bottleneck is Style & Layout (~1300–1500 ms) from laying out twelve full
+sections, not script evaluation. Removing JavaScript removed JavaScript.
+
+Kept anyway — 36 kB less delivered, parsed and hydrated on three routes is a
+real saving on a slow connection, and a static section being a client component
+was wrong regardless — but it is recorded as an architectural improvement, not
+a performance one.
+
+### R5b — Reduce the homepage's layout cost · **the actual lever, not attempted**
+What would move LCP: laying out less DOM before the hero paints. Twelve
+sections of markup is the cost. This is a content-structure decision as much as
+a technical one — it may mean the homepage should simply be shorter — and needs
+its own change measured with the median-of-7 protocol.
 
 ### R6 — Editorial depth · **content task, not engineering**
 Two insight articles and four industries. Both clusters are sound but shallow for

@@ -1,12 +1,11 @@
-'use client';
-
 import React from 'react';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import { FOUNDER_INFO } from '../../content/data';
 import { Quote, Terminal } from 'lucide-react';
 
-export const FounderSection: React.FC = () => {
-  const { t } = useLanguage();
+export const FounderSection = ({ lang }: { lang: Language }) => {
+  const { t } = createTranslator(lang);
 
   return (
     <section className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden">
