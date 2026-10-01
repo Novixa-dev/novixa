@@ -5,6 +5,7 @@ import { Footer } from '@/components/layout/Footer';
 import { CommandMenu } from '@/components/common/CommandMenu';
 import { NavigationProgress } from '@/components/common/NavigationProgress';
 import { BackToTop } from '@/components/common/BackToTop';
+import { WebVitals } from '@/components/common/WebVitals';
 import { Language } from '@/types';
 
 export function generateStaticParams() {
@@ -37,6 +38,7 @@ export default async function LocalizedLayout({
         >
           {lang === 'ar' ? 'تخطي إلى المحتوى الرئيسي' : 'Skip to main content'}
         </a>
+        <WebVitals />
         <NavigationProgress />
         <Navbar />
         <CommandMenu />
