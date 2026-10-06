@@ -9,6 +9,14 @@ interface TrendChartProps {
   label: Bilingual;
   unit: Bilingual;
   series: SeriesPoint[];
+  /**
+   * Period-over-period change across the window, as a percentage. Computed by
+   * the caller from this same series — never asserted alongside it — so a
+   * reader can recompute it from the data table below the panel.
+   */
+  change?: number | null;
+  /** The selected window, named in the header and the accessible description. */
+  windowDays?: number;
 }
 
 const VIEW_W = 640;
@@ -32,7 +40,7 @@ const STROKE = CHART_COLORS[0];
  * slots and drawn normally, because mirroring the SVG wholesale would reverse
  * the text too.
  */
-export const TrendChart: React.FC<TrendChartProps> = ({ label, unit, series }) => {
+export const TrendChart: React.FC<TrendChartProps> = ({ label, unit, series, change = null, windowDays }) => {
   const { language, isRtl, t } = useLanguage();
   const gradientId = useId();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -98,12 +106,29 @@ export const TrendChart: React.FC<TrendChartProps> = ({ label, unit, series }) =
 
   return (
     <div className="space-y-3">
-      <div className="flex items-baseline justify-between gap-3">
+      <div className="flex items-baseline justify-between gap-3 flex-wrap">
         <h2 className="text-sm font-bold font-display text-white">{label[language]}</h2>
-        <span className="text-[11px] font-mono text-slate-400">
-          {t(`آخر ${series.length} يوماً`, `Last ${series.length} days`)}
+        <span className="flex items-baseline gap-2 text-[11px] font-mono text-slate-400">
+          {change !== null && (
+            <span
+              className={change >= 0 ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-semibold'}
+            >
+              {/* U+2212 minus, not a hyphen: it aligns with the digits. */}
+              {change >= 0 ? '+' : '−'}
+              {Math.abs(change).toFixed(1)}%
+            </span>
+          )}
+          <span>{t(`آخر ${windowDays ?? series.length} يوماً`, `Last ${windowDays ?? series.length} days`)}</span>
         </span>
       </div>
+      {change !== null && (
+        <p className="text-[11px] text-slate-400 leading-relaxed">
+          {t(
+            'النسبة هي الفرق بين متوسط النصف الأحدث من النافذة ومتوسط نصفها الأقدم — محسوبة من نفس الأرقام الظاهرة في جدول البيانات أدناه.',
+            'The percentage is the mean of the window’s most recent half against the mean of its older half — computed from the same figures shown in the data table below.'
+          )}
+        </p>
+      )}
 
       <div className="relative">
         <svg

@@ -96,3 +96,101 @@ test('the dashboard switches modules and exposes a table view', async ({ page })
   await page.getByRole('button', { name: /View the data as a table/ }).click();
   await expect(page.locator('table').first()).toBeVisible();
 });
+
+test('the window selector changes how much history the table shows', async ({ page }) => {
+  // The chart is an SVG, so the table is where "did the window actually
+  // change?" can be asserted on something a reader can also verify.
+  await page.goto('/en/dashboard');
+  await page.getByRole('button', { name: /View the data as a table/ }).click();
+
+  const dayRows = page.locator('table').first().locator('tbody tr');
+  await expect(dayRows).toHaveCount(14);
+
+  await page.getByRole('button', { name: '30 days' }).click();
+  await expect(dayRows).toHaveCount(30);
+  await expect(page.getByRole('button', { name: '30 days' })).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+});
+
+test('widening the window keeps the most recent day unchanged', async ({ page }) => {
+  // Generated data that reshuffles when the window changes reads as a bug.
+  // The generator guarantees this; this asserts the page actually benefits.
+  await page.goto('/en/dashboard');
+  await page.getByRole('button', { name: /View the data as a table/ }).click();
+
+  // The table runs oldest-first so it reads in the same direction as the
+  // chart, which puts today in the last row — widening the window prepends
+  // older history, so the first row is expected to change and the last is not.
+  const rows = page.locator('table').first().locator('tbody tr');
+  const before = await rows.last().locator('td').innerText();
+  const oldestBefore = await rows.first().locator('td').innerText();
+
+  await page.getByRole('button', { name: '90 days' }).click();
+  await expect(rows).toHaveCount(90);
+
+  expect(await rows.last().locator('td').innerText()).toBe(before);
+  expect(await rows.first().locator('td').innerText()).not.toBe(oldestBefore);
+});
+
+test('the console view is shareable through the URL', async ({ page }) => {
+  await page.goto('/en/dashboard');
+  await page.getByRole('tab', { name: /Property & Portfolio/ }).click();
+  await page.getByRole('button', { name: '30 days' }).click();
+
+  await expect(page).toHaveURL(/module=aqar/);
+  await expect(page).toHaveURL(/days=30/);
+
+  // The URL has to restore the view, not merely record it.
+  await page.goto('/en/dashboard?module=pulse&days=90&table=1');
+  await expect(page.getByRole('tab', { name: /Workforce/ })).toHaveAttribute(
+    'aria-selected',
+    'true'
+  );
+  await expect(page.getByRole('button', { name: '90 days' })).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+  await expect(page.locator('table').first()).toBeVisible();
+});
+
+test('arrow keys move between console tabs', async ({ page }) => {
+  // role="tablist" promises arrow-key navigation. axe cannot tell whether the
+  // promise is kept, so it is asserted here.
+  await page.goto('/en/dashboard');
+
+  const firstTab = page.getByRole('tab').first();
+  await firstTab.focus();
+  await page.keyboard.press('ArrowRight');
+
+  await expect(page.getByRole('tab').nth(1)).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByRole('tab').nth(1)).toBeFocused();
+
+  // Wrapping backwards from the first tab lands on the last.
+  await page.keyboard.press('ArrowLeft');
+  await page.keyboard.press('ArrowLeft');
+  await expect(page.getByRole('tab').last()).toHaveAttribute('aria-selected', 'true');
+});
+
+test('the exported CSV carries the illustrative-data notice', async ({ page }) => {
+  // A spreadsheet of generated figures leaves the page's disclaimer behind.
+  // If the file itself has no caveat it is exactly the artefact that could
+  // later be mistaken for a client's real numbers.
+  await page.goto('/en/dashboard');
+
+  const download = await Promise.all([
+    page.waitForEvent('download'),
+    page.getByRole('button', { name: /Download data \(CSV\)/ }).click(),
+  ]).then(([event]) => event);
+
+  expect(download.suggestedFilename()).toContain('illustrative');
+
+  const stream = await download.createReadStream();
+  const chunks: Buffer[] = [];
+  for await (const chunk of stream) chunks.push(chunk as Buffer);
+  const csv = Buffer.concat(chunks).toString('utf8');
+
+  expect(csv.split('\r\n')[0]).toMatch(/Illustrative generated data/);
+  expect(csv).toMatch(/Not any client/);
+});

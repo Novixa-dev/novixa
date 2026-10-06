@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import {
@@ -11,6 +11,7 @@ import {
   Building2,
   CalendarClock,
   FlaskConical,
+  Download,
   Info,
   Table2,
   TrendingDown,
@@ -20,7 +21,15 @@ import {
 } from 'lucide-react';
 import { TrendChart } from './TrendChart';
 import { BreakdownChart } from './BreakdownChart';
-import { DASHBOARD_MODULES, type ModuleId } from '@/lib/dashboard-demo';
+import {
+  DASHBOARD_MODULES,
+  TREND_WINDOWS,
+  TREND_WINDOW_DAYS,
+  buildTrendSeries,
+  periodOverPeriodChange,
+  type ModuleId,
+  type TrendWindow,
+} from '@/lib/dashboard-demo';
 
 const MODULE_ICONS: Record<ModuleId, React.ComponentType<{ className?: string }>> = {
   restaurant: UtensilsCrossed,
@@ -48,9 +57,128 @@ export const DashboardConsole: React.FC = () => {
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const [activeModuleId, setActiveModuleId] = useState<ModuleId>('restaurant');
+  const [windowDays, setWindowDays] = useState<TrendWindow>(TREND_WINDOW_DAYS);
   const [showTable, setShowTable] = useState(false);
 
   const activeModule = DASHBOARD_MODULES.find((m) => m.id === activeModuleId) ?? DASHBOARD_MODULES[0];
+
+  /**
+   * The visible series, rebuilt when the module or the window changes.
+   *
+   * Generation is deterministic and anchored to the most recent day, so
+   * widening the window extends the chart to the left rather than redrawing
+   * it — switch 14 → 90 → 14 and the original fourteen points are identical.
+   */
+  const series = useMemo(
+    () => buildTrendSeries(activeModule.trend.spec, windowDays),
+    [activeModule.trend.spec, windowDays]
+  );
+
+  /** Derived from `series`, so a reader can recompute it from the table. */
+  const trendChange = useMemo(() => periodOverPeriodChange(series), [series]);
+
+  /**
+   * State in the URL, so a view can be shared.
+   *
+   * Written with `history.replaceState` rather than `router.replace`: the
+   * router would issue a server request and re-render the route on every tab
+   * click, which is a navigation the visitor did not ask for. This writes the
+   * address bar and nothing else. Read once on mount, which is also why it is
+   * in an effect — applying a URL-derived value during the first render would
+   * disagree with the prerendered HTML.
+   */
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    const moduleParam = params.get('module');
+    if (DASHBOARD_MODULES.some((m) => m.id === moduleParam)) {
+      setActiveModuleId(moduleParam as ModuleId);
+    }
+
+    const windowParam = Number(params.get('days'));
+    if (TREND_WINDOWS.some((days) => days === windowParam)) {
+      setWindowDays(windowParam as TrendWindow);
+    }
+
+    if (params.get('table') === '1') setShowTable(true);
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('module', activeModuleId);
+    params.set('days', String(windowDays));
+    if (showTable) params.set('table', '1');
+    else params.delete('table');
+    window.history.replaceState(null, '', `${window.location.pathname}?${params}`);
+  }, [activeModuleId, windowDays, showTable]);
+
+  /**
+   * CSV of exactly what the table shows.
+   *
+   * The file carries the illustrative-data notice as its first line. A download
+   * leaves the page behind, and a spreadsheet of generated figures with no
+   * caveat in it is precisely the artefact that could later be mistaken for a
+   * client's real numbers.
+   */
+  const downloadCsv = useCallback(() => {
+    const escape = (field: string) => `"${field.replace(/"/g, '""')}"`;
+    const notice = t(
+      'بيانات توضيحية مولّدة — عرض تفاعلي من موقع نوڤيكسا. لا تمثل نتائج أي عميل.',
+      'Illustrative generated data — interactive demo on the Novixa site. Not any client’s results.'
+    );
+
+    const rows: string[][] = [
+      [notice],
+      [],
+      [activeModule.label[language], activeModule.product],
+      [t('نافذة', 'Window'), t(`${windowDays} يوماً`, `${windowDays} days`)],
+      [],
+      [t('اليوم', 'Day'), activeModule.trend.unit[language]],
+      ...series.map((point) => [
+        String(series.length - 1 - point.day),
+        String(point.value),
+      ]),
+      [],
+      [activeModule.breakdown.label[language], activeModule.breakdown.unit[language]],
+      ...activeModule.breakdown.items.map((item) => [item.label[language], String(item.value)]),
+    ];
+
+    // A BOM so Excel reads the Arabic labels as UTF-8 instead of mojibake.
+    const csv = `\ufeff${rows.map((row) => row.map(escape).join(',')).join('\r\n')}`;
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `novixa-${activeModule.id}-${windowDays}d-illustrative.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }, [activeModule, language, series, t, windowDays]);
+
+  /**
+   * Arrow-key navigation across the module tabs.
+   *
+   * `role="tablist"` is a promise to the user that arrow keys move between
+   * tabs; without this the markup claimed a pattern it did not implement, and
+   * an automated check cannot see the difference. Left and right are swapped
+   * in RTL so "next" is always the visually following tab.
+   */
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  const onTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+    const forward = isRtl ? 'ArrowLeft' : 'ArrowRight';
+    const backward = isRtl ? 'ArrowRight' : 'ArrowLeft';
+    const last = DASHBOARD_MODULES.length - 1;
+
+    let next: number | null = null;
+    if (event.key === forward) next = index === last ? 0 : index + 1;
+    else if (event.key === backward) next = index === 0 ? last : index - 1;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = last;
+    if (next === null) return;
+
+    event.preventDefault();
+    setActiveModuleId(DASHBOARD_MODULES[next].id);
+    tabRefs.current[next]?.focus();
+  };
   // Latin digits in both locales: the rest of the site writes numbers this
   // way, and mixing numeral systems on one screen is worse than either
   // choice alone. `tabular-nums` (set globally) keeps columns aligned.
@@ -87,16 +215,23 @@ export const DashboardConsole: React.FC = () => {
         aria-label={t('وحدات لوحة التشغيل', 'Console modules')}
         className="flex flex-wrap gap-2"
       >
-        {DASHBOARD_MODULES.map((module) => {
+        {DASHBOARD_MODULES.map((module, index) => {
           const Icon = MODULE_ICONS[module.id];
           const isActive = module.id === activeModuleId;
           return (
             <button
               key={module.id}
+              ref={(node) => {
+                tabRefs.current[index] = node;
+              }}
               role="tab"
               id={`module-tab-${module.id}`}
               aria-selected={isActive}
               aria-controls={`module-panel-${module.id}`}
+              // Roving tabindex: Tab reaches the tablist once and lands on the
+              // selected tab, then arrow keys move within it.
+              tabIndex={isActive ? 0 : -1}
+              onKeyDown={(event) => onTabKeyDown(event, index)}
               onClick={() => setActiveModuleId(module.id)}
               className={`inline-flex items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-medium transition-colors ${
                 isActive
@@ -112,6 +247,43 @@ export const DashboardConsole: React.FC = () => {
             </button>
           );
         })}
+      </div>
+
+      {/* ── Window selector ─────────────────────────────────────────────── */}
+      <div className="flex flex-wrap items-center gap-3">
+        <div
+          role="group"
+          aria-label={t('نافذة البيانات', 'Data window')}
+          className="inline-flex rounded-xl border border-white/[0.07] bg-slate-900/60 p-1"
+        >
+          {TREND_WINDOWS.map((days) => {
+            const isActive = days === windowDays;
+            return (
+              <button
+                key={days}
+                type="button"
+                aria-pressed={isActive}
+                onClick={() => setWindowDays(days)}
+                className={`rounded-lg px-3 py-1.5 text-xs font-medium tabular-nums transition-colors ${
+                  isActive
+                    ? 'bg-blue-600/20 text-white font-semibold'
+                    : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                }`}
+              >
+                {t(`${days} يوماً`, `${days} days`)}
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          type="button"
+          onClick={downloadCsv}
+          className="inline-flex items-center gap-2 rounded-xl border border-white/[0.07] bg-slate-900/60 px-3.5 py-2 text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/70 transition-colors"
+        >
+          <Download className="w-3.5 h-3.5" aria-hidden="true" />
+          {t('تنزيل البيانات (CSV)', 'Download data (CSV)')}
+        </button>
       </div>
 
       {/* ── Active module ───────────────────────────────────────────────── */}
@@ -187,7 +359,9 @@ export const DashboardConsole: React.FC = () => {
             <TrendChart
               label={activeModule.trend.label}
               unit={activeModule.trend.unit}
-              series={activeModule.trend.series}
+              series={series}
+              change={trendChange}
+              windowDays={windowDays}
             />
           </div>
 
@@ -296,8 +470,8 @@ export const DashboardConsole: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="text-slate-300">
-                    {activeModule.trend.series.map((point) => {
-                      const daysAgo = activeModule.trend.series.length - 1 - point.day;
+                    {series.map((point) => {
+                      const daysAgo = series.length - 1 - point.day;
                       return (
                         <tr key={point.day} className="border-t border-white/[0.05]">
                           <th scope="row" className="py-1.5 pe-4 text-start font-normal text-slate-400">

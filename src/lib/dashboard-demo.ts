@@ -69,7 +69,12 @@ export interface DashboardModule {
     label: Bilingual;
     /** Axis unit, e.g. "order" — used in the tooltip and the table view. */
     unit: Bilingual;
-    series: SeriesPoint[];
+    /**
+     * How to generate the series, rather than the series itself. The console
+     * lets a visitor switch the window (14 / 30 / 90 days) and the points are
+     * built on demand from this.
+     */
+    spec: SeriesSpec;
   };
   breakdown: {
     label: Bilingual;
@@ -96,8 +101,13 @@ export const CHART_COLORS = ['#3B82F6', '#0D9488', '#D97706', '#E11D48', '#0284C
 
 export const CHART_SURFACE = '#0F172A';
 
-/** Days of history shown in the trend panel. */
-export const TREND_WINDOW_DAYS = 14;
+/** Selectable history windows, in days. The first is the default. */
+export const TREND_WINDOWS = [14, 30, 90] as const;
+
+export type TrendWindow = (typeof TREND_WINDOWS)[number];
+
+/** Days of history shown in the trend panel before anyone changes it. */
+export const TREND_WINDOW_DAYS: TrendWindow = TREND_WINDOWS[0];
 
 /**
  * Mulberry32 — a small, fast, well-distributed 32-bit PRNG.
@@ -116,35 +126,78 @@ function seededRandom(seed: number): () => number {
   };
 }
 
+export interface SeriesSpec {
+  seed: number;
+  /** The most recent day's level. Earlier days are derived from it. */
+  base: number;
+  /**
+   * Daily growth as a fraction, applied compounding backwards from `base`.
+   *
+   * A flat per-day amount was tried first and broke as soon as the window
+   * became selectable: subtracting 2.6 per day for 90 days drove the early
+   * points to zero and reported a +1131% period-over-period change. A rate
+   * compounds the way a real metric does, so 90 days back is a believable
+   * fraction of today rather than a negative number clamped at zero.
+   */
+  growthPerDay: number;
+  weeklyAmplitude: number;
+  noise: number;
+  /**
+   * Which days run hot, counted backwards from the most recent day modulo 7
+   * (0 = the most recent day). Anchoring to the recent end rather than the
+   * window start is what keeps a given day's rhythm identical whichever
+   * window is selected.
+   */
+  weekendPeakDays: number[];
+}
+
 /**
  * Builds a plausible daily series: a gentle trend, a weekly rhythm, and
  * bounded noise. Weekly seasonality is what makes an operations chart read as
  * real data rather than a smooth curve — weekends genuinely differ.
+ *
+ * Two properties matter more than the shape, because the window is selectable:
+ *
+ *  - Everything is measured backwards from the most recent day. `base` is
+ *    today's level, so today reads the same number whether the visitor is
+ *    looking at 14 days or 90. Measuring forwards from the window start would
+ *    have made the same day worth 302 in one window and 499 in another.
+ *  - The noise draw is seeded per calendar day, not per index, so widening the
+ *    window extends the series to the left instead of regenerating it. Switch
+ *    from 14 to 90 and back and the last fourteen points are unchanged.
+ *
+ * Deterministic throughout: the server and the browser produce byte-identical
+ * values, so there is no hydration mismatch and no reshuffle per visit.
  */
-function buildSeries({
-  seed,
-  base,
-  trendPerDay,
-  weeklyAmplitude,
-  noise,
-  weekendPeakDays = [4, 5],
-}: {
-  seed: number;
-  base: number;
-  trendPerDay: number;
-  weeklyAmplitude: number;
-  noise: number;
-  /** Day-of-week indices that run hot (0 = the window's first day). */
-  weekendPeakDays?: number[];
-}): SeriesPoint[] {
-  const rand = seededRandom(seed);
-  return Array.from({ length: TREND_WINDOW_DAYS }, (_, day) => {
-    const dayOfWeek = day % 7;
-    const weekly = weekendPeakDays.includes(dayOfWeek) ? weeklyAmplitude : -weeklyAmplitude / 3;
-    const jitter = (rand() - 0.5) * 2 * noise;
-    const value = base + trendPerDay * day + weekly + jitter;
+export function buildTrendSeries(spec: SeriesSpec, days: number): SeriesPoint[] {
+  return Array.from({ length: days }, (_, day) => {
+    const daysAgo = days - 1 - day;
+    const dayOfWeek = daysAgo % 7;
+    const weekly = spec.weekendPeakDays.includes(dayOfWeek)
+      ? spec.weeklyAmplitude
+      : -spec.weeklyAmplitude / 3;
+    const jitter = (seededRandom(spec.seed + daysAgo * 7919)() - 0.5) * 2 * spec.noise;
+    const level = spec.base * Math.pow(1 + spec.growthPerDay, -daysAgo);
+    const value = level + weekly + jitter;
     return { day, value: Math.max(0, Math.round(value)) };
   });
+}
+
+/**
+ * Period-over-period change across a window, derived from the series rather
+ * than asserted next to it: the mean of the most recent half against the mean
+ * of the older half. A delta a visitor can recompute from the table below is
+ * worth more than one written into the data by hand.
+ */
+export function periodOverPeriodChange(series: SeriesPoint[]): number | null {
+  if (series.length < 4) return null;
+  const half = Math.floor(series.length / 2);
+  const mean = (points: SeriesPoint[]) =>
+    points.reduce((sum, point) => sum + point.value, 0) / points.length;
+  const older = mean(series.slice(0, half));
+  if (older === 0) return null;
+  const recent = mean(series.slice(series.length - half));
+  return ((recent - older) / older) * 100;
 }
 
 export const DASHBOARD_MODULES: DashboardModule[] = [
@@ -193,7 +246,7 @@ export const DASHBOARD_MODULES: DashboardModule[] = [
     trend: {
       label: { ar: 'الطلبات اليومية', en: 'Daily orders' },
       unit: { ar: 'طلب', en: 'orders' },
-      series: buildSeries({ seed: 1471, base: 268, trendPerDay: 2.6, weeklyAmplitude: 46, noise: 18 }),
+      spec: { seed: 1471, base: 302, growthPerDay: 0.005, weeklyAmplitude: 46, noise: 18, weekendPeakDays: [2, 3] },
     },
     breakdown: {
       label: { ar: 'الطلبات حسب القناة', en: 'Orders by channel' },
@@ -257,7 +310,7 @@ export const DASHBOARD_MODULES: DashboardModule[] = [
     trend: {
       label: { ar: 'الحجوزات المؤكدة يومياً', en: 'Confirmed bookings per day' },
       unit: { ar: 'حجز', en: 'bookings' },
-      series: buildSeries({ seed: 8823, base: 64, trendPerDay: 1.1, weeklyAmplitude: 14, noise: 7 }),
+      spec: { seed: 8823, base: 78, growthPerDay: 0.005, weeklyAmplitude: 14, noise: 7, weekendPeakDays: [2, 3] },
     },
     breakdown: {
       label: { ar: 'مصدر الحجز', en: 'Booking source' },
@@ -321,7 +374,7 @@ export const DASHBOARD_MODULES: DashboardModule[] = [
     trend: {
       label: { ar: 'التحصيل اليومي', en: 'Daily collections' },
       unit: { ar: 'دفعة', en: 'payments' },
-      series: buildSeries({ seed: 3391, base: 22, trendPerDay: 0.5, weeklyAmplitude: 9, noise: 5, weekendPeakDays: [0, 1] }),
+      spec: { seed: 3391, base: 28, growthPerDay: 0.004, weeklyAmplitude: 9, noise: 5, weekendPeakDays: [5, 6] },
     },
     breakdown: {
       label: { ar: 'الوحدات حسب النوع', en: 'Units by type' },
@@ -385,7 +438,7 @@ export const DASHBOARD_MODULES: DashboardModule[] = [
     trend: {
       label: { ar: 'الملاحظات المرفوعة يومياً', en: 'Notes submitted per day' },
       unit: { ar: 'ملاحظة', en: 'notes' },
-      series: buildSeries({ seed: 5507, base: 14, trendPerDay: 0.35, weeklyAmplitude: 6, noise: 4, weekendPeakDays: [0, 1, 2] }),
+      spec: { seed: 5507, base: 18, growthPerDay: 0.004, weeklyAmplitude: 6, noise: 4, weekendPeakDays: [4, 5, 6] },
     },
     breakdown: {
       label: { ar: 'الملاحظات حسب الموضوع', en: 'Notes by theme' },
