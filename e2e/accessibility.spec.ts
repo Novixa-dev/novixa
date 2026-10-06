@@ -120,3 +120,23 @@ test('each page has exactly one h1 and no skipped heading levels', async ({ page
     }
   }
 });
+
+test('the hero headline survives forced-colors mode', async ({ page }) => {
+  // The headline's second line is a gradient clipped to the glyphs
+  // (`color: transparent` + `background-clip: text`). Forced-colors discards
+  // background images, so without an override that line renders invisible —
+  // and it is the first thing the page says.
+  await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/ar');
+
+  const gradientLine = page.locator('h1 .bg-clip-text').first();
+  await expect(gradientLine).toBeVisible();
+
+  const paint = await gradientLine.evaluate((el) => {
+    const s = getComputedStyle(el);
+    return { color: s.color, clip: s.backgroundClip || s.webkitBackgroundClip };
+  });
+
+  expect(paint.color, 'headline must not stay transparent').not.toMatch(/rgba\(0, 0, 0, 0\)|transparent/);
+  expect(paint.clip, 'the glyph clip must be released').not.toBe('text');
+});

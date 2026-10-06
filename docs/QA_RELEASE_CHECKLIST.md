@@ -70,6 +70,8 @@ starts a fresh one — see §7.
 | ✅ 25 tab stops each show a visible focus ring | |
 | ✅ One `h1` per page, no skipped levels | |
 | ✅ Reduced motion removes decorative movement | |
+| ✅ The hero headline survives forced-colors mode | Gradient-clipped text would otherwise vanish in Windows High Contrast |
+| ✅ Contrast measured from rendered pixels | 290 text nodes across seven pages; no genuine failures — §8 |
 | ✅ Lighthouse accessibility | **100** on every touched page |
 | 👤 Screen-reader pass (NVDA / VoiceOver) in Arabic | Automation cannot judge this |
 | 👤 Contrast over glass surfaces | §8 |
@@ -102,8 +104,10 @@ SoftwareApplication · Article · ContactPage · FAQPage · ItemList.
 | ⚠️ `RESEND_API_KEY` + `RESEND_FROM_EMAIL` | Without them the API logs and returns `delivered: false`. From-address must be on a domain verified in Resend |
 | ⚠️ `NEXT_PUBLIC_WHATSAPP_NUMBER` | Channel stays hidden until set — correct, but the channel is absent |
 | 👤 `NEXT_PUBLIC_VITALS_ENDPOINT` | Optional. Field Core Web Vitals report nowhere until a destination is chosen |
-| ⚠️ **Vercel can deploy at all** | **Currently blocked.** `Cannot deploy from a private GitHub organization repository on the Hobby plan` — production is frozen on an older build and no change in this repository can reach it until the plan or repository visibility changes |
-| ⚠️ GitHub Actions executing | Run `36635306000` failed in 4s with no logs; all steps pass locally. Check Actions billing / spending limit / allowed-actions policy |
+| ✅ **Vercel can deploy** | Resolved 2026-10-06 by making the repository public. Status `success`, preview built and Ready |
+| ✅ GitHub Actions executing | Green on every push since, browser suite included |
+| 👤 Preview QA needs a bypass token | Branch previews sit behind Vercel Deployment Protection, so §9 runs against production after merge |
+| ~~GitHub Actions executing~~ | Run `36635306000` failed in 4s with no logs; all steps pass locally. Check Actions billing / spending limit / allowed-actions policy |
 | ✅ Security headers | HSTS, nosniff, frame options, referrer policy, permissions policy |
 | 👤 Custom domain + HTTPS | |
 | 👤 Re-test the live URL after deploy | §9 |

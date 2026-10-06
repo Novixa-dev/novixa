@@ -196,7 +196,29 @@ imported.
 back-to-top control. Boundaries sit on leaf segments rather than the `[lang]`
 root, so an instant static page does not flash a skeleton on every navigation.
 
-### P3-1 · axe `color-contrast` is unstable on this interface — NOT ACTED ON
+### P2-8 · Gradient-clipped text can vanish in forced-colors mode — FIXED
+
+The hero headline paints its second line by clipping a gradient to the glyphs
+(`color: transparent` + `background-clip: text`). Windows High Contrast mode
+discards background images — including that gradient — and nothing restored the
+colour. The headline is the first thing the page says.
+
+Found while closing P3-1 below: the pixel-sampling contrast pass could not read
+the element's colour because it is literally `transparent`, which is what
+prompted the question.
+
+*Fix:* a `@media (forced-colors: active)` block restoring `CanvasText` and
+releasing the clip, written against the `.bg-clip-text` pattern rather than the
+one element. The focus ring's `box-shadow` is also dropped in that mode, so the
+outline is restated there using the system `Highlight` colour.
+
+*Caught by its own test:* the first version of the rule sat inside
+`@layer base` and silently half-applied — cascade layers outrank specificity,
+so it lost to Tailwind's `utilities` layer on `background-clip` while still
+winning on `color`. The browser test asserted both halves and failed. Unlayered
+rules beat every layer, which is where it lives now.
+
+### P3-1 · axe `color-contrast` is unstable on this interface — RESOLVED BY MEASUREMENT
 
 axe resolves a background by walking the DOM. This interface is built on
 semi-transparent surfaces (`glass-card`, `glass-overlay`, `bg-slate-900/50`) and
@@ -205,8 +227,25 @@ between two consecutive runs on identical markup.
 
 *Decision:* the rule is disabled in the axe gate and contrast is measured by
 Lighthouse instead, which reports 100 on every touched page. A tool assignment,
-not a coverage gap. A manual contrast pass over the glass surfaces remains
-worthwhile.
+not a coverage gap.
+
+*The manual pass was then done, from rendered pixels.* Every visible text node
+on `/ar`, `/en`, `/ar/dashboard`, `/ar/solutions`, `/ar/start-project`,
+`/ar/faq` and `/ar/contact` — 290 nodes — was measured by screenshotting the
+page and sampling the actual composited pixels behind each one, with foreground
+colours resolved through a canvas round-trip so Tailwind v4's `oklch` output is
+read correctly rather than mis-parsed.
+
+**Result: no genuine failures.** Four nodes were flagged and all four are
+limitations of the method, confirmed by inspection:
+
+- two are large dense white headings where the most-common pixel inside the box
+  is the glyph itself, not the surface (white on `#020617` is ~19:1);
+- two are the gradient-clipped headline, whose computed `color` is
+  `transparent` and therefore unreadable this way (the gradient's stops,
+  blue-400 through teal-300 on `#020617`, measure ~8:1 to ~13:1).
+
+The second pair is what surfaced P2-8 above.
 
 ### P2-7 · No real app icons; manifest not installable — FIXED
 
@@ -310,7 +349,8 @@ forward-compatible — `next lint` is removed in 16.
 | `NEXT_PUBLIC_SITE_URL` in Vercel | Canonical URLs, hreflang, sitemap and OG cards are prerendered at **build** time. The Vercel fallbacks keep a deployment self-consistent, but only this variable survives a domain change. |
 | `RESEND_API_KEY`, `RESEND_FROM_EMAIL` | Without a key the contact API logs instead of sending and returns `delivered: false`. The from-address must be on a domain verified in Resend. |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | The WhatsApp channel is hidden until a real number is set. Leaving it unset is correct; a placeholder is not. |
-| **Vercel cannot deploy this repository** | `Cannot deploy from a private GitHub organization repository on the Hobby plan`. Not about the diff — it names the plan and repo type, so it blocks every commit on every branch including `main`. **Production is frozen on an older build:** `GET /ar/faq` returns 404 on the live site and its OG image still points at `https://novixa.dev`, i.e. the P0 bug is still live. Resolve by upgrading to Pro, making the repository public, moving it to a personal account, or deploying manually via the Vercel CLI. |
-| GitHub Actions is not executing | Run `36635306000` failed in 4 seconds with no logs — the job never ran its commands. All four steps pass locally from a clean `npm ci`. Likely the private-repo minute quota. Same root cause as the row above: a private organization repository on the free tier of both services. |
+| ~~Vercel cannot deploy~~ · **RESOLVED** | Was `Cannot deploy from a private GitHub organization repository on the Hobby plan`. The repository was made public on 2026-10-06 and deployment resumed on the first push after: Vercel status `success`, preview built and Ready. |
+| ~~GitHub Actions is not executing~~ · **RESOLVED** | Same root cause — a private organization repository on the free tier of both services. CI has run green on every push since, including the full browser suite. |
+| Preview deployments require a Vercel login | The branch preview is behind Vercel's Deployment Protection, so it cannot be verified from outside the account. A project setting, not a defect — but it means post-deployment QA against a real URL has to happen on production after merge, or needs a protection-bypass token. |
 | Legal review | `src/content/legal.ts` is engineering-authored copy describing real system behaviour (`LEGAL_REVIEW_PENDING = true`). A lawyer should read it before launch. |
 | Real social profiles | `linkedin.com/company/novixa`, `github.com/novixa`, `x.com/novixa` are referenced in `sameAs` structured data and the footer. Unverified. |

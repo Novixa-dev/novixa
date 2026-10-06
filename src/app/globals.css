@@ -68,6 +68,44 @@
   button:not(:disabled) {
     cursor: pointer;
   }
+
+}
+
+
+/*
+ * Windows High Contrast / forced-colors mode.
+ *
+ * Deliberately NOT inside `@layer base`. Cascade layers outrank specificity:
+ * anything in `base` loses to Tailwind's `utilities` layer however specific
+ * it is, so the first version of this block set `color` (which Tailwind does
+ * not also set here) but silently failed to release `background-clip`.
+ * Unlayered rules beat every layer, which is why the override lives here.
+ * The browser test asserts both halves, and is what caught the first attempt.
+ *
+ * Why it matters: the hero headline paints its second line by clipping a
+ * gradient to the glyphs (`color: transparent` + `background-clip: text`).
+ * Forced-colors discards background images — including that gradient — and
+ * the headline is the first thing the page says. Restoring `CanvasText` and
+ * releasing the clip paints it in the user's own chosen foreground colour,
+ * which is the point of the mode.
+ *
+ * Written against the pattern rather than the one element, so future gradient
+ * text is covered without anyone having to remember this.
+ */
+@media (forced-colors: active) {
+  .bg-clip-text {
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    background-image: none;
+    color: CanvasText;
+  }
+
+  /* The focus ring's box-shadow is dropped in forced-colors mode, so the
+     outline has to carry the indicator by itself. */
+  *:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
 }
 
 .font-arabic {

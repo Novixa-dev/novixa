@@ -97,6 +97,12 @@ broken twice at that width.
 
 ## Remaining
 
+### R0 — Deployment pipeline · **UNBLOCKED 2026-10-06**
+The repository was made public. Vercel deploys again (status `success`, preview
+Ready) and GitHub Actions runs green on every push, browser suite included.
+Both blockers shared one cause: a private organization repository on the free
+tier of both services.
+
 ### R1 — Set the production environment variables · **blocked on access**
 `NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`,
 `NEXT_PUBLIC_WHATSAPP_NUMBER`. See `PRODUCTION_AUDIT.md` §4.
@@ -123,10 +129,15 @@ The locale dimension matters here specifically: Arabic pages load a different
 font subset, so their LCP can diverge from the English ones, and an aggregate
 number would hide that.
 
-### R4 — Manual contrast pass over the glass surfaces · **ready to do**
-axe cannot composite them (`PRODUCTION_AUDIT.md` P3-1). Lighthouse reports 100,
-but a human check over `glass-card` / `glass-overlay` at the smallest type sizes
-is still worth doing.
+### R4 — Manual contrast pass over the glass surfaces · **DONE**
+290 text nodes across seven pages, measured from rendered pixels rather than
+from the DOM, so the semi-transparent surfaces axe cannot composite were read
+exactly as they paint. No genuine failures; the four flagged nodes are
+limitations of the method and are explained in `PRODUCTION_AUDIT.md` P3-1.
+
+It did surface a real one: the gradient-clipped headline has no colour to
+measure because it is `transparent`, which is also how it would render in
+forced-colors mode. Fixed as P2-8.
 
 ### R5 — Server-component refactor · **DONE, and it did not do what was expected**
 Ten presentational sections and six views now take `lang` as a prop and use a
