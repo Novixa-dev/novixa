@@ -22,9 +22,9 @@ starts a fresh one — see §7.
 |---|---|---|
 | Types | `npm run typecheck` | ✅ clean |
 | Lint | `npm run lint` | ✅ 0 errors, 0 warnings |
-| Unit | `npm run test` | ✅ 78 passed |
-| Build | `npm run build` | ✅ 90 routes |
-| Browser | `npm run test:e2e` | ✅ 120 passed (desktop · tablet · mobile) |
+| Unit | `npm run test` | ✅ 94 passed |
+| Build | `npm run build` | ✅ 104 pages, 92 indexable URLs |
+| Browser | `npm run test:e2e` | ✅ 144 passed (desktop · tablet · mobile) |
 
 ---
 
@@ -41,6 +41,11 @@ starts a fresh one — see §7.
 | ✅ A server failure reads as a failure | Route intercepted with a 502; success text must not appear |
 | ✅ Honeypot is visually hidden, `aria-hidden`, out of the tab order | Not `display: none` — bots skip those |
 | ✅ Dashboard switches modules and exposes a table view | |
+| ✅ The console window selector changes how much history the table shows | 14 → 30 → 90 rows |
+| ✅ Widening the window leaves the most recent day unchanged | Generated data that reshuffles reads as a bug |
+| ✅ The console view is restorable from its URL | `?module=…&days=…&table=1` |
+| ✅ Arrow keys move between console tabs | `role="tablist"` is a promise; axe cannot check it |
+| ✅ The exported CSV carries the illustrative-data notice | A download leaves the page's disclaimer behind |
 | 👤 A real submission arrives by email | Needs `RESEND_API_KEY` — §6 |
 | 👤 WhatsApp channel opens the right chat | Needs `NEXT_PUBLIC_WHATSAPP_NUMBER` — §6 |
 
@@ -65,7 +70,7 @@ starts a fresh one — see §7.
 
 | Check | How |
 |---|---|
-| ✅ axe WCAG 2.2 A/AA on seven pages | `color-contrast` excluded — see §8 |
+| ✅ axe WCAG 2.2 A/AA on eight pages | `color-contrast` excluded — see §8 |
 | ✅ Skip link is the first tab stop and works | |
 | ✅ 25 tab stops each show a visible focus ring | |
 | ✅ One `h1` per page, no skipped levels | |
@@ -84,6 +89,8 @@ starts a fresh one — see §7.
 |---|---|
 | ✅ Canonical, hreflang and OG resolve to the serving origin | `tests/site-url.test.ts` |
 | ✅ Sitemap covers every route in both locales, no duplicates | `tests/routing.test.ts` |
+| ✅ The sitemap advertises exactly what the content catalogs account for | 92 URLs, asserted as a total — catches an entry no content backs |
+| ✅ The figures published on `/design-system` match reality | `tests/design-system-facts.test.ts` — two prose documents were archived for drifting; this is the defence |
 | ✅ `lastModified` is a fixed stamp, not "now" | "Now" on every crawl devalues the signal |
 | ✅ robots.txt names an absolute sitemap URL | |
 | ✅ Lighthouse SEO | **100** on every touched page |

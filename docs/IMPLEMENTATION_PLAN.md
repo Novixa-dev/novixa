@@ -83,7 +83,7 @@ boundary would flash a skeleton over instant static pages on every navigation.
 
 | # | Work | Outcome |
 |---|---|---|
-| 5.1 | Playwright across desktop / tablet / mobile | 120 tests |
+| 5.1 | Playwright across desktop / tablet / mobile | 144 tests |
 | 5.2 | Route suite driven by the sitemap | Every advertised URL must serve |
 | 5.3 | Locale suite | Direction, H1 language, and leaks in both directions |
 | 5.4 | axe (WCAG 2.2 A/AA) + keyboard + heading order | Covers what Lighthouse's subset does not |
@@ -92,6 +92,43 @@ boundary would flash a skeleton over instant static pages on every navigation.
 
 The tablet viewport is its own project because the navbar breakpoint has now
 broken twice at that width.
+
+## Phase 6 — Benchmark, publish, deepen · **DONE**
+
+Driven by a set of reference templates and themes the owner supplied (Framer,
+uiCookies, ThemeForest IT themes, WordPress themes).
+
+| # | Work | Outcome |
+|---|---|---|
+| 6.1 | Read all references, compare twenty features, verdict and reason each | `COMPETITIVE_BENCHMARK.md`; 7 rejected on the content rules, 7 recorded as owner decisions |
+| 6.2 | `/{lang}/design-system` | The one reference idea that was pure upside — published evidence, generated from `src/content/design-system.ts` |
+| 6.3 | Contrast floor, site-wide | P1-9: slate-500 measured 4.24:1 / 3.79:1; raised, written as a rule, published with ratios, asserted by tests |
+| 6.4 | Console: window selection, derived delta, shareable URL, CSV export | The page had nothing to do on it; now it has four things, none of them fabricated |
+| 6.5 | Console tablist keyboard pattern | P2-9: the role promised arrow keys that did not work |
+| 6.6 | `AI_WORKING_RULES.md` | The standing process, each rule carrying the cost its absence incurred here |
+| 6.7 | Arabic owner's guide | Idea, every URL, every figure, and a 40-step self-test script |
+| 6.8 | Published figures under test | `tests/design-system-facts.test.ts` + a total-URL assertion; P2-11 is why |
+
+**Why a design-system page on a marketing site.** The reference templates sell a
+"Design System page" as a convenience for the buyer — change a token, the site
+follows. Here it is the opposite: a page a prospect can audit. Every value is read
+off the implementation, every number is measured, and five unit tests stop it
+drifting. For a firm whose product is trust in its engineering, that is evidence
+rather than decoration, and it is the only one of the twenty reference features
+that needed no facts the company does not have.
+
+**Why the console got interaction rather than more panels.** More panels would
+have meant more generated numbers. Period selection, a delta computed from the
+series the table prints, a shareable URL and a CSV export all add capability
+without adding a single new claim — and the CSV carries the illustrative-data
+notice in the file, because a download leaves the page's disclaimer behind.
+
+**What the benchmark refused.** Testimonials, client logos, integrations,
+counting-up statistics, an intro preloader, four homepage variants, a waitlist.
+The first three would require inventing clients or capabilities. Counting-up
+statistics would animate attention onto figures that were removed for being
+unsupported. A preloader delays first paint by design, on a site whose measured
+defect was a 1275 ms paint delay.
 
 ---
 

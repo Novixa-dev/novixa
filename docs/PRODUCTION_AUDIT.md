@@ -313,6 +313,73 @@ cost; deferring the below-the-fold DOM itself (not merely its JavaScript) is
 the lever. That is a content-structure decision as much as a technical one and
 belongs in its own change, with the median-of-7 protocol used above.
 
+### P1-9 · `text-slate-500` still shipped as readable text in two components — FIXED
+
+P1-8 raised the micro-text that a visual review had noticed. It did not catch
+every instance, and nothing stopped a new one being written: a fresh page used
+`text-slate-500` for small muted text and Lighthouse accessibility dropped from
+100 to 96. Measured on the real surfaces, `#64748B` is **4.24:1** on the canvas
+and **3.79:1** over a card — under the 4.5:1 floor for normal text. A grep then
+found the same usage already live in `AdrSnippetCard` (a label) and `AboutView`
+(a 10px stage number).
+
+*Why it recurred:* the fix existed, the rule did not. "Raised to slate-400" is an
+action; "slate-400 is the floor, and here is what slate-500 measures" is a rule
+someone can apply without having been present.
+
+*Fix:* all text usages raised to `text-slate-400` (**7.87:1** / **7.04:1**). The
+remaining `slate-500` uses are `CommandMenu` arrow icons — non-text UI at a 3:1
+threshold, which they pass. The floor is now written in `AGENTS.md`, published as
+a token with its measured ratios on `/{lang}/design-system`, and the published
+figures are asserted by `tests/design-system-facts.test.ts`.
+
+### P2-9 · `role="tablist"` promised keyboard behaviour it did not implement — FIXED
+
+The console's module switcher declared `role="tablist"` with `role="tab"`
+children and correct `aria-selected`. axe passes that markup. But the role is a
+promise to a keyboard user that arrow keys move between tabs, and they did not —
+every tab was its own tab stop, and the pattern was announced but absent.
+
+*Fix:* roving tabindex (`0` on the selected tab, `-1` on the rest), `ArrowLeft` /
+`ArrowRight` with wrapping, `Home` / `End`, and left/right swapped under RTL so
+"next" is always the visually following tab. A browser test asserts it, because
+an automated accessibility scan cannot tell a kept promise from a broken one.
+
+### P2-10 · A caret range on the test runner turned the whole browser suite red — FIXED
+
+105 browser tests failed, each in about 4 ms, with `Executable doesn't exist at
+/opt/pw-browsers/chromium_headless_shell-1243/...`. Nothing in the product had
+changed. `@playwright/test` sat behind `^1.63.0`, resolved to 1.63, and 1.63
+demands browser revision 1243 while the environment provisions 1194.
+
+*Why it matters beyond this repo:* in the summary line a toolchain failure and a
+product regression are indistinguishable — "105 failed" either way. Reading the
+first error rather than the count is the difference between a two-minute fix and
+an afternoon.
+
+*Fix:* the config resolves an executable explicitly —
+`PLAYWRIGHT_CHROMIUM_PATH`, else `<PLAYWRIGHT_BROWSERS_PATH>/chromium`, else
+Playwright's own download — checking each file exists rather than trusting the
+variable. The caret is gone: a runner that pins a browser revision should not
+float its own version.
+
+### P2-11 · Two documents had drifted into contradicting the code — FIXED
+
+`docs/DESIGN_SYSTEM.md` described `.glass-card` as carrying a 16px backdrop blur.
+That was removed deliberately and for a measured reason (57 instances on the
+homepage, each promoting a compositing layer to blur a flat colour). It also
+listed an indigo accent `#6366F1`, which appears nowhere in the code and which
+`AGENTS.md` rules out explicitly, and named JetBrains Mono as the monospace face,
+which is not loaded. `docs/DESIGN_AND_ARCHITECTURE_DECISIONS.md` duplicated the
+plan's decisions section at an older state.
+
+*Fix:* both archived. The still-true, not-yet-captured part — the emerald/amber/
+rose status palette, used across 25 files — became published tokens with measured
+ratios. The design system is now generated from `src/content/design-system.ts`,
+which imports the chart palette from the console's own module, and five unit tests
+assert the published figures against reality. A document that disagrees with the
+code is worse than no document, and the only durable defence is a test.
+
 ### P3-2 · Thin editorial content — NOT ACTED ON
 
 Two insight articles and four industries. Both clusters are structurally sound
@@ -334,11 +401,12 @@ forward-compatible — `next lint` is removed in 16.
 |---|---|
 | `npm run typecheck` | clean |
 | `npm run lint` | 0 errors, 0 warnings |
-| `npm run test` (Vitest) | 78 passed |
-| `npm run test:e2e` (Playwright) | 120 passed — desktop, tablet, mobile |
-| `npm run build` | clean, 90 routes |
-| Lighthouse a11y / best-practices / SEO | **100 / 100 / 100** on `/ar`, `/en`, `/ar/dashboard`, `/en/dashboard`, `/ar/contact`, `/ar/products`, `/ar/solutions`, `/ar/faq`, `/ar/start-project`, `/ar/services/custom-software`, `/ar/solutions/restaurant-system`, `/ar/legal/privacy` |
+| `npm run test` (Vitest) | 94 passed |
+| `npm run test:e2e` (Playwright) | 144 passed — desktop, tablet, mobile |
+| `npm run build` | clean, 104 pages, 92 indexable URLs |
+| Lighthouse a11y / best-practices / SEO | **100 / 100 / 100** on `/ar`, `/en`, `/ar/design-system`, `/en/design-system`, `/ar/dashboard`, `/en/dashboard`, `/ar/contact`, `/ar/products`, `/ar/solutions`, `/ar/faq`, `/ar/start-project`, `/ar/about`, `/ar/services/custom-software`, `/ar/solutions/restaurant-system`, `/ar/legal/privacy` |
 | Lighthouse performance (throttled mobile, `/ar`) | **78** (median of 7; range 73–83) — CLS 0, FCP 1.4 s, LCP 4.9 s, TBT 193 ms. See P3-0 |
+| LCP element render delay, observed (`/ar`) | **288 ms** (median of 5), from 1275 ms. See P3-0 |
 
 ---
 
