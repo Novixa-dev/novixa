@@ -130,6 +130,22 @@ statistics would animate attention onto figures that were removed for being
 unsupported. A preloader delays first paint by design, on a site whose measured
 defect was a 1275 ms paint delay.
 
+## Phase 7 — Deployability and live verification · **DONE except one account step**
+
+| # | Work | Outcome |
+|---|---|---|
+| 7.1 | Live QA on production and on the branch preview | Production (`main`) re-confirmed broken: canonical on a 404 domain, no `og:image`. Preview correct on every §9 check. The merge is the fix |
+| 7.2 | Standalone container image | P1-10: `/og` 500'd in every Docker deployment; now `200 image/png`, runtime deps 716 MB → 79 MB |
+| 7.3 | Railway-aware origin resolver | `RAILWAY_PUBLIC_DOMAIN` as a fallback, two tests; the Dockerfile declares the build-time ARGs Railway needs |
+| 7.4 | Railway project prepared | Service, domain, variables, healthcheck, restart policy. Blocked only on the GitHub app being granted `Novixa-dev` |
+| 7.5 | `DEPLOYMENT_GUIDE.md` rewritten in English | The Arabic original would have baked the wrong origin into Docker builds, asked QA to look for eight team-member cards that do not exist, and referenced a `docker-compose.yml` that was never committed |
+
+**Why prospects and outreach templates are not in this repository.** The owner
+asked for a prospect list and first-contact templates. Both were produced and
+handed over directly. The repository is public, so committing either would show
+prospects the list they are on and the script they are about to receive. Business
+material lives with the business, not with the website's source.
+
 ---
 
 ## Remaining

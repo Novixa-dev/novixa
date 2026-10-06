@@ -22,7 +22,7 @@ starts a fresh one — see §7.
 |---|---|---|
 | Types | `npm run typecheck` | ✅ clean |
 | Lint | `npm run lint` | ✅ 0 errors, 0 warnings |
-| Unit | `npm run test` | ✅ 94 passed |
+| Unit | `npm run test` | ✅ 96 passed |
 | Build | `npm run build` | ✅ 104 pages, 92 indexable URLs |
 | Browser | `npm run test:e2e` | ✅ 144 passed (desktop · tablet · mobile) |
 
@@ -113,7 +113,10 @@ SoftwareApplication · Article · ContactPage · FAQPage · ItemList.
 | 👤 `NEXT_PUBLIC_VITALS_ENDPOINT` | Optional. Field Core Web Vitals report nowhere until a destination is chosen |
 | ✅ **Vercel can deploy** | Resolved 2026-10-06 by making the repository public. Status `success`, preview built and Ready |
 | ✅ GitHub Actions executing | Green on every push since, browser suite included |
-| 👤 Preview QA needs a bypass token | Branch previews sit behind Vercel Deployment Protection, so §9 runs against production after merge |
+| ✅ Preview QA | Run 2026-10-06 through Vercel's authenticated bypass: canonical/hreflang/og:url on the production host, `og:image` present, `/og` → `200 image/png`, unknown page → 404 + noindex, robots names an absolute sitemap, security headers present, preview sends `x-robots-tag: noindex` |
+| ⚠️ Production still serves the dead-origin canonical | `main` points canonical at `https://novixa.dev/ar` (404) and has no `og:image`. Fixed by merging PR #1 |
+| ⚠️ Railway | Project, service, domain and variables ready; waiting on the GitHub app being granted `Novixa-dev` — `DEPLOYMENT_GUIDE.md` §4 |
+| ✅ Container image serves social cards | `/og` was a 500 in any Docker deployment (font not in the image); standalone output fixes it — `PRODUCTION_AUDIT.md` P1-10 |
 | ✅ Security headers | HSTS, nosniff, frame options, referrer policy, permissions policy |
 | 👤 Custom domain + HTTPS | |
 | 👤 Re-test the live URL after deploy | §9 |

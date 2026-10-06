@@ -54,6 +54,15 @@ the variable unset.
 `tests/site-url.test.ts`.
 *Residual:* `NEXT_PUBLIC_SITE_URL` must be set in Vercel — see §4.
 
+*Re-confirmed live, 2026-10-06:* production (`main`) still serves
+`<link rel="canonical" href="https://novixa.dev/ar">`, and `https://novixa.dev/ar`
+now answers **404** (an nginx default page — the planned domain is not pointed at
+this site). The live page also carries **no `og:image` at all**. The branch
+preview, fetched through Vercel's authenticated bypass, serves the corrected
+markup: canonical, `og:url` and `hreflang` on `novixa-cyan.vercel.app`, an
+`og:image`, and `/og` returning `200 image/png`. Merging PR #1 is what fixes
+production; nothing else does.
+
 ### P1-1 · Arabic text rendered on the English pages — FIXED
 
 `Product.metrics[].value` was typed `string` while every neighbouring field was
@@ -333,6 +342,24 @@ threshold, which they pass. The floor is now written in `AGENTS.md`, published a
 a token with its measured ratios on `/{lang}/design-system`, and the published
 figures are asserted by `tests/design-system-facts.test.ts`.
 
+### P1-10 · Every social card a container served was a 500 — FIXED
+
+The `Dockerfile` copied the build output and ran `next start` in a runner stage
+with no `src/`. `/og` reads `src/app/og/IBMPlexSansArabic-SemiBold.ttf` at request
+time, so on any Docker host — Railway, a VPS, Compose — every share card failed.
+Vercel was unaffected, which is why it went unnoticed.
+
+*Evidence:* the old runner stage assembled in an isolated directory and started:
+`/og` → `500`, log `ENOENT … IBMPlexSansArabic-SemiBold.ttf`.
+*Fix:* Next standalone output, gated on `NEXT_OUTPUT=standalone` so the Vercel
+pipeline and the browser suite's `next start` are untouched. Standalone traces the
+font in through the existing `outputFileTracingIncludes`. Same isolated test:
+`/og` → `200 image/png`; runtime dependencies 716 MB → 79 MB.
+*Hypothesis that did not survive:* the old image was expected to have lost the
+security headers too, since the runner never saw `next.config.ts`. It had not —
+headers and redirects compile into `routes-manifest.json`, which it did copy.
+Recorded so it is not "fixed" again.
+
 ### P2-9 · `role="tablist"` promised keyboard behaviour it did not implement — FIXED
 
 The console's module switcher declared `role="tablist"` with `role="tab"`
@@ -401,7 +428,7 @@ forward-compatible — `next lint` is removed in 16.
 |---|---|
 | `npm run typecheck` | clean |
 | `npm run lint` | 0 errors, 0 warnings |
-| `npm run test` (Vitest) | 94 passed |
+| `npm run test` (Vitest) | 96 passed |
 | `npm run test:e2e` (Playwright) | 144 passed — desktop, tablet, mobile |
 | `npm run build` | clean, 104 pages, 92 indexable URLs |
 | Lighthouse a11y / best-practices / SEO | **100 / 100 / 100** on `/ar`, `/en`, `/ar/design-system`, `/en/design-system`, `/ar/dashboard`, `/en/dashboard`, `/ar/contact`, `/ar/products`, `/ar/solutions`, `/ar/faq`, `/ar/start-project`, `/ar/about`, `/ar/services/custom-software`, `/ar/solutions/restaurant-system`, `/ar/legal/privacy` |
@@ -419,6 +446,8 @@ forward-compatible — `next lint` is removed in 16.
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | The WhatsApp channel is hidden until a real number is set. Leaving it unset is correct; a placeholder is not. |
 | ~~Vercel cannot deploy~~ · **RESOLVED** | Was `Cannot deploy from a private GitHub organization repository on the Hobby plan`. The repository was made public on 2026-10-06 and deployment resumed on the first push after: Vercel status `success`, preview built and Ready. |
 | ~~GitHub Actions is not executing~~ · **RESOLVED** | Same root cause — a private organization repository on the free tier of both services. CI has run green on every push since, including the full browser suite. |
-| Preview deployments require a Vercel login | The branch preview is behind Vercel's Deployment Protection, so it cannot be verified from outside the account. A project setting, not a defect — but it means post-deployment QA against a real URL has to happen on production after merge, or needs a protection-bypass token. |
+| ~~Preview deployments cannot be verified~~ · **RESOLVED** | The preview is still behind Deployment Protection (correctly), but Vercel's authenticated bypass now lets it be fetched for QA. Done on 2026-10-06; results under P0-1. |
+| **Merge PR #1** | Production still serves the dead-origin canonical and no `og:image` (P0-1). Only the merge changes that. |
+| **Link GitHub to Railway** | The Railway project, service, domain (`web-production-d2452.up.railway.app`) and variables are in place, but Railway's GitHub app has no access to `Novixa-dev`, so the service cannot read the repository. Steps in `DEPLOYMENT_GUIDE.md` §4. |
 | Legal review | `src/content/legal.ts` is engineering-authored copy describing real system behaviour (`LEGAL_REVIEW_PENDING = true`). A lawyer should read it before launch. |
 | Real social profiles | `linkedin.com/company/novixa`, `github.com/novixa`, `x.com/novixa` are referenced in `sameAs` structured data and the footer. Unverified. |

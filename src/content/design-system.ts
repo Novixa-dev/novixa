@@ -342,7 +342,7 @@ export const ACCESSIBILITY_RULES: Rule[] = [
 
 /** Verification facts, each one a number produced by a command in this repo. */
 export const VERIFICATION_FACTS: Array<{ label: Bilingual; value: string }> = [
-  { label: { ar: 'اختبارات وحدة', en: 'Unit tests' }, value: '94' },
+  { label: { ar: 'اختبارات وحدة', en: 'Unit tests' }, value: '96' },
   { label: { ar: 'اختبارات متصفح (سطح مكتب · لوحي · هاتف)', en: 'Browser tests (desktop · tablet · mobile)' }, value: '144' },
   { label: { ar: 'عناوين في خريطة الموقع', en: 'URLs in the sitemap' }, value: '92' },
   { label: { ar: 'أنواع بيانات منظّمة', en: 'Structured-data types' }, value: '9' },
