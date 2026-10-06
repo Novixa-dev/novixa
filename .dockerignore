@@ -11,3 +11,7 @@ yarn-error.log*
 .claude
 README.md
 docs
+dist
+test-results
+playwright-report
+coverage

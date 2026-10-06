@@ -19,9 +19,12 @@
  *  3. VERCEL_PROJECT_PRODUCTION_URL — the project's stable production
  *     hostname. Correct even when read from inside a preview deployment,
  *     which is what makes it safe for canonical URLs.
- *  4. VERCEL_URL — the per-deployment hostname. Last resort, so preview
+ *  4. RAILWAY_PUBLIC_DOMAIN — the service's stable public hostname when the
+ *     site runs on Railway. Railway only passes it into a Dockerfile build when
+ *     the Dockerfile declares it as an ARG, which this repo's does.
+ *  5. VERCEL_URL — the per-deployment hostname. Last resort, so preview
  *     builds are at least self-consistent instead of pointing elsewhere.
- *  5. localhost, for local development.
+ *  6. localhost, for local development.
  */
 
 const FALLBACK_DEV_ORIGIN = 'http://localhost:3000';
@@ -40,6 +43,7 @@ export function getSiteUrl(): string {
     process.env.SITE_URL,
     process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL,
     process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    process.env.RAILWAY_PUBLIC_DOMAIN,
     process.env.NEXT_PUBLIC_VERCEL_URL,
     process.env.VERCEL_URL,
   ];

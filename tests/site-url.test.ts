@@ -12,6 +12,7 @@ const ENV_KEYS = [
   'SITE_URL',
   'NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL',
   'VERCEL_PROJECT_PRODUCTION_URL',
+  'RAILWAY_PUBLIC_DOMAIN',
   'NEXT_PUBLIC_VERCEL_URL',
   'VERCEL_URL',
 ] as const;
@@ -67,6 +68,22 @@ describe('getSiteUrl', () => {
     process.env.VERCEL_URL = 'novixa-git-feature-x.vercel.app';
     const { getSiteUrl } = await loadSiteModule();
     expect(getSiteUrl()).toBe('https://novixa.vercel.app');
+  });
+
+  it('uses the Railway public domain when the site runs on Railway', async () => {
+    // Without this, a Railway build with no NEXT_PUBLIC_SITE_URL baked every
+    // canonical and og:image as http://localhost:3000.
+    process.env.RAILWAY_PUBLIC_DOMAIN = 'novixa-production.up.railway.app';
+    const { getSiteUrl } = await loadSiteModule();
+    expect(getSiteUrl()).toBe('https://novixa-production.up.railway.app');
+  });
+
+  it('still lets an explicit site URL win over the Railway domain', async () => {
+    // The custom domain, once attached, must override the platform hostname.
+    process.env.NEXT_PUBLIC_SITE_URL = 'https://novixa.dev';
+    process.env.RAILWAY_PUBLIC_DOMAIN = 'novixa-production.up.railway.app';
+    const { getSiteUrl } = await loadSiteModule();
+    expect(getSiteUrl()).toBe('https://novixa.dev');
   });
 
   it('falls back to localhost when nothing is configured', async () => {

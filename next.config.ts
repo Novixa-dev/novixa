@@ -2,6 +2,22 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   distDir: 'dist',
+  /**
+   * Container builds emit a standalone server; Vercel and local builds do not.
+   *
+   * The Dockerfile used to copy the build output and run `next start` in a
+   * stage with no `src/`. `/og` reads its Arabic font from `src/app/og/` at
+   * request time, so every social card in a container returned 500 (reproduced:
+   * ENOENT on the .ttf). Standalone output traces the font in through
+   * `outputFileTracingIncludes`, so it survives into a minimal image.
+   *
+   * Headers and redirects were suspected too and turned out fine: they are
+   * compiled into `routes-manifest.json` at build time, which the old image did
+   * copy. Recorded so nobody "fixes" that again. Gated on an explicit variable
+   * so Vercel's own pipeline and `next start` for the browser suite are
+   * untouched.
+   */
+  output: process.env.NEXT_OUTPUT === 'standalone' ? 'standalone' : undefined,
   reactStrictMode: true,
   // The /og social-card route reads this font off disk at request time; without
   // an explicit trace entry it is not copied into the deployed function bundle
