@@ -1,3 +1,6 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { defineConfig, devices } from '@playwright/test';
 
 /**
@@ -14,11 +17,40 @@ const PORT = Number(process.env.E2E_PORT ?? 3100);
 const baseURL = `http://127.0.0.1:${PORT}`;
 
 /**
- * Browsers are provisioned by the environment rather than downloaded by
- * Playwright (`PLAYWRIGHT_BROWSERS_PATH`). When that path is set we point at
- * the Chromium already on disk instead of a per-install copy.
+ * Which Chromium the suite launches.
+ *
+ * Playwright bundles a browser revision per release and refuses to start if
+ * that exact revision is missing. Some environments (CI images, this project's
+ * container) provision Chromium themselves under `PLAYWRIGHT_BROWSERS_PATH`
+ * instead, and that build is pinned to whichever Playwright version the image
+ * was made for. A caret range on `@playwright/test` then breaks the suite
+ * without any code changing: 1.63 looked for revision 1243 while the image
+ * provided 1194, and all 105 browser tests failed at launch with "Executable
+ * doesn't exist" — a toolchain failure that reads exactly like a product one.
+ *
+ * So resolve an executable explicitly, in order of how specific it is:
+ *   1. `PLAYWRIGHT_CHROMIUM_PATH` — an operator saying which binary to use.
+ *   2. `<PLAYWRIGHT_BROWSERS_PATH>/chromium` — the provisioned build.
+ *   3. nothing, and Playwright uses its own download as normal.
+ *
+ * Passing `executablePath` also sidesteps the separate `chrome-headless-shell`
+ * binary that headless mode would otherwise look for, which the image does not
+ * always carry in a matching revision.
  */
-const executablePath = process.env.PLAYWRIGHT_CHROMIUM_PATH || undefined;
+function resolveChromium(): string | undefined {
+  const explicit = process.env.PLAYWRIGHT_CHROMIUM_PATH;
+  if (explicit && existsSync(explicit)) return explicit;
+
+  const provisioned = process.env.PLAYWRIGHT_BROWSERS_PATH;
+  if (provisioned) {
+    const candidate = join(provisioned, 'chromium');
+    if (existsSync(candidate)) return candidate;
+  }
+
+  return undefined;
+}
+
+const executablePath = resolveChromium();
 
 export default defineConfig({
   testDir: './e2e',
