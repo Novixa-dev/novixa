@@ -110,6 +110,45 @@ export const SURFACE_COLORS: ColorToken[] = [
 ];
 
 /**
+ * Status colours.
+ *
+ * Three states and no more: good, attention, problem. A `docs/DESIGN_SYSTEM.md`
+ * file used to list an indigo accent alongside these; no indigo exists anywhere
+ * in the code, and `AGENTS.md` rules it out explicitly, so that file was
+ * archived rather than left to mislead. These three are in the code and are
+ * documented here with the ratios they actually measure.
+ */
+export const STATUS_COLORS: ColorToken[] = [
+  {
+    name: 'status-ok',
+    value: '#34D399',
+    role: {
+      ar: 'نجاح أو حالة تشغيلية سليمة — سجل العمليات، مؤشر الاتصال.',
+      en: 'Success, or a healthy operational state — the operations feed, the live indicator.',
+    },
+    contrast: '10.49:1 / 9.38:1',
+  },
+  {
+    name: 'status-attention',
+    value: '#FBBF24',
+    role: {
+      ar: 'يحتاج انتباهاً لا يعني فشلاً — تنبيه مخزون، وأيضاً إشعار «بيانات توضيحية» في لوحة التشغيل.',
+      en: 'Needs attention without being a failure — a stock warning, and the console’s illustrative-data notice.',
+    },
+    contrast: '12.08:1 / 10.81:1',
+  },
+  {
+    name: 'status-problem',
+    value: '#FB7185',
+    role: {
+      ar: 'خلل أو تراجع في مؤشر. لا يُستخدم وحده أبداً: كل حالة تحمل نصاً أو أيقونة إلى جانب اللون، لأن اللون وحده لا يصل إلى كل قارئ.',
+      en: 'A failure or a metric moving the wrong way. Never used alone: every state carries text or an icon beside the colour, because colour by itself does not reach every reader.',
+    },
+    contrast: '7.50:1 / 6.70:1',
+  },
+];
+
+/**
  * The categorical chart palette, imported from the console's own module so the
  * two can never disagree.
  */

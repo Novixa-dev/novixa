@@ -16,9 +16,9 @@ import {
  */
 describe('trend series generation', () => {
   it('is deterministic — the same spec and window always give the same points', () => {
-    for (const module of DASHBOARD_MODULES) {
-      const first = buildTrendSeries(module.trend.spec, 30);
-      const second = buildTrendSeries(module.trend.spec, 30);
+    for (const consoleModule of DASHBOARD_MODULES) {
+      const first = buildTrendSeries(consoleModule.trend.spec, 30);
+      const second = buildTrendSeries(consoleModule.trend.spec, 30);
       expect(second).toEqual(first);
     }
   });
@@ -27,18 +27,18 @@ describe('trend series generation', () => {
     // Widening from 14 to 90 days must leave the fourteen points that were
     // already on screen untouched. If it does not, the chart appears to
     // redraw itself with different history, which reads as a bug.
-    for (const module of DASHBOARD_MODULES) {
-      const short = buildTrendSeries(module.trend.spec, 14);
-      const long = buildTrendSeries(module.trend.spec, 90);
+    for (const consoleModule of DASHBOARD_MODULES) {
+      const short = buildTrendSeries(consoleModule.trend.spec, 14);
+      const long = buildTrendSeries(consoleModule.trend.spec, 90);
       const tail = long.slice(-14).map((point) => point.value);
       expect(tail).toEqual(short.map((point) => point.value));
     }
   });
 
   it('reports the same most recent value in every window', () => {
-    for (const module of DASHBOARD_MODULES) {
+    for (const consoleModule of DASHBOARD_MODULES) {
       const values = TREND_WINDOWS.map((days) => {
-        const series = buildTrendSeries(module.trend.spec, days);
+        const series = buildTrendSeries(consoleModule.trend.spec, days);
         return series[series.length - 1].value;
       });
       expect(new Set(values).size).toBe(1);
@@ -49,8 +49,8 @@ describe('trend series generation', () => {
     // A flat per-day trend drove the early points of a 90-day window to zero
     // and produced a +1131% period-over-period change. Compounding growth
     // replaced it; these bounds are what that fix has to keep holding.
-    for (const module of DASHBOARD_MODULES) {
-      const series = buildTrendSeries(module.trend.spec, 90);
+    for (const consoleModule of DASHBOARD_MODULES) {
+      const series = buildTrendSeries(consoleModule.trend.spec, 90);
       const values = series.map((point) => point.value);
 
       expect(Math.min(...values)).toBeGreaterThan(0);

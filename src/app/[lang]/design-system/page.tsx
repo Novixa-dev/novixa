@@ -6,6 +6,7 @@ import {
   CHART_PALETTE,
   DIRECTION_RULES,
   RADIUS_SCALE,
+  STATUS_COLORS,
   SURFACE_COLORS,
   SURFACE_RULES,
   TYPE_SCALE,
@@ -137,7 +138,7 @@ export default async function DesignSystemPage({
               : 'A deep slate canvas, royal blue for action, a teal secondary. No purple or indigo anywhere — a deliberate decision against the generic SaaS look, not an oversight.'}
           </p>
           <ul className="space-y-3">
-            {SURFACE_COLORS.map((token) => (
+            {[...SURFACE_COLORS, ...STATUS_COLORS].map((token) => (
               <li
                 key={token.name}
                 className="glass-card rounded-xl border border-white/[0.07] p-4 flex items-start gap-4"
