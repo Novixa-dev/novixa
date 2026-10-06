@@ -3,7 +3,7 @@
 What is verified automatically, what still needs a person, and the gate before a
 production release.
 
-**Last updated:** 2026-10-01
+**Last updated:** 2026-10-06
 **Legend:** ✅ automated · 👤 manual · ⚠️ blocked
 
 ---
@@ -24,7 +24,7 @@ starts a fresh one — see §7.
 | Lint | `npm run lint` | ✅ 0 errors, 0 warnings |
 | Unit | `npm run test` | ✅ 78 passed |
 | Build | `npm run build` | ✅ 90 routes |
-| Browser | `npm run test:e2e` | ✅ 117 passed (desktop · tablet · mobile) |
+| Browser | `npm run test:e2e` | ✅ 120 passed (desktop · tablet · mobile) |
 
 ---
 
@@ -74,7 +74,7 @@ starts a fresh one — see §7.
 | ✅ Contrast measured from rendered pixels | 290 text nodes across seven pages; no genuine failures — §8 |
 | ✅ Lighthouse accessibility | **100** on every touched page |
 | 👤 Screen-reader pass (NVDA / VoiceOver) in Arabic | Automation cannot judge this |
-| 👤 Contrast over glass surfaces | §8 |
+| ✅ Contrast over glass surfaces | Measured from pixels, not from the DOM — §8 |
 
 ---
 
@@ -107,7 +107,6 @@ SoftwareApplication · Article · ContactPage · FAQPage · ItemList.
 | ✅ **Vercel can deploy** | Resolved 2026-10-06 by making the repository public. Status `success`, preview built and Ready |
 | ✅ GitHub Actions executing | Green on every push since, browser suite included |
 | 👤 Preview QA needs a bypass token | Branch previews sit behind Vercel Deployment Protection, so §9 runs against production after merge |
-| ~~GitHub Actions executing~~ | Run `36635306000` failed in 4s with no logs; all steps pass locally. Check Actions billing / spending limit / allowed-actions policy |
 | ✅ Security headers | HSTS, nosniff, frame options, referrer policy, permissions policy |
 | 👤 Custom domain + HTTPS | |
 | 👤 Re-test the live URL after deploy | §9 |
@@ -132,12 +131,20 @@ semi-transparent surfaces (`glass-card`, `glass-overlay`, `bg-slate-900/50`) and
 consecutive runs on identical markup. Contrast is gated by Lighthouse instead,
 which reports 100 on every touched page.
 
-A tool assignment, not a coverage gap. A manual pass over the glass surfaces at
-the smallest type sizes is still worth doing (`IMPLEMENTATION_PLAN.md` R4).
+A tool assignment, not a coverage gap. The glass surfaces were then measured
+directly: 290 text nodes across seven pages, sampled from rendered screenshot
+pixels rather than resolved from the DOM, so a semi-transparent panel was read
+exactly as it paints. No genuine failures (`IMPLEMENTATION_PLAN.md` R4,
+`PRODUCTION_AUDIT.md` P3-1).
 
 ---
 
 ## 9. After deploying
+
+Run these from a machine with ordinary outbound internet access. The container
+this work was done in is behind a network policy that allows GitHub and the
+package registries only, so it cannot reach a deployed URL — every check below
+is a person's to run, not a gap in the automated suite.
 
 1. `curl -I` the live URL — expect 200 on `/ar` and `/en`, 308 on `/`, 404 on `/ar/nonsense`.
 2. View source on `/ar`: canonical, `og:url` and `og:image` must all name the live domain.

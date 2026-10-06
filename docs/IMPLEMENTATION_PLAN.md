@@ -4,7 +4,7 @@ Prioritised work, what has landed, what remains, and the reasoning behind the
 calls that were not obvious. Kept in step with the code; findings live in
 `PRODUCTION_AUDIT.md`, release checks in `QA_RELEASE_CHECKLIST.md`.
 
-**Last updated:** 2026-10-01
+**Last updated:** 2026-10-06
 
 ---
 
@@ -83,7 +83,7 @@ boundary would flash a skeleton over instant static pages on every navigation.
 
 | # | Work | Outcome |
 |---|---|---|
-| 5.1 | Playwright across desktop / tablet / mobile | 117 tests |
+| 5.1 | Playwright across desktop / tablet / mobile | 120 tests |
 | 5.2 | Route suite driven by the sitemap | Every advertised URL must serve |
 | 5.3 | Locale suite | Direction, H1 language, and leaks in both directions |
 | 5.4 | axe (WCAG 2.2 A/AA) + keyboard + heading order | Covers what Lighthouse's subset does not |
@@ -103,15 +103,19 @@ Ready) and GitHub Actions runs green on every push, browser suite included.
 Both blockers shared one cause: a private organization repository on the free
 tier of both services.
 
+Verified on `cc0b7df`: combined commit status `success`, both check runs
+(`Typecheck, lint, test, build`, `Vercel Preview Comments`) `success`, PR
+mergeable state `clean`.
+
 ### R1 — Set the production environment variables · **blocked on access**
 `NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`,
 `NEXT_PUBLIC_WHATSAPP_NUMBER`. See `PRODUCTION_AUDIT.md` §4.
 
-### R2 — Get GitHub Actions executing · **blocked on account access**
-The workflow is correct — all four steps pass locally from a clean `npm ci` —
-but run `36635306000` failed in 4 seconds with no logs, meaning the job never
-ran its commands. Usually billing, a spending limit, or an allowed-actions
-policy.
+### R2 — Get GitHub Actions executing · **DONE 2026-10-06**
+Folded into R0 — the 4-second no-log failure was the private-repository cause,
+not a billing or allowed-actions policy as first suspected. `Typecheck, lint,
+test, build` now completes `success` on the branch head, and the `Vercel` status
+alongside it is `success` too.
 
 ### R3 — Field performance reporting · **DONE, endpoint not chosen**
 `src/components/common/WebVitals.tsx` reports real-visit LCP/CLS/INP through

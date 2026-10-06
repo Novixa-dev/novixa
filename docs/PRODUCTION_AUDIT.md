@@ -3,7 +3,7 @@
 Current state of the platform, the defects found, and what was done about each.
 Every entry carries the evidence it rests on. Updated as work lands.
 
-**Last updated:** 2026-10-01
+**Last updated:** 2026-10-06
 **Audited against:** `claude/practical-fermat-1avypc` · live deployment `novixa-cyan.vercel.app`
 
 ---
@@ -21,7 +21,7 @@ Every entry carries the evidence it rests on. Updated as work lands.
 | Email | Resend via `POST /api/contact`, with honeypot and in-process rate limit |
 | Rendering | Static prerender for all content routes; `/og` and `/api/contact` dynamic |
 | Deployment | Vercel, `distDir: 'dist'`, security headers in `next.config.ts` |
-| Quality gates | typecheck · ESLint 9 · 78 Vitest unit tests · 117 Playwright E2E · Lighthouse |
+| Quality gates | typecheck · ESLint 9 · 78 Vitest unit tests · 120 Playwright E2E · Lighthouse |
 
 **Routes:** 90 indexable URLs across both locales (was 65).
 
@@ -335,7 +335,7 @@ forward-compatible — `next lint` is removed in 16.
 | `npm run typecheck` | clean |
 | `npm run lint` | 0 errors, 0 warnings |
 | `npm run test` (Vitest) | 78 passed |
-| `npm run test:e2e` (Playwright) | 117 passed — desktop, tablet, mobile |
+| `npm run test:e2e` (Playwright) | 120 passed — desktop, tablet, mobile |
 | `npm run build` | clean, 90 routes |
 | Lighthouse a11y / best-practices / SEO | **100 / 100 / 100** on `/ar`, `/en`, `/ar/dashboard`, `/en/dashboard`, `/ar/contact`, `/ar/products`, `/ar/solutions`, `/ar/faq`, `/ar/start-project`, `/ar/services/custom-software`, `/ar/solutions/restaurant-system`, `/ar/legal/privacy` |
 | Lighthouse performance (throttled mobile, `/ar`) | **78** (median of 7; range 73–83) — CLS 0, FCP 1.4 s, LCP 4.9 s, TBT 193 ms. See P3-0 |
