@@ -62,9 +62,27 @@ describe('sitemap', () => {
     }
   });
 
+  it('advertises exactly the URLs the content catalogs account for', () => {
+    // 14 hub pages plus every detail page, in both locales. Asserting the total
+    // catches an entry added to the sitemap that no catalog backs — the mirror
+    // image of the per-catalog checks above, which catch the reverse. The
+    // owner's guide quotes this number, so it is guarded rather than trusted.
+    const hubs = 14;
+    const details =
+      servicesCatalog.length +
+      readySolutionsCatalog.length +
+      productsCatalog.length +
+      industriesCatalog.length +
+      caseStudiesCatalog.length +
+      insightsArticles.length +
+      LEGAL_DOCUMENTS.length;
+
+    expect(entries).toHaveLength((hubs + details) * 2);
+  });
+
   it('lists the hub pages', () => {
     for (const lang of ['ar', 'en']) {
-      for (const hub of ['', '/services', '/solutions', '/products', '/dashboard', '/faq', '/work', '/about', '/contact', '/industries', '/insights', '/start-project', '/team']) {
+      for (const hub of ['', '/services', '/solutions', '/products', '/dashboard', '/design-system', '/faq', '/work', '/about', '/contact', '/industries', '/insights', '/start-project', '/team']) {
         expect(paths.has(`/${lang}${hub}`), `sitemap is missing /${lang}${hub}`).toBe(true);
       }
     }

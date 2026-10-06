@@ -11,7 +11,7 @@ Novixa (نوڤيكسا) is a modern software engineering and digital products co
 - **Styling**: Tailwind CSS v4, Architectural Precision dark-only design system
 - **Typography**: self-hosted via `next/font/local` — Alexandria (display), IBM Plex Sans Arabic (Arabic body), Inter (English body); no runtime Google Fonts request
 - **Email Engine**: Resend API via `POST /api/contact` — honeypot, in-process rate limit, HTML escaping, and a truthful `delivered` flag when no provider is configured
-- **Testing**: Vitest (88 unit tests) · Playwright + axe-core (144 browser tests across desktop, tablet and mobile) · ESLint 9 (0 errors, 0 warnings) · GitHub Actions
+- **Testing**: Vitest (94 unit tests) · Playwright + axe-core (144 browser tests across desktop, tablet and mobile) · ESLint 9 (0 errors, 0 warnings) · GitHub Actions
 - **SEO & Social**: Dynamic Open Graph generation (`next/og`), JSON-LD structured organization schemas, multi-language `sitemap.xml` (92 URLs), and crawler `robots.txt`
 - **Security**: Strict-Transport-Security (HSTS), X-Content-Type-Options, X-Frame-Options, Permissions-Policy, Referrer-Policy
 
