@@ -12,7 +12,7 @@ import { test, expect, type Page } from '@playwright/test';
 const ARABIC = /[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]/;
 
 /** Pages that carry the most copy, in both locales. */
-const PAGES = ['', '/services', '/solutions', '/products', '/dashboard', '/work', '/about', '/faq'];
+const PAGES = ['', '/services', '/solutions', '/products', '/dashboard', '/work', '/about', '/faq', '/design-system'];
 
 /**
  * Collects visible text, skipping nodes that are legitimately Latin in an

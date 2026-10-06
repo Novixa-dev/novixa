@@ -217,6 +217,11 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link href={`/${language}/design-system`} className="hover:text-blue-400 transition-colors text-slate-300">
+                    {t('نظام التصميم ومعايير الهندسة', 'Design System & Engineering Standards')}
+                  </Link>
+                </li>
+                <li>
                   <Link href={`/${language}/contact`} className="hover:text-blue-400 transition-colors text-blue-400 font-semibold">
                     {t('ابدأ مشروعك / طلب استشارة', 'Start Project / Consultation')}
                   </Link>

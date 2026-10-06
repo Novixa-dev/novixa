@@ -14,7 +14,7 @@ import AxeBuilder from '@axe-core/playwright';
  * separately below because axe cannot evaluate it.
  */
 
-const PAGES = ['/ar', '/en', '/ar/dashboard', '/ar/solutions', '/ar/faq', '/ar/contact', '/ar/start-project'];
+const PAGES = ['/ar', '/en', '/ar/dashboard', '/ar/solutions', '/ar/faq', '/ar/contact', '/ar/start-project', '/ar/design-system'];
 
 for (const path of PAGES) {
   test(`${path} has no WCAG A/AA violations`, async ({ page }) => {

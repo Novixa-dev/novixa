@@ -124,7 +124,7 @@ export const AdrSnippetCard: React.FC<AdrSnippetCardProps> = ({ slug, isAr }) =>
           <Shield className="w-3.5 h-3.5 text-blue-400" />
           <span>{isAr ? 'معمارية معتمدة ومتوافقة مع الحوكمة السحابية الخليجية' : 'Verified GCC Sovereign Architecture Pattern'}</span>
         </span>
-        <span className="hidden sm:inline text-slate-500">YAML · RFC-Compliance</span>
+        <span className="hidden sm:inline text-slate-400">YAML · RFC-Compliance</span>
       </div>
     </div>
   );

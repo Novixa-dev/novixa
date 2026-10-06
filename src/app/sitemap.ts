@@ -40,6 +40,7 @@ const STATIC_ROUTES: RouteSpec[] = [
   { path: 'team', priority: 0.6, changeFrequency: 'monthly' },
   { path: 'insights', priority: 0.7, changeFrequency: 'weekly' },
   { path: 'faq', priority: 0.7, changeFrequency: 'monthly' },
+  { path: 'design-system', priority: 0.6, changeFrequency: 'monthly' },
 ];
 
 function entry(path: string, priority: number, changeFrequency: RouteSpec['changeFrequency'], lang: string) {

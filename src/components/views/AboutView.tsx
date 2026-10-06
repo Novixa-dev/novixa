@@ -98,7 +98,7 @@ export const AboutView = ({ lang }: { lang: Language }) => {
                   <div className="w-8 h-8 rounded-lg bg-blue-950 border border-blue-800 text-blue-400 flex items-center justify-center font-bold text-xs font-mono">
                     {stg.number}
                   </div>
-                  <span className="text-[10px] font-mono text-slate-500">STAGE {stg.number}</span>
+                  <span className="text-[10px] font-mono text-slate-400">STAGE {stg.number}</span>
                 </div>
                 <h3 className="text-base font-bold font-display text-white">{t(stg.titleAr, stg.titleEn)}</h3>
                 <p className="text-xs text-slate-300 font-arabic leading-relaxed">{t(stg.descAr, stg.descEn)}</p>
