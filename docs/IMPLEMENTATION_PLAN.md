@@ -162,11 +162,45 @@ real saving on a slow connection, and a static section being a client component
 was wrong regardless — but it is recorded as an architectural improvement, not
 a performance one.
 
-### R5b — Reduce the homepage's layout cost · **the actual lever, not attempted**
-What would move LCP: laying out less DOM before the hero paints. Twelve
-sections of markup is the cost. This is a content-structure decision as much as
-a technical one — it may mean the homepage should simply be shorter — and needs
-its own change measured with the median-of-7 protocol.
+### R5b — Reduce the homepage's layout cost · **DONE, and the lab score still did not move**
+The diagnosis from R5 was right and this is where it pointed. Lighthouse's own
+LCP breakdown on the homepage: time to first byte 18 ms, element render delay
+**1275 ms**. The H1 is in the HTML almost immediately and then waits more than a
+second for a frame, because the browser lays out all twelve sections below it
+first — Style & Layout was the largest single main-thread entry.
+
+The fix is `content-visibility: auto` with `contain-intrinsic-size: auto 720px`
+on every section after the hero, applied through a wrapper in the route rather
+than to the section components (they are reused on pages that render two or
+three of them, where there is nothing off-screen to defer). Reasoning is in
+`globals.css` next to the rule.
+
+Measured, median of 5 runs each side, same build pipeline and same machine:
+
+| | before | after |
+|---|---|---|
+| LCP element render delay (observed) | 1275 ms | **288 ms** |
+| Style & Layout, main thread | 920 ms | **614 ms** |
+| Lighthouse performance score (simulated) | 78 | 78 |
+| Lighthouse LCP (simulated) | 5073 ms | 4926 ms |
+| CLS | 0.0000 | 0.0000 |
+
+So: the thing that was targeted moved by 4.4×, and the headline score did not.
+That is not a contradiction. Lighthouse's score comes from Lantern, which
+re-simulates the trace over a throttled network and CPU, and under that model
+the homepage's LCP is bounded by the simulated critical path rather than by the
+main-thread work this change removes. The observed numbers are what a visitor's
+browser actually did, and they are what `useReportWebVitals` will report from
+the field (R3).
+
+Recorded honestly on both counts: a real improvement to how fast the headline
+paints, and no improvement to the lab score. The remaining lab-score lever is
+still content structure — whether the homepage should carry twelve sections at
+all — and that is the owner's decision, not an engineering one.
+
+Not reverted this time (unlike the `next/dynamic` experiment, which made the
+score *worse*): this one improved the metric it targeted, costs nothing, and all
+120 browser tests pass with it in place, CLS included.
 
 ### R6 — Editorial depth · **content task, not engineering**
 Two insight articles and four industries. Both clusters are sound but shallow for

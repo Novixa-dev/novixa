@@ -108,6 +108,47 @@
   }
 }
 
+/*
+ * Off-screen section layout deferral.
+ *
+ * The homepage's LCP element is its H1, and the H1 is in the HTML at ~18 ms
+ * (time to first byte). It nevertheless took 1275 ms to paint, because the
+ * browser lays out all twelve sections below it before it produces a frame —
+ * Style & Layout was 1040 ms of main-thread work, the single largest entry.
+ * Removing script did not help this (see IMPLEMENTATION_PLAN.md R5); the cost
+ * is layout, so the fix has to be layout.
+ *
+ * `content-visibility: auto` lets the browser skip layout and paint for a
+ * subtree that is far enough off-screen, and do it later when the user scrolls
+ * towards it. It is not `display: none`: the content stays in the accessibility
+ * tree, stays findable by in-page search, and is still rendered for print (the
+ * rule below is belt-and-braces for that). The browser also renders anything
+ * near the viewport regardless, so applying it from the second section down
+ * cannot blank something the visitor can actually see.
+ *
+ * `contain-intrinsic-size: auto 720px` supplies a placeholder height so the
+ * scrollbar is approximately right before anything is laid out, and `auto`
+ * tells the browser to remember each section's real height once measured, so a
+ * section is only ever estimated once.
+ *
+ * Applied through a wrapper in the homepage route rather than to the section
+ * components themselves — those sections are reused on pages that render two or
+ * three of them, where there is nothing off-screen to defer. The wrapper's box
+ * is the section's box, and every one of these sections already carries
+ * `overflow-hidden`, so the paint containment this implies clips nothing that
+ * was not already clipped.
+ */
+.defer-offscreen {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}
+
+@media print {
+  .defer-offscreen {
+    content-visibility: visible;
+  }
+}
+
 .font-arabic {
   font-family: var(--font-arabic), system-ui, sans-serif;
 }

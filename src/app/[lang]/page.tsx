@@ -52,37 +52,59 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       <HeroSection />
 
       {/* 2. Dual Engine: Custom Engineering vs Ready Turnkey Solutions */}
-      <DualEngineSection lang={lang} />
+      <div className="defer-offscreen">
+        <DualEngineSection lang={lang} />
+      </div>
 
       {/* 3. Problem Transformation: Disconnected Chaos vs Unified Software Engine */}
-      <ProblemTransformation />
+      <div className="defer-offscreen">
+        <ProblemTransformation />
+      </div>
 
       {/* 4. Core Services: 9 Customer-Facing Engineering & Operations Services */}
-      <ServicesSummarySection />
+      <div className="defer-offscreen">
+        <ServicesSummarySection />
+      </div>
 
       {/* 5. Ready Solutions: 8 Reusable Turnkey Business Software Foundations (5–14 Days) */}
-      <ReadySolutionsSection lang={lang} />
+      <div className="defer-offscreen">
+        <ReadySolutionsSection lang={lang} />
+      </div>
 
       {/* 6. Proprietary Products: Transparent Status Badges (Aqar, Restaurant, Booking, Pulse) */}
-      <ProductsSection lang={lang} />
+      <div className="defer-offscreen">
+        <ProductsSection lang={lang} />
+      </div>
 
       {/* 7. Selected Work: Honestly Labeled Demonstrations & Prototypes */}
-      <CaseStudiesSection lang={lang} />
+      <div className="defer-offscreen">
+        <CaseStudiesSection lang={lang} />
+      </div>
 
       {/* 8. Why Novixa: Real Code Ownership, Problem-First, Anti-Agency Value */}
-      <WhyNovixaSection lang={lang} />
+      <div className="defer-offscreen">
+        <WhyNovixaSection lang={lang} />
+      </div>
 
       {/* 9. Engagement Process: 6-Stage Transparent Lifecycle */}
-      <ProcessSection />
+      <div className="defer-offscreen">
+        <ProcessSection />
+      </div>
 
       {/* 10. Deployment & Hosting: "Deployment, Hosting & Operations" */}
-      <DeploymentHostingSection lang={lang} />
+      <div className="defer-offscreen">
+        <DeploymentHostingSection lang={lang} />
+      </div>
 
       {/* 11. Maintenance & Support: Continuous SLA, Security Patches, Monitoring */}
-      <MaintenanceSupportSection lang={lang} />
+      <div className="defer-offscreen">
+        <MaintenanceSupportSection lang={lang} />
+      </div>
 
       {/* 12. Final High-Conversion CTA: Start Project OR Explore Ready Solutions */}
-      <HomeCTASection lang={lang} />
+      <div className="defer-offscreen">
+        <HomeCTASection lang={lang} />
+      </div>
     </>
   );
 }
