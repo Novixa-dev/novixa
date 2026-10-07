@@ -29,7 +29,9 @@ export const BRAND_INFO = {
     en: 'Practical business software for Yemen, the GCC and beyond.',
   },
   email: 'hello@novixa.dev',
-  whatsappUrl: 'https://wa.me/967770000000',
+  // The WhatsApp channel is configured through NEXT_PUBLIC_WHATSAPP_NUMBER
+  // (see src/lib/contact-channels.ts) rather than hardcoded here: this field
+  // previously held a placeholder number that nobody owns.
   location: {
     ar: 'اليمن • المملكة العربية السعودية • الخليج العربي',
     en: 'Yemen • Saudi Arabia • GCC & Beyond',
@@ -953,8 +955,8 @@ export const PRODUCTS: Product[] = [
       en: ['Real Estate Developers', 'Property Management Firms', 'Commercial & Residential Complexes'],
     },
     metrics: [
-      { label: { ar: 'كفاءة تحصيل الإيجارات', en: 'Collection Efficiency' }, value: 'أتمتة دورة التحصيل والتنبيهات' },
-      { label: { ar: 'تنظيم المستندات', en: 'Document Archiving' }, value: '100% رقمي ومشفر' },
+      { label: { ar: 'دورة التحصيل', en: 'Collection cycle' }, value: { ar: 'أتمتة الدفعات والتنبيهات', en: 'Automated instalments & reminders' } },
+      { label: { ar: 'المستندات', en: 'Documents' }, value: { ar: 'أرشفة رقمية مشفّرة', en: 'Encrypted digital archiving' } },
     ],
     deploymentOptions: {
       ar: ['استضافة سحابية مدارة بالكامل من نوڤيكسا', 'أو نشر على خوادمك السحابية الخاصة'],
@@ -1024,8 +1026,8 @@ export const PRODUCTS: Product[] = [
       en: ['Fine Dining', 'Fast Food Chains', 'Specialty Coffee', 'Cloud Kitchens'],
     },
     metrics: [
-      { label: { ar: 'كفاءة تقديم ومعالجة الطلبات', en: 'Fulfillment Operation Speed' }, value: '2.5x أسرع في الذروة' },
-      { label: { ar: 'تقليل هدر المواد', en: 'Waste Reduction' }, value: '-30% هدر مواد' },
+      { label: { ar: 'مسار الطلب', en: 'Order routing' }, value: { ar: 'من الطاولة إلى شاشة المطبخ مباشرة', en: 'Table to kitchen display, directly' } },
+      { label: { ar: 'المخزون', en: 'Inventory' }, value: { ar: 'تتبّع المكونات وتنبيهات النقص', en: 'Ingredient tracking with low-stock alerts' } },
     ],
     deploymentOptions: {
       ar: ['استضافة سحابية مخصصة وعزل للمؤسسات', 'دعم العمل دون إنترنت محلياً مع المزامنة'],
@@ -1095,7 +1097,7 @@ export const PRODUCTS: Product[] = [
       en: ['Medical Clinics', 'Hotels & Resorts', 'Beauty & Wellness', 'Training Centers'],
     },
     metrics: [
-      { label: { ar: 'تأكيد الحضور والمواعيد', en: 'No-Show Reduction' }, value: 'انخفاض الغياب بـ 85%' },
+      { label: { ar: 'تأكيد المواعيد', en: 'Appointment confirmation' }, value: { ar: 'تذكير تلقائي عبر الواتساب ودفع عربون', en: 'Automatic WhatsApp reminders and deposits' } },
     ],
     demoUrl: '/contact',
     accentColor: '#0EA5E9',
@@ -1151,8 +1153,8 @@ export const PRODUCTS: Product[] = [
       en: ['Enterprises', 'Healthcare Chains', 'Hospitality Groups', 'Tech Companies'],
     },
     metrics: [
-      { label: { ar: 'مشاركة الموظفين', en: 'Employee Engagement' }, value: 'رفع المشاركة 3x' },
-      { label: { ar: 'سرعة الاستجابة للمشاكل', en: 'Resolution Speed' }, value: 'حل أسرع بـ 60%' },
+      { label: { ar: 'المشاركة', en: 'Participation' }, value: { ar: 'مشاركة سرية أو معلنة الهوية', en: 'Anonymous or named participation' } },
+      { label: { ar: 'إغلاق الملاحظات', en: 'Note resolution' }, value: { ar: 'تتبّع زمن الإغلاق لكل ملاحظة', en: 'Time-to-close tracked per note' } },
     ],
     demoUrl: '/contact',
     accentColor: '#14B8A6',

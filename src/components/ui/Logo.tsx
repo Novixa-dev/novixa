@@ -83,7 +83,15 @@ export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', showTex
           <span translate="no" className={`font-display font-extrabold tracking-tight text-white ${currentSize.text}`}>
             NOVIXA
           </span>
-          <span className={`${currentSize.sub} font-arabic text-slate-300 tracking-wider font-medium -mt-1 hidden sm:block`}>
+          {/* The Arabic wordmark stays Arabic in both locales — it is the
+              brand's own name. `lang="ar"` tells assistive technology to
+              pronounce it as Arabic rather than reading it phonetically as
+              English, and `translate="no"` protects it from auto-translate. */}
+          <span
+            lang="ar"
+            translate="no"
+            className={`${currentSize.sub} font-arabic text-slate-300 tracking-wider font-medium -mt-1 hidden sm:block`}
+          >
             نوڤيكسا • هندسة البرمجيات
           </span>
         </div>

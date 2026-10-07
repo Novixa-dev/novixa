@@ -61,7 +61,16 @@ export interface Product {
   businessValue?: { ar: string; en: string };
   features: { ar: string[]; en: string[] };
   targetIndustries: { ar: string[]; en: string[] };
-  metrics?: { label: { ar: string; en: string }; value: string }[];
+  /**
+   * Capability highlights shown beside the product.
+   *
+   * `value` is localized like every other user-facing string: it previously
+   * held a single Arabic phrase that was rendered unchanged on the English
+   * pages. It describes a capability, not a measured outcome — Novixa
+   * publishes no client results, so an unsupported figure here would be a
+   * fabricated claim.
+   */
+  metrics?: { label: { ar: string; en: string }; value: { ar: string; en: string } }[];
   deploymentOptions?: { ar: string[]; en: string[] };
   customizationOptions?: { ar: string[]; en: string[] };
   supportIncluded?: { ar: string[]; en: string[] };

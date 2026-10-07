@@ -4,7 +4,10 @@ import {
   industriesCatalog,
   caseStudiesCatalog,
   insightsArticles,
+  servicesCatalog,
+  readySolutionsCatalog,
 } from '@/lib/content';
+import { LEGAL_DOCUMENTS } from '@/content/legal';
 import { getSiteUrl } from '@/lib/env';
 
 const LANGUAGES = ['ar', 'en'] as const;
@@ -30,11 +33,14 @@ const STATIC_ROUTES: RouteSpec[] = [
   { path: 'contact', priority: 0.9, changeFrequency: 'monthly' },
   { path: 'start-project', priority: 0.9, changeFrequency: 'monthly' },
   { path: 'products', priority: 0.8, changeFrequency: 'weekly' },
+  { path: 'dashboard', priority: 0.8, changeFrequency: 'monthly' },
   { path: 'industries', priority: 0.8, changeFrequency: 'monthly' },
   { path: 'work', priority: 0.8, changeFrequency: 'monthly' },
   { path: 'about', priority: 0.7, changeFrequency: 'monthly' },
   { path: 'team', priority: 0.6, changeFrequency: 'monthly' },
   { path: 'insights', priority: 0.7, changeFrequency: 'weekly' },
+  { path: 'faq', priority: 0.7, changeFrequency: 'monthly' },
+  { path: 'design-system', priority: 0.6, changeFrequency: 'monthly' },
 ];
 
 function entry(path: string, priority: number, changeFrequency: RouteSpec['changeFrequency'], lang: string) {
@@ -79,6 +85,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     for (const art of insightsArticles) {
       sitemapEntries.push(entry(`insights/${art.id}`, 0.7, 'monthly', lang));
+    }
+
+    // Services and ready solutions carry the deepest content on the site and
+    // had no URLs of their own until now — 34 indexable pages across both
+    // locales that previously existed only as cards on a hub page.
+    for (const service of servicesCatalog) {
+      sitemapEntries.push(entry(`services/${service.slug}`, 0.8, 'monthly', lang));
+    }
+
+    for (const solution of readySolutionsCatalog) {
+      sitemapEntries.push(entry(`solutions/${solution.slug}`, 0.8, 'monthly', lang));
+    }
+
+    for (const doc of LEGAL_DOCUMENTS) {
+      sitemapEntries.push(entry(`legal/${doc.slug}`, 0.3, 'yearly', lang));
     }
   }
 

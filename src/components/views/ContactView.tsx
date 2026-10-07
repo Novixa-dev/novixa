@@ -2,11 +2,11 @@
 
 import React, { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
+import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon';
+import { CONTACT_EMAIL, WHATSAPP_URL } from '@/lib/contact-channels';
 import {
   Mail,
-  Phone,
   MapPin,
-  Clock,
   Send,
   CheckCircle2,
   AlertCircle,
@@ -15,11 +15,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Lock,
-  Cpu,
-  Workflow,
-  Sparkles,
-  Server,
-  Zap,
 } from 'lucide-react';
 
 interface FormData {
@@ -522,32 +517,36 @@ export const ContactView: React.FC = () => {
                   <div>
                     <div className="text-xs text-slate-400">{t('البريد الإلكتروني المباشر', 'Direct Email')}</div>
                     <a
-                      href="mailto:hello@novixa.dev"
+                      href={`mailto:${CONTACT_EMAIL}`}
                       className="text-white hover:text-blue-400 font-mono text-xs sm:text-sm font-semibold transition-colors"
                     >
-                      hello@novixa.dev
+                      {CONTACT_EMAIL}
                     </a>
                   </div>
                 </li>
 
-                {/* WhatsApp Option */}
-                <li className="flex items-start gap-3.5">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-950/80 border border-emerald-800/60 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-                    <Phone className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-slate-400">{t('المراسلة المباشرة عبر الواتساب', 'Direct WhatsApp Channel')}</div>
-                    <a
-                      href="https://wa.me/967770000000"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-emerald-400 hover:text-emerald-300 font-mono text-xs sm:text-sm font-semibold transition-colors inline-flex items-center gap-1 mt-0.5"
-                    >
-                      <span>{t('تواصل معنا عبر الواتساب', 'Chat on WhatsApp')}</span>
-                      <ArrowIcon className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </li>
+                {/* WhatsApp — rendered only when a real number is configured
+                    (NEXT_PUBLIC_WHATSAPP_NUMBER). This previously linked to a
+                    placeholder number, sending visitors to a dead chat. */}
+                {WHATSAPP_URL && (
+                  <li className="flex items-start gap-3.5">
+                    <div className="w-9 h-9 rounded-xl bg-emerald-950/80 border border-emerald-800/60 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                      <WhatsAppIcon className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-slate-400">{t('المراسلة المباشرة عبر الواتساب', 'Direct WhatsApp Channel')}</div>
+                      <a
+                        href={WHATSAPP_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-emerald-400 hover:text-emerald-300 font-mono text-xs sm:text-sm font-semibold transition-colors inline-flex items-center gap-1 mt-0.5"
+                      >
+                        <span>{t('تواصل معنا عبر الواتساب', 'Chat on WhatsApp')}</span>
+                        <ArrowIcon className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </li>
+                )}
 
                 {/* Location */}
                 <li className="flex items-start gap-3.5">

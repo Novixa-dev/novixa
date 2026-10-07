@@ -7,14 +7,9 @@ import {
   CheckCircle2,
   ArrowLeft,
   ArrowRight,
-  Sparkles,
   Shield,
-  Layers,
   Server,
   Wrench,
-  Cpu,
-  Clock,
-  Zap,
 } from 'lucide-react';
 import { Language } from '@/types';
 
@@ -159,7 +154,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             <div className="p-5 rounded-2xl bg-teal-950/20 border border-teal-900/40 space-y-2">
               <span className="font-mono text-teal-400 font-bold block">{isAr ? 'الأثر التجاري والقيمة المضافة:' : 'Business Value & Impact:'}</span>
               <p className="text-slate-300 leading-relaxed">
-                {product.businessValue ? product.businessValue[isAr ? 'ar' : 'en'] : (product.metrics && product.metrics[0] ? product.metrics[0].value : '')}
+                {product.businessValue ? product.businessValue[isAr ? 'ar' : 'en'] : (product.metrics?.[0] ? product.metrics[0].value[isAr ? 'ar' : 'en'] : '')}
               </p>
             </div>
           </div>
@@ -196,12 +191,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
               {product.metrics && product.metrics.length > 0 && (
                 <div className="pt-3 border-t border-slate-800 space-y-2">
-                  <span className="text-[10px] text-slate-400 font-mono uppercase block">{isAr ? 'مؤشرات الأداء المحققة:' : 'Performance Metrics:'}</span>
+                  <span className="text-[10px] text-slate-400 font-mono uppercase block">{isAr ? 'قدرات تشغيلية بارزة:' : 'Operational highlights:'}</span>
                   <div className="grid grid-cols-1 gap-2">
                     {product.metrics.map((metric, i) => (
                       <div key={i} className="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
                         <span className="text-xs text-slate-300 font-arabic">{metric.label[isAr ? 'ar' : 'en']}</span>
-                        <span className="text-sm font-bold text-blue-400 font-display">{metric.value}</span>
+                        <span className="text-sm font-bold text-blue-400 font-display">{metric.value[isAr ? 'ar' : 'en']}</span>
                       </div>
                     ))}
                   </div>

@@ -3,11 +3,13 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { ProjectDiscoveryData } from '../../types';
-import { 
-  Sparkles, ArrowLeft, ArrowRight, CheckCircle2, Send, 
-  Building2, Layers, ShieldCheck, Clock, DollarSign
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  Send,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 
 /**
  * Every visible option pairs an Arabic label with an English one. Previously

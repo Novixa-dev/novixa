@@ -1,8 +1,7 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import { PRODUCTS } from '../../content/data';
 import {
   Activity,
@@ -14,12 +13,7 @@ import {
   CheckCircle2,
   ArrowLeft,
   ArrowRight,
-  ShieldCheck,
-  Zap,
   ArrowUpRight,
-  Server,
-  Wrench,
-  Layers,
 } from 'lucide-react';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -31,8 +25,8 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Sparkles,
 };
 
-export const ProductsView: React.FC = () => {
-  const { language, isRtl, t } = useLanguage();
+export const ProductsView = ({ lang }: { lang: Language }) => {
+  const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const getStatusBadgeClass = (status: string) => {
@@ -158,7 +152,7 @@ export const ProductsView: React.FC = () => {
                   {prod.metrics && prod.metrics.length > 0 && (
                     <div className="space-y-1 p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center">
                       <span className="text-[10px] text-slate-400 font-mono uppercase block">{prod.metrics[0].label[isRtl ? 'ar' : 'en']}</span>
-                      <span className="text-xl font-extrabold font-display text-blue-400 block">{prod.metrics[0].value}</span>
+                      <span className="text-xl font-extrabold font-display text-blue-400 block">{prod.metrics[0].value[isRtl ? 'ar' : 'en']}</span>
                     </div>
                   )}
 

@@ -6,29 +6,18 @@ import { useLanguage } from '../../context/LanguageContext';
 import {
   ArrowLeft,
   ArrowRight,
-  Shield,
   Zap,
   Layers,
   Cpu,
-  CheckCircle2,
   Database,
-  Users,
-  ShoppingCart,
-  Lock,
   Server,
   GitBranch,
-  Terminal,
-  Activity,
-  Sparkles,
   LayoutGrid,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 
 export const HeroSection: React.FC = () => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
-
-  const [activeTab, setActiveTab] = useState<'custom' | 'ready'>('custom');
   const [selectedNode, setSelectedNode] = useState<string>('gateway');
 
   const topologyNodes = [
@@ -224,7 +213,7 @@ export const HeroSection: React.FC = () => {
                     <button
                       key={node.id}
                       onClick={() => setSelectedNode(node.id)}
-                      className={`w-full p-3 rounded-xl border text-right rtl:text-right ltr:text-left transition-all duration-150 flex items-center justify-between gap-3 cursor-pointer ${
+                      className={`w-full p-3 rounded-xl border text-right rtl:text-right ltr:text-left transition-all duration-150 flex items-center justify-between gap-3 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
                         isSelected
                           ? 'bg-blue-600/15 border-blue-500/80 text-white shadow-sm'
                           : 'bg-slate-950/60 border-white/[0.05] text-slate-300 hover:bg-slate-800/60 hover:text-white'

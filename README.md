@@ -9,9 +9,10 @@ Novixa (نوڤيكسا) is a modern software engineering and digital products co
 - **Framework**: Next.js 15.5 (App Router, Static Site Generation [SSG] & Server Components)
 - **UI & Runtime**: React 19, TypeScript 5.8, Lucide React Icons, Motion (Framer Motion)
 - **Styling**: Tailwind CSS v4, Architectural Precision dark-only design system
-- **Typography**: `next/font/google` (Alexandria for display headings, IBM Plex Sans Arabic for Arabic body, Inter for English body)
-- **Email Engine**: Resend API (`resend`) via Next.js Route Handler `POST /api/contact` with XSS sanitization and fallback logging
-- **SEO & Social**: Dynamic Open Graph generation (`next/og`), JSON-LD structured organization schemas, multi-language `sitemap.xml` (65 routes), and crawler `robots.txt`
+- **Typography**: self-hosted via `next/font/local` — Alexandria (display), IBM Plex Sans Arabic (Arabic body), Inter (English body); no runtime Google Fonts request
+- **Email Engine**: Resend API via `POST /api/contact` — honeypot, in-process rate limit, HTML escaping, and a truthful `delivered` flag when no provider is configured
+- **Testing**: Vitest (96 unit tests) · Playwright + axe-core (144 browser tests across desktop, tablet and mobile) · ESLint 9 (0 errors, 0 warnings) · GitHub Actions
+- **SEO & Social**: Dynamic Open Graph generation (`next/og`), JSON-LD structured organization schemas, multi-language `sitemap.xml` (92 URLs), and crawler `robots.txt`
 - **Security**: Strict-Transport-Security (HSTS), X-Content-Type-Options, X-Frame-Options, Permissions-Policy, Referrer-Policy
 
 ---
@@ -19,15 +20,16 @@ Novixa (نوڤيكسا) is a modern software engineering and digital products co
 ## 2. Directory Structure & Architecture
 
 ```
+├── AGENTS.md                              # Decisions that must not be re-derived
 ├── DEPLOYMENT_GUIDE.md                    # Turnkey deployment operations manual
 ├── Dockerfile                             # Multi-stage production container
-├── NOVIXA_PRODUCTION_AND_DEPLOYMENT_REPORT.md # Comprehensive production audit report
-├── docs/                                  # Engineering & brand documentation
-│   ├── DESIGN_SYSTEM.md                   # Design tokens, color palette, anti-AI guidelines
-│   ├── LAUNCH_READINESS_REPORT.md         # Production readiness audit & route verification
-│   ├── LAUNCH_IMPROVEMENT_PLAN.md         # Priority task tracking (P0-P3)
-│   ├── IMPLEMENTATION_PROGRESS.md         # Milestone progress log
-│   └── DESIGN_AND_ARCHITECTURE_DECISIONS.md # Architectural decisions & rationale
+├── docs/                                  # Engineering documentation (see §6)
+│   ├── PRODUCTION_AUDIT.md                # Every defect found, its evidence, its fix
+│   ├── IMPLEMENTATION_PLAN.md             # What landed, what remains, and why
+│   ├── QA_RELEASE_CHECKLIST.md            # What is automated, what needs a person
+│   ├── AI_WORKING_RULES.md                # How work is picked up, proven, handed over
+│   ├── COMPETITIVE_BENCHMARK.md           # The reference templates, with a verdict each
+│   └── archive/                           # Superseded reports, kept for history
 ├── public/                                # Static public assets
 │   ├── icon.svg                           # Brand SVG favicon
 │   └── assets/                            # Brand assets and graphics
@@ -82,12 +84,25 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) (redirects permanently to `/ar`).
 
-### Production Validation & Build
+### Validation
+
 ```bash
-npm run typecheck    # Run TypeScript checks (0 errors)
-npm run build        # Build all 65 static pages & routes for production
-npm run start        # Start the production server locally
+npm run verify       # typecheck → lint → unit tests → build → browser tests
 ```
+
+Or individually:
+
+```bash
+npm run typecheck    # TypeScript, strict
+npm run lint         # ESLint 9 (flat config)
+npm run test         # Vitest — content integrity, URL resolution, sitemap/route drift
+npm run build        # 106 pages, 92 indexable URLs across both locales
+npm run test:e2e     # Playwright — desktop, tablet, mobile
+npm run start        # Serve the production build locally
+```
+
+`test:e2e` starts its own production server and always starts a fresh one; see
+`docs/QA_RELEASE_CHECKLIST.md` §7 for why that is not negotiable.
 
 ---
 
@@ -129,12 +144,32 @@ pm2 start npm --name "novixa-web" -- start -- -p 3000
 
 ---
 
-## 6. Documentation & Audits
+## 6. Documentation
 
-- [`NOVIXA_PRODUCTION_AND_DEPLOYMENT_REPORT.md`](./NOVIXA_PRODUCTION_AND_DEPLOYMENT_REPORT.md) — Comprehensive production readiness & security audit
-- [`DEPLOYMENT_GUIDE.md`](./DEPLOYMENT_GUIDE.md) — Production operations & deployment manual
-- [`docs/DESIGN_SYSTEM.md`](./docs/DESIGN_SYSTEM.md) — Design tokens & typography rules
-- [`docs/LAUNCH_READINESS_REPORT.md`](./docs/LAUNCH_READINESS_REPORT.md) — Route verification & checks
+Four documents are kept in step with the code. Read them in this order:
+
+- [`AGENTS.md`](./AGENTS.md) — visual identity, RTL rules and the content rules. Decisions that must not be re-derived
+- [`docs/PRODUCTION_AUDIT.md`](./docs/PRODUCTION_AUDIT.md) — current architecture, every defect found, its evidence, and what was done about it
+- [`docs/IMPLEMENTATION_PLAN.md`](./docs/IMPLEMENTATION_PLAN.md) — prioritised work, what has landed, what remains, and the reasoning behind the non-obvious calls
+- [`docs/AI_WORKING_RULES.md`](./docs/AI_WORKING_RULES.md) — how work is picked up, measured, committed and handed over, and the failure each rule came from
+
+Then, as needed:
+
+- [`docs/QA_RELEASE_CHECKLIST.md`](./docs/QA_RELEASE_CHECKLIST.md) — what is verified automatically, what needs a person, and the release gate
+- [`docs/COMPETITIVE_BENCHMARK.md`](./docs/COMPETITIVE_BENCHMARK.md) — the reference templates and themes, twenty features compared, a verdict and a reason for each
+- [`DEPLOYMENT_GUIDE.md`](./DEPLOYMENT_GUIDE.md) — deployment operations
+- [`دليل-نوڤيكسا-الكامل.md`](./دليل-نوڤيكسا-الكامل.md) — the owner's guide, in Arabic: what the site is, every page, every number, and a step-by-step self-test script
+
+The design system is **published rather than documented in markdown**: it lives
+at `/{lang}/design-system`, generated from `src/content/design-system.ts`, which
+imports the chart palette from the console's own module so the two cannot
+disagree. A `docs/DESIGN_SYSTEM.md` existed and was archived because it had gone
+stale in ways that actively misled — it described `glass-card` as carrying a
+16px backdrop blur (removed, for measured reasons) and listed an indigo accent
+that appears nowhere in the code and that `AGENTS.md` rules out.
+
+Superseded reports are in [`docs/archive/`](./docs/archive/) for history. They
+describe earlier states of the project and are not current.
 
 ---
 

@@ -43,16 +43,109 @@
     text-wrap: balance;
   }
 
-  /* Accessible high-contrast focus rings */
+  /*
+   * Focus ring.
+   *
+   * A bare 2px outline is the usual default, but on this canvas it fails in
+   * two places: on the blue primary buttons a blue outline nearly disappears
+   * into the button, and on controls whose own background is semi-transparent
+   * the outline sits directly against the content behind it.
+   *
+   * Pairing the outline with a dark offset ring gives a visible boundary on
+   * every surface the site uses — the dark ring separates the blue outline
+   * from whatever is underneath, so the indicator reads the same on a button,
+   * a card and the page background.
+   */
   *:focus-visible {
     outline: 2px solid #3b82f6;
     outline-offset: 2px;
+    box-shadow: 0 0 0 2px #020617;
+    border-radius: inherit;
   }
 
   /* Tailwind's preflight resets <button> to cursor: default; restore the
      pointer affordance every interactive button should have. */
   button:not(:disabled) {
     cursor: pointer;
+  }
+
+}
+
+
+/*
+ * Windows High Contrast / forced-colors mode.
+ *
+ * Deliberately NOT inside `@layer base`. Cascade layers outrank specificity:
+ * anything in `base` loses to Tailwind's `utilities` layer however specific
+ * it is, so the first version of this block set `color` (which Tailwind does
+ * not also set here) but silently failed to release `background-clip`.
+ * Unlayered rules beat every layer, which is why the override lives here.
+ * The browser test asserts both halves, and is what caught the first attempt.
+ *
+ * Why it matters: the hero headline paints its second line by clipping a
+ * gradient to the glyphs (`color: transparent` + `background-clip: text`).
+ * Forced-colors discards background images — including that gradient — and
+ * the headline is the first thing the page says. Restoring `CanvasText` and
+ * releasing the clip paints it in the user's own chosen foreground colour,
+ * which is the point of the mode.
+ *
+ * Written against the pattern rather than the one element, so future gradient
+ * text is covered without anyone having to remember this.
+ */
+@media (forced-colors: active) {
+  .bg-clip-text {
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    background-image: none;
+    color: CanvasText;
+  }
+
+  /* The focus ring's box-shadow is dropped in forced-colors mode, so the
+     outline has to carry the indicator by itself. */
+  *:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
+/*
+ * Off-screen section layout deferral.
+ *
+ * The homepage's LCP element is its H1, and the H1 is in the HTML at ~18 ms
+ * (time to first byte). It nevertheless took 1275 ms to paint, because the
+ * browser lays out all twelve sections below it before it produces a frame —
+ * Style & Layout was 1040 ms of main-thread work, the single largest entry.
+ * Removing script did not help this (see IMPLEMENTATION_PLAN.md R5); the cost
+ * is layout, so the fix has to be layout.
+ *
+ * `content-visibility: auto` lets the browser skip layout and paint for a
+ * subtree that is far enough off-screen, and do it later when the user scrolls
+ * towards it. It is not `display: none`: the content stays in the accessibility
+ * tree, stays findable by in-page search, and is still rendered for print (the
+ * rule below is belt-and-braces for that). The browser also renders anything
+ * near the viewport regardless, so applying it from the second section down
+ * cannot blank something the visitor can actually see.
+ *
+ * `contain-intrinsic-size: auto 720px` supplies a placeholder height so the
+ * scrollbar is approximately right before anything is laid out, and `auto`
+ * tells the browser to remember each section's real height once measured, so a
+ * section is only ever estimated once.
+ *
+ * Applied through a wrapper in the homepage route rather than to the section
+ * components themselves — those sections are reused on pages that render two or
+ * three of them, where there is nothing off-screen to defer. The wrapper's box
+ * is the section's box, and every one of these sections already carries
+ * `overflow-hidden`, so the paint containment this implies clips nothing that
+ * was not already clipped.
+ */
+.defer-offscreen {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}
+
+@media print {
+  .defer-offscreen {
+    content-visibility: visible;
   }
 }
 

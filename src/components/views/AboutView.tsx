@@ -1,26 +1,15 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import { FounderSection } from '../sections/FounderSection';
 import {
-  ShieldCheck,
-  Code2,
-  Zap,
-  Globe,
   ArrowLeft,
   ArrowRight,
-  CheckCircle2,
-  Layers,
-  Lock,
-  Cpu,
-  Workflow,
-  Server,
 } from 'lucide-react';
 
-export const AboutView: React.FC = () => {
-  const { language, isRtl, t } = useLanguage();
+export const AboutView = ({ lang }: { lang: Language }) => {
+  const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const values = [
@@ -109,7 +98,7 @@ export const AboutView: React.FC = () => {
                   <div className="w-8 h-8 rounded-lg bg-blue-950 border border-blue-800 text-blue-400 flex items-center justify-center font-bold text-xs font-mono">
                     {stg.number}
                   </div>
-                  <span className="text-[10px] font-mono text-slate-500">STAGE {stg.number}</span>
+                  <span className="text-[10px] font-mono text-slate-400">STAGE {stg.number}</span>
                 </div>
                 <h3 className="text-base font-bold font-display text-white">{t(stg.titleAr, stg.titleEn)}</h3>
                 <p className="text-xs text-slate-300 font-arabic leading-relaxed">{t(stg.descAr, stg.descEn)}</p>
@@ -119,7 +108,7 @@ export const AboutView: React.FC = () => {
         </div>
 
         {/* Founding Philosophy & Quote Section */}
-        <FounderSection />
+        <FounderSection lang={lang} />
 
         {/* Core Values Grid */}
         <div className="space-y-6">

@@ -1,11 +1,10 @@
-'use client';
-
 import React from 'react';
-import { useLanguage } from '../../context/LanguageContext';
+import { createTranslator } from '@/lib/i18n';
+import type { Language } from '@/types';
 import { Target, Compass, Layers, ShieldCheck, HeartHandshake, Code2, CheckCircle2 } from 'lucide-react';
 
-export const WhyNovixaSection: React.FC = () => {
-  const { t } = useLanguage();
+export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
+  const { t } = createTranslator(lang);
 
   const differentiators = [
     {

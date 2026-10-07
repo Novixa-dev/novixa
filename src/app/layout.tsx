@@ -11,20 +11,17 @@ export const metadata: Metadata = {
     template: '%s | Novixa',
   },
   icons: {
+    // `favicon.ico` first for the browsers and crawlers that still request
+    // `/favicon.ico` by convention and ignore the declared SVG; the SVG then
+    // wins wherever it is supported, since it stays crisp at any density.
     icon: [
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
+      { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
     ],
-    apple: [
-      {
-        url: '/apple-icon',
-        sizes: '180x180',
-        type: 'image/png',
-      },
-    ],
+    apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
+  manifest: '/manifest.webmanifest',
 };
 
 // Matches the site's dark-only canvas: themeColor tints the mobile browser

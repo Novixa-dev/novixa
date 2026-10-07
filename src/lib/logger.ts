@@ -5,7 +5,13 @@
  */
 
 export interface LogContext {
-  [key: string]: any;
+  /**
+   * React's component stack, threaded through from an error boundary.
+   * Declared explicitly because `ErrorLogPayload.componentStack` is a
+   * `string`, which the open-ended index signature below cannot narrow to.
+   */
+  componentStack?: string;
+  [key: string]: unknown;
 }
 
 export interface ErrorLogPayload {
