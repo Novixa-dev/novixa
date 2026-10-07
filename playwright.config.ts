@@ -98,6 +98,14 @@ export default defineConfig({
     timeout: 120_000,
     env: {
       NEXT_PUBLIC_SITE_URL: baseURL,
+      // Admin under test. These credentials exist only for this suite and only
+      // ever reach a server bound to 127.0.0.1; the password is in the spec
+      // that uses it. Never reuse them anywhere real.
+      LEADS_STORE: 'memory',
+      ADMIN_EMAIL: 'e2e-admin@novixa.test',
+      ADMIN_PASSWORD_HASH: 'scrypt$16384$8$1$FBYbQLp8c5Z6sh8IyfLxYA==$XRDh1iD9VkqP25YnQ5MIn42+G5Q6LAbgLe59rSSl4P1VhkKg6D1XNfwumnvo5PuoO71Q6+agZ6CFglqUhdV/3Q==',
+      ADMIN_SESSION_SECRET: 'e2e-session-secret-that-is-at-least-32-chars',
+      ADMIN_COOKIE_SECURE: 'false',
     },
   },
 });

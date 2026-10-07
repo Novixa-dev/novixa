@@ -22,9 +22,11 @@
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
     "next": "^15.5.4",
+    "pg": "^8.23.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "resend": "^6.19.0"
+    "resend": "^6.19.0",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
@@ -32,6 +34,7 @@
     "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "^4.1.14",
     "@types/node": "^22.14.0",
+    "@types/pg": "^8.23.1",
     "@types/pngjs": "^6.0.5",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
