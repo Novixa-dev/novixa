@@ -159,6 +159,7 @@ Then, as needed:
 
 - [`docs/QA_RELEASE_CHECKLIST.md`](./docs/QA_RELEASE_CHECKLIST.md) — what is verified automatically, what needs a person, and the release gate
 - [`docs/COMPETITIVE_BENCHMARK.md`](./docs/COMPETITIVE_BENCHMARK.md) — the reference templates and themes, twenty features compared, a verdict and a reason for each
+- [`docs/OWNER_OPERATIONS_GUIDE.md`](./docs/OWNER_OPERATIONS_GUIDE.md) — **the owner's handbook, in Arabic**: the live URLs, how to test the site, how to sign in to the admin and test it, how to read and connect every `@novixa.dev` mailbox, and day-to-day operations. Holds no passwords, only where they live and how to reset them
 - [`DEPLOYMENT_GUIDE.md`](./DEPLOYMENT_GUIDE.md) — deployment operations
 - [`دليل-نوڤيكسا-الكامل.md`](./دليل-نوڤيكسا-الكامل.md) — the owner's guide, in Arabic: what the site is, every page, every number, and a step-by-step self-test script
 

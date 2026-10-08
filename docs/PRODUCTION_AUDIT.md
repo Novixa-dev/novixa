@@ -452,6 +452,37 @@ The workflow built the image reference from `github.repository`, which keeps the
 *Fix:* Actions expressions have no lower-case function, so a shell step computes `ghcr.io/${GITHUB_REPOSITORY,,}` once, in the build job. The deploy job takes the same value from that job's outputs, so the two cannot disagree. `tests/deploy-workflow.test.ts` fails if the raw repository name is interpolated into an image reference again.
 *Checked:* a search of `.github/` and `deploy/` for any other hand-built image reference found none. The server-side scripts receive the image name as an argument and never build it.
 
+### P1-13 · The live site presented invented operational figures and compliance claims — FIXED
+
+A review of the site after it went live found claims no evidence supports, in the places visitors read last. `AI_WORKING_RULES.md` §1 forbids "security guarantees, SLAs, or deployment counts"; these were all of them:
+
+| Where | Claim | Reality |
+|---|---|---|
+| Nav bar, hero, footer (every page), team page | "SLA 99.99%", "99.99% Availability SLA", "Cloud SLA Uptime" | One VPS, no redundancy, live for hours |
+| Nav bar "Edge Telemetry & Region Health" dialog | Riyadh `me-central1` 12 ms, Dubai 16 ms, Jeddah 14 ms, Frankfurt 32 ms; "90d Uptime 99.99%"; "0 incidents"; "Live latency and availability telemetry" | None measured; none of those datacentres is used |
+| Same dialog, footer, About page | "sovereign GCC data residency", "full compliance with local regulatory governance" | Hosted in the EU on one VPS |
+| Footer, About, team page | "AES-256 for data at rest", "Zero-trust architecture", "Bank-grade encryption" | No at-rest encryption is configured by us |
+| Hero panel | A green pulsing "OPERATIONAL" chip on a diagram | A diagram, not a feed |
+| Team page | "GCC-Based Engineering Teams" | The mail server's timezone is `Asia/Aden` |
+| Team governance steps | "100% Spec-First", "P99 < 35ms", "10,000 RPS stress tests", "Zero Critical Vulns", SAST on every commit | No such measurements or tooling |
+| Insights articles | An example ADR stamped "ACCEPTED / PRODUCTION READY" and "Verified GCC Sovereign Architecture Pattern" | An illustrative example presented as certified |
+
+*Fix:* the dialog is replaced by a real **System status** dialog (`SystemStatusDialog`, `src/lib/system-status.ts`) that runs `/api/health` from the visitor's browser and shows only what it returns plus the measured round trip, and says it keeps no uptime history. Every other claim is replaced by something that is true of this deployment (data stored on our own server; HTTPS with HSTS; nightly backups; a health check and automatic rollback on every release; checks on every change) or removed. The hero's first figure is now the service-catalogue count, passed from the page so it cannot drift. The hero diagram is labelled "illustrative". `tests/claims-integrity.test.ts` scans every source file a visitor can reach for each pattern above and fails the build if one returns; `e2e/system-status.spec.ts` asserts the dialog reports a degraded or unreachable health check honestly and shows no invented figure.
+*Not changed, left to the owner:* "5–14 days", "100% code and data ownership" and the NDA badge are contractual commitments, and the maintenance tier lists an "Uptime SLA Commitment". Those are the owner's terms to confirm, and the SLA needs a real number before anyone is promised it.
+*Found by:* reading the live page against what the server actually is, then a source-wide search for each phrase; the first draft of the guard test found three more places the first pass had missed.
+
+### P2-16 · The Arabic acknowledgement email lost 1.3 points on two spam rules — FIXED
+
+mail-tester.com scored the first live message **8.3/10** with SPF, DKIM and DMARC passing. SpamAssassin deducted 0.50 for `SUBJ_ALL_CAPS` and 0.79 for `UPPERCASE_50_75`: Arabic has no case, so a mostly-Arabic message is judged by its few Latin tokens (the receipt id and the NOVIXA wordmark), all capitals. *Evidence:* uppercase share of the visible text was 100% on the old template. *Fix:* the subject carries the brand in mixed case and the footer shows the site and the contact address; the share is now 38% (HTML) and 21% (plain text). A third deduction, `FROM_FMBLA_NEWDOM` (−0.56, "domain registered in the last 7 days"), cannot be fixed in code and lapses by itself. `tests/acknowledgement.test.ts` pins both properties. The wording moved from the route handler into `src/lib/acknowledgement.ts` so it can be tested.
+
+### P2-17 · Four pages had no h1 or skipped a heading level — FIXED
+
+`/start-project` had no h1 (its title was an h2, its steps h3); `/work`, `/industries` and `/insights` went from h1 straight to h3 because their sections hide their own header and left the cards at h3. The existing heading test covered five hand-picked pages. *Fix:* the wizard's title is the h1 and its steps are h2; the three sections render cards as h2 when their header is hidden. `e2e/accessibility.spec.ts` now also checks **every sitemap URL in both languages** from the server-rendered HTML.
+
+### P2-18 · Two small hardening leftovers — FIXED
+
+`X-Powered-By: Next.js` was sent on every response (now off), and the image allow-list still named a random-face avatar service (`i.pravatar.cc`) left over from the template while the site shows no such images (removed).
+
 ### P3-4 · PostCSS advisory inside Next.js — ACCEPTED
 
 Next.js 15.5.27 vendors PostCSS 8.4.x, which carries an XSS advisory (unescaped `</style>` in stringified CSS) and several source-map path traversal advisories. The only fix `npm audit` offers is Next.js 16 (P3-3). PostCSS runs here only at build time, over this repository's own stylesheets: no visitor-supplied CSS is ever parsed. Re-check when moving to Next.js 16.
