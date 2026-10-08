@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Mail, Database, GitCommit, Clock } from 'lucide-react';
 import { requireAdmin } from '@/lib/auth/admin';
 import { getLeadStore, LEAD_SOURCES, LEAD_STATUSES } from '@/lib/leads';
-import { getServerEnv } from '@/lib/env';
+import { getMailer } from '@/lib/mail';
 import { AdminShell } from '@/components/admin/AdminShell';
 import { BarList, DailyChart, KpiTile } from '@/components/admin/charts';
 import { StatusBadge } from '@/components/admin/StatusBadge';
@@ -16,7 +16,7 @@ export default async function AdminOverviewPage() {
   const [stats, recent, health] = store
     ? await Promise.all([store.stats(), store.list({ limit: 6, offset: 0 }), store.health()])
     : [null, null, { ok: false, detail: t('غير مضبوطة', 'not configured') }];
-  const env = getServerEnv();
+  const mailer = getMailer();
   const build = process.env.NEXT_PUBLIC_BUILD_SHA || process.env.BUILD_SHA || '';
 
   return (
@@ -96,8 +96,10 @@ export default async function AdminOverviewPage() {
             <Mail className="mt-0.5 h-4 w-4 text-slate-400" aria-hidden="true" />
             <div>
               <dt className="text-xs text-slate-400">{t('البريد', 'Email')}</dt>
-              <dd className={env.resendApiKey ? 'text-emerald-300' : 'text-amber-300'}>
-                {env.resendApiKey ? t('مضبوط', 'Configured') : t('غير مضبوط — الطلبات تُحفظ ولا تُرسل', 'Not configured — leads are stored, not emailed')}
+              <dd className={mailer ? 'text-emerald-300' : 'text-amber-300'}>
+                {mailer
+                  ? <>{t('مضبوط', 'Configured')} <span className="text-xs text-slate-400" translate="no">({mailer.kind === 'smtp' ? 'SMTP' : 'Resend'} · {mailer.from})</span></>
+                  : t('غير مضبوط — الطلبات تُحفظ ولا تُرسل', 'Not configured — leads are stored, not emailed')}
               </dd>
             </div>
           </div>

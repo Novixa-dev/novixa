@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
 import { getServerEnv, getSiteUrl } from '@/lib/env';
 import { getLeadStore, isLeadSource, type Lead } from '@/lib/leads';
+import { getMailer, type Mailer } from '@/lib/mail';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -218,30 +218,29 @@ export async function POST(request: NextRequest) {
     ...(adminLink ? [`Admin: ${adminLink}`] : []),
   ].join('\n');
 
-  if (!env.resendApiKey) {
+  const mailer = getMailer();
+  if (!mailer) {
     // No email provider configured (local development, or a deployment where
     // only the database is set up). The lead is stored if a store exists; say
     // plainly that no email went out.
     console.warn(
-      `[contact] RESEND_API_KEY not set — ${stored ? 'stored' : 'logged'} submission ${receiptId}, no email sent.`,
+      `[contact] no mail transport configured — ${stored ? 'stored' : 'logged'} submission ${receiptId}, no email sent.`,
       stored ? { receiptId } : { receiptId, name, email, company }
     );
     return NextResponse.json({ success: true, receiptId, delivered: false, stored });
   }
 
   try {
-    const resend = new Resend(env.resendApiKey);
-    const { error } = await resend.emails.send({
-      from: env.resendFromEmail,
-      to: [env.novixaContactEmail],
-      replyTo: email,
-      subject: `New project inquiry — ${name}${company ? ` (${company})` : ''}`,
-      html,
-      text,
-    });
-
-    if (error) {
-      console.error('[contact] Resend error:', error);
+    try {
+      await mailer.send({
+        to: env.novixaContactEmail,
+        replyTo: email,
+        subject: `New project inquiry — ${name}${company ? ` (${company})` : ''}`,
+        html,
+        text,
+      });
+    } catch (error) {
+      console.error(`[contact] ${mailer.kind} send failed:`, error);
       // Stored but not emailed: the enquiry is safe and visible in the admin, so
       // the visitor's request genuinely was received. Without a store this is
       // still the failure it always was.
@@ -258,7 +257,7 @@ export async function POST(request: NextRequest) {
 
     // Acknowledgement to the person who filled the form. A failure here must
     // not fail the request — the inquiry itself already reached Novixa.
-    void sendAcknowledgement({ resend, env, to: email, name, lang, receiptId }).catch((err) =>
+    void sendAcknowledgement({ mailer, env, to: email, name, lang, receiptId }).catch((err) =>
       console.error('[contact] acknowledgement send failed:', err)
     );
 
@@ -274,14 +273,14 @@ export async function POST(request: NextRequest) {
 }
 
 async function sendAcknowledgement({
-  resend,
+  mailer,
   env,
   to,
   name,
   lang,
   receiptId,
 }: {
-  resend: Resend;
+  mailer: Mailer;
   env: ReturnType<typeof getServerEnv>;
   to: string;
   name: string;
@@ -300,9 +299,8 @@ async function sendAcknowledgement({
   const cta = isAr ? 'تصفّح حلول نوڤيكسا' : 'Browse Novixa solutions';
   const refLabel = isAr ? 'رقم الطلب' : 'Reference';
 
-  await resend.emails.send({
-    from: env.resendFromEmail,
-    to: [to],
+  await mailer.send({
+    to,
     replyTo: env.novixaContactEmail,
     subject,
     text: `${heading}\n\n${body}\n\n${refLabel}: ${receiptId}\n${siteUrl}/${lang}`,
