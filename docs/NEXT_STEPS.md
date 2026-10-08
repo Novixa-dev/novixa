@@ -217,6 +217,8 @@ Once deploys are working, delete `~/novixa-secrets/deploy_key`. GitHub holds the
 
 ### Step 7 — First deploy
 
+> **IN PROGRESS 2026-10-08.** Step 6 is complete (10 secrets in the `production` environment, 6 repository variables) and `DEPLOY_ENABLED=true`. The first dispatch (run 37834549266) failed in the image job, before reaching the server, with `invalid tag "ghcr.io/Novixa-dev/novixa:…": repository name must be lowercase`: the workflow used `github.repository`, and this organisation has a capital N. Fixed at the root (the name is lower-cased once in the build job and handed to the deploy job) with a regression test; see `docs/PRODUCTION_AUDIT.md` P2-15. The workflow runs from `main` only, so the fix has to be merged before the next attempt.
+
 ```bash
 gh variable set DEPLOY_ENABLED --repo $R --body true
 gh workflow run deploy.yml --repo $R --ref main
