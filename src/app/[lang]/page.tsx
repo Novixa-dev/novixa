@@ -1,6 +1,7 @@
 import React from 'react';
 import { constructMetadata, generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/lib/metadata';
 import { HeroSection } from '@/components/sections/HeroSection';
+import { servicesCatalog } from '@/lib/content';
 import { DualEngineSection } from '@/components/sections/DualEngineSection';
 import { ProblemTransformation } from '@/components/sections/ProblemTransformation';
 import { ServicesSummarySection } from '@/components/sections/ServicesSummarySection';
@@ -49,7 +50,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       />
       
       {/* 1. Hero: What Novixa is + Value Proposition + Dual CTAs */}
-      <HeroSection />
+      <HeroSection servicesCount={servicesCatalog.length} />
 
       {/* 2. Dual Engine: Custom Engineering vs Ready Turnkey Solutions */}
       <div className="defer-offscreen">
