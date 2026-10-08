@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerEnv, getSiteUrl } from '@/lib/env';
 import { getLeadStore, isLeadSource, type Lead } from '@/lib/leads';
 import { getMailer, type Mailer } from '@/lib/mail';
+import { buildAcknowledgement } from '@/lib/acknowledgement';
+import { escapeHtml } from '@/lib/html';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -56,15 +58,6 @@ function clientKey(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
   const first = forwarded ? forwarded.split(',')[0].trim() : '';
   return first || request.headers.get('x-real-ip') || 'unknown';
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
 }
 
 function clean(value: unknown): string {
@@ -287,35 +280,13 @@ async function sendAcknowledgement({
   lang: 'ar' | 'en';
   receiptId: string;
 }) {
-  const isAr = lang === 'ar';
-  const siteUrl = getSiteUrl();
-  const subject = isAr
-    ? `استلمنا طلبك — نوڤيكسا (${receiptId})`
-    : `We received your request — Novixa (${receiptId})`;
-  const heading = isAr ? `شكراً لك، ${name}` : `Thank you, ${name}`;
-  const body = isAr
-    ? 'وصلنا طلبك وسيراجعه أحد مهندسينا. سنعود إليك على هذا البريد خلال يوم عمل واحد. إن كان لديك أي تفاصيل إضافية، يمكنك الرد على هذه الرسالة مباشرة.'
-    : 'Your request reached us and one of our engineers will review it. We will reply to this address within one business day. If you have anything to add, just reply to this email.';
-  const cta = isAr ? 'تصفّح حلول نوڤيكسا' : 'Browse Novixa solutions';
-  const refLabel = isAr ? 'رقم الطلب' : 'Reference';
-
-  await mailer.send({
-    to,
-    replyTo: env.novixaContactEmail,
-    subject,
-    text: `${heading}\n\n${body}\n\n${refLabel}: ${receiptId}\n${siteUrl}/${lang}`,
-    html: `
-      <div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0f172a;padding:32px;" dir="${isAr ? 'rtl' : 'ltr'}">
-        <div style="max-width:520px;margin:0 auto;background:#0b1120;border:1px solid #1e293b;border-radius:16px;padding:28px;text-align:${isAr ? 'right' : 'left'};">
-          <div style="font-size:13px;letter-spacing:0.08em;color:#2563eb;font-weight:700;">NOVIXA</div>
-          <h1 style="color:#fff;font-size:20px;margin:12px 0;">${escapeHtml(heading)}</h1>
-          <p style="color:#cbd5e1;font-size:14px;line-height:1.7;margin:0 0 20px;">${escapeHtml(body)}</p>
-          <a href="${siteUrl}/${lang}/solutions" style="display:inline-block;background:#2563eb;color:#fff;font-size:13px;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:10px;">${escapeHtml(cta)}</a>
-          <div style="margin-top:22px;padding-top:16px;border-top:1px dashed #1e293b;color:#475569;font-size:11px;">
-            ${refLabel}: ${receiptId}
-          </div>
-        </div>
-      </div>
-    `,
+  const { subject, text, html } = buildAcknowledgement({
+    name,
+    lang,
+    receiptId,
+    siteUrl: getSiteUrl(),
+    contactEmail: env.novixaContactEmail,
   });
+
+  await mailer.send({ to, replyTo: env.novixaContactEmail, subject, text, html });
 }
