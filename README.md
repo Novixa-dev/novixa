@@ -11,7 +11,7 @@ Novixa (نوڤيكسا) is a modern software engineering and digital products co
 - **Styling**: Tailwind CSS v4, Architectural Precision dark-only design system
 - **Typography**: self-hosted via `next/font/local` — Alexandria (display), IBM Plex Sans Arabic (Arabic body), Inter (English body); no runtime Google Fonts request
 - **Email Engine**: Resend API via `POST /api/contact` — honeypot, in-process rate limit, HTML escaping, and a truthful `delivered` flag when no provider is configured
-- **Testing**: Vitest (96 unit tests) · Playwright + axe-core (144 browser tests across desktop, tablet and mobile) · ESLint 9 (0 errors, 0 warnings) · GitHub Actions
+- **Testing**: Vitest (124 unit + 8 PostgreSQL integration tests) · Playwright + axe-core (171 browser tests across desktop, tablet and mobile) · ESLint 9 (0 errors, 0 warnings) · GitHub Actions
 - **SEO & Social**: Dynamic Open Graph generation (`next/og`), JSON-LD structured organization schemas, multi-language `sitemap.xml` (92 URLs), and crawler `robots.txt`
 - **Security**: Strict-Transport-Security (HSTS), X-Content-Type-Options, X-Frame-Options, Permissions-Policy, Referrer-Policy
 
@@ -110,12 +110,14 @@ npm run start        # Serve the production build locally
 
 Create `.env.local` for local development (see `.env.example`):
 ```env
-NEXT_PUBLIC_SITE_URL=https://novixa.dev
-RESEND_API_KEY=re_your_resend_api_key_here
-RESEND_FROM_EMAIL=notifications@novixa.dev
-NOVIXA_CONTACT_EMAIL=hello@novixa.dev
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+LEADS_STORE=memory                 # or DATABASE_URL=postgres://…
+ADMIN_EMAIL=you@example.com
+ADMIN_PASSWORD_HASH=…              # node scripts/hash-password.mjs
+ADMIN_SESSION_SECRET=…             # openssl rand -hex 32
+ADMIN_COOKIE_SECURE=false          # plain http on localhost only
 ```
-*Note: If `RESEND_API_KEY` is omitted in development, contact submissions will be safely logged to the console without breaking runtime flows.*
+*With no mail transport (`SMTP_*` or `RESEND_API_KEY`), enquiries are stored and logged, and the API answers `delivered: false` rather than pretending an email went out. The admin lives at `/admin`.*
 
 ---
 
@@ -123,23 +125,21 @@ NOVIXA_CONTACT_EMAIL=hello@novixa.dev
 
 Refer to [`DEPLOYMENT_GUIDE.md`](./DEPLOYMENT_GUIDE.md) for step-by-step instructions.
 
-### Option A: Vercel (Recommended)
-1. Import repository into Vercel.
-2. Preset: **Next.js**.
-3. Add Environment Variables (`NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY`, etc.).
-4. Click **Deploy**.
+### Production: the VPS at novixa.dev (automated)
+Docker (app + PostgreSQL) next to the mailcow server, behind Cloudflare. Every push
+to `main` that passes CI is built into an image, pushed to GHCR and rolled out over
+SSH with a database backup, health-gated start and automatic rollback.
+One-time setup and day-to-day operations: [`deploy/README.md`](./deploy/README.md).
 
-### Option B: Docker Container
-```bash
-docker build -t novixa-web:latest .
-docker run -d --name novixa-app -p 3000:3000 --env-file .env.local novixa-web:latest
-```
+### Vercel / Railway (previews)
+Import the repository, set `NEXT_PUBLIC_SITE_URL` and the variables in
+`.env.example`, deploy. Without `DATABASE_URL` the forms still email but do not
+store leads.
 
-### Option C: Linux VPS (PM2 & Nginx)
+### Any Docker host
 ```bash
-npm ci
-npm run build
-pm2 start npm --name "novixa-web" -- start -- -p 3000
+docker build --build-arg NEXT_PUBLIC_SITE_URL=https://your-domain.example -t novixa-web .
+docker run -d -p 3000:3000 --env-file .env.local novixa-web
 ```
 
 ---

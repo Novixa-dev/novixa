@@ -4,7 +4,12 @@ How to run the site in production on each supported target, which variables it
 needs and when, and how to confirm a deployment is actually correct. For what to
 check after a release, see `docs/QA_RELEASE_CHECKLIST.md` §9.
 
-**Last updated:** 2026-10-06
+**Last updated:** 2026-10-08
+
+**Production is the VPS at `novixa.dev`** — Docker + PostgreSQL alongside the
+mailcow instance on the same server, deployed by GitHub Actions after CI passes.
+Its full runbook is **`deploy/README.md`**. Vercel and Railway below remain
+valid preview/secondary targets.
 
 ---
 
@@ -32,9 +37,12 @@ afterwards needs a rebuild/redeploy, not a restart.
 | Variable | Needed | When it is read | Effect if missing |
 |---|---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | **Yes** | Build | Falls back to the platform hostname (Vercel production URL, then `RAILWAY_PUBLIC_DOMAIN`), then `http://localhost:3000` |
-| `RESEND_API_KEY` | For the forms | Runtime | The contact API logs the submission and returns `delivered: false` — truthfully, so the visitor sees a failure, not a fake success |
-| `RESEND_FROM_EMAIL` | For the forms | Runtime | Sending fails. Must be an address on a domain verified in Resend |
-| `NOVIXA_CONTACT_EMAIL` | Recommended | Runtime | Enquiries go to the code's default address, which is not confirmed to be a working mailbox |
+| `DATABASE_URL` | **Yes** (production) | Runtime | Enquiries are not stored and `/admin` shows a warning; the form still emails as before |
+| `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET` | For `/admin` | Runtime | Every admin login is refused |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` | For email (option a) | Runtime | — |
+| `RESEND_API_KEY` | For email (option b, wins if both are set) | Runtime | With neither transport, the lead is stored and the API returns `delivered: false` — truthfully |
+| `MAIL_FROM` (or legacy `RESEND_FROM_EMAIL`) | For email | Runtime | Sending fails or is rejected. Must be an address the transport may send as |
+| `NOVIXA_CONTACT_EMAIL` | Recommended | Runtime | Enquiries go to `hello@novixa.dev` |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | No | Build | The WhatsApp channel is hidden. Deliberate: no placeholder number ships |
 | `NEXT_PUBLIC_VITALS_ENDPOINT` | No | Build | Real-visitor Core Web Vitals are collected and not sent anywhere |
 
@@ -131,6 +139,10 @@ directory — `/og` went from 500 to `200 image/png`.
 
 ## 6. A plain VPS (Node 22 + a reverse proxy)
 
+> For novixa.dev itself use `deploy/README.md` (Docker, PostgreSQL, mailcow,
+> CI deploys, backups, rollback). This section is the minimal manual route for
+> some other host.
+
 ```bash
 git clone https://github.com/Novixa-dev/novixa.git && cd novixa
 npm ci
@@ -139,7 +151,10 @@ PORT=3000 npm start          # or run it under pm2 / systemd
 ```
 
 Put a reverse proxy with TLS (nginx + Let's Encrypt, or Caddy) in front of
-`127.0.0.1:3000`, forwarding `Host` and `X-Forwarded-Proto`. The app already sends
+`127.0.0.1:3000`, forwarding `Host` and `X-Forwarded-Proto`, and **overwriting** `X-Forwarded-For`
+with the client address (`proxy_set_header X-Forwarded-For $remote_addr;`) — the
+form and login rate limits key on its first entry, so a proxy that appends lets a
+client choose its own key. The app already sends
 HSTS, `nosniff`, frame-options, referrer and permissions policies — the proxy
 does not need to add them.
 
@@ -158,6 +173,7 @@ Run these against the deployed URL, from a machine with normal internet access:
 | Open the `og:image` URL | A PNG, not an error |
 | `<url>/sitemap.xml`, `<url>/robots.txt` | This origin throughout |
 | Response headers on `/ar` | `strict-transport-security`, `x-content-type-options`, `x-frame-options` |
-| Submit the contact form | An email arrives at `NOVIXA_CONTACT_EMAIL` |
+| `<url>/api/health` | `{"status":"ok", "version":"<commit>", "database":"ok", …}` |
+| Submit the contact form | It appears in `/admin/leads`, and an email arrives at `NOVIXA_CONTACT_EMAIL` |
 
 The full release gate is `docs/QA_RELEASE_CHECKLIST.md`.

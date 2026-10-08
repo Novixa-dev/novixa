@@ -22,9 +22,9 @@ starts a fresh one — see §7.
 |---|---|---|
 | Types | `npm run typecheck` | ✅ clean |
 | Lint | `npm run lint` | ✅ 0 errors, 0 warnings |
-| Unit | `npm run test` | ✅ 96 passed |
+| Unit | `npm run test` | ✅ 124 passed (+8 PostgreSQL integration in CI) |
 | Build | `npm run build` | ✅ 104 pages, 92 indexable URLs |
-| Browser | `npm run test:e2e` | ✅ 144 passed (desktop · tablet · mobile) |
+| Browser | `npm run test:e2e` | ✅ 171 passed (desktop · tablet · mobile) |
 
 ---
 
@@ -108,13 +108,16 @@ SoftwareApplication · Article · ContactPage · FAQPage · ItemList.
 |---|---|
 | ✅ Production build succeeds | |
 | ⚠️ `NEXT_PUBLIC_SITE_URL` set in Vercel | **Required.** Canonical, hreflang, sitemap and OG are baked at build time; only this variable survives a domain change |
-| ⚠️ `RESEND_API_KEY` + `RESEND_FROM_EMAIL` | Without them the API logs and returns `delivered: false`. From-address must be on a domain verified in Resend |
+| ⚠️ Mail transport (`SMTP_*` via mailcow, or `RESEND_API_KEY`) + `MAIL_FROM` | Without one the lead is stored and the API returns `delivered: false`. SMTP path rehearsed with STARTTLS + auth — `deploy/README.md` |
+| ✅ Leads stored in PostgreSQL before any email | Integration suite runs against a real PostgreSQL in CI |
+| ✅ VPS pipeline rehearsed end to end | Setup, deploy, rollback on a broken release, bad-certificate rejection, mailcow survival with the app down, backup/restore — against a mailcow stand-in, 2026-10-07 (`deploy/README.md` § Rehearsal record) |
+| 👤 VPS one-time setup + GitHub `production` secrets + `DEPLOY_ENABLED` | `deploy/README.md` §1–5 — needs the server, Cloudflare and GitHub settings |
 | ⚠️ `NEXT_PUBLIC_WHATSAPP_NUMBER` | Channel stays hidden until set — correct, but the channel is absent |
 | 👤 `NEXT_PUBLIC_VITALS_ENDPOINT` | Optional. Field Core Web Vitals report nowhere until a destination is chosen |
 | ✅ **Vercel can deploy** | Resolved 2026-10-06 by making the repository public. Status `success`, preview built and Ready |
 | ✅ GitHub Actions executing | Green on every push since, browser suite included |
 | ✅ Preview QA | Run 2026-10-06 through Vercel's authenticated bypass: canonical/hreflang/og:url on the production host, `og:image` present, `/og` → `200 image/png`, unknown page → 404 + noindex, robots names an absolute sitemap, security headers present, preview sends `x-robots-tag: noindex` |
-| ⚠️ Production still serves the dead-origin canonical | `main` points canonical at `https://novixa.dev/ar` (404) and has no `og:image`. Fixed by merging PR #1 |
+| ✅ Dead-origin canonical | Fixed by PR #1 (merged 2026-10-07) |
 | ⚠️ Railway | Project, service, domain and variables ready; waiting on the GitHub app being granted `Novixa-dev` — `DEPLOYMENT_GUIDE.md` §4 |
 | ✅ Container image serves social cards | `/og` was a 500 in any Docker deployment (font not in the image); standalone output fixes it — `PRODUCTION_AUDIT.md` P1-10 |
 | ✅ Security headers | HSTS, nosniff, frame options, referrer policy, permissions policy |
@@ -161,9 +164,10 @@ is a person's to run, not a gap in the automated suite.
 3. Fetch the `og:image` URL directly — it must return a PNG, not an error.
 4. Paste the live URL into a social debugger and confirm the card renders.
 5. `/sitemap.xml` and `/robots.txt` must carry the live domain.
-6. Submit a real enquiry through the form and confirm it arrives.
-7. Re-run Lighthouse against the live URL, not localhost.
-8. Open `/ar` and `/en` on a real phone — Arabic rendering and tap targets.
+6. Submit a real enquiry through the form: it must appear in `/admin/leads` and arrive by email.
+7. `/api/health` reports `"status":"ok"`, `"database":"ok"` and the deployed commit as `version`.
+8. Re-run Lighthouse against the live URL, not localhost.
+9. Open `/ar` and `/en` on a real phone — Arabic rendering and tap targets.
 
 ---
 
