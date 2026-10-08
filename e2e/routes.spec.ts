@@ -58,4 +58,13 @@ test.describe('routing', () => {
     expect([301, 308]).toContain(response.status());
     expect(response.headers()['location']).toContain('/ar');
   });
+
+  test('the health endpoint reports readiness without leaking detail', async ({ request }) => {
+    const response = await request.get('/api/health');
+    expect(response.status()).toBe(200);
+    expect(response.headers()['cache-control']).toContain('no-store');
+    const body = await response.json();
+    expect(body).toMatchObject({ status: 'ok', store: 'memory', database: 'ok' });
+    expect(Object.keys(body).sort()).toEqual(['database', 'mail', 'status', 'store', 'version']);
+  });
 });

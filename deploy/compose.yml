@@ -1,0 +1,68 @@
+# ==============================================================================
+# Novixa — production stack on the VPS (installed to /opt/novixa by CI).
+#
+# Two containers: the Next.js app and its PostgreSQL. Neither publishes a port
+# to the internet. Public traffic arrives through mailcow's nginx, which
+# already owns :80/:443 on this host, over the `novixa-edge` network — see
+# deploy/README.md for why it is wired that way rather than a second proxy.
+#
+#   app.env      written by CI from GitHub secrets on every deploy
+#   db.env       generated once on the server: POSTGRES_PASSWORD
+#   secrets.env  generated once on the server: DATABASE_URL, ADMIN_SESSION_SECRET
+#                (neither file ever leaves the machine; each container gets
+#                only the one it needs)
+#   .env         NOVIXA_IMAGE / NOVIXA_TAG for the release currently deployed
+# ==============================================================================
+
+name: novixa
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file: [db.env]
+    environment:
+      POSTGRES_USER: novixa
+      POSTGRES_DB: novixa
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks: [internal]
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U novixa -d novixa']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    logging: &logging
+      driver: json-file
+      options: { max-size: 10m, max-file: '5' }
+
+  app:
+    image: ${NOVIXA_IMAGE:?set by deploy.sh}:${NOVIXA_TAG:?set by deploy.sh}
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+    env_file: [app.env, secrets.env]
+    # Loopback only: for health checks and debugging from the host itself.
+    ports: ['127.0.0.1:3100:3000']
+    networks:
+      internal: {}
+      egress: {}
+      edge:
+        aliases: [novixa-app]
+    security_opt: ['no-new-privileges:true']
+    cap_drop: [ALL]
+    logging: *logging
+
+networks:
+  # No route out: the database can talk to the app and nothing else.
+  internal:
+    internal: true
+  # Outbound for the app only (SMTP / Resend).
+  egress: {}
+  # Shared with mailcow's nginx, and only with it. Created by server-setup.sh.
+  edge:
+    external: true
+    name: novixa-edge
+
+volumes:
+  db-data:
