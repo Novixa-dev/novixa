@@ -146,7 +146,7 @@ handed over directly. The repository is public, so committing either would show
 prospects the list they are on and the script they are about to receive. Business
 material lives with the business, not with the website's source.
 
-## Phase 8 — Leads, admin, and production on the VPS · **DONE, waiting on owner setup**
+## Phase 8 — Leads, admin, and production on the VPS · **DONE, live since 2026-10-08**
 
 | # | Work | Outcome |
 |---|---|---|
@@ -156,6 +156,50 @@ material lives with the business, not with the website's source.
 | 8.4 | `/api/health` | Readiness incl. database and migrations; reports the deployed commit. Drives the deploy gate and uptime checks |
 | 8.5 | Next.js 15.5.23 → 15.5.27 | P0-2, critical advisory |
 | 8.6 | VPS pipeline | P2-13. `deploy/` + `deploy.yml`: GHCR image, SSH with pinned host key, backup → health-gated start → version check → rollback, nginx block in mailcow behind `nginx -t`, nightly backups. Rehearsed end to end, including the failure paths |
+
+## Phase 9 — Admin, content management and operations · **PLANNED, not started**
+
+**What exists.** `/admin` is a lead-management tool (one administrator; list, search, filters, status pipeline, notes, CSV, delete). It is **not** a content system: page text, articles and images live in `src/content/` and change by pull request. That is the right default for a site whose rule is "no claim without evidence" (a content error is a build error), so Phase 9 adds editing power only where it earns its risk, in this order. Each sub-phase ships on its own and leaves the site working.
+
+### 9A — Make leads easier to work · ~1–2 weeks
+
+| Work | Notes |
+|---|---|
+| Assignee and follow-up date per lead, tags, an activity timeline (stage changes, notes, emails sent) | New append-only migrations; the timeline replaces the single free-text note |
+| Reply from the admin with saved templates, logged to the timeline | Sends through the existing SMTP transport; Reply-To already routes to the visitor |
+| Source attribution: capture UTM parameters and referrer on both forms | Needs a privacy-policy sentence; no third-party script |
+| Real response-time metric ("median time to first contact") on the overview | Computed from the timeline, never typed in |
+| Optional instant alert (Telegram bot) | `docs/NEXT_STEPS.md` Step 10; only with a bot token the owner creates |
+
+### 9B — People and security · ~1 week
+
+One administrator is a single point of failure. A `users` table with roles (**owner** · **editor** · **viewer**), invitation by email, TOTP two-factor sign-in, an audit log (who changed what, when), and login rate-limit state kept in the database instead of in one process's memory. Password reset by email through the existing mail transport. **Done when:** a second user can be invited, can only do what the role allows, and every write appears in the audit log.
+
+### 9C — Content management · ~3–5 weeks
+
+The largest piece, and the one with real risk, so it is built last and behind a feature flag.
+
+- **Scope:** insights articles, FAQ, case studies, services, solutions, products, industries, legal pages. Not the design system page, not the operations console demo (both are generated from code on purpose).
+- **Model:** mirror `src/types.ts` in PostgreSQL. Every user-facing field is `{ ar, en }` and **both languages are required to publish**, which keeps Arabic first-class rather than a translation.
+- **Editor:** Arabic and English side by side; draft → preview → publish; revision history with one-click rollback; scheduled publishing; per-page SEO fields.
+- **Evidence rule, enforced in the form:** any figure (a percentage, a count, a duration, a client name) requires a *source note* before it can be saved, and the note is shown to editors. This turns the "never fabricate" rule from a review comment into a constraint. Phase 9's own review found invented uptime figures, regional datacentres and an SLA on the live site; this is the control that would have blocked them.
+- **Images:** upload to object storage the owner owns, with required alt text, a size ceiling and format checks; served through the existing image pipeline.
+- **Performance:** pages stay statically rendered; publishing triggers revalidation of the affected routes, so visitors never wait on the database.
+- **Migration:** a one-off script seeds the database from the current content files; `tests/content-integrity.test.ts`, the sitemap/route drift tests and the sitemap-wide heading test then run against the database-backed content in CI, so the existing guarantees carry over.
+- **Fallback:** content-as-code stays as the source of truth until the flag is turned on, and can be switched back.
+- **Risks:** a larger attack surface (an editor can change public pages), so 9B (roles, 2FA, audit log) is a prerequisite; added complexity in every content test; image storage is a recurring cost.
+
+### 9D — Operations visibility · ~1 week
+
+Today `/api/health` is a point-in-time check and there is no history. Add external uptime monitoring with email alerts (UptimeRobot, or Uptime Kuma on the VPS), **off-server backups** of both the application database and the mailcow data (`rclone` to storage the owner owns, plus a quarterly restore drill), and only after weeks of real data a public status page. **A historical uptime figure may appear on the site only when it is computed from this monitor.**
+
+### 9E — Client portal · separate product, later
+
+Project status, documents and invoices for clients. A different product with its own authorization model, not an extension of `/admin`. Decide after the first paying clients exist.
+
+### Decisions needed before 9C
+
+Who will edit content and in which language first; whether translations are written by one person or reviewed by a second; which object-storage provider and what monthly budget; whether any content must stay code-reviewed (legal pages are the usual candidate).
 
 ---
 

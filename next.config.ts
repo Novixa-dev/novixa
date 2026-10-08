@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
    */
   output: process.env.NEXT_OUTPUT === 'standalone' ? 'standalone' : undefined,
   reactStrictMode: true,
+  // `X-Powered-By: Next.js` tells a scanner which framework to look for
+  // exploits against, and buys the visitor nothing.
+  poweredByHeader: false,
   // The /og social-card route reads this font off disk at request time; without
   // an explicit trace entry it is not copied into the deployed function bundle
   // and every Arabic card renders as tofu boxes (or 500s).
@@ -27,13 +30,9 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ['image/avif', 'image/webp'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'i.pravatar.cc',
-        pathname: '/**',
-      },
-    ],
+    // No remote image hosts are allowed. A leftover entry for a random-face
+    // avatar service sat here from the template; this site shows no people it
+    // cannot name, so there is nothing to fetch and nothing to proxy.
   },
   async headers() {
     return [

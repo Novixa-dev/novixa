@@ -265,10 +265,10 @@ export const Footer: React.FC = () => {
             </div>
             <div>
               <p className="text-xs font-bold text-white font-display">
-                {t('سيادة البيانات والاستضافة الإقليمية', 'Sovereign Cloud & Regional Hosting')}
+                {t('طلباتك تبقى على خادمنا', 'Your enquiries stay on our server')}
               </p>
               <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
-                {t('استضافة محلية مهيأة ومتوافقة مع متطلبات الحوكمة والخصوصية الإقليمية.', 'Regional cloud environments complying with local data governance.')}
+                {t('نحفظ ما ترسله إلينا في قاعدة بيانات نديرها بأنفسنا، لا في خدمة طرف ثالث.', 'What you send us is stored in a database we run ourselves, not in a third-party service.')}
               </p>
             </div>
           </div>
@@ -293,10 +293,10 @@ export const Footer: React.FC = () => {
             </div>
             <div>
               <p className="text-xs font-bold text-white font-display">
-                {t('تشفير متقدم TLS 1.3 & AES-256', 'TLS 1.3 & AES-256 Encryption')}
+                {t('اتصال مشفّر دائماً', 'Always-encrypted connections')}
               </p>
               <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
-                {t('حماية فائقة للمعلومات وقنوات الاتصال على مستوى النقل والتخزين.', 'Zero-trust architecture protecting data in transit and at rest.')}
+                {t('كل صفحات الموقع تعمل عبر HTTPS مع HSTS، ولا تُقبل اتصالات غير مشفّرة.', 'Every page is served over HTTPS with HSTS; unencrypted connections are refused.')}
               </p>
             </div>
           </div>
@@ -307,10 +307,10 @@ export const Footer: React.FC = () => {
             </div>
             <div>
               <p className="text-xs font-bold text-white font-display">
-                {t('ضمان الجاهزية SLA 99.99%', '99.99% Availability SLA')}
+                {t('نسخ احتياطي ليلي', 'Nightly backups')}
               </p>
               <p className="text-[11px] text-slate-400 font-arabic mt-0.5 leading-relaxed">
-                {t('بنية تحتية موزعة ومراقبة تضمن استقرارك التشغيلي على مدار الساعة.', 'Monitored cloud infrastructure ensuring rock-solid business continuity.')}
+                {t('تُنسخ قاعدة البيانات كل ليلة وقبل كل نشر، ويمكن استعادتها عند الحاجة.', 'The database is backed up every night and before every release, and can be restored when needed.')}
               </p>
             </div>
           </div>

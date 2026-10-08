@@ -56,8 +56,8 @@ export default async function TeamPage({ params }: { params: Promise<{ lang: str
           <div className="pt-1">
             <span className="inline-block text-[11px] font-mono uppercase tracking-wider text-slate-300 bg-slate-900/90 border border-slate-800 px-3 py-1 rounded-full">
               {isAr
-                ? 'فريق هندسي متخصص مقره الخليج العربي • جاهزية تشغيلية 99.99%'
-                : 'GCC-Based Engineering Teams • 99.99% Availability SLA'}
+                ? 'فرق هندسية متخصصة • نعمل بنموذج الفرق المخصصة'
+                : 'Specialised engineering teams • Dedicated-pod model'}
             </span>
           </div>
         </div>
@@ -91,8 +91,8 @@ export default async function TeamPage({ params }: { params: Promise<{ lang: str
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">
               {isAr
-                ? 'كيف نضمن خلو الأنظمة من العيوب المعمارية والتراجع التشغيلي؟'
-                : 'How we guarantee zero architectural regressions and continuous uptime'}
+                ? 'كيف نكتشف العيوب المعمارية وتراجع الإصدارات قبل أن تصل إلى الإنتاج؟'
+                : 'How we catch architectural flaws and regressions before they reach production'}
             </h2>
           </div>
 

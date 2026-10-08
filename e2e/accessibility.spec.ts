@@ -121,6 +121,39 @@ test('each page has exactly one h1 and no skipped heading levels', async ({ page
   }
 });
 
+/**
+ * The five-page sample above is hand-picked, and a hand-picked list is exactly
+ * where a page goes unchecked: the live site went out with `/start-project`
+ * having no h1 at all (its title was an h2 and its steps were h3), and nothing
+ * here noticed. This covers every URL the sitemap advertises, in both
+ * languages, from the server-rendered HTML, which is what a crawler reads.
+ */
+test('every sitemap page has exactly one h1 and no skipped heading levels', async ({ request }) => {
+  test.setTimeout(120_000);
+
+  const sitemap = await request.get('/sitemap.xml');
+  const paths = [...(await sitemap.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
+  expect(paths.length, 'sitemap must list routes').toBeGreaterThan(50);
+
+  const problems: string[] = [];
+  for (const path of paths) {
+    const html = await (await request.get(path)).text();
+    const levels = [...html.matchAll(/<h([1-6])[\s>]/g)].map((m) => Number(m[1]));
+
+    const h1s = levels.filter((l) => l === 1).length;
+    if (h1s !== 1) problems.push(`${path}: ${h1s} h1 elements`);
+
+    for (let i = 1; i < levels.length; i++) {
+      if (levels[i] - levels[i - 1] > 1) {
+        problems.push(`${path}: skips from h${levels[i - 1]} to h${levels[i]}`);
+        break;
+      }
+    }
+  }
+
+  expect(problems, `heading structure problems:\n${problems.join('\n')}`).toEqual([]);
+});
+
 test('the hero headline survives forced-colors mode', async ({ page }) => {
   // The headline's second line is a gradient clipped to the glyphs
   // (`color: transparent` + `background-clip: text`). Forced-colors discards

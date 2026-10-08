@@ -158,9 +158,9 @@ export const ProjectDiscoveryWizard: React.FC = () => {
             <span>{t('ابدأ مشروعك معنا', 'Project Discovery & Architecture Intake')}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
+          <h1 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
             {t('لديك مشكلة تشغيلية تستحق نظامًا أفضل؟', 'Have an operational challenge deserving a modern system?')}
-          </h2>
+          </h1>
 
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl mx-auto font-arabic">
             {t(
@@ -203,9 +203,9 @@ export const ProjectDiscoveryWizard: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-2xl font-extrabold font-display text-white">
+                <h2 className="text-2xl font-extrabold font-display text-white">
                   {t('تم استلام تفاصيل مشروعك بنجاح!', 'Your Project Spec Received Successfully!')}
-                </h3>
+                </h2>
                 <p className="text-sm text-slate-300 max-w-md mx-auto font-arabic leading-relaxed">
                   {t(
                     'شكراً لك يا ' + (formData.name || 'عزيزنا') + '. سيتواصل معك مهندسو نوڤيكسا لمراجعة المخطط الأولي ومناقشة الخطة الهندسية خلال 24 ساعة.',
@@ -241,9 +241,9 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h3 className="text-base sm:text-lg font-bold font-display text-white">
+                  <h2 className="text-base sm:text-lg font-bold font-display text-white">
                     01. {t('ماذا تريد أن نبني لشركتك؟', 'What do you want us to build?')}
-                  </h3>
+                  </h2>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs sm:text-sm">
                     {PROJECT_TYPES.map((choice) => (
@@ -272,9 +272,9 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h3 className="text-base sm:text-lg font-bold font-display text-white">
+                  <h2 className="text-base sm:text-lg font-bold font-display text-white">
                     02. {t('ما مجال عمل شركتك؟', 'What is your business sector?')}
-                  </h3>
+                  </h2>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs sm:text-sm">
                     {INDUSTRY_CHOICES.map((choice) => (
@@ -303,9 +303,9 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h3 className="text-base sm:text-lg font-bold font-display text-white">
+                  <h2 className="text-base sm:text-lg font-bold font-display text-white">
                     03. {t('ما المشكلة التشغيلية الرئيسية التي تريد حلها؟', 'What primary operational issue are you solving?')}
-                  </h3>
+                  </h2>
 
                   <div className="space-y-3">
                     <textarea
@@ -327,9 +327,9 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-5"
                 >
-                  <h3 className="text-base sm:text-lg font-bold font-display text-white">
+                  <h2 className="text-base sm:text-lg font-bold font-display text-white">
                     04. {t('النظام الحالي ونطاق الميزانية', 'Current Setup & Budget Scope')}
-                  </h3>
+                  </h2>
 
                   <div className="space-y-2">
                     <label htmlFor="existing-system" className="text-xs text-slate-300 font-semibold block">
@@ -399,9 +399,9 @@ export const ProjectDiscoveryWizard: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h3 className="text-base sm:text-lg font-bold font-display text-white">
+                  <h2 className="text-base sm:text-lg font-bold font-display text-white">
                     05. {t('معلومات التواصل لمناقشة المخطط الهندسي', 'Contact Information')}
-                  </h3>
+                  </h2>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
                     <input

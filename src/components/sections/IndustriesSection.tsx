@@ -28,6 +28,11 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({ showHeader
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
+  // With the section header hidden, the page supplies the h1 and these cards sit
+  // directly under it, so they are h2. Under the header's own h2 they are h3.
+  // A fixed h3 skipped a level on /work, /industries and /insights.
+  const CardTitle = showHeader ? 'h3' : 'h2';
+
   const [activeId, setActiveId] = useState<string>(INDUSTRIES[0].id);
 
   const activeIndustry = INDUSTRIES.find((i) => i.id === activeId) || INDUSTRIES[0];
@@ -106,9 +111,9 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({ showHeader
             {/* Left: Challenges vs Solutions */}
             <div className="lg:col-span-8 space-y-6 text-right rtl:text-right ltr:text-left">
               <div>
-                <h3 className="text-2xl font-extrabold font-display text-white mb-2">
+                <CardTitle className="text-2xl font-extrabold font-display text-white mb-2">
                   {t(activeIndustry.name.ar, activeIndustry.name.en)}
-                </h3>
+                </CardTitle>
                 <p className="text-slate-300 text-sm leading-relaxed">
                   {t(activeIndustry.description.ar, activeIndustry.description.en)}
                 </p>

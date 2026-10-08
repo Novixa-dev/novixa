@@ -15,7 +15,12 @@ import {
   LayoutGrid,
 } from 'lucide-react';
 
-export const HeroSection: React.FC = () => {
+interface HeroSectionProps {
+  /** How many engineering services the catalogue lists, so the figure cannot drift from it. */
+  servicesCount: number;
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ servicesCount }) => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
   const [selectedNode, setSelectedNode] = useState<string>('gateway');
@@ -169,8 +174,8 @@ export const HeroSection: React.FC = () => {
             {/* Verified Architectural Specifications Bar */}
             <div className="pt-6 border-t border-white/[0.08] grid grid-cols-3 gap-6 text-right rtl:text-right ltr:text-left font-mono">
               <div className="space-y-1">
-                <div className="text-xl sm:text-2xl font-extrabold font-display text-white">99.99%</div>
-                <div className="text-xs text-slate-300 font-arabic">{t('جاهزية التشغيل السحابي', 'Cloud SLA Uptime')}</div>
+                <div className="text-xl sm:text-2xl font-extrabold font-display text-white">{servicesCount}</div>
+                <div className="text-xs text-slate-300 font-arabic">{t('خدمات هندسية متخصصة', 'Engineering services')}</div>
               </div>
               <div className="space-y-1">
                 <div className="text-xl sm:text-2xl font-extrabold font-display text-blue-400">5-14 {t('أيام', 'Days')}</div>
@@ -195,9 +200,11 @@ export const HeroSection: React.FC = () => {
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
                   <span className="text-[11px] text-slate-400 ms-2">novixa-engine.sys</span>
                 </div>
-                <div className="flex items-center gap-1 text-[11px] text-emerald-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>OPERATIONAL</span>
+                {/* A diagram of how Novixa builds, not a feed from a running system:
+                    the figures in it are indicative, so it says so. */}
+                <div className="flex items-center gap-1 text-[11px] text-blue-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                  <span>{t('مخطط توضيحي', 'ILLUSTRATIVE DIAGRAM')}</span>
                 </div>
               </div>
 
@@ -249,7 +256,6 @@ export const HeroSection: React.FC = () => {
               <div className="p-3.5 rounded-xl bg-slate-950 border border-white/[0.06] text-right rtl:text-right ltr:text-left space-y-1.5">
                 <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
                   <span>{t('المواصفات الهندسية للمكون', 'Component Specifications')}</span>
-                  <span className="text-blue-400">SLA 99.99%</span>
                 </div>
                 <p className="text-xs text-slate-300 font-arabic leading-relaxed">
                   {activeNodeInfo[isRtl ? 'detailAr' : 'detailEn']}

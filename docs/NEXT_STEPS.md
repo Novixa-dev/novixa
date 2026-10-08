@@ -152,6 +152,8 @@ Then confirm mail still works: open `https://mail.novixa.dev`, and send and rece
 
 ### Step 5 — mailcow mailboxes and email DNS
 
+> **DONE 2026-10-08/09.** `PTR` = `mail.novixa.dev` (Contabo); `SPF` `v=spf1 mx ~all`, `DMARC` `p=none` (reports to `postmaster@`) and the 2048-bit `dkim` key (it already existed in mailcow; its published value was verified: 420 characters, same length as mailcow's) are in Cloudflare. `hello@` already existed; `no-reply@` (1 GiB, 60 messages/hour, no forced password change) was created; `postmaster@` and `admin@` are aliases to `hello@`. First mail-tester score **8.3/10**, authentication all passing; the two spam-rule deductions that were fixable are fixed (PRODUCTION_AUDIT P2-16) and need a re-test after the next deploy. Not done: `autodiscover`/`autoconfig` DNS (optional), and mailcow's own data is not backed up off the server.
+
 **In the mailcow UI (browser):**
 
 1. Create mailbox **`no-reply@novixa.dev`** with a generated 24+ character password. Store it at `~/novixa-secrets/smtp-password` (mode 600). The **owner** sets the password, or the agent generates it, but the agent never prints it.
@@ -175,6 +177,8 @@ dig +short -x 161.97.75.64      # mail.novixa.dev.
 Then send a test from `no-reply@` to the address `https://www.mail-tester.com` gives you. **Target score: 9/10 or higher.** Fix what it reports before going on.
 
 ### Step 6 — GitHub environment, secrets and variables
+
+> **DONE 2026-10-08.** The environment name is case-insensitive: `production` resolved to the existing `Production` (no duplicate). Ten secrets and six variables are set. The first attempt stored `ADMIN_PASSWORD` and `SMTP_PASSWORD` as **empty values** (the hidden prompt swallowed the paste), which the job log showed as a blank `env:` line; the pipeline's own check then rejected a password under 12 characters. Setting them with `read -rs` and a printed length avoids both.
 
 Run from the repo, reading every value from a file or prompt, never from the command line:
 
@@ -217,6 +221,8 @@ Once deploys are working, delete `~/novixa-secrets/deploy_key`. GitHub holds the
 
 ### Step 7 — First deploy
 
+> **DONE 2026-10-08** (manual dispatch, run 37842039964), after two real failures found and fixed on the way: the mixed-case image name (P2-15) and the empty/short admin password secrets (Step 6). The release is recorded in `/opt/novixa/.env`, both containers are healthy, the nginx site block and Origin certificate are installed (`nginx -t` passes), and the nightly backup cron is installed. A deploy triggered by a push to `main` (rather than a manual run) is still to be seen green: see the definition of done.
+
 > **IN PROGRESS 2026-10-08.** Step 6 is complete (10 secrets in the `production` environment, 6 repository variables) and `DEPLOY_ENABLED=true`. The first dispatch (run 37834549266) failed in the image job, before reaching the server, with `invalid tag "ghcr.io/Novixa-dev/novixa:…": repository name must be lowercase`: the workflow used `github.repository`, and this organisation has a capital N. Fixed at the root (the name is lower-cased once in the build job and handed to the deploy job) with a regression test; see `docs/PRODUCTION_AUDIT.md` P2-15. The workflow runs from `main` only, so the fix has to be merged before the next attempt.
 
 ```bash
@@ -235,6 +241,8 @@ gh run watch --repo $R $(gh run list --repo $R --workflow deploy.yml --limit 1 -
 `deploy.sh` rolls back to the previous release by itself, and it restores the previous nginx files if `nginx -t` fails.
 
 ### Step 8 — Verify production (every line, in both languages)
+
+> **MOSTLY DONE 2026-10-09.** `scripts/verify-live.sh` (now in the repository): **29/29** (health, routing, redirects, headers, canonical/hreflang/OG, sitemap, robots, admin private). Lighthouse on the live `/ar` and `/en`: **100/100/100**. A live Playwright pass over 14 pages × 3 viewports × both languages found the `/start-project` heading defect (P2-17). A manual backup was taken and its archive listed (`leads`, `schema_migrations`). Mail ports, IMAP greeting, mail UI and SOGo were identical before and after setup and after the deploy. Still to do by a person: a real enquiry from the owner's own address, and the `/admin` sign-in. Owner handbook: `docs/OWNER_OPERATIONS_GUIDE.md`.
 
 ```bash
 U=https://novixa.dev
@@ -276,6 +284,8 @@ Then, **in the browser**:
 
 ### Step 9 — After go-live
 
+> **NOT STARTED**, apart from the review that produced P1-13 (invented operational figures) and the Phase 9 plan in `docs/IMPLEMENTATION_PLAN.md`. Open: Vercel duplicate site, off-server backups (database and mail), uptime monitoring, Search Console, Railway cleanup, DMARC to `quarantine` after two weeks.
+
 | Task | Why | How |
 |---|---|---|
 | Point Vercel at the primary domain | Otherwise `novixa-cyan.vercel.app` competes with `novixa.dev` in search | Vercel → Project → Settings → Environment Variables: `NEXT_PUBLIC_SITE_URL=https://novixa.dev`, then redeploy. Or ask the owner whether to remove the Vercel production deployment entirely |
@@ -315,13 +325,13 @@ These cannot be completed by an agent. Ask for them; never invent them.
 ## 5. Definition of done
 
 - [x] PR #2 merged, CI green on `main` (2026-10-08, `dbc5f7c`)
-- [ ] `https://novixa.dev/api/health` → `status ok`, `database ok`, `store postgres`, `mail smtp`, version = latest `main` commit
+- [x] `https://novixa.dev/api/health` → `status ok`, `database ok`, `store postgres`, `mail smtp`, version = latest `main` commit (2026-10-09, `3047496`; each later merge changes `version`)
 - [ ] The Deploy workflow is green on a push to `main` (not only a manual run)
 - [ ] Every Step 8 check passes, in Arabic and English, on phone and desktop
 - [ ] A real enquiry was stored, shown in `/admin`, notified to `hello@`, and acknowledged to the visitor's inbox (not spam)
 - [ ] mail-tester score of 9/10 or higher; SPF, DKIM, DMARC and PTR all in place
 - [ ] mailcow mail is unaffected: send and receive both work
 - [ ] Nightly backup present; off-server copy arranged
-- [ ] Lighthouse 100/100/100 (accessibility, best practices, SEO) on the live `/ar` and `/en`
+- [x] Lighthouse 100/100/100 (accessibility, best practices, SEO) on the live `/ar` and `/en` (2026-10-09)
 - [ ] Owner given an Arabic report: what is live, the admin URL, where backups are, and what is still theirs to decide (§4)
-- [ ] This file updated: mark each step done with its date and result, so the next session starts from the truth
+- [x] This file updated: mark each step done with its date and result, so the next session starts from the truth (kept current at each merge)

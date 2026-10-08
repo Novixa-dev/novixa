@@ -17,8 +17,8 @@ import {
   Github,
   Twitter,
   Activity,
-  ShieldCheck,
 } from 'lucide-react';
+import { SystemStatusDialog } from './SystemStatusDialog';
 
 const socialIconMap = {
   Linkedin: Linkedin,
@@ -105,16 +105,16 @@ export const Navbar: React.FC = () => {
 
           {/* Right Actions: System Status + Social Links + Search + Language + CTA */}
           <div className="hidden xl:flex items-center gap-2">
-            {/* Architectural System Status Indicator (Interactive) */}
+            {/* System status (opens a live check of /api/health) */}
             <button
               onClick={() => setTelemetryOpen(true)}
-              className="hidden 2xl:inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-900/60 hover:bg-slate-800/80 border border-white/[0.07] hover:border-emerald-500/40 text-[11px] font-mono text-slate-300 transition-all cursor-pointer group"
-              title={t('عرض فاحص كفاءة السحابة والمناطق', 'Inspect Edge Telemetry & SLA')}
+              className="hidden 2xl:inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-900/60 hover:bg-slate-800/80 border border-white/[0.07] hover:border-blue-500/40 text-[11px] text-slate-300 transition-all cursor-pointer"
+              title={t('عرض حالة النظام الحيّة', 'View live system status')}
               aria-haspopup="dialog"
               aria-expanded={telemetryOpen}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse group-hover:scale-125 transition-transform" />
-              <span>SLA 99.99%</span>
+              <Activity className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+              <span>{t('حالة النظام', 'System status')}</span>
             </button>
 
             {/* Social Icons */}
@@ -243,20 +243,17 @@ export const Navbar: React.FC = () => {
               })}
             </div>
 
-            {/* Mobile Telemetry Trigger */}
+            {/* Mobile system status trigger */}
             <div className="pt-2 border-t border-slate-800">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setTelemetryOpen(true);
                 }}
-                className="w-full flex items-center justify-between p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300 hover:text-white"
+                className="w-full flex items-center gap-2 p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white"
               >
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>{t('فاحص كفاءة السحابة', 'Edge Telemetry')}</span>
-                </div>
-                <span className="text-emerald-400 font-bold">SLA 99.99%</span>
+                <Activity className="w-4 h-4 text-blue-400" aria-hidden="true" />
+                <span>{t('حالة النظام', 'System status')}</span>
               </button>
             </div>
 
@@ -274,119 +271,8 @@ export const Navbar: React.FC = () => {
         </div>
       )}
 
-      {/* Edge Telemetry & SLA Inspector Modal */}
-      {telemetryOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="telemetry-modal-title"
-          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
-          onClick={() => setTelemetryOpen(false)}
-        >
-          <div
-            className="glass-card border border-white/[0.12] rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 text-right rtl:text-right ltr:text-left relative bg-slate-900/95"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-emerald-950/80 border border-emerald-700/60 flex items-center justify-center text-emerald-400">
-                  <Activity className="w-5 h-5 animate-pulse" />
-                </div>
-                <div>
-                  <h3 id="telemetry-modal-title" className="text-sm font-bold text-white font-display">
-                    {t('فاحص كفاءة السحابة والمناطق', 'Edge Telemetry & Region Health')}
-                  </h3>
-                  <span className="text-[11px] font-mono text-slate-400">
-                    {t('رصد فوري لزمن الاستجابة والتوافر', 'Live latency and availability telemetry')}
-                  </span>
-                </div>
-              </div>
-              <button
-                onClick={() => setTelemetryOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
-                aria-label={t('إغلاق', 'Close')}
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Edge Clusters */}
-            <div className="space-y-2">
-              <span className="text-[11px] font-mono uppercase text-slate-400 block">
-                {t('حالة مراكز البيانات الإقليمية:', 'Regional Edge Datacenters:')}
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono">
-                <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span className="text-slate-200">{t('الرياض (me-central1)', 'Riyadh (me-central1)')}</span>
-                  </div>
-                  <span className="text-emerald-400 font-semibold">12ms</span>
-                </div>
-                <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span className="text-slate-200">{t('دبي (me-central2)', 'Dubai (me-central2)')}</span>
-                  </div>
-                  <span className="text-emerald-400 font-semibold">16ms</span>
-                </div>
-                <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span className="text-slate-200">{t('جدة (Edge Cache)', 'Jeddah (Edge Cache)')}</span>
-                  </div>
-                  <span className="text-emerald-400 font-semibold">14ms</span>
-                </div>
-                <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span className="text-slate-200">{t('فرانكفورت (eu-central1)', 'Frankfurt (Core)')}</span>
-                  </div>
-                  <span className="text-emerald-400 font-semibold">32ms</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Metric Stats */}
-            <div className="grid grid-cols-3 gap-2 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 text-center">
-              <div>
-                <span className="text-[10px] text-slate-400 block font-mono">{t('التوافر (90 يومًا)', '90d Uptime')}</span>
-                <span className="text-xs font-bold text-white font-mono">99.99%</span>
-              </div>
-              <div className="border-x border-slate-800">
-                <span className="text-[10px] text-slate-400 block font-mono">{t('الحوادث النشطة', 'Active Incidents')}</span>
-                <span className="text-xs font-bold text-emerald-400 font-mono">0 {t('حوادث', 'Incidents')}</span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-400 block font-mono">{t('بروتوكول الأمان', 'Security')}</span>
-                <span className="text-xs font-bold text-teal-400 font-mono">TLS 1.3</span>
-              </div>
-            </div>
-
-            {/* Compliance Guarantee */}
-            <div className="p-3 rounded-xl bg-blue-950/40 border border-blue-900/40 flex items-start gap-2.5 text-xs text-slate-300">
-              <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
-              <p className="font-arabic leading-relaxed">
-                {t(
-                  'كافة الحلول البرمجية والسحابية لنوڤيكسا تدعم استضافة البيانات محليًا داخل مراكز بيانات الخليج لضمان أعلى معايير الخصوصية وسيادة البيانات.',
-                  'All Novixa cloud architectures support sovereign GCC data residency ensuring full compliance with local regulatory governance.'
-                )}
-              </p>
-            </div>
-
-            {/* Footer action */}
-            <div className="pt-2 flex items-center justify-end gap-2">
-              <button
-                onClick={() => setTelemetryOpen(false)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition-colors cursor-pointer"
-              >
-                {t('إغلاق الفاحص', 'Close Inspector')}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Public system status: a live check of /api/health from the visitor's browser */}
+      <SystemStatusDialog open={telemetryOpen} onClose={() => setTelemetryOpen(false)} />
     </header>
   );
 };

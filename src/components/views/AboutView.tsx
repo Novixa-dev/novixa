@@ -136,17 +136,17 @@ export const AboutView = ({ lang }: { lang: Language }) => {
               {t('الحوكمة والأمان وسيادة البيانات', 'Governance & Data Sovereignty')}
             </span>
             <h2 className="text-xl sm:text-2xl font-bold font-display text-white">
-              {t('كيف نضمن الأمان والامتثال لشركائنا في اليمن والخليج؟', 'How We Guarantee Security & Sovereignty for Regional Partners')}
+              {t('كيف نتعامل مع الأمان وملكية البيانات لشركائنا في اليمن والخليج؟', 'How we approach security and data ownership for our regional partners')}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
             <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
               <span className="text-xs font-bold text-white block">
-                {t('استضافة سحابية إقليمية', 'Sovereign Cloud Hosting')}
+                {t('استضافة نختارها معك', 'Hosting chosen with you')}
               </span>
               <p className="text-xs text-slate-300 font-arabic leading-relaxed">
-                {t('بناء الأنظمة على مراكز بيانات متوافقة مع متطلبات سيادة وحماية البيانات.', 'Architected on regional datacenters ensuring complete compliance with data governance.')}
+                {t('نحدد مع العميل مكان الاستضافة ونوثّق أين تُخزَّن بياناته.', 'We choose the hosting location with the client and document where their data is stored.')}
               </p>
             </div>
 
@@ -161,19 +161,19 @@ export const AboutView = ({ lang }: { lang: Language }) => {
 
             <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
               <span className="text-xs font-bold text-white block">
-                {t('التشفير السيبراني المتقدم', 'Strict Cyber Encryption')}
+                {t('اتصالات مشفّرة', 'Encrypted connections')}
               </span>
               <p className="text-xs text-slate-300 font-arabic leading-relaxed">
-                {t('تطبيق بروتوكولات TLS 1.3 وتشفير AES-256 للبيانات المخزنة مع عزل أمني صارم لحركة المرور.', 'Zero-trust network boundaries, TLS 1.3 in transit, and AES-256 for persistent database storage.')}
+                {t('نقدّم المواقع عبر HTTPS مع HSTS، ونبقي قاعدة البيانات خارج الإنترنت العام.', 'We serve sites over HTTPS with HSTS and keep the database off the public internet.')}
               </p>
             </div>
 
             <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
               <span className="text-xs font-bold text-white block">
-                {t('اتفاقيات مستوى الخدمة (SLA)', 'Continuous SLA & Support')}
+                {t('الصيانة والدعم', 'Maintenance & support')}
               </span>
               <p className="text-xs text-slate-300 font-arabic leading-relaxed">
-                {t('عقود صيانة ومراقبة حية تضمن جاهزية النظام واستقراره على مدار الساعة.', 'Monitored systems with documented fast-response SLAs and daily automated backups.')}
+                {t('عقود صيانة تشمل النسخ الاحتياطي والمتابعة والدعم الهندسي، وتُحدَّد شروطها مع كل عميل.', 'Maintenance contracts covering backups, follow-up and engineering support, with terms agreed per client.')}
               </p>
             </div>
           </div>
