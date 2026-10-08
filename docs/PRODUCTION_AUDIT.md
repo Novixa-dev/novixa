@@ -438,6 +438,20 @@ The rehearsal (`deploy/README.md`) found and fixed one real defect before it eve
 
 The SVG had a fixed height and a `viewBox`, so the default `preserveAspectRatio` letterboxed it into the middle half of its card. Found on the screenshot taken during the rehearsal. It now stretches; the chart has no text inside to distort.
 
+### P2-15 · The first real deploy failed on a mixed-case image name — FIXED
+
+The first run of the Deploy workflow on `main` (2026-10-08) stopped in the image job, before touching the server:
+
+```
+invalid tag "ghcr.io/Novixa-dev/novixa:sha-…": repository name must be lowercase
+```
+
+The workflow built the image reference from `github.repository`, which keeps the capital `N` of the `Novixa-dev` organisation, and Docker refuses upper case in an image name. The rehearsal had used a lower-case organisation (`novixa-dev`), so it could not have caught this.
+
+*Evidence:* the failing run's log (the `docker/build-push-action` step); nothing was deployed and the server was not reached.
+*Fix:* Actions expressions have no lower-case function, so a shell step computes `ghcr.io/${GITHUB_REPOSITORY,,}` once, in the build job. The deploy job takes the same value from that job's outputs, so the two cannot disagree. `tests/deploy-workflow.test.ts` fails if the raw repository name is interpolated into an image reference again.
+*Checked:* a search of `.github/` and `deploy/` for any other hand-built image reference found none. The server-side scripts receive the image name as an argument and never build it.
+
 ### P3-4 · PostCSS advisory inside Next.js — ACCEPTED
 
 Next.js 15.5.27 vendors PostCSS 8.4.x, which carries an XSS advisory (unescaped `</style>` in stringified CSS) and several source-map path traversal advisories. The only fix `npm audit` offers is Next.js 16 (P3-3). PostCSS runs here only at build time, over this repository's own stylesheets: no visitor-supplied CSS is ever parsed. Re-check when moving to Next.js 16.
