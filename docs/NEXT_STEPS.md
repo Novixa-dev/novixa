@@ -61,6 +61,8 @@ If any of these is missing, stop and tell the owner exactly which one. Do not wo
 
 ### Step 1 — Merge PR #2
 
+> **DONE 2026-10-08.** The owner merged it (merge commit `dbc5f7c`). CI on `main` is green; the Deploy workflow ran and skipped itself, as designed, because `DEPLOY_ENABLED` is unset. The code was also re-verified locally on Windows before the merge: typecheck and lint clean, 124 unit tests, build (102 kB shared JS), 171 E2E tests. The 8 PostgreSQL integration tests were skipped locally (no Docker) and run in CI.
+
 ```bash
 gh pr view 2 --repo Novixa-dev/novixa --json state,mergeable,statusCheckRollup
 gh pr ready 2 --repo Novixa-dev/novixa      # it is a draft
@@ -70,6 +72,8 @@ gh pr merge 2 --repo Novixa-dev/novixa --merge
 **Verify:** CI on `main` is green (`gh run list --branch main --limit 3`). Merging is safe because deploys stay off until `DEPLOY_ENABLED=true`.
 
 ### Step 2 — Inspect the server (read-only)
+
+> **DONE 2026-10-08.** Ubuntu 26.04, 4 vCPU, 7.8 GB RAM (4.6 GB available), 87 GB free disk, Docker 29.8, Compose 5.6. mailcow at `/opt/mailcow-dockerized` on `HTTP_PORT=80` / `HTTPS_PORT=443`, `ENABLE_IPV6=false`, no `docker-compose.override.yml`, no custom nginx files, ufw inactive. Every mailcow container was up. Exactly one key (the operator's) was in root's `authorized_keys`.
 
 Gather the facts before changing anything:
 
@@ -93,6 +97,13 @@ Report the findings to the owner before Step 4.
 
 ### Step 3 — Cloudflare (browser)
 
+> **DONE 2026-10-08, with three findings that changed the plan.**
+> 1. `A novixa.dev` and `CNAME`/`A www` already existed (Proxied → the VPS), so no DNS change was needed.
+> 2. Four other proxied hostnames point at this VPS (`aqar-demo`, `aqar-landing-page`, `pizza-house`, `pizza-house66`) and currently serve mailcow's default UI. The owner will use them for Novixa product sites, so the zone-wide SSL mode stays `Full` (Automatic mode on). **Full (strict) is applied by a Configuration Rule scoped to `novixa.dev` and `www.novixa.dev` only** (`novixa-site-strict-ssl`); until the first deploy those two hostnames return 526, which is expected.
+> 3. The origin presents only mailcow's Let's Encrypt certificate (`CN=mail.novixa.dev`) for every SNI name, which is why strict could not be zone-wide.
+>
+> The Origin certificate was created from a locally generated key and CSR (the private key never left the operator's machine); it covers `novixa.dev` and `*.novixa.dev`, valid until 2041-10-04, and was verified to match the key. *Always Use HTTPS* is on.
+
 In the `novixa.dev` zone:
 
 1. **DNS**
@@ -115,6 +126,8 @@ dig +short mail.novixa.dev   # 161.97.75.64
 ```
 
 ### Step 4 — Prepare the server
+
+> **DONE 2026-10-08.** `server-setup.sh` ran without errors: the `novixa` user and `/opt/novixa`, the deploy key, the `novixa-edge` network, mailcow's `docker-compose.override.yml`, and a recreated `nginx-mailcow` (`nginx -t` ok). Mail was checked from outside before and after and is identical: ports 25, 465, 587, 993, 995, 143 and 4190 open, IMAP answers, the mail UI and SOGo return 200. `VPS_KNOWN_HOSTS` matches the host key already pinned locally. The five `VPS_*` values and the Origin certificate and key are stored as secrets of the `production` environment.
 
 ```bash
 scp deploy/scripts/server-setup.sh root@161.97.75.64:/root/novixa-setup.sh
@@ -299,7 +312,7 @@ These cannot be completed by an agent. Ask for them; never invent them.
 
 ## 5. Definition of done
 
-- [ ] PR #2 merged, CI green on `main`
+- [x] PR #2 merged, CI green on `main` (2026-10-08, `dbc5f7c`)
 - [ ] `https://novixa.dev/api/health` → `status ok`, `database ok`, `store postgres`, `mail smtp`, version = latest `main` commit
 - [ ] The Deploy workflow is green on a push to `main` (not only a manual run)
 - [ ] Every Step 8 check passes, in Arabic and English, on phone and desktop
