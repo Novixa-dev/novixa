@@ -119,6 +119,7 @@ export const ProjectDiscoveryWizard: React.FC = () => {
           timeline: labelFor(TIMELINES, formData.timeline),
           website: honeypot,
           language,
+          source: 'start-project',
         }),
       });
 

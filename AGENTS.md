@@ -1,5 +1,7 @@
 # AGENTS.md — Novixa Design & Engineering Reference
 
+> **Picking up the project?** `docs/NEXT_STEPS.md` is the ordered list of what remains before `novixa.dev` is live, with commands and verifications. `deploy/README.md` is the production runbook.
+
 This file exists so future AI-assisted work on this repository stays consistent with decisions already made, instead of re-deriving (and drifting from) them. If you're an agent about to touch UI code here, read this first.
 
 ## What Novixa is

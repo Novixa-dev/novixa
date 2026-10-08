@@ -407,6 +407,41 @@ which imports the chart palette from the console's own module, and five unit tes
 assert the published figures against reality. A document that disagrees with the
 code is worse than no document, and the only durable defence is a test.
 
+### P0-2 · A critical Next.js advisory in the installed version — FIXED
+
+`npm audit --omit=dev` (2026-10-07) reported Next.js 15.5.23 as **critical**: unauthenticated remote code execution through the Image Optimization API, among others. That is the version the production image would have shipped. Next.js was moved to **15.5.27** within the existing `^15.5` range, with `npm audit fix` and no `--force`, which clears every critical and high runtime advisory except the one in P3-4. The build, unit, integration and E2E suites all passed on the new version.
+
+### P1-11 · An enquiry existed only as an email — FIXED
+
+Before this pass, a submission that Resend rejected was gone: the key expired, the from-address was unverified, or the message landed in spam. Nothing kept the lead. Now every submission is written to PostgreSQL first, and email is a notification *about* the row. `/admin` (scrypt password, HMAC session cookie with `Secure`/`HttpOnly`/`SameSite=Strict` scoped to `/admin`, 10 attempts per 15 minutes) lists, filters, searches, exports (with a CSV formula-injection guard) and tracks every lead through a status pipeline. The SQL is proven by an integration suite that runs against a real PostgreSQL service in CI.
+
+### P1-12 · Production depended on a third-party email account that did not exist — FIXED
+
+The only transport was Resend, and the Resend domain was never verified. The site now also sends over authenticated SMTP (`src/lib/mail.ts`, nodemailer with STARTTLS required and file/URL access disabled), through the mailcow server that already hosts novixa.dev mail. Resend stays as an option and wins when its key is set. The SMTP path was exercised end to end against a server that requires STARTTLS and authentication: notification, Arabic acknowledgement, `email_delivered = true`.
+
+### P2-12 · The rate limits trusted a header the client controls — MITIGATED AT THE PROXY
+
+The contact form (5/min) and the admin login (10/15 min) key on the first `X-Forwarded-For` entry. A proxy that *appends* to that header lets a client put any address first and rotate past both limits. The production nginx block overwrites it with `$remote_addr`, after `real_ip` has taken `CF-Connecting-IP`, and only from Cloudflare's published ranges. Rehearsed: six posts, each with a different forged `X-Forwarded-For` and `CF-Connecting-IP`, returned 200 ×5 and then 429. `DEPLOYMENT_GUIDE.md` §6 states the requirement for any other proxy.
+
+### P2-13 · No automated path to production at all — FIXED
+
+Production was whatever Vercel built from `main`, with no database and no rollback. There is now `.github/workflows/deploy.yml` plus `deploy/`:
+- It runs only after CI passes on a push to `main`.
+- It builds the image with the commit SHA baked in and pushes it to GHCR.
+- It connects over SSH with a pinned host key.
+- On the server: back up the database, start the new image behind a health check (which also applies migrations), verify the reported version, and **roll back automatically** otherwise. The nginx site block is installed behind `nginx -t`.
+- Finally, it checks the deployed version through Cloudflare.
+
+The rehearsal (`deploy/README.md`) found and fixed one real defect before it ever ran: `.env` was rewritten with the new tag *before* the image pull. A failed pull therefore left the "previous release" pointing at an image that never ran, so the next rollback would have targeted it. The new tag is now passed through the environment and recorded only once the release is healthy.
+
+### P2-14 · The admin's daily chart drew at half width — FIXED
+
+The SVG had a fixed height and a `viewBox`, so the default `preserveAspectRatio` letterboxed it into the middle half of its card. Found on the screenshot taken during the rehearsal. It now stretches; the chart has no text inside to distort.
+
+### P3-4 · PostCSS advisory inside Next.js — ACCEPTED
+
+Next.js 15.5.27 vendors PostCSS 8.4.x, which carries an XSS advisory (unescaped `</style>` in stringified CSS) and several source-map path traversal advisories. The only fix `npm audit` offers is Next.js 16 (P3-3). PostCSS runs here only at build time, over this repository's own stylesheets: no visitor-supplied CSS is ever parsed. Re-check when moving to Next.js 16.
+
 ### P3-2 · Thin editorial content — NOT ACTED ON
 
 Two insight articles and four industries. Both clusters are structurally sound
@@ -428,8 +463,8 @@ forward-compatible — `next lint` is removed in 16.
 |---|---|
 | `npm run typecheck` | clean |
 | `npm run lint` | 0 errors, 0 warnings |
-| `npm run test` (Vitest) | 96 passed |
-| `npm run test:e2e` (Playwright) | 144 passed — desktop, tablet, mobile |
+| `npm run test` (Vitest) | 124 passed, plus 8 PostgreSQL integration tests when `TEST_DATABASE_URL` is set (always in CI) |
+| `npm run test:e2e` (Playwright) | 171 passed — desktop, tablet, mobile; the admin suite additionally 8× repeated per viewport, 192/192 |
 | `npm run build` | clean, 104 pages, 92 indexable URLs |
 | Lighthouse a11y / best-practices / SEO | **100 / 100 / 100** on `/ar`, `/en`, `/ar/design-system`, `/en/design-system`, `/ar/dashboard`, `/en/dashboard`, `/ar/contact`, `/ar/products`, `/ar/solutions`, `/ar/faq`, `/ar/start-project`, `/ar/about`, `/ar/services/custom-software`, `/ar/solutions/restaurant-system`, `/ar/legal/privacy` |
 | Lighthouse performance (throttled mobile, `/ar`) | **78** (median of 7; range 73–83) — CLS 0, FCP 1.4 s, LCP 4.9 s, TBT 193 ms. See P3-0 |
@@ -442,12 +477,13 @@ forward-compatible — `next lint` is removed in 16.
 | Item | Why it needs a person |
 |---|---|
 | `NEXT_PUBLIC_SITE_URL` in Vercel | Canonical URLs, hreflang, sitemap and OG cards are prerendered at **build** time. The Vercel fallbacks keep a deployment self-consistent, but only this variable survives a domain change. |
-| `RESEND_API_KEY`, `RESEND_FROM_EMAIL` | Without a key the contact API logs instead of sending and returns `delivered: false`. The from-address must be on a domain verified in Resend. |
+| **VPS go-live** (`deploy/README.md` §1–5) | Cloudflare DNS + SSL mode + origin certificate; one run of `server-setup.sh` as root on the server; a `no-reply@novixa.dev` mailbox, DKIM/SPF/DMARC and reverse DNS for mailcow; the GitHub `production` environment secrets and `DEPLOY_ENABLED=true`. Each needs an account only the owner holds. |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | The WhatsApp channel is hidden until a real number is set. Leaving it unset is correct; a placeholder is not. |
 | ~~Vercel cannot deploy~~ · **RESOLVED** | Was `Cannot deploy from a private GitHub organization repository on the Hobby plan`. The repository was made public on 2026-10-06 and deployment resumed on the first push after: Vercel status `success`, preview built and Ready. |
 | ~~GitHub Actions is not executing~~ · **RESOLVED** | Same root cause — a private organization repository on the free tier of both services. CI has run green on every push since, including the full browser suite. |
 | ~~Preview deployments cannot be verified~~ · **RESOLVED** | The preview is still behind Deployment Protection (correctly), but Vercel's authenticated bypass now lets it be fetched for QA. Done on 2026-10-06; results under P0-1. |
-| **Merge PR #1** | Production still serves the dead-origin canonical and no `og:image` (P0-1). Only the merge changes that. |
+| ~~Merge PR #1~~ · **DONE 2026-10-07** | The canonical and `og:image` are fixed in production. |
+| `NEXT_PUBLIC_SITE_URL=https://novixa.dev` on Vercel, once the VPS is live | Then the Vercel deployment's canonicals point at the primary domain rather than competing with it. |
 | **Link GitHub to Railway** | The Railway project, service, domain (`web-production-d2452.up.railway.app`) and variables are in place, but Railway's GitHub app has no access to `Novixa-dev`, so the service cannot read the repository. Steps in `DEPLOYMENT_GUIDE.md` §4. |
 | Legal review | `src/content/legal.ts` is engineering-authored copy describing real system behaviour (`LEGAL_REVIEW_PENDING = true`). A lawyer should read it before launch. |
 | Real social profiles | `linkedin.com/company/novixa`, `github.com/novixa`, `x.com/novixa` are referenced in `sameAs` structured data and the footer. Unverified. |

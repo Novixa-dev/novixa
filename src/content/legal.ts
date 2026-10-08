@@ -37,7 +37,7 @@ export const LEGAL_DOCUMENTS: LegalDocument[] = [
       ar: 'ما الذي نجمعه من هذا الموقع، ولماذا، وكم نحتفظ به، وكيف تطلب حذفه.',
       en: 'What this site collects, why, how long it is kept, and how to have it deleted.',
     },
-    updated: '2026-09-29',
+    updated: '2026-10-07',
     sections: [
       {
         heading: { ar: 'ما الذي نجمعه', en: 'What we collect' },
@@ -89,10 +89,12 @@ export const LEGAL_DOCUMENTS: LegalDocument[] = [
         body: {
           ar: [
             'نحتفظ بمراسلات الطلب ما دامت المحادثة قائمة أو المشروع قائماً.',
+            'يُحفظ كل طلب يصلنا عبر الموقع في قاعدة بيانات على خادمنا الخاص، حتى لا يضيع طلب إن تعطّل البريد. لا يصل إليها إلا فريق نوڤيكسا عبر لوحة إدارة محمية بكلمة مرور.',
             'يمكنك في أي وقت أن تطلب نسخة مما لدينا عنك، أو تصحيحه، أو حذفه بالكامل، بمراسلتنا على البريد المذكور أدناه. ننفّذ الطلب دون اشتراط سبب.',
           ],
           en: [
             'We keep enquiry correspondence for as long as the conversation or the project is live.',
+            'Every enquiry sent through this site is stored in a database on our own server, so that no request is lost if email delivery fails. Only the Novixa team can reach it, through a password-protected admin.',
             'You may at any time request a copy of what we hold about you, have it corrected, or have it deleted entirely, by writing to the address below. We act on the request without requiring a reason.',
           ],
         },

@@ -126,6 +126,7 @@ export const ContactView: React.FC = () => {
           details: formData.message,
           website: honeypot,
           language,
+          source: 'contact',
         }),
       });
 

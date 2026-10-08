@@ -146,6 +146,17 @@ handed over directly. The repository is public, so committing either would show
 prospects the list they are on and the script they are about to receive. Business
 material lives with the business, not with the website's source.
 
+## Phase 8 — Leads, admin, and production on the VPS · **DONE, waiting on owner setup**
+
+| # | Work | Outcome |
+|---|---|---|
+| 8.1 | Leads in PostgreSQL before email | P1-11. Append-only migrations under an advisory lock, applied on first use; integration suite against a real PostgreSQL in CI |
+| 8.2 | `/admin` | Overview (KPIs, 30-day chart, status and source breakdowns, system status), lead list with filters/search/CSV, lead detail with status pipeline, notes, delete. Arabic/English, Lighthouse 100 on login |
+| 8.3 | SMTP transport | P1-12. Mail through the owner's own mailcow; Resend kept as an option |
+| 8.4 | `/api/health` | Readiness incl. database and migrations; reports the deployed commit. Drives the deploy gate and uptime checks |
+| 8.5 | Next.js 15.5.23 → 15.5.27 | P0-2, critical advisory |
+| 8.6 | VPS pipeline | P2-13. `deploy/` + `deploy.yml`: GHCR image, SSH with pinned host key, backup → health-gated start → version check → rollback, nginx block in mailcow behind `nginx -t`, nightly backups. Rehearsed end to end, including the failure paths |
+
 ---
 
 ## Remaining
@@ -160,9 +171,11 @@ Verified on `cc0b7df`: combined commit status `success`, both check runs
 (`Typecheck, lint, test, build`, `Vercel Preview Comments`) `success`, PR
 mergeable state `clean`.
 
-### R1 — Set the production environment variables · **blocked on access**
-`NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`,
-`NEXT_PUBLIC_WHATSAPP_NUMBER`. See `PRODUCTION_AUDIT.md` §4.
+### R1 — Go live on the VPS · **blocked on owner access**
+Cloudflare (DNS, Full (strict), origin certificate), one run of
+`deploy/scripts/server-setup.sh`, the mailcow mailbox and DNS records, the GitHub
+`production` secrets and `DEPLOY_ENABLED=true`. Exact steps: `deploy/README.md`.
+Everything on the code side is done and rehearsed.
 
 ### R2 — Get GitHub Actions executing · **DONE 2026-10-06**
 Folded into R0 — the 4-second no-log failure was the private-repository cause,

@@ -1,0 +1,209 @@
+name: Deploy
+
+# Production deploys to the VPS, only ever after CI has passed on main.
+#
+#   push to main → CI (typecheck, lint, unit + Postgres integration, build,
+#   E2E on 3 viewports) → this workflow: build image → GHCR → SSH → deploy.sh
+#   (backup, migrate, health-gated start, rollback on failure) → public check.
+#
+# Off until the repository variable DEPLOY_ENABLED is "true", so the pipeline
+# can be merged before the server and secrets exist. Setup: deploy/README.md.
+#
+# This repository is public, so are these logs: nothing below echoes a secret,
+# and GitHub masks any that slip into output.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One deploy at a time, and never cancel one halfway through a migration.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+  # The commit CI tested — not whatever main points at by the time this runs.
+  SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+jobs:
+  image:
+    name: Build and push image
+    if: >-
+      vars.DEPLOY_ENABLED == 'true' &&
+      (
+        (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+        (
+          github.event.workflow_run.conclusion == 'success' &&
+          github.event.workflow_run.event == 'push' &&
+          github.event.workflow_run.head_repository.full_name == github.repository
+        )
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SHA }}
+
+      - id: tag
+        run: echo "tag=sha-${SHA}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ steps.tag.outputs.tag }}
+            ${{ env.IMAGE }}:latest
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ env.SHA }}
+          # NEXT_PUBLIC_* are inlined at build time, so they are build args.
+          build-args: |
+            GIT_SHA=${{ env.SHA }}
+            NEXT_PUBLIC_SITE_URL=${{ vars.SITE_URL || 'https://novixa.dev' }}
+            NEXT_PUBLIC_WHATSAPP_NUMBER=${{ vars.WHATSAPP_NUMBER }}
+            NEXT_PUBLIC_CONTACT_EMAIL=${{ vars.CONTACT_EMAIL }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to VPS
+    needs: image
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: ${{ vars.SITE_URL || 'https://novixa.dev' }}
+    permissions:
+      contents: read
+      packages: read
+    env:
+      TAG: ${{ needs.image.outputs.tag }}
+      SITE_URL: ${{ vars.SITE_URL || 'https://novixa.dev' }}
+      REMOTE_DIR: /opt/novixa
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SHA }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Render app.env
+        env:
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          ADMIN_PASSWORD_HASH: ${{ secrets.ADMIN_PASSWORD_HASH }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_HOST: ${{ vars.SMTP_HOST }}
+          SMTP_PORT: ${{ vars.SMTP_PORT }}
+          SMTP_SECURE: ${{ vars.SMTP_SECURE }}
+          SMTP_USER: ${{ vars.SMTP_USER }}
+          MAIL_FROM: ${{ vars.MAIL_FROM }}
+          CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL }}
+        run: node deploy/scripts/render-app-env.mjs "$RUNNER_TEMP/app.env"
+
+      - name: Configure SSH
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          for name in VPS_SSH_KEY VPS_KNOWN_HOSTS VPS_HOST; do
+            [ -n "${!name}" ] || { echo "::error::secret $name is not set"; exit 1; }
+          done
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
+          # Pinned host key (from server-setup.sh): no trust-on-first-use.
+          printf '%s\n' "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<EOF
+          Host vps
+            HostName $VPS_HOST
+            Port ${VPS_PORT:-22}
+            User ${VPS_USER:-novixa}
+            IdentityFile ~/.ssh/deploy_key
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+            ServerAliveInterval 15
+          EOF
+          ssh vps true
+
+      - name: Upload release files
+        env:
+          CF_ORIGIN_CERT: ${{ secrets.CF_ORIGIN_CERT }}
+          CF_ORIGIN_KEY: ${{ secrets.CF_ORIGIN_KEY }}
+        run: |
+          # shellcheck disable=SC2029
+          tar -czf - -C deploy compose.yml nginx scripts \
+            | ssh vps "tar -xzf - -C '$REMOTE_DIR' && chmod 755 '$REMOTE_DIR'/scripts/*.sh"
+          # shellcheck disable=SC2029
+          ssh vps "umask 077 && cat > '$REMOTE_DIR/app.env'" < "$RUNNER_TEMP/app.env"
+          rm -f "$RUNNER_TEMP/app.env"
+          if [ -n "$CF_ORIGIN_CERT" ] && [ -n "$CF_ORIGIN_KEY" ]; then
+            # shellcheck disable=SC2029
+            ssh vps "umask 077 && mkdir -p '$REMOTE_DIR/tls'"
+            # shellcheck disable=SC2029
+            printf '%s\n' "$CF_ORIGIN_CERT" | ssh vps "umask 077 && cat > '$REMOTE_DIR/tls/origin.pem'"
+            # shellcheck disable=SC2029
+            printf '%s\n' "$CF_ORIGIN_KEY"  | ssh vps "umask 077 && cat > '$REMOTE_DIR/tls/origin.key'"
+          else
+            echo "::warning::CF_ORIGIN_CERT / CF_ORIGIN_KEY not set — keeping the certificate already on the server, if any."
+          fi
+
+      - name: Release
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+        run: |
+          # The job token can pull this repository's package for as long as the
+          # job runs; it is removed again in the next step.
+          # shellcheck disable=SC2029
+          printf '%s' "$GHCR_TOKEN" | ssh vps "docker login ghcr.io -u '$GHCR_USER' --password-stdin" >/dev/null
+          # shellcheck disable=SC2029
+          ssh vps "'$REMOTE_DIR/scripts/deploy.sh' '$IMAGE' '$TAG'"
+
+      - name: Forget registry token
+        if: always()
+        run: ssh vps "docker logout ghcr.io" >/dev/null 2>&1 || true
+
+      - name: Public check through Cloudflare
+        run: |
+          expected="${SHA:0:12}"
+          for attempt in $(seq 1 10); do
+            body="$(curl -fsS --max-time 10 "$SITE_URL/api/health" || true)"
+            if [[ "$body" == *"\"status\":\"ok\""* && "$body" == *"\"version\":\"$expected\""* ]]; then
+              echo "health: $body"
+              break
+            fi
+            echo "attempt $attempt: ${body:-no response}"; sleep 6
+            [ "$attempt" = 10 ] && { echo "::error::$SITE_URL/api/health does not report $expected"; exit 1; }
+          done
+          page="$(curl -fsS --max-time 15 "$SITE_URL/ar")"
+          grep -q "rel=\"canonical\" href=\"$SITE_URL/ar\"" <<<"$page" \
+            || { echo "::error::/ar does not carry the canonical $SITE_URL/ar"; exit 1; }
+          echo "Live: $SITE_URL ($expected)"

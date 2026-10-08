@@ -52,10 +52,17 @@ RUN npm run build
 FROM node:${NODE_VERSION} AS runner
 WORKDIR /app
 
+# The commit this image was built from: shown in the admin and reported by
+# /api/health, so a deploy can prove the new build is the one answering.
+ARG GIT_SHA=""
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     PORT=3000 \
-    HOSTNAME=0.0.0.0
+    HOSTNAME=0.0.0.0 \
+    BUILD_SHA=$GIT_SHA
+
+# Lets the VPS prune old Novixa images without touching anyone else's.
+LABEL dev.novixa.app="true"
 
 RUN addgroup --system --gid 1001 nodejs \
  && adduser --system --uid 1001 nextjs
@@ -69,6 +76,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 USER nextjs
 EXPOSE 3000
+
+# Readiness, not just liveness: /api/health is 503 when a configured database
+# is unreachable. Node 22's global fetch, so the image needs no curl.
+HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=3 \
+  CMD ["node", "-e", "fetch('http://127.0.0.1:'+(process.env.PORT||3000)+'/api/health').then(r=>process.exit(r.ok?0:1),()=>process.exit(1))"]
 
 # Railway sets PORT; server.js honours it and HOSTNAME.
 CMD ["node", "server.js"]

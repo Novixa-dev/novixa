@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
 import { getServerEnv, getSiteUrl } from '@/lib/env';
+import { getLeadStore, isLeadSource, type Lead } from '@/lib/leads';
+import { getMailer, type Mailer } from '@/lib/mail';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -20,6 +21,8 @@ interface ContactPayload {
   serviceNeeded?: string;
   details?: string;
   language?: 'ar' | 'en';
+  /** Which form sent this: 'contact' or 'start-project'. */
+  source?: string;
   /** Honeypot — always empty for a real visitor. */
   website?: string;
 }
@@ -132,6 +135,40 @@ export async function POST(request: NextRequest) {
   const env = getServerEnv();
   const company = clean(payload.company);
 
+  // ── 1. Record the lead ────────────────────────────────────────────────────
+  // The database row is the record; the email below is a notification about it.
+  // Written first so that an email outage, an expired key or a spam folder can
+  // no longer lose an enquiry. A database failure is logged and the request
+  // falls through to email, which is exactly how this endpoint behaved before
+  // persistence existed — never worse than that.
+  const store = getLeadStore();
+  let lead: Lead | null = null;
+  if (store) {
+    try {
+      lead = await store.create({
+        receiptId,
+        source: isLeadSource(payload.source) ? payload.source : clean(payload.projectType) ? 'start-project' : 'contact',
+        locale: lang,
+        name,
+        email,
+        company,
+        phone: clean(payload.phone),
+        projectType: clean(payload.projectType),
+        serviceNeeded: clean(payload.serviceNeeded),
+        industry: clean(payload.industry) || clean(payload.businessType),
+        problem: clean(payload.problem),
+        existingSystem: clean(payload.existingSystem),
+        budgetRange: clean(payload.budgetRange),
+        timeline: clean(payload.timeline),
+        details: clean(payload.details),
+      });
+    } catch (error) {
+      console.error(`[contact] could not store lead ${receiptId}:`, error);
+    }
+  }
+  const stored = lead !== null;
+  const adminLink = lead ? `${getSiteUrl()}/admin/leads/${lead.id}` : '';
+
   const fields = (
     [
       ['Project type', clean(payload.projectType)],
@@ -164,6 +201,7 @@ export async function POST(request: NextRequest) {
           <tr><td style="padding:6px 12px 6px 0;color:#64748b;font-size:13px;">Email</td><td style="padding:6px 0;color:#e2e8f0;font-size:13px;">${escapeHtml(email)}</td></tr>
           ${rowsHtml}
         </table>
+        ${adminLink ? `<a href="${adminLink}" style="display:inline-block;margin-top:18px;background:#2563eb;color:#fff;font-size:13px;font-weight:600;text-decoration:none;padding:9px 16px;border-radius:10px;">Open in the admin</a>` : ''}
         <div style="margin-top:20px;padding-top:16px;border-top:1px dashed #1e293b;color:#475569;font-size:11px;">Receipt ${receiptId}</div>
       </div>
     </div>
@@ -177,46 +215,56 @@ export async function POST(request: NextRequest) {
     `Email: ${email}`,
     ...fields.map(([label, value]) => `${label}: ${value}`),
     `Receipt: ${receiptId}`,
+    ...(adminLink ? [`Admin: ${adminLink}`] : []),
   ].join('\n');
 
-  if (!env.resendApiKey) {
-    // No email provider configured (e.g. local development) — log instead of
-    // failing, and tell the caller delivery did not actually happen.
+  const mailer = getMailer();
+  if (!mailer) {
+    // No email provider configured (local development, or a deployment where
+    // only the database is set up). The lead is stored if a store exists; say
+    // plainly that no email went out.
     console.warn(
-      `[contact] RESEND_API_KEY not set — logging submission ${receiptId} instead of sending email.`,
-      { receiptId, name, email, company }
+      `[contact] no mail transport configured — ${stored ? 'stored' : 'logged'} submission ${receiptId}, no email sent.`,
+      stored ? { receiptId } : { receiptId, name, email, company }
     );
-    return NextResponse.json({ success: true, receiptId, delivered: false });
+    return NextResponse.json({ success: true, receiptId, delivered: false, stored });
   }
 
   try {
-    const resend = new Resend(env.resendApiKey);
-    const { error } = await resend.emails.send({
-      from: env.resendFromEmail,
-      to: [env.novixaContactEmail],
-      replyTo: email,
-      subject: `New project inquiry — ${name}${company ? ` (${company})` : ''}`,
-      html,
-      text,
-    });
-
-    if (error) {
-      console.error('[contact] Resend error:', error);
+    try {
+      await mailer.send({
+        to: env.novixaContactEmail,
+        replyTo: email,
+        subject: `New project inquiry — ${name}${company ? ` (${company})` : ''}`,
+        html,
+        text,
+      });
+    } catch (error) {
+      console.error(`[contact] ${mailer.kind} send failed:`, error);
+      // Stored but not emailed: the enquiry is safe and visible in the admin, so
+      // the visitor's request genuinely was received. Without a store this is
+      // still the failure it always was.
+      if (stored) return NextResponse.json({ success: true, receiptId, delivered: false, stored });
       return NextResponse.json(
         { success: false, error: localized(lang, SEND_FAILED.ar, SEND_FAILED.en) },
         { status: 502 }
       );
     }
 
+    if (lead && store) {
+      void store.markDelivered(lead.id, true).catch((err) => console.error('[contact] markDelivered failed:', err));
+    }
+
     // Acknowledgement to the person who filled the form. A failure here must
     // not fail the request — the inquiry itself already reached Novixa.
-    void sendAcknowledgement({ resend, env, to: email, name, lang, receiptId }).catch((err) =>
+    void sendAcknowledgement({ mailer, env, to: email, name, lang, receiptId }).catch((err) =>
       console.error('[contact] acknowledgement send failed:', err)
     );
 
-    return NextResponse.json({ success: true, receiptId, delivered: true });
+    return NextResponse.json({ success: true, receiptId, delivered: true, stored });
   } catch (err) {
     console.error('[contact] Unexpected error:', err);
+    if (stored) return NextResponse.json({ success: true, receiptId, delivered: false, stored });
     return NextResponse.json(
       { success: false, error: localized(lang, SEND_FAILED.ar, SEND_FAILED.en) },
       { status: 500 }
@@ -225,14 +273,14 @@ export async function POST(request: NextRequest) {
 }
 
 async function sendAcknowledgement({
-  resend,
+  mailer,
   env,
   to,
   name,
   lang,
   receiptId,
 }: {
-  resend: Resend;
+  mailer: Mailer;
   env: ReturnType<typeof getServerEnv>;
   to: string;
   name: string;
@@ -251,9 +299,8 @@ async function sendAcknowledgement({
   const cta = isAr ? 'تصفّح حلول نوڤيكسا' : 'Browse Novixa solutions';
   const refLabel = isAr ? 'رقم الطلب' : 'Reference';
 
-  await resend.emails.send({
-    from: env.resendFromEmail,
-    to: [to],
+  await mailer.send({
+    to,
     replyTo: env.novixaContactEmail,
     subject,
     text: `${heading}\n\n${body}\n\n${refLabel}: ${receiptId}\n${siteUrl}/${lang}`,
