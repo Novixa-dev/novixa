@@ -146,6 +146,8 @@ docker run -d -p 3000:3000 --env-file .env.local novixa-web
 
 ## 6. Documentation
 
+**Continuing the work?** Start with [`docs/NEXT_STEPS.md`](./docs/NEXT_STEPS.md) — the ordered steps that remain before `novixa.dev` is live, each with its verification — and [`deploy/README.md`](./deploy/README.md), the production runbook.
+
 Four documents are kept in step with the code. Read them in this order:
 
 - [`AGENTS.md`](./AGENTS.md) — visual identity, RTL rules and the content rules. Decisions that must not be re-derived
