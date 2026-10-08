@@ -24,6 +24,11 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
   const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
+  // With the section header hidden, the page supplies the h1 and these cards sit
+  // directly under it, so they are h2. Under the header's own h2 they are h3.
+  // A fixed h3 skipped a level on /work, /industries and /insights.
+  const CardTitle = showHeader ? 'h3' : 'h2';
+
   return (
     <section className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden border-t border-slate-900/80">
       {/* Background subtle architectural grid */}
@@ -84,11 +89,11 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                 </div>
 
                 {/* Title */}
-                <h3 className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-blue-300 transition-colors">
+                <CardTitle className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-blue-300 transition-colors">
                   <Link href={`/${language}/work/${cs.id}`}>
                     {cs.title[isRtl ? 'ar' : 'en']}
                   </Link>
-                </h3>
+                </CardTitle>
 
                 {/* Challenge Excerpt */}
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-arabic line-clamp-3">

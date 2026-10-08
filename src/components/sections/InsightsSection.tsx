@@ -20,6 +20,11 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
   const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
+  // With the section header hidden, the page supplies the h1 and these cards sit
+  // directly under it, so they are h2. Under the header's own h2 they are h3.
+  // A fixed h3 skipped a level on /work, /industries and /insights.
+  const CardTitle = showHeader ? 'h3' : 'h2';
+
   return (
     <section className="py-20 lg:py-28 bg-slate-900/60 border-y border-slate-800/80 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -71,11 +76,11 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
                   </span>
                 </div>
 
-                <h3 className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-blue-400 transition-colors">
+                <CardTitle className="text-base sm:text-lg font-bold text-white font-display leading-snug group-hover:text-blue-400 transition-colors">
                   <Link href={`/${language}/insights/${art.id}`}>
                     {art.title[isRtl ? 'ar' : 'en']}
                   </Link>
-                </h3>
+                </CardTitle>
 
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-arabic line-clamp-3">
                   {art.excerpt[isRtl ? 'ar' : 'en']}
