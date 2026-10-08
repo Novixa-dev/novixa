@@ -73,11 +73,15 @@ test('an enquiry from the site appears in the admin and can be worked', async ({
   await expect(page.getByText('Acme Clinic')).toBeVisible();
 
   // Move it along the pipeline and leave a note.
+  // Each save is awaited to its server-action response: reloading while one is
+  // in flight cancels it, which is the test racing itself, not the app.
+  const saved = () => page.waitForResponse((r) => r.request().method() === 'POST' && r.url().includes('/admin/leads/'));
   await page.locator('#lead-status').selectOption('contacted');
-  await page.getByRole('button', { name: /^(Save|حفظ)$/ }).click();
+  await Promise.all([saved(), page.getByRole('button', { name: /^(Save|حفظ)$/ }).click()]);
   await expect(page.locator('#lead-status')).toHaveValue('contacted');
+  // Typed while nothing else is saving; a stage save must never wipe a draft note.
   await page.locator('#lead-notes').fill('Called, sent the console link.');
-  await page.getByRole('button', { name: /Save notes|حفظ الملاحظات/ }).click();
+  await Promise.all([saved(), page.getByRole('button', { name: /Save notes|حفظ الملاحظات/ }).click()]);
   await page.reload();
   await expect(page.locator('#lead-notes')).toHaveValue('Called, sent the console link.');
   await expect(page.locator('#lead-status')).toHaveValue('contacted');

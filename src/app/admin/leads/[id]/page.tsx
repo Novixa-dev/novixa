@@ -94,7 +94,10 @@ export default async function AdminLeadDetailPage({ params }: { params: Promise<
         <div className="space-y-4">
           <section className="glass-card rounded-2xl border border-white/[0.08] p-5">
             <h2 className="mb-3 font-display text-sm font-bold text-white leading-snug">{t('المرحلة', 'Stage')}</h2>
-            <form action={updateLeadStatus} className="flex gap-2">
+            {/* Keyed on the saved state: React 19 resets a form after its action to each
+                field's *initial* default, and a select never adopts a new defaultValue
+                after mount — so without a remount the saved stage would snap back. */}
+            <form key={`status-${lead.status}`} action={updateLeadStatus} className="flex gap-2">
               <input type="hidden" name="id" value={lead.id} />
               <label htmlFor="lead-status" className="sr-only">{t('المرحلة', 'Stage')}</label>
               <select id="lead-status" name="status" defaultValue={lead.status} className="flex-1 rounded-lg border border-white/[0.1] bg-slate-900 px-2.5 py-2 text-sm text-white">

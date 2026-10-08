@@ -76,7 +76,7 @@ export function DailyChart({
   return (
     <section className="glass-card rounded-2xl border border-white/[0.08] p-5">
       <h2 className="mb-4 font-display text-sm font-bold text-white leading-snug">{title}</h2>
-      <svg viewBox={`0 0 ${W} ${H}`} className="h-32 w-full" role="img" aria-label={title}>
+      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="h-32 w-full" role="img" aria-label={title}>
         <line x1="0" x2={W} y1={H - 0.5} y2={H - 0.5} stroke="rgba(255,255,255,0.08)" />
         {series.map((point, index) => {
           const height = point.count ? Math.max(4, (point.count / max) * (H - 8)) : 0;
