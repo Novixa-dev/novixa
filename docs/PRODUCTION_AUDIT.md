@@ -3,8 +3,8 @@
 Current state of the platform, the defects found, and what was done about each.
 Every entry carries the evidence it rests on. Updated as work lands.
 
-**Last updated:** 2026-10-06
-**Audited against:** `claude/practical-fermat-1avypc` · live deployment `novixa-cyan.vercel.app`
+**Last updated:** 2026-10-11
+**Audited against:** `main` @ `0ef36f5` · `feat/seo-and-admin-dashboard` (this work) · live `https://novixa.dev`
 
 ---
 
@@ -532,3 +532,45 @@ forward-compatible — `next lint` is removed in 16.
 | **Link GitHub to Railway** | The Railway project, service, domain (`web-production-d2452.up.railway.app`) and variables are in place, but Railway's GitHub app has no access to `Novixa-dev`, so the service cannot read the repository. Steps in `DEPLOYMENT_GUIDE.md` §4. |
 | Legal review | `src/content/legal.ts` is engineering-authored copy describing real system behaviour (`LEGAL_REVIEW_PENDING = true`). A lawyer should read it before launch. |
 | Real social profiles | `linkedin.com/company/novixa`, `github.com/novixa`, `x.com/novixa` are referenced in `sameAs` structured data and the footer. Unverified. |
+
+---
+
+## 5. Audit entry — 2026-10-11
+
+**Scope:** complete the structured data and social-card signals, and rebuild the admin console's shell. Reviewed against `main` @ `0ef36f5` (what the live site serves) and verified locally against a production build; live checks against `https://novixa.dev`.
+
+### P2-19 · The structured-data nodes did not form one entity — FIXED
+
+The homepage emitted Organization and WebSite JSON-LD, but Organization had no stable `@id`, no structured logo, no `knowsLanguage` and no contact url, and WebSite named no publisher — so Google reads them as two unrelated nodes instead of one company. The `sameAs` list was also a **second, hand-maintained copy** of the footer's social URLs: today they agree, but a future edit to one silently splits them, and search engines then read profiles the site never links to (or miss ones it does).
+
+*Fix (in `src/lib/metadata.ts`):* stable `@id`s (`/#organization`, `/#website`), WebSite → `publisher` pointing at the Organization node, `logo` as an ImageObject (`/icon.svg`, the route already reachable at `/icon.svg`), `knowsLanguage: [ar, en]`, slogan, `contactPoint.url`, and `sameAs` derived from `SOCIAL_LINKS` — the footer's own array — so there is one source of truth.
+*Guard:* `tests/seo-metadata.test.ts` (7 tests) asserts the derivation and the `@id` wiring; a future change that reintroduces a second copy or drops the publisher link fails in PR.
+
+### P2-20 · Root metadata and robots.txt gaps — FIXED
+
+No `applicationName`, no `formatDetection` (mobile browsers were free to rewrite numeric-looking body text into `tel:` links), no `creator` / `category` / `appleWebApp`; `robots.txt` had no `host` directive.
+
+*Fix:* root `metadata` in `src/app/layout.tsx` (`formatDetection: { email, address, telephone: false }`, `appleWebApp`, authors/creator/publisher, category `technology`); `host: baseUrl` in `src/app/robots.ts`. `constructMetadata` also now emits `applicationName` and a Twitter `site`/`creator` handle derived from the same social list, rather than a hardcoded one.
+
+### P3-5 · `npm audit`: 10 vulnerabilities — NOTED, not force-fixed
+
+2 moderate, 6 high, 2 critical. All transitive dev/build-time packages (vitest, braces, postcss) with no fix available within their installed majors; the only clean exits are the breaking framework upgrades already tracked (Next 16 / Vitest 5, plan R7). Forcing a fix now would pin the framework; it is deliberately not bundled with feature work so any regression stays attributable.
+
+### P3-6 · Social profiles still only human-verifiable — NOTED
+
+Re-probed 2026-10-11: `github.com/novixa` 200, `github.com/Novixa-dev` 200, `x.com/novixa` 200, `linkedin.com/company/novixa` **403** (bot-blocking; indistinguishable from a live profile from out here). Links are retained — the sameAs-drift risk is gone — but §4's "Real social profiles" row stands: only a person opening each profile confirms it.
+
+### Admin console — delivered, semantics preserved
+
+`AdminShell` rebuilt as a responsive console: persistent sidebar at `lg:` (brand mark, section nav with active state, store kind and operator id at the foot) and a horizontally scrollable inline nav in the header below it — the only navigation a narrow phone can reach without a drawer. Both render the same links; exactly one is visible per breakpoint, so no control is duplicated in the accessibility tree. The leads list draws a six-column table at `md+` and one card per lead below it, with the lead-name link kept as the single accessible name in both. Overview KPIs gained per-metric icons and status accents. Covered by `e2e/admin.spec.ts` across all three project viewports (24 checks) — login, noindex, wrong-password, enquiry→lead→status/notes workflow, CSV, delete-with-confirmation, sign-out, and the Arabic/English direction switch all pass on the new shell. See IMPLEMENTATION_PLAN Phase 9.
+
+### Verification (this session)
+
+| Gate | Result |
+|---|---|
+| `npm run typecheck` | clean |
+| `npm run lint` | 0 errors, 0 warnings |
+| `npm run test` | 158 passed + 8 skipped (PostgreSQL integration, stubbed without `TEST_DATABASE_URL`) |
+| `npm run build` | clean; postbuild output sync verified |
+| `npm run test:e2e` | **180 passed**, 12 conditionally skipped, desktop/tablet/mobile — same skip set as baseline, zero new regressions |
+| Live `https://novixa.dev` | `/api/health` reported `ok`; `robots.txt` and `sitemap.xml` served; `/` 308 → `/ar` |
