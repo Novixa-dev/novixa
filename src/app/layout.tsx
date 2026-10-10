@@ -10,6 +10,22 @@ export const metadata: Metadata = {
     default: 'Novixa | نوڤيكسا — Software Engineering & Digital Products',
     template: '%s | Novixa',
   },
+  applicationName: 'Novixa',
+  description:
+    'Novixa is a software engineering and digital products company: custom business platforms, SaaS products, and system modernization for the Middle East and GCC.',
+  authors: [{ name: 'Novixa', url: getSiteUrl() }],
+  creator: 'Novixa',
+  publisher: 'Novixa',
+  category: 'technology',
+  // The site has no phone number or postal address to auto-detect; leaving
+  // detection on makes some mobile browsers rewrite innocent number-like text
+  // (a budget, a port) into tappable tel: links.
+  formatDetection: { email: false, address: false, telephone: false },
+  appleWebApp: {
+    capable: true,
+    title: 'Novixa',
+    statusBarStyle: 'black-translucent',
+  },
   icons: {
     // `favicon.ico` first for the browsers and crawlers that still request
     // `/favicon.ico` by convention and ignore the declared SVG; the SVG then

@@ -88,7 +88,12 @@ export default async function AdminLeadsPage({
         </button>
       </form>
 
-      <div className="glass-card overflow-x-auto rounded-2xl border border-white/[0.08]">
+      {/* Desktop: the table. Below md the same rows render as cards, because a
+          six-column table scrolled sideways is how a phone presents "we do not
+          actually support phones". Exactly one of the two is visible per
+          breakpoint, so the lead-name links are never duplicated in the
+          accessibility tree. */}
+      <div className="glass-card hidden overflow-x-auto rounded-2xl border border-white/[0.08] md:block">
         <table className="w-full min-w-[720px] text-sm">
           <thead>
             <tr className="border-b border-white/[0.06] text-xs text-slate-400">
@@ -122,6 +127,32 @@ export default async function AdminLeadsPage({
           </tbody>
         </table>
       </div>
+
+      {/* Mobile: one card per lead. */}
+      <ul className="space-y-3 md:hidden">
+        {result.rows.length === 0 ? (
+          <li className="glass-card rounded-2xl border border-white/[0.08] p-6 text-center text-sm text-slate-400">
+            {t('لا توجد طلبات مطابقة.', 'No matching leads.')}
+          </li>
+        ) : (
+          result.rows.map((lead) => (
+            <li key={lead.id} className="glass-card rounded-2xl border border-white/[0.08] p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <Link href={`/admin/leads/${lead.id}`} className="block font-medium text-white hover:text-blue-200">{lead.name}</Link>
+                  {lead.company && <div className="text-xs text-slate-400">{lead.company}</div>}
+                </div>
+                <StatusBadge status={lead.status} lang={lang} />
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-400">
+                <span dir="ltr" translate="no">{lead.email}</span>
+                <span>{SOURCE_LABELS[lead.source][lang]}</span>
+                <span>{formatDateTime(lead.createdAt, lang)}</span>
+              </div>
+            </li>
+          ))
+        )}
+      </ul>
 
       {pages > 1 && (
         <nav aria-label={t('الصفحات', 'Pages')} className="mt-4 flex items-center justify-between text-sm">

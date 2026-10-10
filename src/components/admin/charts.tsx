@@ -9,15 +9,44 @@
  * a native tooltip and the same numbers are exposed as a table for assistive
  * technology.
  */
+import type { LucideIcon } from 'lucide-react';
 import { CHART_COLORS } from '@/lib/dashboard-demo';
 
 const BAR = CHART_COLORS[0];
 
-export function KpiTile({ label, value, hint }: { label: string; value: number | string; hint?: string }) {
+type Accent = 'blue' | 'teal' | 'amber' | 'rose';
+
+const ACCENTS: Record<Accent, string> = {
+  blue: 'text-blue-400 bg-blue-600/10 ring-blue-500/25',
+  teal: 'text-teal-400 bg-teal-600/10 ring-teal-500/25',
+  amber: 'text-amber-400 bg-amber-600/10 ring-amber-500/25',
+  rose: 'text-rose-400 bg-rose-600/10 ring-rose-500/25',
+};
+
+export function KpiTile({
+  label,
+  value,
+  hint,
+  Icon,
+  accent = 'blue',
+}: {
+  label: string;
+  value: number | string;
+  hint?: string;
+  Icon?: LucideIcon;
+  accent?: Accent;
+}) {
   return (
-    <div className="glass-card rounded-xl border border-white/[0.07] p-4">
-      <div className="text-xs text-slate-400">{label}</div>
-      <div className="mt-1 font-display text-3xl font-bold text-white">{value}</div>
+    <div className="glass-card rounded-2xl border border-white/[0.07] p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div className="text-xs text-slate-400">{label}</div>
+        {Icon && (
+          <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ring-1 ring-inset ${ACCENTS[accent]}`}>
+            <Icon className="h-4 w-4" aria-hidden="true" />
+          </span>
+        )}
+      </div>
+      <div className="mt-2 font-display text-3xl font-bold tabular-nums text-white">{value}</div>
       {hint && <div className="mt-1 text-xs text-slate-400">{hint}</div>}
     </div>
   );

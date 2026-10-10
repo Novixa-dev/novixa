@@ -1,7 +1,26 @@
 import { Metadata } from 'next';
 import { getSiteUrl } from './site';
+import { SOCIAL_LINKS } from '@/data/navigation';
 
 export { getSiteUrl };
+
+/**
+ * The site's public social profiles, in one place.
+ *
+ * `SOCIAL_LINKS` already feeds the footer. Reading it here rather than
+ * retyping the URLs means the structured data cannot drift from the links a
+ * visitor actually sees — they were two hand-maintained copies before, and a
+ * profile that exists in one and not the other is worse than no profile.
+ */
+const SOCIAL_URLS = SOCIAL_LINKS.map((link) => link.url);
+
+/** `https://x.com/novixa` → `@novixa`, for the Twitter card's site/creator. */
+function twitterHandle(): string | undefined {
+  const x = SOCIAL_LINKS.find((link) => link.iconName === 'Twitter');
+  if (!x) return undefined;
+  const match = x.url.match(/(?:x\.com|twitter\.com)\/([A-Za-z0-9_]+)/);
+  return match ? `@${match[1]}` : undefined;
+}
 
 /**
  * Builds the URL of the generated social card for a page.
@@ -55,10 +74,13 @@ export function constructMetadata({
     alt: title,
     type: 'image/png',
   };
+  const handle = twitterHandle();
 
   return {
     title,
     description,
+    applicationName: 'Novixa',
+    category: 'technology',
     alternates: {
       canonical: canonicalUrl,
       languages: {
@@ -82,6 +104,7 @@ export function constructMetadata({
       title: `${title} | Novixa`,
       description,
       images: [ogImageUrl],
+      ...(handle ? { site: handle, creator: handle } : {}),
     },
     robots: {
       index: true,
@@ -102,19 +125,25 @@ export function generateOrganizationJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    // A stable identifier so every reference to the company — the WebSite
+    // publisher below, the Service/Article providers — can point at one node
+    // instead of repeating an anonymous blob on each page.
+    '@id': `${baseUrl}/#organization`,
     name: 'Novixa',
+    legalName: 'Novixa',
     alternateName: 'نوڤيكسا',
     url: baseUrl,
-    logo: `${baseUrl}/icon.svg`,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${baseUrl}/icon.svg`,
+    },
     description:
       'Novixa is a software engineering and digital products company: custom business platforms, SaaS products, and system modernization for the Middle East and GCC.',
+    slogan: 'Engineering software that runs real businesses across the Middle East and GCC.',
     areaServed: ['Yemen', 'Saudi Arabia', 'GCC', 'Middle East'],
     email: 'hello@novixa.dev',
-    sameAs: [
-      'https://linkedin.com/company/novixa',
-      'https://github.com/novixa',
-      'https://x.com/novixa',
-    ],
+    knowsLanguage: ['ar', 'en'],
+    sameAs: SOCIAL_URLS,
     knowsAbout: [
       'Enterprise Software Architecture',
       'Multi-tenant Cloud Systems',
@@ -128,6 +157,7 @@ export function generateOrganizationJsonLd() {
       '@type': 'ContactPoint',
       contactType: 'technical advisory and customer support',
       email: 'hello@novixa.dev',
+      url: `${baseUrl}/ar/contact`,
       availableLanguage: ['Arabic', 'English'],
     },
   };
@@ -138,10 +168,14 @@ export function generateWebSiteJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': `${baseUrl}/#website`,
     name: 'Novixa',
     alternateName: 'نوڤيكسا للبرمجيات',
     url: baseUrl,
     inLanguage: ['ar', 'en'],
+    // Ties the site to the organization node above, so the two are read as one
+    // entity rather than two unrelated things with the same name.
+    publisher: { '@id': `${baseUrl}/#organization` },
   };
 }
 

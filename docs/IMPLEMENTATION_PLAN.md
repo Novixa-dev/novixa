@@ -157,7 +157,9 @@ material lives with the business, not with the website's source.
 | 8.5 | Next.js 15.5.23 → 15.5.27 | P0-2, critical advisory |
 | 8.6 | VPS pipeline | P2-13. `deploy/` + `deploy.yml`: GHCR image, SSH with pinned host key, backup → health-gated start → version check → rollback, nginx block in mailcow behind `nginx -t`, nightly backups. Rehearsed end to end, including the failure paths |
 
-## Phase 9 — Admin, content management and operations · **PLANNED, not started**
+## Phase 9 — Admin, content management and operations · **STARTED 2026-10-11, 9A foundation shipped**
+
+**Shipped 2026-10-11 (console foundation).** `AdminShell` is now a responsive console — persistent sidebar at `lg:`, scrollable inline nav below it, store/service status and operator id at the foot — instead of a single crowded header row. The leads list renders a real table at `md+` and one card per lead below it; KPI tiles gained per-metric icons and status accents. No semantics changed: the same selectors, ids and `role="alert"` warnings the e2e suite locks are intact, and the suite is green across desktop/tablet/mobile. This is the shell the 9A work below hangs off; see `PRODUCTION_AUDIT.md` §5-entry-2026-10-11.
 
 **What exists.** `/admin` is a lead-management tool (one administrator; list, search, filters, status pipeline, notes, CSV, delete). It is **not** a content system: page text, articles and images live in `src/content/` and change by pull request. That is the right default for a site whose rule is "no claim without evidence" (a content error is a build error), so Phase 9 adds editing power only where it earns its risk, in this order. Each sub-phase ships on its own and leaves the site working.
 

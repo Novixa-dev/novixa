@@ -10,5 +10,8 @@ export default function robots(): MetadataRoute.Robots {
       disallow: ['/admin', '/api/'],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
+    // Names the canonical host so a crawler that reached the site through a
+    // mirror or a preview origin still credits novixa.dev, not that host.
+    host: baseUrl,
   };
 }
