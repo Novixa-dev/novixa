@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Download, Search, Calendar, Tag } from 'lucide-react';
+import { Download, Search, Calendar, Tag, Table2, Columns } from 'lucide-react';
 import { requireAdmin } from '@/lib/auth/admin';
 import {
   getLeadStore,
@@ -13,6 +13,7 @@ import {
 import { AdminShell } from '@/components/admin/AdminShell';
 import { StatusBadge } from '@/components/admin/StatusBadge';
 import { PriorityBadge } from '@/components/admin/PriorityBadge';
+import { LeadsPipelineView } from '@/components/admin/LeadsPipelineView';
 import {
   formatDate,
   formatDateTime,
@@ -35,6 +36,7 @@ export default async function AdminLeadsPage({
     q?: string;
     page?: string;
     deleted?: string;
+    view?: string;
   }>;
 }) {
   const session = await requireAdmin();
@@ -46,23 +48,32 @@ export default async function AdminLeadsPage({
   const priority = isLeadPriority(params.priority) ? params.priority : undefined;
   const q = params.q?.slice(0, 200) ?? '';
   const page = Math.max(1, Number.parseInt(params.page ?? '1', 10) || 1);
+  const view = params.view === 'pipeline' ? 'pipeline' : 'table';
 
   const store = getLeadStore();
+  const pageSize = view === 'pipeline' ? 100 : PAGE_SIZE;
   const result = store
     ? await store.list({
         status,
         source,
         priority,
         search: q,
-        limit: PAGE_SIZE,
-        offset: (page - 1) * PAGE_SIZE,
+        limit: pageSize,
+        offset: view === 'pipeline' ? 0 : (page - 1) * PAGE_SIZE,
       })
     : { rows: [], total: 0 };
   const pages = Math.max(1, Math.ceil(result.total / PAGE_SIZE));
 
   const query = (overrides: Record<string, string | undefined>) => {
     const next = new URLSearchParams();
-    const merged = { status, source, priority, q: q || undefined, ...overrides };
+    const merged = {
+      status,
+      source,
+      priority,
+      q: q || undefined,
+      view: view === 'pipeline' ? 'pipeline' : undefined,
+      ...overrides,
+    };
     for (const [key, value] of Object.entries(merged)) if (value) next.set(key, value);
     const text = next.toString();
     return text ? `?${text}` : '';
@@ -84,13 +95,41 @@ export default async function AdminLeadsPage({
           <h1 className="font-display text-2xl font-bold text-white leading-snug">{t('الطلبات', 'Leads')}</h1>
           <p className="text-sm text-slate-400">{t(`${result.total} طلباً مطابقاً`, `${result.total} matching`)}</p>
         </div>
-        <a
-          href={`/admin/leads/export${query({})}`}
-          className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-slate-900/70 px-3.5 py-2 text-xs font-medium text-slate-200 hover:bg-slate-800 transition-colors"
-        >
-          <Download className="h-3.5 w-3.5" aria-hidden="true" />
-          {t('تصدير CSV', 'Export CSV')}
-        </a>
+        <div className="flex items-center gap-2">
+          {/* View Toggle */}
+          <div className="inline-flex rounded-xl bg-slate-900/80 p-0.5 border border-white/[0.08]">
+            <Link
+              href={`/admin/leads${query({ view: undefined })}`}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                view !== 'pipeline'
+                  ? 'bg-blue-600 text-white shadow-sm font-semibold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Table2 className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>{t('جدول', 'Table')}</span>
+            </Link>
+            <Link
+              href={`/admin/leads${query({ view: 'pipeline' })}`}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                view === 'pipeline'
+                  ? 'bg-blue-600 text-white shadow-sm font-semibold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Columns className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>{t('لوحة المراحل', 'Pipeline')}</span>
+            </Link>
+          </div>
+
+          <a
+            href={`/admin/leads/export${query({})}`}
+            className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-slate-900/70 px-3.5 py-2 text-xs font-medium text-slate-200 hover:bg-slate-800 transition-colors"
+          >
+            <Download className="h-3.5 w-3.5" aria-hidden="true" />
+            {t('تصدير CSV', 'Export CSV')}
+          </a>
+        </div>
       </div>
 
       {params.deleted && (
@@ -205,166 +244,172 @@ export default async function AdminLeadsPage({
         </button>
       </form>
 
-      {/* Desktop: the table. */}
-      <div className="glass-card hidden overflow-x-auto rounded-2xl border border-white/[0.08] md:block">
-        <table className="w-full min-w-[760px] text-sm">
-          <thead>
-            <tr className="border-b border-white/[0.06] text-xs text-slate-400">
-              <th scope="col" className="px-4 py-3 text-start font-medium">
-                {t('العميل', 'Contact')}
-              </th>
-              <th scope="col" className="px-4 py-3 text-start font-medium">
-                {t('الأولوية', 'Priority')}
-              </th>
-              <th scope="col" className="px-4 py-3 text-start font-medium">
-                {t('المرحلة', 'Stage')}
-              </th>
-              <th scope="col" className="px-4 py-3 text-start font-medium">
-                {t('المصدر', 'Source')}
-              </th>
-              <th scope="col" className="px-4 py-3 text-start font-medium">
-                {t('التاريخ / المتابعة', 'Date & Follow-up')}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+      {view === 'pipeline' ? (
+        <LeadsPipelineView leads={result.rows} lang={lang} />
+      ) : (
+        <>
+          {/* Desktop: the table. */}
+          <div className="glass-card hidden overflow-x-auto rounded-2xl border border-white/[0.08] md:block">
+            <table className="w-full min-w-[760px] text-sm">
+              <thead>
+                <tr className="border-b border-white/[0.06] text-xs text-slate-400">
+                  <th scope="col" className="px-4 py-3 text-start font-medium">
+                    {t('العميل', 'Contact')}
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-start font-medium">
+                    {t('الأولوية', 'Priority')}
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-start font-medium">
+                    {t('المرحلة', 'Stage')}
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-start font-medium">
+                    {t('المصدر', 'Source')}
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-start font-medium">
+                    {t('التاريخ / المتابعة', 'Date & Follow-up')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.rows.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="px-4 py-10 text-center text-slate-400">
+                      {t('لا توجد طلبات مطابقة.', 'No matching leads.')}
+                    </td>
+                  </tr>
+                ) : (
+                  result.rows.map((lead) => (
+                    <tr key={lead.id} className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.02]">
+                      <td className="px-4 py-3">
+                        <Link
+                          href={`/admin/leads/${lead.id}`}
+                          className="font-medium text-white hover:text-blue-200 transition-colors"
+                        >
+                          {lead.name}
+                        </Link>
+                        <div className="text-xs text-slate-400 font-mono" dir="ltr">
+                          {lead.email}
+                        </div>
+                        {lead.company && <div className="text-xs text-slate-300">{lead.company}</div>}
+                        {lead.tags && lead.tags.length > 0 && (
+                          <div className="mt-1 flex flex-wrap gap-1">
+                            {lead.tags.slice(0, 3).map((tag) => (
+                              <span
+                                key={tag}
+                                className="inline-flex items-center gap-0.5 rounded px-1.5 py-0.2 text-[10px] text-teal-300 bg-teal-950/40 border border-teal-500/20"
+                              >
+                                <Tag className="h-2.5 w-2.5" />
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <PriorityBadge priority={lead.priority} lang={lang} />
+                      </td>
+                      <td className="px-4 py-3">
+                        <StatusBadge status={lead.status} lang={lang} />
+                      </td>
+                      <td className="px-4 py-3 text-xs text-slate-300">
+                        <div>{SOURCE_LABELS[lead.source][lang]}</div>
+                        {lead.utmSource && (
+                          <div className="font-mono text-[11px] text-slate-400" translate="no">
+                            utm: {lead.utmSource}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-slate-300">
+                        <div>{formatDateTime(lead.createdAt, lang)}</div>
+                        {lead.followUpDate && (
+                          <div className="mt-0.5 flex items-center gap-1 font-mono text-[11px] text-amber-300">
+                            <Calendar className="h-3 w-3" />
+                            {formatDate(lead.followUpDate, lang)}
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile: one card per lead. */}
+          <ul className="space-y-3 md:hidden">
             {result.rows.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="px-4 py-10 text-center text-slate-400">
-                  {t('لا توجد طلبات مطابقة.', 'No matching leads.')}
-                </td>
-              </tr>
+              <li className="glass-card rounded-2xl border border-white/[0.08] p-6 text-center text-sm text-slate-400">
+                {t('لا توجد طلبات مطابقة.', 'No matching leads.')}
+              </li>
             ) : (
               result.rows.map((lead) => (
-                <tr key={lead.id} className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.02]">
-                  <td className="px-4 py-3">
-                    <Link
-                      href={`/admin/leads/${lead.id}`}
-                      className="font-medium text-white hover:text-blue-200 transition-colors"
-                    >
-                      {lead.name}
-                    </Link>
-                    <div className="text-xs text-slate-400 font-mono" dir="ltr">
-                      {lead.email}
+                <li key={lead.id} className="glass-card rounded-2xl border border-white/[0.08] p-4 space-y-2.5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <Link href={`/admin/leads/${lead.id}`} className="block font-medium text-white hover:text-blue-200">
+                        {lead.name}
+                      </Link>
+                      {lead.company && <div className="text-xs text-slate-300">{lead.company}</div>}
                     </div>
-                    {lead.company && <div className="text-xs text-slate-300">{lead.company}</div>}
-                    {lead.tags && lead.tags.length > 0 && (
-                      <div className="mt-1 flex flex-wrap gap-1">
-                        {lead.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="inline-flex items-center gap-0.5 rounded px-1.5 py-0.2 text-[10px] text-teal-300 bg-teal-950/40 border border-teal-500/20"
-                          >
-                            <Tag className="h-2.5 w-2.5" />
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    <PriorityBadge priority={lead.priority} lang={lang} />
-                  </td>
-                  <td className="px-4 py-3">
-                    <StatusBadge status={lead.status} lang={lang} />
-                  </td>
-                  <td className="px-4 py-3 text-xs text-slate-300">
-                    <div>{SOURCE_LABELS[lead.source][lang]}</div>
-                    {lead.utmSource && (
-                      <div className="font-mono text-[11px] text-slate-400" translate="no">
-                        utm: {lead.utmSource}
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-xs text-slate-300">
-                    <div>{formatDateTime(lead.createdAt, lang)}</div>
-                    {lead.followUpDate && (
-                      <div className="mt-0.5 flex items-center gap-1 font-mono text-[11px] text-amber-300">
-                        <Calendar className="h-3 w-3" />
-                        {formatDate(lead.followUpDate, lang)}
-                      </div>
-                    )}
-                  </td>
-                </tr>
+                    <div className="flex flex-col items-end gap-1">
+                      <StatusBadge status={lead.status} lang={lang} />
+                      <PriorityBadge priority={lead.priority} lang={lang} />
+                    </div>
+                  </div>
+
+                  {lead.tags && lead.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {lead.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] text-teal-300 bg-teal-950/40 border border-teal-500/20"
+                        >
+                          <Tag className="h-2.5 w-2.5" />
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="pt-1 flex flex-wrap items-center justify-between gap-y-1 text-xs text-slate-400 border-t border-white/[0.04]">
+                    <span dir="ltr" translate="no" className="font-mono">
+                      {lead.email}
+                    </span>
+                    <span>{formatDateTime(lead.createdAt, lang)}</span>
+                  </div>
+                </li>
               ))
             )}
-          </tbody>
-        </table>
-      </div>
+          </ul>
 
-      {/* Mobile: one card per lead. */}
-      <ul className="space-y-3 md:hidden">
-        {result.rows.length === 0 ? (
-          <li className="glass-card rounded-2xl border border-white/[0.08] p-6 text-center text-sm text-slate-400">
-            {t('لا توجد طلبات مطابقة.', 'No matching leads.')}
-          </li>
-        ) : (
-          result.rows.map((lead) => (
-            <li key={lead.id} className="glass-card rounded-2xl border border-white/[0.08] p-4 space-y-2.5">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <Link href={`/admin/leads/${lead.id}`} className="block font-medium text-white hover:text-blue-200">
-                    {lead.name}
-                  </Link>
-                  {lead.company && <div className="text-xs text-slate-300">{lead.company}</div>}
-                </div>
-                <div className="flex flex-col items-end gap-1">
-                  <StatusBadge status={lead.status} lang={lang} />
-                  <PriorityBadge priority={lead.priority} lang={lang} />
-                </div>
-              </div>
-
-              {lead.tags && lead.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1">
-                  {lead.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] text-teal-300 bg-teal-950/40 border border-teal-500/20"
-                    >
-                      <Tag className="h-2.5 w-2.5" />
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+          {pages > 1 && (
+            <nav aria-label={t('الصفحات', 'Pages')} className="mt-5 flex items-center justify-between text-sm">
+              {page > 1 ? (
+                <Link
+                  href={`/admin/leads${query({ page: String(page - 1) })}`}
+                  className="text-blue-300 hover:text-blue-200 transition-colors"
+                >
+                  {t('السابق', 'Previous')}
+                </Link>
+              ) : (
+                <span />
               )}
-
-              <div className="pt-1 flex flex-wrap items-center justify-between gap-y-1 text-xs text-slate-400 border-t border-white/[0.04]">
-                <span dir="ltr" translate="no" className="font-mono">
-                  {lead.email}
-                </span>
-                <span>{formatDateTime(lead.createdAt, lang)}</span>
-              </div>
-            </li>
-          ))
-        )}
-      </ul>
-
-      {pages > 1 && (
-        <nav aria-label={t('الصفحات', 'Pages')} className="mt-5 flex items-center justify-between text-sm">
-          {page > 1 ? (
-            <Link
-              href={`/admin/leads${query({ page: String(page - 1) })}`}
-              className="text-blue-300 hover:text-blue-200 transition-colors"
-            >
-              {t('السابق', 'Previous')}
-            </Link>
-          ) : (
-            <span />
+              <span className="text-slate-400 font-mono text-xs">
+                {t(`صفحة ${page} من ${pages}`, `Page ${page} of ${pages}`)}
+              </span>
+              {page < pages ? (
+                <Link
+                  href={`/admin/leads${query({ page: String(page + 1) })}`}
+                  className="text-blue-300 hover:text-blue-200 transition-colors"
+                >
+                  {t('التالي', 'Next')}
+                </Link>
+              ) : (
+                <span />
+              )}
+            </nav>
           )}
-          <span className="text-slate-400 font-mono text-xs">
-            {t(`صفحة ${page} من ${pages}`, `Page ${page} of ${pages}`)}
-          </span>
-          {page < pages ? (
-            <Link
-              href={`/admin/leads${query({ page: String(page + 1) })}`}
-              className="text-blue-300 hover:text-blue-200 transition-colors"
-            >
-              {t('التالي', 'Next')}
-            </Link>
-          ) : (
-            <span />
-          )}
-        </nav>
+        </>
       )}
     </AdminShell>
   );

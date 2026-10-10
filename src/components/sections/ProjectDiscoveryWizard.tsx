@@ -52,7 +52,11 @@ const TIMELINES: Choice[] = [
 
 const BUDGET_RANGES = ['$5k - $10k', '$10k - $25k', '$25k+'];
 
-export const ProjectDiscoveryWizard: React.FC = () => {
+export interface ProjectDiscoveryWizardProps {
+  initialDetails?: string;
+}
+
+export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ initialDetails = '' }) => {
   const { isRtl, t, language } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
   const BackArrowIcon = isRtl ? ArrowRight : ArrowLeft;
@@ -77,8 +81,14 @@ export const ProjectDiscoveryWizard: React.FC = () => {
     phone: '',
     budgetRange: '$10k - $25k',
     timeline: TIMELINES[1].value,
-    details: ''
+    details: initialDetails,
   });
+
+  React.useEffect(() => {
+    if (initialDetails) {
+      setFormData((prev) => ({ ...prev, details: initialDetails }));
+    }
+  }, [initialDetails]);
   // Spam trap — invisible to real visitors, blind-filled by bots.
   const [honeypot, setHoneypot] = useState('');
 
