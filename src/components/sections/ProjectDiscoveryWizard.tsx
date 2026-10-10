@@ -107,6 +107,18 @@ export const ProjectDiscoveryWizard: React.FC = () => {
 
     try {
       // Send the human-readable label, not the internal slug — the inbox
+      let utmSource = '';
+      let utmMedium = '';
+      let utmCampaign = '';
+      let referrer = '';
+      if (typeof window !== 'undefined') {
+        const sp = new URLSearchParams(window.location.search);
+        utmSource = sp.get('utm_source') || '';
+        utmMedium = sp.get('utm_medium') || '';
+        utmCampaign = sp.get('utm_campaign') || '';
+        referrer = document.referrer ? document.referrer.slice(0, 500) : '';
+      }
+
       // needs "Booking Engine", not "booking-engine".
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -120,6 +132,10 @@ export const ProjectDiscoveryWizard: React.FC = () => {
           website: honeypot,
           language,
           source: 'start-project',
+          utmSource,
+          utmMedium,
+          utmCampaign,
+          referrer,
         }),
       });
 

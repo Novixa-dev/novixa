@@ -23,6 +23,10 @@ export const CSV_COLUMNS: Array<[header: string, pick: (lead: Lead) => unknown]>
   ['receipt_id', (l) => l.receiptId],
   ['created_at', (l) => l.createdAt],
   ['status', (l) => l.status],
+  ['priority', (l) => l.priority],
+  ['assignee', (l) => l.assignee ?? ''],
+  ['follow_up_date', (l) => (l.followUpDate ? l.followUpDate.toISOString().slice(0, 10) : '')],
+  ['tags', (l) => l.tags.join('; ')],
   ['source', (l) => l.source],
   ['locale', (l) => l.locale],
   ['name', (l) => l.name],
@@ -38,6 +42,10 @@ export const CSV_COLUMNS: Array<[header: string, pick: (lead: Lead) => unknown]>
   ['timeline', (l) => l.timeline],
   ['details', (l) => l.details],
   ['notes', (l) => l.notes],
+  ['utm_source', (l) => l.utmSource ?? ''],
+  ['utm_medium', (l) => l.utmMedium ?? ''],
+  ['utm_campaign', (l) => l.utmCampaign ?? ''],
+  ['referrer', (l) => l.referrer ?? ''],
   ['email_delivered', (l) => (l.emailDelivered ? 'yes' : 'no')],
 ];
 

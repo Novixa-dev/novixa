@@ -1,6 +1,6 @@
 import 'server-only';
 import { cookies } from 'next/headers';
-import type { LeadSource, LeadStatus } from '@/lib/leads';
+import type { LeadPriority, LeadSource, LeadStatus } from '@/lib/leads';
 
 /**
  * The admin is bilingual like the site, Arabic first. The choice is a cookie
@@ -30,6 +30,13 @@ export const STATUS_LABELS: Record<LeadStatus, { ar: string; en: string }> = {
   spam: { ar: 'غير جاد / مزعج', en: 'Spam' },
 };
 
+export const PRIORITY_LABELS: Record<LeadPriority, { ar: string; en: string }> = {
+  urgent: { ar: 'عاجل جداً', en: 'Urgent' },
+  high: { ar: 'أولوية عالية', en: 'High' },
+  medium: { ar: 'أولوية متوسطة', en: 'Medium' },
+  low: { ar: 'أولوية منخفضة', en: 'Low' },
+};
+
 export const SOURCE_LABELS: Record<LeadSource, { ar: string; en: string }> = {
   contact: { ar: 'نموذج التواصل', en: 'Contact form' },
   'start-project': { ar: 'ابدأ مشروعك', en: 'Start a project' },
@@ -43,3 +50,11 @@ export function formatDateTime(date: Date, lang: AdminLang): string {
     timeZone: 'Asia/Aden',
   }).format(date);
 }
+
+export function formatDate(date: Date, lang: AdminLang): string {
+  return new Intl.DateTimeFormat(lang === 'ar' ? 'ar-u-nu-latn' : 'en-GB', {
+    dateStyle: 'medium',
+    timeZone: 'Asia/Aden',
+  }).format(date);
+}
+

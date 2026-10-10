@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '../../context/LanguageContext';
 import { SOLUTIONS, PRODUCTS, INDUSTRIES, INSIGHTS } from '../../content/data';
+import { servicesCatalog } from '../../lib/content';
 import { 
   Search, X, Layers, Sparkles, Building, BookOpen, 
   Briefcase, ArrowLeft, ArrowRight, CornerDownLeft, Shield 
@@ -40,7 +41,21 @@ export const CommandMenu: React.FC = () => {
 
   const normalizedQuery = query.toLowerCase().trim();
 
-  // Search items across Solutions, Products, Industries, and Insights
+  // Search items across Services, Solutions, Products, Industries, and Insights
+  const servicesMatches = servicesCatalog.filter((s) => {
+    if (!normalizedQuery) return false;
+    const haystacks = [
+      s.title.ar, s.title.en,
+      s.subtitle.ar, s.subtitle.en,
+      s.description.ar, s.description.en,
+      s.businessValue.ar, s.businessValue.en,
+      s.categoryBadge.ar, s.categoryBadge.en,
+      ...(s.deliverables?.ar || []), ...(s.deliverables?.en || []),
+      ...(s.capabilities?.ar || []), ...(s.capabilities?.en || []),
+    ].map((txt) => txt.toLowerCase());
+    return haystacks.some((h) => h.includes(normalizedQuery));
+  });
+
   const solutionsMatches = SOLUTIONS.filter((s) => {
     if (!normalizedQuery) return false;
     const haystacks = [
@@ -91,6 +106,7 @@ export const CommandMenu: React.FC = () => {
   });
 
   const hasMatches =
+    servicesMatches.length > 0 ||
     solutionsMatches.length > 0 ||
     productsMatches.length > 0 ||
     industriesMatches.length > 0 ||
@@ -186,6 +202,38 @@ export const CommandMenu: React.FC = () => {
                   </span>
                   <ArrowIcon className="w-3 h-3 text-slate-500" />
                 </button>
+              </div>
+            </div>
+          )}
+
+          {/* Results: Services */}
+          {servicesMatches.length > 0 && (
+            <div className="space-y-2">
+              <div className="text-[11px] font-mono uppercase tracking-wider text-blue-400 px-2 flex items-center gap-1.5">
+                <Briefcase className="w-3.5 h-3.5" />
+                <span>{t('الخدمات الهندسية', 'Engineering Services')}</span>
+              </div>
+              <div className="space-y-1">
+                {servicesMatches.map((svc) => (
+                  <button
+                    key={svc.slug}
+                    onClick={() => handleSelect(`/${language}/services/${svc.slug}`)}
+                    className="w-full p-2.5 rounded-xl bg-slate-950/50 hover:bg-slate-800 border border-slate-800/60 text-right rtl:text-right ltr:text-left flex items-center justify-between text-white transition-all group"
+                  >
+                    <div>
+                      <div className="text-xs font-bold text-white font-display flex items-center gap-2">
+                        <span>{svc.title[isRtl ? 'ar' : 'en']}</span>
+                        <span className="text-[10px] text-blue-400 bg-blue-950 border border-blue-800 px-1.5 py-0.2 rounded font-mono">
+                          {svc.categoryBadge[isRtl ? 'ar' : 'en']}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-slate-400 font-arabic truncate max-w-md">
+                        {svc.description[isRtl ? 'ar' : 'en']}
+                      </div>
+                    </div>
+                    <ArrowIcon className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-400 transition-colors" />
+                  </button>
+                ))}
               </div>
             </div>
           )}

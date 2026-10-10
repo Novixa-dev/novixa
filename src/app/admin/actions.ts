@@ -8,7 +8,7 @@ import { verifyPassword } from '@/lib/auth/password';
 import { clearAttempts, recordFailedAttempt, tooManyAttempts } from '@/lib/auth/rate-limit';
 import { createSessionToken, SESSION_COOKIE, SESSION_TTL_SECONDS } from '@/lib/auth/session';
 import { clientIp, requireAdmin } from '@/lib/auth/admin';
-import { getLeadStore, isLeadStatus } from '@/lib/leads';
+import { getLeadStore, isLeadPriority, isLeadStatus } from '@/lib/leads';
 import { ADMIN_LANG_COOKIE } from './i18n';
 
 export interface LoginState {
@@ -84,6 +84,60 @@ export async function updateLeadStatus(form: FormData): Promise<void> {
   if (!isLeadStatus(status)) return;
   await requireStore().updateStatus(id, status);
   revalidatePath('/admin');
+  revalidatePath(`/admin/leads/${id}`);
+}
+
+export async function updateLeadPriority(form: FormData): Promise<void> {
+  await requireAdmin();
+  const id = String(form.get('id') ?? '');
+  const priority = form.get('priority');
+  if (!isLeadPriority(priority)) return;
+  await requireStore().updatePriority(id, priority);
+  revalidatePath('/admin');
+  revalidatePath(`/admin/leads/${id}`);
+}
+
+export async function updateLeadFollowUp(form: FormData): Promise<void> {
+  await requireAdmin();
+  const id = String(form.get('id') ?? '');
+  const rawDate = String(form.get('followUpDate') ?? '').trim();
+  const date = rawDate ? new Date(`${rawDate}T00:00:00Z`) : null;
+  await requireStore().updateFollowUp(id, date && !Number.isNaN(date.getTime()) ? date : null);
+  revalidatePath('/admin');
+  revalidatePath(`/admin/leads/${id}`);
+}
+
+export async function updateLeadAssignee(form: FormData): Promise<void> {
+  await requireAdmin();
+  const id = String(form.get('id') ?? '');
+  const assignee = String(form.get('assignee') ?? '').trim() || null;
+  await requireStore().updateAssignee(id, assignee);
+  revalidatePath('/admin');
+  revalidatePath(`/admin/leads/${id}`);
+}
+
+export async function updateLeadTags(form: FormData): Promise<void> {
+  await requireAdmin();
+  const id = String(form.get('id') ?? '');
+  const rawTags = String(form.get('tags') ?? '').trim();
+  const tags = rawTags
+    ? rawTags
+        .split(/[,;\n]/)
+        .map((t) => t.trim())
+        .filter(Boolean)
+    : [];
+  await requireStore().updateTags(id, tags);
+  revalidatePath('/admin');
+  revalidatePath(`/admin/leads/${id}`);
+}
+
+export async function addLeadActivity(form: FormData): Promise<void> {
+  const session = await requireAdmin();
+  const id = String(form.get('id') ?? '');
+  const action = String(form.get('action') ?? 'note').trim();
+  const details = String(form.get('details') ?? '').trim().slice(0, 4000);
+  if (!details) return;
+  await requireStore().logActivity(id, session.email.split('@')[0], action, details);
   revalidatePath(`/admin/leads/${id}`);
 }
 

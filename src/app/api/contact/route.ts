@@ -25,6 +25,10 @@ interface ContactPayload {
   language?: 'ar' | 'en';
   /** Which form sent this: 'contact' or 'start-project'. */
   source?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  referrer?: string;
   /** Honeypot — always empty for a real visitor. */
   website?: string;
 }
@@ -154,6 +158,10 @@ export async function POST(request: NextRequest) {
         budgetRange: clean(payload.budgetRange),
         timeline: clean(payload.timeline),
         details: clean(payload.details),
+        utmSource: clean(payload.utmSource) || undefined,
+        utmMedium: clean(payload.utmMedium) || undefined,
+        utmCampaign: clean(payload.utmCampaign) || undefined,
+        referrer: clean(payload.referrer) || undefined,
       });
     } catch (error) {
       console.error(`[contact] could not store lead ${receiptId}:`, error);

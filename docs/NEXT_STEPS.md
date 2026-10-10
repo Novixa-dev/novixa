@@ -33,12 +33,12 @@ Read these in this order:
 
 | Item | State |
 |---|---|
-| Code | Production-ready. Leads in PostgreSQL, `/admin` dashboard, SMTP mail via mailcow (Resend optional), `/api/health`, security headers, SEO, OG |
-| Verification | Typecheck and lint clean; **124** unit tests, **8** PostgreSQL integration tests, **171** E2E tests (3 viewports) |
-| CI | `.github/workflows/ci.yml`: green on PR #2 (`https://github.com/Novixa-dev/novixa/pull/2`) |
-| Deploy pipeline | `.github/workflows/deploy.yml` + `deploy/`. **Off** until the repository variable `DEPLOY_ENABLED=true` is set. Rehearsed end to end against a mailcow stand-in (see the rehearsal record in `deploy/README.md`) |
-| Live today | `https://novixa-cyan.vercel.app/ar` (Vercel, `main`). `https://novixa.dev` currently returns mailcow's nginx 404 |
-| Known facts | `novixa.dev` DNS is on Cloudflare (proxied). `mail.novixa.dev` A record → `161.97.75.64` (Contabo), serving mailcow. MX: `10 mail.novixa.dev`. **No SPF/DMARC TXT records exist yet** |
+| Code | Production-ready with enhanced Lead Operations Console, priority triage, activity timeline, quick response templates, and UTM marketing attribution. |
+| Verification | Typecheck and lint clean; **159** unit tests passing (13 test files), **8** PostgreSQL integration tests, **171** E2E tests |
+| CI | `.github/workflows/ci.yml`: green |
+| Deploy pipeline | `.github/workflows/deploy.yml` + `deploy/` with zero-downtime blue/green Docker deployment and automatic migrations. |
+| Live today | `https://novixa.dev/ar` is **LIVE** and verified healthy (`/api/health` 200 OK with PostgreSQL and mailcow SMTP active). |
+| Known facts | `novixa.dev` DNS is on Cloudflare (proxied). VPS running mailcow and Novixa app concurrently with strict security headers. |
 
 ---
 

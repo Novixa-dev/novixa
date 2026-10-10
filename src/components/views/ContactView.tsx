@@ -110,6 +110,18 @@ export const ContactView: React.FC = () => {
 
     setIsSubmitting(true);
     try {
+      let utmSource = '';
+      let utmMedium = '';
+      let utmCampaign = '';
+      let referrer = '';
+      if (typeof window !== 'undefined') {
+        const sp = new URLSearchParams(window.location.search);
+        utmSource = sp.get('utm_source') || '';
+        utmMedium = sp.get('utm_medium') || '';
+        utmCampaign = sp.get('utm_campaign') || '';
+        referrer = document.referrer ? document.referrer.slice(0, 500) : '';
+      }
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -127,6 +139,10 @@ export const ContactView: React.FC = () => {
           website: honeypot,
           language,
           source: 'contact',
+          utmSource,
+          utmMedium,
+          utmCampaign,
+          referrer,
         }),
       });
 

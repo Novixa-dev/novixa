@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { MemoryLeadStore } from '@/lib/leads/memory-store';
 import { csvCell, leadsToCsv } from '@/lib/leads/csv';
-import { emptyDailySeries, LEAD_STATUSES, type LeadInput } from '@/lib/leads';
+import { emptyDailySeries, LEAD_PRIORITIES, LEAD_STATUSES, type LeadInput } from '@/lib/leads';
 import { MIGRATIONS } from '@/lib/leads/migrations';
 
 const input = (overrides: Partial<LeadInput> = {}): LeadInput => ({
@@ -20,25 +20,38 @@ describe('memory lead store', () => {
     await new Promise((resolve) => setTimeout(resolve, 5));
     await store.create(input({ name: 'Second' }));
     expect(first.status).toBe('new');
+    expect(first.priority).toBe('medium');
     const { rows, total } = await store.list({ limit: 10, offset: 0 });
     expect(total).toBe(2);
     expect(rows.map((lead) => lead.name)).toEqual(['Second', 'First']);
   });
 
-  it('filters by status, source and case-insensitive search', async () => {
+  it('filters by status, source, priority and case-insensitive search', async () => {
     const store = new MemoryLeadStore();
-    const a = await store.create(input({ name: 'Aqar Holdings', company: 'Aqar', source: 'start-project' }));
+    const a = await store.create(
+      input({ name: 'Aqar Holdings', company: 'Aqar', source: 'start-project', priority: 'urgent' })
+    );
     await store.create(input({ name: 'Clinic One' }));
     await store.updateStatus(a.id, 'qualified');
     expect((await store.list({ status: 'qualified', limit: 10, offset: 0 })).total).toBe(1);
     expect((await store.list({ source: 'start-project', limit: 10, offset: 0 })).total).toBe(1);
+    expect((await store.list({ priority: 'urgent', limit: 10, offset: 0 })).total).toBe(1);
     expect((await store.list({ search: 'aqar', limit: 10, offset: 0 })).rows[0].id).toBe(a.id);
   });
 
-  it('updates notes and deletes for real', async () => {
+  it('updates notes, priority, assignee, tags, follow-up and deletes for real', async () => {
     const store = new MemoryLeadStore();
     const lead = await store.create(input());
     expect((await store.updateNotes(lead.id, 'Called on Sunday'))?.notes).toBe('Called on Sunday');
+    expect((await store.updatePriority(lead.id, 'high'))?.priority).toBe('high');
+    expect((await store.updateAssignee(lead.id, 'Redwan'))?.assignee).toBe('Redwan');
+    expect((await store.updateTags(lead.id, ['POS', 'GCC']))?.tags).toEqual(['POS', 'GCC']);
+    const targetDate = new Date('2026-10-15T00:00:00Z');
+    expect((await store.updateFollowUp(lead.id, targetDate))?.followUpDate).toEqual(targetDate);
+
+    const activities = await store.getActivities(lead.id);
+    expect(activities.length).toBeGreaterThanOrEqual(5);
+
     expect(await store.remove(lead.id)).toBe(true);
     expect(await store.get(lead.id)).toBeNull();
     expect(await store.remove(lead.id)).toBe(false);
@@ -46,13 +59,16 @@ describe('memory lead store', () => {
 
   it('computes stats from the leads it holds, not from anything else', async () => {
     const store = new MemoryLeadStore();
-    const won = await store.create(input());
-    await store.create(input({ source: 'start-project' }));
+    const won = await store.create(input({ priority: 'urgent' }));
+    const active = await store.create(input({ source: 'start-project' }));
     await store.updateStatus(won.id, 'won');
+    await store.updateFollowUp(active.id, new Date());
     const stats = await store.stats();
     expect(stats.total).toBe(2);
     expect(stats.awaitingFirstResponse).toBe(1);
+    expect(stats.followUpDue).toBe(1);
     expect(stats.byStatus.won).toBe(1);
+    expect(stats.byPriority.urgent).toBe(1);
     expect(stats.bySource['start-project']).toBe(1);
     expect(stats.daily).toHaveLength(30);
     expect(stats.daily.at(-1)?.count).toBe(2);
@@ -81,10 +97,11 @@ describe('CSV export', () => {
   it('escapes quotes and keeps Arabic readable in Excel', async () => {
     expect(csvCell('say "hi"')).toBe('"say ""hi"""');
     const store = new MemoryLeadStore();
-    await store.create(input({ name: 'مطعم الليوان' }));
+    await store.create(input({ name: 'مطعم الليوان', tags: ['مطاعم'] }));
     const csv = leadsToCsv((await store.list({ limit: 10, offset: 0 })).rows);
     expect(csv.startsWith('﻿')).toBe(true);
     expect(csv).toContain('مطعم الليوان');
+    expect(csv).toContain('priority');
     expect(csv.split('\r\n')).toHaveLength(2);
   });
 });
@@ -101,5 +118,10 @@ describe('schema migrations', () => {
     // to it fails in production and nowhere else.
     const sql = MIGRATIONS.map((migration) => migration.sql).join('\n');
     for (const status of LEAD_STATUSES) expect(sql).toContain(`'${status}'`);
+  });
+
+  it('constrain priority to exactly the priorities the code knows', () => {
+    const sql = MIGRATIONS.map((migration) => migration.sql).join('\n');
+    for (const priority of LEAD_PRIORITIES) expect(sql).toContain(`'${priority}'`);
   });
 });

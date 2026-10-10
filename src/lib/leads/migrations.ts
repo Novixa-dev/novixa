@@ -43,6 +43,36 @@ export const MIGRATIONS: Array<{ id: number; name: string; sql: string }> = [
       CREATE INDEX leads_status_idx ON leads (status);
     `,
   },
+  {
+    id: 2,
+    name: 'enhance_leads_ops',
+    sql: `
+      ALTER TABLE leads
+        ADD COLUMN IF NOT EXISTS priority text NOT NULL DEFAULT 'medium'
+          CHECK (priority IN ('urgent', 'high', 'medium', 'low')),
+        ADD COLUMN IF NOT EXISTS follow_up_date date,
+        ADD COLUMN IF NOT EXISTS assignee text,
+        ADD COLUMN IF NOT EXISTS tags text[] NOT NULL DEFAULT '{}',
+        ADD COLUMN IF NOT EXISTS utm_source text,
+        ADD COLUMN IF NOT EXISTS utm_medium text,
+        ADD COLUMN IF NOT EXISTS utm_campaign text,
+        ADD COLUMN IF NOT EXISTS referrer text;
+
+      CREATE INDEX IF NOT EXISTS leads_priority_idx ON leads (priority);
+      CREATE INDEX IF NOT EXISTS leads_follow_up_date_idx ON leads (follow_up_date);
+
+      CREATE TABLE IF NOT EXISTS lead_activities (
+        id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        lead_id    uuid NOT NULL REFERENCES leads(id) ON DELETE CASCADE,
+        author     text NOT NULL,
+        action     text NOT NULL,
+        details    text,
+        created_at timestamptz NOT NULL DEFAULT now()
+      );
+
+      CREATE INDEX IF NOT EXISTS lead_activities_lead_id_idx ON lead_activities (lead_id, created_at DESC);
+    `,
+  },
 ];
 
 const LOCK_KEY = 7_041_771; // arbitrary, stable: "novixa migrations"
