@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Mail, Database, GitCommit, Clock } from 'lucide-react';
+import { Mail, Database, GitCommit, Clock, Inbox, CalendarDays, TrendingUp, Trophy } from 'lucide-react';
 import { requireAdmin } from '@/lib/auth/admin';
 import { getLeadStore, LEAD_SOURCES, LEAD_STATUSES } from '@/lib/leads';
 import { getMailer } from '@/lib/mail';
@@ -25,11 +25,23 @@ export default async function AdminOverviewPage() {
 
       {stats && recent ? (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <KpiTile label={t('بانتظار أول رد', 'Awaiting first reply')} value={stats.awaitingFirstResponse} hint={t('يجب أن يكون صفراً', 'Should be zero')} />
-            <KpiTile label={t('آخر ٧ أيام', 'Last 7 days')} value={stats.last7Days} />
-            <KpiTile label={t('آخر ٣٠ يوماً', 'Last 30 days')} value={stats.last30Days} />
-            <KpiTile label={t('تم التعاقد', 'Won')} value={stats.byStatus.won} hint={t(`من ${stats.total} إجمالاً`, `of ${stats.total} total`)} />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <KpiTile
+              Icon={Inbox}
+              accent={stats.awaitingFirstResponse > 0 ? 'rose' : 'blue'}
+              label={t('بانتظار أول رد', 'Awaiting first reply')}
+              value={stats.awaitingFirstResponse}
+              hint={t('يجب أن يكون صفراً', 'Should be zero')}
+            />
+            <KpiTile Icon={CalendarDays} accent="blue" label={t('آخر ٧ أيام', 'Last 7 days')} value={stats.last7Days} />
+            <KpiTile Icon={TrendingUp} accent="teal" label={t('آخر ٣٠ يوماً', 'Last 30 days')} value={stats.last30Days} />
+            <KpiTile
+              Icon={Trophy}
+              accent="teal"
+              label={t('تم التعاقد', 'Won')}
+              value={stats.byStatus.won}
+              hint={t(`من ${stats.total} إجمالاً`, `of ${stats.total} total`)}
+            />
           </div>
 
           <DailyChart
