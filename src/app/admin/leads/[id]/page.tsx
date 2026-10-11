@@ -482,15 +482,24 @@ export default async function AdminLeadDetailPage({ params }: { params: Promise<
                 'To honour a deletion request, as the privacy policy promises. Cannot be undone.'
               )}
             </p>
-            <form action={deleteLead} className="space-y-2">
+            <form action={deleteLead} className="space-y-3">
               <input type="hidden" name="id" value={lead.id} />
-              <label className="flex items-center gap-2 text-xs text-rose-100 cursor-pointer">
-                <input type="checkbox" name="confirm" value="yes" required />
-                {t('أؤكد الحذف النهائي لهذا الطلب', 'I confirm permanent deletion of this lead')}
-              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  id="confirm-delete"
+                  type="checkbox"
+                  name="confirm"
+                  value="yes"
+                  required
+                  className="h-4 w-4 rounded border-rose-500/30 bg-slate-900 text-rose-600 focus:ring-rose-500 shrink-0"
+                />
+                <label htmlFor="confirm-delete" className="text-xs text-rose-100 cursor-pointer select-none">
+                  {t('أؤكد الحذف النهائي لهذا الطلب', 'I confirm permanent deletion of this lead')}
+                </label>
+              </div>
               <button
                 type="submit"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-rose-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-rose-500 transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-rose-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-rose-500 transition-colors"
               >
                 <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                 {t('حذف', 'Delete')}
