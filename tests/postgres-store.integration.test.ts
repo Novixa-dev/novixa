@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { Pool } from 'pg';
 import { PostgresLeadStore } from '@/lib/leads/postgres-store';
-import { runMigrations } from '@/lib/leads/migrations';
+import { runMigrations, MIGRATIONS } from '@/lib/leads/migrations';
 import type { LeadInput } from '@/lib/leads';
 
 /**
@@ -42,7 +42,7 @@ describe.skipIf(!url)('PostgresLeadStore (integration)', () => {
   });
 
   it('migrates once, and a second run applies nothing', async () => {
-    expect(await runMigrations(pool)).toEqual([1]);
+    expect(await runMigrations(pool)).toEqual(MIGRATIONS.map((m) => m.id));
     expect(await runMigrations(pool)).toEqual([]);
   });
 
