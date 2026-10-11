@@ -116,7 +116,7 @@ test('a lead can be deleted on request, and only with confirmation', async ({ pa
   await page.getByRole('button', { name: /^(Delete|حذف)$/ }).click();
   await expect(page).toHaveURL(url);
 
-  await page.getByRole('checkbox').check();
+  await page.getByRole('checkbox').check({ force: true });
   await page.getByRole('button', { name: /^(Delete|حذف)$/ }).click();
   await expect(page).toHaveURL(/\/admin\/leads\?deleted=1/);
   await page.goto(`/admin/leads?q=${encodeURIComponent(receipt)}`);
