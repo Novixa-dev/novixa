@@ -52,6 +52,41 @@ const SEVERITY_STYLES = {
   warn: 'bg-amber-400',
 } as const;
 
+const MODULE_TELEMETRY: Record<
+  ModuleId,
+  {
+    mode: { ar: string; en: string };
+    protocol: { ar: string; en: string };
+    syncRate: { ar: string; en: string };
+    architecture: { ar: string; en: string };
+  }
+> = {
+  restaurant: {
+    mode: { ar: 'وضع محلي وسحابي', en: 'Local & Cloud' },
+    protocol: { ar: 'قاعدة بيانات طرفية', en: 'Offline-First Storage' },
+    syncRate: { ar: 'مزامنة POS فورية', en: 'Offline-First POS' },
+    architecture: { ar: 'معمارية طرفية هجينة', en: 'Edge-Hybrid Sync' },
+  },
+  booking: {
+    mode: { ar: 'حجز مواعيد متزامن', en: 'Atomic Booking' },
+    protocol: { ar: 'قفل فوري للمواعيد', en: 'Slot Reservation' },
+    syncRate: { ar: 'أقفال مواعيد ذرية', en: 'Atomic Slot Locks' },
+    architecture: { ar: 'تزامن عالي الدقة', en: 'High Concurrency' },
+  },
+  aqar: {
+    mode: { ar: 'فهرسة متعددة الوسطاء', en: 'Multi-Broker Index' },
+    protocol: { ar: 'بحث جغرافي متعدد الأوجه', en: 'Faceted Geo-Search' },
+    syncRate: { ar: 'فهرسة جغرافية لحظية', en: 'Faceted Geo Index' },
+    architecture: { ar: 'توزيع متعدد الوسطاء', en: 'Multi-Tenant RBAC' },
+  },
+  pulse: {
+    mode: { ar: 'نبض تشغيلي لحظي', en: 'Live Operations Pulse' },
+    protocol: { ar: 'سجل تدقيق آمن', en: 'Audit Log Stream' },
+    syncRate: { ar: 'دفق أحداث حي', en: 'Event Log Stream' },
+    architecture: { ar: 'معمارية تدقيق وتتبع', en: 'Audit Trail Engine' },
+  },
+};
+
 export const DashboardConsole: React.FC = () => {
   const { language, isRtl, t } = useLanguage();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
@@ -59,6 +94,7 @@ export const DashboardConsole: React.FC = () => {
   const [activeModuleId, setActiveModuleId] = useState<ModuleId>('restaurant');
   const [windowDays, setWindowDays] = useState<TrendWindow>(TREND_WINDOW_DAYS);
   const [showTable, setShowTable] = useState(false);
+  const [feedFilter, setFeedFilter] = useState<'all' | 'warn' | 'ok' | 'info'>('all');
 
   const activeModule = DASHBOARD_MODULES.find((m) => m.id === activeModuleId) ?? DASHBOARD_MODULES[0];
 
@@ -375,31 +411,83 @@ export const DashboardConsole: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-2 glass-card rounded-2xl border border-white/[0.08] p-4 sm:p-5 space-y-3">
-            <div className="flex items-center gap-2">
-              <Activity className="w-4 h-4 text-blue-400" />
-              <h2 className="text-sm font-bold font-display text-white">
-                {t('سجل العمليات المباشر', 'Live operations feed')}
-              </h2>
+          <div className="lg:col-span-2 glass-card rounded-2xl border border-white/[0.08] p-4 sm:p-5 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.06] pb-3">
+              <div className="flex items-center gap-2">
+                <Activity className="w-4 h-4 text-blue-400" />
+                <h2 className="text-sm font-bold font-display text-white">
+                  {t('سجل العمليات المباشر', 'Live operations feed')}
+                </h2>
+                <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] text-emerald-400 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>{t('بث حي', 'Live')}</span>
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1 text-[11px]">
+                {(['all', 'warn', 'ok', 'info'] as const).map((filterKey) => (
+                  <button
+                    key={filterKey}
+                    type="button"
+                    onClick={() => setFeedFilter(filterKey)}
+                    className={`px-2.5 py-1 rounded-md transition-colors ${
+                      feedFilter === filterKey
+                        ? 'bg-blue-600 text-white font-semibold shadow-sm'
+                        : 'text-slate-400 hover:text-white bg-slate-900/60'
+                    }`}
+                  >
+                    {filterKey === 'all'
+                      ? t('الكل', 'All')
+                      : filterKey === 'warn'
+                      ? t('تنبيهات', 'Alerts')
+                      : filterKey === 'ok'
+                      ? t('مكتملة', 'OK')
+                      : t('معلومات', 'Info')}
+                  </button>
+                ))}
+              </div>
             </div>
-            <ul className="space-y-2.5">
-              {activeModule.feed.map((event) => (
-                <li
-                  key={event.id}
-                  className="flex items-start gap-3 rounded-xl border border-white/[0.05] bg-slate-950/60 p-3 text-right rtl:text-right ltr:text-left"
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full shrink-0 mt-1.5 ${SEVERITY_STYLES[event.severity]}`}
-                    aria-hidden="true"
-                  />
-                  <span className="flex-1 min-w-0 text-xs text-slate-300 leading-relaxed">
-                    {event.text[language]}
-                  </span>
-                  <span className="shrink-0 font-mono text-[10px] text-slate-400 tabular-nums">
-                    {relativeTime(event.minutesAgo)}
-                  </span>
-                </li>
-              ))}
+
+            {/* Architectural Telemetry Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div className="p-2.5 rounded-xl bg-slate-950/60 border border-white/[0.04]">
+                <div className="text-[10px] text-slate-400">{t('طبيعة النظام', 'System Mode')}</div>
+                <div className="font-semibold text-emerald-400 truncate">{MODULE_TELEMETRY[activeModule.id].mode[language]}</div>
+              </div>
+              <div className="p-2.5 rounded-xl bg-slate-950/60 border border-white/[0.04]">
+                <div className="text-[10px] text-slate-400">{t('بروتوكول المعالجة', 'Protocol')}</div>
+                <div className="font-semibold text-teal-400 truncate">{MODULE_TELEMETRY[activeModule.id].protocol[language]}</div>
+              </div>
+              <div className="p-2.5 rounded-xl bg-slate-950/60 border border-white/[0.04]">
+                <div className="text-[10px] text-slate-400">{t('طبيعة المزامنة', 'Sync Engine')}</div>
+                <div className="text-slate-300 font-medium truncate">{MODULE_TELEMETRY[activeModule.id].syncRate[language]}</div>
+              </div>
+              <div className="p-2.5 rounded-xl bg-slate-950/60 border border-white/[0.04]">
+                <div className="text-[10px] text-slate-400">{t('النمط المعماري', 'Architecture')}</div>
+                <div className="text-blue-300 font-medium truncate">{MODULE_TELEMETRY[activeModule.id].architecture[language]}</div>
+              </div>
+            </div>
+
+            <ul className="space-y-2.5 pt-1">
+              {activeModule.feed
+                .filter((event) => feedFilter === 'all' || event.severity === feedFilter)
+                .map((event) => (
+                  <li
+                    key={event.id}
+                    className="flex items-start gap-3 rounded-xl border border-white/[0.05] bg-slate-950/60 p-3 text-right rtl:text-right ltr:text-left"
+                  >
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full shrink-0 mt-1.5 ${SEVERITY_STYLES[event.severity]}`}
+                      aria-hidden="true"
+                    />
+                    <span className="flex-1 min-w-0 text-xs text-slate-300 leading-relaxed">
+                      {event.text[language]}
+                    </span>
+                    <span className="shrink-0 font-mono text-[10px] text-slate-400 tabular-nums">
+                      {relativeTime(event.minutesAgo)}
+                    </span>
+                  </li>
+                ))}
             </ul>
           </div>
 

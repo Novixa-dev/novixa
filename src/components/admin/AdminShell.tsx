@@ -7,12 +7,16 @@ import {
   Database,
   AlertTriangle,
   CircleDot,
+  Layers,
+  BarChart3,
+  Activity,
+  Sliders,
 } from 'lucide-react';
 import { logout, setAdminLang } from '@/app/admin/actions';
 import { translator, type AdminLang } from '@/app/admin/i18n';
 import { getLeadStore } from '@/lib/leads';
 
-type NavKey = 'overview' | 'leads';
+export type NavKey = 'overview' | 'leads' | 'services' | 'analytics' | 'system' | 'settings';
 
 /**
  * Chrome for every authenticated admin page.
@@ -45,6 +49,10 @@ export function AdminShell({
   const items: Array<{ key: NavKey; href: string; label: string; Icon: typeof Inbox }> = [
     { key: 'overview', href: '/admin', label: t('نظرة عامة', 'Overview'), Icon: LayoutDashboard },
     { key: 'leads', href: '/admin/leads', label: t('الطلبات', 'Leads'), Icon: Inbox },
+    { key: 'services', href: '/admin/services', label: t('دليل الخدمات والحلول', 'Services & Catalog'), Icon: Layers },
+    { key: 'analytics', href: '/admin/analytics', label: t('تحليلات الزوار والمصادر', 'Analytics & UTM'), Icon: BarChart3 },
+    { key: 'system', href: '/admin/system', label: t('حالة النظام والبنية', 'System & Health'), Icon: Activity },
+    { key: 'settings', href: '/admin/settings', label: t('إعدادات التشغيل', 'Site Operations'), Icon: Sliders },
   ];
 
   const sidebarLink = (key: NavKey) =>

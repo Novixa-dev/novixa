@@ -365,7 +365,7 @@ export default async function AdminLeadDetailPage({ params }: { params: Promise<
                 type="submit"
                 className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 transition-colors"
               >
-                {t('حفظ', 'Save')}
+                {t('تحديث الأولوية', 'Update priority')}
               </button>
             </form>
           </section>
@@ -415,7 +415,7 @@ export default async function AdminLeadDetailPage({ params }: { params: Promise<
                   type="submit"
                   className="rounded-lg border border-white/[0.1] px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-white/[0.05]"
                 >
-                  {t('حفظ', 'Save')}
+                  {t('تحديث المسؤول', 'Update assignee')}
                 </button>
               </form>
             </div>
