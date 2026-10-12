@@ -275,6 +275,59 @@ export class PostgresLeadStore implements LeadStore {
     return updated;
   }
 
+  async updateDetails(id: string, details: Partial<LeadInput>): Promise<Lead | null> {
+    if (!UUID_RE.test(id)) return null;
+    await this.ready();
+    const sets: string[] = [];
+    const params: unknown[] = [id];
+
+    if (details.name !== undefined) {
+      params.push(details.name);
+      sets.push(`name = $${params.length}`);
+    }
+    if (details.email !== undefined) {
+      params.push(details.email);
+      sets.push(`email = $${params.length}`);
+    }
+    if (details.phone !== undefined) {
+      params.push(details.phone || null);
+      sets.push(`phone = $${params.length}`);
+    }
+    if (details.company !== undefined) {
+      params.push(details.company || null);
+      sets.push(`company = $${params.length}`);
+    }
+    if (details.projectType !== undefined) {
+      params.push(details.projectType || null);
+      sets.push(`project_type = $${params.length}`);
+    }
+    if (details.budgetRange !== undefined) {
+      params.push(details.budgetRange || null);
+      sets.push(`budget_range = $${params.length}`);
+    }
+    if (details.timeline !== undefined) {
+      params.push(details.timeline || null);
+      sets.push(`timeline = $${params.length}`);
+    }
+    if (details.details !== undefined) {
+      params.push(details.details || null);
+      sets.push(`details = $${params.length}`);
+    }
+
+    if (sets.length === 0) return this.get(id);
+
+    sets.push('updated_at = now()');
+    const { rows } = await this.pool.query<LeadRow>(
+      `UPDATE leads SET ${sets.join(', ')} WHERE id = $1 RETURNING *`,
+      params
+    );
+    const updated = rows[0] ? toLead(rows[0]) : null;
+    if (updated) {
+      await this.logActivity(id, 'Admin', 'details_updated', 'Lead contact and project details updated');
+    }
+    return updated;
+  }
+
   async logActivity(leadId: string, author: string, action: string, details?: string): Promise<LeadActivity> {
     if (!UUID_RE.test(leadId)) {
       throw new Error(`Invalid lead UUID: ${leadId}`);

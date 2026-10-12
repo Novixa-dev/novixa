@@ -22,6 +22,7 @@ import { AdminShell } from '@/components/admin/AdminShell';
 import { StatusBadge } from '@/components/admin/StatusBadge';
 import { PriorityBadge } from '@/components/admin/PriorityBadge';
 import { QuickReplyModal } from '@/components/admin/QuickReplyModal';
+import { EditLeadModal } from '@/components/admin/EditLeadModal';
 import {
   addLeadActivity,
   deleteLead,
@@ -82,6 +83,7 @@ export default async function AdminLeadDetailPage({ params }: { params: Promise<
           {t('كل الطلبات', 'All leads')}
         </Link>
         <div className="flex items-center gap-2">
+          <EditLeadModal lead={lead} lang={lang} />
           <QuickReplyModal lead={lead} lang={lang} />
         </div>
       </div>

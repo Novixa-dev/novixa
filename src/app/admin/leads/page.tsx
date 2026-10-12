@@ -14,6 +14,7 @@ import { AdminShell } from '@/components/admin/AdminShell';
 import { StatusBadge } from '@/components/admin/StatusBadge';
 import { PriorityBadge } from '@/components/admin/PriorityBadge';
 import { LeadsPipelineView } from '@/components/admin/LeadsPipelineView';
+import { CreateLeadDialog } from '@/components/admin/CreateLeadDialog';
 import {
   formatDate,
   formatDateTime,
@@ -121,6 +122,8 @@ export default async function AdminLeadsPage({
               <span>{t('لوحة المراحل', 'Pipeline')}</span>
             </Link>
           </div>
+
+          <CreateLeadDialog lang={lang} />
 
           <a
             href={`/admin/leads/export${query({})}`}
