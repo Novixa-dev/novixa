@@ -19,7 +19,7 @@ const LANGUAGES = ['ar', 'en'] as const;
  * site changed on every fetch, which devalues `lastModified` as a signal.
  * Bump this when the content in `src/content/data.ts` materially changes.
  */
-const CONTENT_REVISION = new Date('2026-09-25T00:00:00.000Z');
+const CONTENT_REVISION = new Date('2026-10-13T00:00:00.000Z');
 
 type RouteSpec = { path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'] };
 

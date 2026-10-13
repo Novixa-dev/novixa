@@ -157,13 +157,25 @@ export const ProductsView = ({ lang }: { lang: Language }) => {
                   )}
 
                   <div className="space-y-2 pt-2">
-                    <Link
-                      href={`/${language}/contact?product=${prod.id}`}
-                      className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 shadow-md shadow-blue-600/20 cursor-pointer"
-                    >
-                      <span>{t('طلب عرض تجريبي واستشارة', 'Request Demo & Pricing')}</span>
-                      <ArrowIcon className="w-3.5 h-3.5" />
-                    </Link>
+                    {prod.demoUrl && prod.demoUrl.startsWith('http') ? (
+                      <a
+                        href={prod.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 shadow-md shadow-blue-600/20 cursor-pointer"
+                      >
+                        <span>{t('تجربة المنصة مباشرة (مجاناً)', 'Try Live App (Free)')}</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </a>
+                    ) : (
+                      <Link
+                        href={`/${language}/contact?product=${prod.id}`}
+                        className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 shadow-md shadow-blue-600/20 cursor-pointer"
+                      >
+                        <span>{t('طلب عرض تجريبي واستشارة', 'Request Demo & Pricing')}</span>
+                        <ArrowIcon className="w-3.5 h-3.5" />
+                      </Link>
+                    )}
 
                     <Link
                       href={`/${language}/products/${prod.id}`}

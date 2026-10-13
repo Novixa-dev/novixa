@@ -6,6 +6,7 @@ import {
   generateFaqJsonLd,
 } from '@/lib/metadata';
 import { FAQ_ITEMS, FAQ_TOPICS, type FaqItem } from '@/content/faq';
+import { getContentStore } from '@/lib/content-store';
 import { HelpCircle, MessageSquare } from 'lucide-react';
 import { Language } from '@/types';
 
@@ -31,10 +32,16 @@ export default async function FaqPage({ params }: { params: Promise<{ lang: stri
   const isAr = lang === 'ar';
   const locale = isAr ? 'ar' : 'en';
 
+  const store = getContentStore();
+  const storedFaqs = await store.listFaqs();
+  const activeFaqs = storedFaqs.length > 0
+    ? storedFaqs.filter((f) => f.status !== 'draft')
+    : FAQ_ITEMS;
+
   // Built from the same array the page renders, so the markup cannot drift
   // away from the visible answers.
   const faqJsonLd = generateFaqJsonLd(
-    FAQ_ITEMS.map((item) => ({
+    activeFaqs.map((item) => ({
       question: item.question[locale],
       answer: item.answer[locale],
     }))
@@ -76,7 +83,7 @@ export default async function FaqPage({ params }: { params: Promise<{ lang: stri
         </header>
 
         {topics.map((topic) => {
-          const items = FAQ_ITEMS.filter((item) => item.topic === topic);
+          const items = activeFaqs.filter((item) => item.topic === topic);
           if (items.length === 0) return null;
 
           return (

@@ -908,8 +908,8 @@ export const PRODUCTS: Product[] = [
     slug: 'aqar',
     name: { ar: 'Novixa Aqar', en: 'Novixa Aqar' },
     tagline: {
-      ar: 'منصة إدارة الأصول العقارية، بوابات الوسطاء، وأتمتة عقود الإيجار والتحصيل',
-      en: 'Real estate portfolio, broker orchestration & property engine',
+      ar: 'منصة إدارة الأصول العقارية وعقود الإيجار (ترخيص مخصص يبدأ من 500$ USD)',
+      en: 'Real estate portfolio & property engine (Customizable license starting at $500 USD)',
     },
     title: {
       ar: 'نظام إدارة العقارات والمشاريع الاستثمارية وبوابات الوسطاء',
@@ -1119,8 +1119,8 @@ export const PRODUCTS: Product[] = [
       ar: 'منصة سحابية مخصصة للشركات تحول الملاحظات والمقترحات والشكاوى اليومية للموظفين إلى مؤشرات قياس أداء واضحة وتوصيات قابلة للتنفيذ.',
       en: 'A modern B2B SaaS platform that captures real-time employee feedback, anonymizes concerns, and categorizes operational gaps into actionable dashboards.',
     },
-    status: 'LIVE',
-    statusLabel: { ar: 'متاح للشركات (LIVE)', en: 'Live for B2B' },
+    status: 'IN DEVELOPMENT',
+    statusLabel: { ar: 'مفهوم معماري قيد التطوير (CONCEPT)', en: 'Concept Architecture' },
     category: { ar: 'منصات SaaS الإدارية', en: 'Enterprise SaaS' },
     targetAudience: {
       ar: 'الشركات والمؤسسات الكبرى، المستشفيات، سلاسل الفروع، والشركات التقنية',
@@ -1159,6 +1159,75 @@ export const PRODUCTS: Product[] = [
     demoUrl: '/contact',
     accentColor: '#14B8A6',
     iconName: 'Activity',
+  },
+  {
+    id: 'muhajim',
+    slug: 'muhajim',
+    name: { ar: 'Novixa Muhajim', en: 'Novixa Muhajim' },
+    tagline: {
+      ar: 'أداة ومنصة سحابية مجانية للمطورين ورواد الأعمال',
+      en: 'Free open-access SaaS utility for developers & digital builders',
+    },
+    title: {
+      ar: 'منصة مهاجم: حل رقمي مجاني ومتاح للمجتمع التقني',
+      en: 'Muhajim: Free Community SaaS Utility',
+    },
+    description: {
+      ar: 'أداة رقمية مفتوحة للاستخدام المجاني تم تطويرها في مختبر نوڤيكسا للمساعدة في تسريع العمليات التقنية والمهام السحابية.',
+      en: 'A free, lightweight SaaS utility engineered by Novixa Lab to streamline digital workflows with zero cost.',
+    },
+    status: 'LIVE',
+    statusLabel: { ar: 'متاح مجاناً للجميع (FREE)', en: 'Free Community Release' },
+    category: { ar: 'أدوات مجانية للمطورين', en: 'Free Developer Tool' },
+    targetAudience: {
+      ar: 'المطورون، الطلاب، رواد الأعمال، وفرق العمل الناشئة',
+      en: 'Software developers, students, founders, and indie hackers',
+    },
+    problemSolved: {
+      ar: 'توفير أدوات عمل عملية وسريعة دون اشتراكات معقدة أو حواجز دفع.',
+      en: 'Access to fast operational utilities without paywalls or credit card requirements.',
+    },
+    businessValue: {
+      ar: 'أداة مجانية 100% متاحة للمجتمع مع رابط مباشر لتجربتها ومشاركتنا الملاحظات.',
+      en: '100% free tool with direct onboarding and open community feedback channel.',
+    },
+    features: {
+      ar: [
+        'واجهة سريعة الاستجابة وسهلة الاستخدام فوراً',
+        'مجانية بالكامل دون الحاجة لبطاقات ائتمانية',
+        'مفتوحة للجميع مع دعم التغذية الراجعة المباشرة',
+        'نشر سحابي خفيف وسريع',
+      ],
+      en: [
+        'Fast, accessible user interface ready immediately',
+        'Completely free with no credit card required',
+        'Open for all users with direct community feedback loop',
+        'Lightweight, high-speed cloud deployment',
+      ],
+    },
+    targetIndustries: {
+      ar: ['المطورون والمبرمجون', 'المجتمعات التقنية', 'الشركات الناشئة'],
+      en: ['Software Developers', 'Tech Communities', 'Early Startups'],
+    },
+    metrics: [
+      { label: { ar: 'التكلفة', en: 'Cost' }, value: { ar: 'مجاني 100%', en: '100% Free' } },
+      { label: { ar: 'الوصول', en: 'Access' }, value: { ar: 'فوري ومباشر', en: 'Instant Access' } },
+    ],
+    deploymentOptions: {
+      ar: ['متاح مباشرة عبر الويب', 'كود متاح للمراجعة والتطوير'],
+      en: ['Direct Web Access', 'Repository available for community audit'],
+    },
+    customizationOptions: {
+      ar: ['استخدام فوري بدون قيود', 'إمكانية إرسال المقترحات والتحسينات'],
+      en: ['Instant usage without restrictions', 'Feature requests & feedback welcome'],
+    },
+    supportIncluded: {
+      ar: ['دعم مجتمعي وتحديثات دورية'],
+      en: ['Community updates and ongoing iterations'],
+    },
+    demoUrl: 'https://muhajim-novixa-saas.vercel.app/',
+    accentColor: '#3B82F6',
+    iconName: 'Sparkles',
   },
 ];
 

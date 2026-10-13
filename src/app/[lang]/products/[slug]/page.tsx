@@ -128,13 +128,25 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               </p>
             </div>
 
-            <Link
-              href={`/${lang}/contact?product=${product.id}`}
-              className="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2 cursor-pointer shrink-0"
-            >
-              <span>{isAr ? 'طلب عرض تجريبي واستشارة' : 'Request Product Demo'}</span>
-              <ArrowIcon className="w-4 h-4" />
-            </Link>
+            {product.demoUrl && product.demoUrl.startsWith('http') ? (
+              <a
+                href={product.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2 cursor-pointer shrink-0"
+              >
+                <span>{isAr ? 'تجربة المنصة مباشرة (مجاناً)' : 'Try Live App (Free)'}</span>
+                <ArrowIcon className="w-4 h-4" />
+              </a>
+            ) : (
+              <Link
+                href={`/${lang}/contact?product=${product.id}`}
+                className="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2 cursor-pointer shrink-0"
+              >
+                <span>{isAr ? 'طلب عرض تجريبي واستشارة' : 'Request Product Demo'}</span>
+                <ArrowIcon className="w-4 h-4" />
+              </Link>
+            )}
           </div>
 
           {/* Description */}
@@ -230,7 +242,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             <div className="p-4 rounded-xl bg-slate-950 border border-white/[0.05] space-y-1.5">
               <div className="flex items-center gap-2 font-bold text-white">
                 <Shield className="w-4 h-4 text-emerald-400" />
-                <span>{isAr ? 'الدعم والصيانة (SLA)' : 'Continuous SLA'}</span>
+                <span>{isAr ? 'الدعم الهندسي والصيانة المستمرة' : 'Engineering Support & Maintenance'}</span>
               </div>
               <p className="text-slate-400 leading-relaxed">
                 {isAr ? 'تحديثات أمنية دورية، نسخ احتياطي يومي، ودعم فني هندسي مباشر.' : 'Regular security patches, daily backups, and direct engineering support.'}
