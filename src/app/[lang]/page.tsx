@@ -1,6 +1,8 @@
 import React from 'react';
 import { constructMetadata, generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/lib/metadata';
 import { HeroSection } from '@/components/sections/HeroSection';
+import { ServicesStrip } from '@/components/sections/ServicesStrip';
+import { HomeAboutSection } from '@/components/sections/HomeAboutSection';
 import { servicesCatalog } from '@/lib/content';
 import { DualEngineSection } from '@/components/sections/DualEngineSection';
 import { ProblemTransformation } from '@/components/sections/ProblemTransformation';
@@ -52,7 +54,13 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       {/* 1. Hero: What Novixa is + Value Proposition + Dual CTAs */}
       <HeroSection servicesCount={servicesCatalog.length} />
 
-      {/* 2. Dual Engine: Custom Engineering vs Ready Turnkey Solutions */}
+      {/* 2. Services Strip: 4 Key Services Horizontal Strip directly under Hero */}
+      <ServicesStrip />
+
+      {/* 3. About Section: Who Novixa is + Workspace Visual */}
+      <HomeAboutSection />
+
+      {/* 4. Dual Engine: Custom Engineering vs Ready Turnkey Solutions */}
       <div className="defer-offscreen">
         <DualEngineSection lang={lang} />
       </div>

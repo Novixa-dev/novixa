@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Activity,
   LifeBuoy,
+  Clock,
 } from 'lucide-react';
 
 export const MaintenanceSupportSection = ({ lang }: { lang: Language }) => {
@@ -21,65 +22,69 @@ export const MaintenanceSupportSection = ({ lang }: { lang: Language }) => {
   const maintenanceItems = [
     {
       icon: Wrench,
-      titleAr: 'إصلاح الأخطاء البرمجية الفوري',
-      titleEn: 'Priority Bug Resolution',
-      descAr: 'معالجة أي استثناء أو خلل فني في الكود بسرعة فائقة للحفاظ على استمرارية العمليات.',
-      descEn: 'Rapid triage and fixing of unexpected runtime exceptions to keep workflows flowing.',
+      titleAr: 'إصلاح الأخطاء البرمجية الفوري والاستثنائي',
+      titleEn: 'Priority Bug Resolution & Incident Triage',
+      descAr: 'معالجة أي استثناء أو خلل فني غير متوقع في الكود بسرعة فائقة للحفاظ على استمرارية العمليات دون انقطاع.',
+      descEn: 'Rapid triage and fixing of unexpected runtime exceptions to keep workflows flowing without interruption.',
     },
     {
       icon: ShieldAlert,
-      titleAr: 'التحديثات والترقيعات الأمنية',
-      titleEn: 'Security Patching & Audits',
-      descAr: 'سد الثغرات الأمنية وتحديث حزم الحماية أولاً بأول لحماية بياناتك من الاختراق.',
-      descEn: 'Proactive vulnerability patching to safeguard business records and tenant data.',
+      titleAr: 'الترقيعات والتحديثات الأمنية الاستباقية',
+      titleEn: 'Proactive Security Patching & Audits',
+      descAr: 'سد الثغرات الأمنية وتحديث حزم الحماية أولاً بأول لضمان حماية بيانات شركتك وسجلات عملائك من التهديدات.',
+      descEn: 'Proactive vulnerability patching to safeguard business records and tenant data from modern exploits.',
     },
     {
       icon: RefreshCw,
-      titleAr: 'تحديث الحزم والمكتبات الدورية',
-      titleEn: 'Dependency & Runtime Upgrades',
-      descAr: 'تحديث بيئات التشغيل ومكتبات الكود لمنع تراكم الديون التقنية وتقادم النظام.',
-      descEn: 'Regular updates of frameworks, packages, and Node/database runtimes.',
+      titleAr: 'تحديث الحزم والمكتبات وقواعد البيانات',
+      titleEn: 'Runtime & Dependency Upgrades',
+      descAr: 'تحديث بيئات التشغيل ومكتبات الكود لمنع تراكم الديون التقنية وتقادم النظام والحفاظ على التوافق المستمر.',
+      descEn: 'Regular updates of frameworks, packages, and Node/database runtimes preventing technical debt.',
     },
     {
       icon: Zap,
-      titleAr: 'تحسين الأداء وسرعة الاستجابة',
-      titleEn: 'Performance & Latency Tuning',
-      descAr: 'فحص دوري لسرعة استعلامات قواعد البيانات وتسريع تحميل الواجهات على الهواتف.',
-      descEn: 'Ongoing database query indexing and frontend bundle tuning for sub-second speeds.',
+      titleAr: 'تحسين الأداء وسرعة الاستعلامات والواجهات',
+      titleEn: 'Performance & Database Latency Tuning',
+      descAr: 'فحص دوري لسرعة استعلامات قواعد البيانات وتسريع تحميل الواجهات على الهواتف لتظل بالملي ثانية.',
+      descEn: 'Ongoing database query indexing and frontend bundle tuning for persistent sub-second response times.',
     },
     {
       icon: LifeBuoy,
-      titleAr: 'قناة تواصل هندسية مباشرة',
-      titleEn: 'Direct Engineering Support',
-      descAr: 'تواصل مباشر مع مهندسي النظام دون المرور بموظفي دعم غير تقنيين لحل المشاكل.',
-      descEn: 'Direct access to software engineers who know your codebase intimately.',
+      titleAr: 'قناة تواصل هندسية مباشرة (دون وسطاء)',
+      titleEn: 'Direct Senior Engineering Support',
+      descAr: 'تواصل مباشر عبر الواتساب وسلاك مع مهندسي النظام الذين كتبوا الكود فعلياً، دون المرور بموظفي دعم غير تقنيين.',
+      descEn: 'Direct access to senior software engineers who know your codebase intimately, with zero bot runarounds.',
     },
     {
       icon: Activity,
       titleAr: 'إضافات وتحسينات تشغيلية مستمرة',
-      titleEn: 'Continuous Minor Enhancements',
-      descAr: 'إضافة تعديلات وحقول جديدة وتقارير مخصصة لمواكبة نمو متطلبات شركتك المتجددة.',
-      descEn: 'Iterative feature tweaks, custom export formats, and workflow improvements.',
+      titleEn: 'Continuous Operational Enhancements',
+      descAr: 'إضافة تعديلات وحقول جديدة وتقارير مخصصة لمواكبة نمو وتوسع متطلبات شركتك المتجددة شهرًا بعد شهر.',
+      descEn: 'Iterative feature tweaks, custom export formats, and workflow improvements aligned with your growth.',
     },
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden border-t border-slate-900">
+    <section className="py-20 lg:py-28 bg-white relative overflow-hidden border-t border-slate-200/80">
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/2 right-1/3 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 architectural-grid opacity-10 pointer-events-none -z-10" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
-          <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-950/80 border border-teal-800 text-teal-300 text-xs font-semibold">
-              <ShieldAlert className="w-3.5 h-3.5 text-teal-400" />
-              <span>{t('الصيانة والدعم الفني المستمر (SLA)', 'Maintenance & Ongoing Support')}</span>
+          <div className="space-y-4 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
+              <ShieldAlert className="w-3.5 h-3.5 text-cyan-600" />
+              <span>{t('الصيانة والدعم الفني المستمر (SLA)', 'Maintenance & Ongoing SLA Support')}</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
               {t('شراكة هندسية مستمرة لحماية استثمارك البرمجي.', 'Continuous engineering care to protect your tech investment.')}
             </h2>
-            <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-arabic">
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-arabic">
               {t(
-                'البرمجيات تحتاج لرعاية مستمرة لتبقى سريعة وآمنة. نقدم عقود صيانة ودعم فني واضحة تضمن استقرار نظامك دون توقف أو مفاجآت غير متوقعة.',
+                'البرمجيات كائن حي يحتاج لرعاية مستمرة لتبقى سريعة وآمنة. نقدم عقود صيانة ودعم فني واضحة تضمن استقرار نظامك دون توقف أو مفاجآت غير متوقعة.',
                 'Software is a living operational asset. Our structured maintenance plans ensure your platform remains fast, secure, and compatible with evolving business needs.'
               )}
             </p>
@@ -88,11 +93,33 @@ export const MaintenanceSupportSection = ({ lang }: { lang: Language }) => {
           <div className="shrink-0">
             <Link
               href={`/${language}/contact`}
-              className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 border border-white/[0.08] text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl transition-colors"
+              className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 border border-[#38BDF8]/40 hover:border-[#38BDF8] text-[#38BDF8] font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl shadow-md transition-all cursor-pointer"
             >
-              <span>{t('طلب خطة صيانة لنظامك الحالي', 'Request Maintenance SLA')}</span>
-              <ArrowIcon className="w-4 h-4" />
+              <span className="text-[#38BDF8]">{t('طلب اتفاقية صيانة ودعم (SLA)', 'Request Maintenance SLA')}</span>
+              <ArrowIcon className="w-4 h-4 text-[#38BDF8]" />
             </Link>
+          </div>
+        </div>
+
+        {/* SLA Guarantee Callout Pill Bar */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-right rtl:text-right ltr:text-left">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-700 flex items-center justify-center shrink-0">
+              <Clock className="w-5 h-5 text-cyan-600" />
+            </div>
+            <div>
+              <div className="text-sm font-bold text-slate-900 font-display">
+                {t('ضمان الاستجابة السريعة للحالات الطارئة', 'Rapid Incident SLA Response Guarantee')}
+              </div>
+              <div className="text-xs text-slate-500 font-arabic font-medium">
+                {t('استجابة هندسية مباشرة خلال أقل من ساعتين للحالات الحرجة مع مراقبة حية على مدار الساعة.', 'Engineering triage within < 2 hours for critical incidents with 24/7 automated telemetry.')}
+              </div>
+            </div>
+          </div>
+
+          <div className="shrink-0 flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-mono font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Target Response: &lt; 2h SLA</span>
           </div>
         </div>
 
@@ -103,23 +130,23 @@ export const MaintenanceSupportSection = ({ lang }: { lang: Language }) => {
             return (
               <div
                 key={idx}
-                className="glass-card rounded-2xl p-6 border border-white/[0.08] bg-slate-900/60 hover:border-teal-500/40 transition-all duration-200 flex flex-col justify-between space-y-4 text-right rtl:text-right ltr:text-left"
+                className="rounded-2xl p-6 sm:p-7 border border-slate-200/90 bg-white shadow-[0_4px_20px_-4px_rgba(15,23,42,0.05)] hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/5 transition-all duration-300 flex flex-col justify-between space-y-4 text-right rtl:text-right ltr:text-left"
               >
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-teal-950 border border-teal-800 text-teal-400 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-700 flex items-center justify-center shadow-sm">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="text-base font-bold font-display text-white">
+                  <h3 className="text-base font-bold font-display text-slate-900">
                     {item[isRtl ? 'titleAr' : 'titleEn']}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-300 font-arabic leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-600 font-arabic leading-relaxed">
                     {item[isRtl ? 'descAr' : 'descEn']}
                   </p>
                 </div>
 
-                <div className="pt-2 flex items-center gap-1.5 text-xs font-mono text-teal-400">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>{t('استجابة سريعة وموثقة', 'Documented Fast Response')}</span>
+                <div className="pt-2 flex items-center gap-1.5 text-xs font-mono text-cyan-700 font-medium">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>{t('استجابة سريعة وموثقة هندسياً', 'Documented Fast Response')}</span>
                 </div>
               </div>
             );
@@ -130,3 +157,4 @@ export const MaintenanceSupportSection = ({ lang }: { lang: Language }) => {
     </section>
   );
 };
+

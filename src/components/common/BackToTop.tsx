@@ -46,9 +46,9 @@ export const BackToTop: React.FC = () => {
       type="button"
       onClick={scrollToTop}
       aria-label={t('العودة إلى أعلى الصفحة', 'Back to top')}
-      className="fixed bottom-6 end-6 z-40 w-11 h-11 rounded-xl glass-overlay border border-white/[0.1] text-slate-300 hover:text-white hover:border-blue-500/50 shadow-xl transition-colors flex items-center justify-center"
+      className="fixed bottom-6 end-6 z-40 w-11 h-11 rounded-xl bg-slate-900 border border-[#38BDF8]/40 text-[#38BDF8] hover:text-white hover:border-[#38BDF8] shadow-xl transition-colors flex items-center justify-center cursor-pointer"
     >
-      <ArrowUp className="w-4 h-4" aria-hidden="true" />
+      <ArrowUp className="w-4 h-4 text-[#38BDF8]" aria-hidden="true" />
     </button>
   );
 };

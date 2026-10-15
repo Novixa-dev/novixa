@@ -222,7 +222,7 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link href={`/${language}/contact`} className="hover:text-blue-400 transition-colors text-blue-400 font-semibold">
+                  <Link href={`/${language}/contact`} className="hover:text-cyan-300 transition-colors text-[#38BDF8] font-semibold">
                     {t('ابدأ مشروعك / طلب استشارة', 'Start Project / Consultation')}
                   </Link>
                 </li>
@@ -240,9 +240,9 @@ export const Footer: React.FC = () => {
             <div className="pt-3">
               <button
                 onClick={toggleLanguage}
-                className="inline-flex items-center gap-2 text-xs text-slate-200 hover:text-white bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg cursor-pointer transition-colors hover:border-slate-700"
+                className="inline-flex items-center gap-2 text-xs text-[#38BDF8] hover:text-cyan-300 bg-slate-900 border border-[#38BDF8]/40 hover:border-[#38BDF8] px-3 py-1.5 rounded-lg cursor-pointer transition-colors"
               >
-                <Globe className="w-3.5 h-3.5 text-blue-400" />
+                <Globe className="w-3.5 h-3.5 text-[#38BDF8]" />
                 {/* The control names the language it switches *to*, in that
                     language, so a speaker of it recognises the label. The
                     `lang` attribute keeps screen-reader pronunciation correct

@@ -1,216 +1,239 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import {
-  FileSpreadsheet,
-  MessageCircle,
-  AlertTriangle,
-  CheckCircle,
-  Sparkles,
   Workflow,
-  Clock,
-  Ban,
+  CheckCircle,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Maximize2,
+  Zap,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 
 export const ProblemTransformation: React.FC = () => {
   const { t } = useLanguage();
 
-  const [mode, setMode] = useState<'fragmented' | 'unified'>('unified');
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isMuted, setIsMuted] = useState<boolean>(true);
+  const [progress, setProgress] = useState<number>(0);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = () => {
+      if (video.duration) {
+        setProgress((video.currentTime / video.duration) * 100);
+      }
+    };
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    return () => video.removeEventListener('timeupdate', handleTimeUpdate);
+  }, []);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.paused) {
+      video.play();
+      setIsPlaying(true);
+    } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = !video.muted;
+    setIsMuted(video.muted);
+  };
+
+  const toggleFullscreen = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else if (video.requestFullscreen) {
+      video.requestFullscreen();
+    }
+  };
 
   return (
-    <section className="py-20 lg:py-28 bg-slate-900/60 border-y border-slate-800/80 relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-white border-y border-slate-200/80 relative overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 architectural-grid opacity-10 pointer-events-none -z-10" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-blue-400 text-xs font-semibold">
-            <Workflow className="w-3.5 h-3.5" />
-            <span>{t('تحول نموذج العمل', 'Workflow Transformation')}</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
+            <Workflow className="w-3.5 h-3.5 text-cyan-600" />
+            <span>{t('تحول نموذج العمل والعمليات', 'Operational Transformation')}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
-            {t('الأعمال لا تحتاج مزيدًا من الأدوات.', 'Businesses don\'t need more tools.')} <br />
-            <span className="text-blue-400">{t('تحتاج نظامًا يعمل معًا.', 'They need a system that works together.')}</span>
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+            {t('الأعمال لا تحتاج مزيدًا من الأدوات المتفرقة.', 'Businesses don\'t need more disconnected tools.')} <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-blue-700">
+              {t('تحتاج نظاماً واحداً مترابطاً يعمل بدقة.', 'They need one unified engine that works seamlessly.')}
+            </span>
           </h2>
 
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-arabic max-w-2xl mx-auto">
             {t(
-              'الاعتماد على الواتساب والإكسل والبرامج غير المترابطة يلتهم وقت فريقك ويتسبب في ضياع الأرباح. انقر أدناه للرؤية التفاعلية لكيف توحد نوڤيكسا هذه الدورة.',
-              'Relying on fragmented chats, manual spreadsheets, and disconnected tools drains your team\'s focus. Toggle below to see how Novixa connects everything into one clear engine.'
+              'الاعتماد على الواتساب والإكسل والبرامج المعزولة يلتهم وقت فريقك ويتسبب في ضياع الأرباح. شاهد أدناه محاكاة فيديو لمنظومة نوڤيكسا البرمجية الموحدة وكيف تتدفق العمليات تلقائياً في أقل من ثانية واحدة دون أي تدخل بشري.',
+              'Relying on fragmented chats, manual spreadsheets, and disconnected tools drains your team\'s focus. Watch below how Novixa\'s unified engine synchronizes business operations in real-time with sub-second latency.'
             )}
           </p>
-
-          {/* Mode Switcher Buttons */}
-          <div className="inline-flex items-center gap-2 p-1.5 bg-slate-950 border border-slate-800 rounded-xl shadow-lg mt-4">
-            <button
-              onClick={() => setMode('fragmented')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                mode === 'fragmented'
-                  ? 'bg-rose-950 text-rose-300 border border-rose-800 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <AlertTriangle className="w-4 h-4 text-rose-400" />
-              <span>{t('الوضع المشتت الحالي', 'Fragmented Friction')}</span>
-            </button>
-
-            <button
-              onClick={() => setMode('unified')}
-              className={`flex items-center gap-2 px-5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                mode === 'unified'
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Sparkles className="w-4 h-4 text-blue-200" />
-              <span>{t('منصة نوڤيكسا الموحدة', 'Novixa Unified Engine')}</span>
-            </button>
-          </div>
         </div>
 
-        {/* Interactive Comparison Card */}
+        {/* Video Player Showcase Container */}
         <div className="max-w-5xl mx-auto">
-          <AnimatePresence mode="wait">
-            {mode === 'fragmented' ? (
-              <motion.div
-                key="fragmented-mode"
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.25 }}
-                className="bg-slate-950/90 border border-rose-900/60 rounded-2xl p-6 sm:p-8 shadow-2xl relative"
-              >
-                <div className="flex items-center justify-between pb-6 mb-6 border-b border-slate-800">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-rose-950/80 border border-rose-800/80 flex items-center justify-center text-rose-400 font-bold">
-                      <Ban className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-white font-display">
-                        {t('بيئة العمل المشتتة واليدوية', 'The Fragmented Operational State')}
-                      </h3>
-                      <p className="text-xs text-rose-400 font-mono">
-                        {t('مستوى الخطأ التشغيلي: مرتفع جدًا (High Risk)', 'Operational Error Rate: High Risk')}
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-xs text-rose-400 bg-rose-950/80 border border-rose-800/60 px-3 py-1 rounded-full font-mono">
-                    Fragmented Setup
-                  </span>
+          <div className="bg-slate-950/95 border border-cyan-500/40 rounded-3xl p-4 sm:p-7 shadow-2xl shadow-cyan-950/30 relative space-y-6">
+            
+            {/* Header Window Bar */}
+            <div className="flex items-center justify-between pb-4 border-b border-slate-800 flex-wrap gap-4">
+              <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-1.5 opacity-80">
+                  <span className="w-3 h-3 rounded-full bg-rose-500/80" />
+                  <span className="w-3 h-3 rounded-full bg-amber-500/80" />
+                  <span className="w-3 h-3 rounded-full bg-emerald-500/80" />
                 </div>
+                <span className="text-xs font-mono text-slate-400 ms-2">
+                  novixa-unified-engine.mp4
+                </span>
+              </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Fragmented Item 1 */}
-                  <div className="p-4 bg-slate-900/80 rounded-xl border border-rose-950 text-right rtl:text-right ltr:text-left space-y-2">
-                    <div className="flex items-center gap-2 text-rose-400 font-bold text-sm font-display">
-                      <MessageCircle className="w-4 h-4" />
-                      <span>{t('مجموعات الواتساب', 'WhatsApp Groups')}</span>
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      {t('تداول الطلبات والتعليمات بالرسائل النصية والصوتية يسبب نسيان التفاصيل وتأخير التنفيذ.', 'Orders sent via voice notes or chat lead to missed details and fulfillment delays.')}
-                    </p>
-                  </div>
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-emerald-400 bg-emerald-950 border border-emerald-800 px-3 py-1 rounded-full font-mono font-semibold flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  {t('محاكاة حية للمنظومة', 'Live Engine Simulation')}
+                </span>
+                <span className="hidden sm:inline-flex text-xs font-mono text-cyan-300 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">
+                  1080p • 60FPS
+                </span>
+              </div>
+            </div>
 
-                  {/* Fragmented Item 2 */}
-                  <div className="p-4 bg-slate-900/80 rounded-xl border border-rose-950 text-right rtl:text-right ltr:text-left space-y-2">
-                    <div className="flex items-center gap-2 text-amber-400 font-bold text-sm font-display">
-                      <FileSpreadsheet className="w-4 h-4" />
-                      <span>{t('شيتات الإكسل اليومية', 'Excel Spreadsheets')}</span>
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      {t('إدخال البيانات يدوياً في نهاية اليوم يؤدي لتضارب كميات المخزون وتأخر التقارير.', 'Manual end-of-day data entry causes inventory mismatches and stale reporting.')}
-                    </p>
-                  </div>
+            {/* Video Player Element with Bezel & Overlay Controls */}
+            <div className="relative rounded-2xl overflow-hidden border border-slate-800 bg-[#060D1A] group shadow-2xl">
+              <video
+                ref={videoRef}
+                src="/videos/unified-engine.mp4"
+                poster="/videos/unified-engine-poster.jpg"
+                autoPlay
+                loop
+                muted={isMuted}
+                playsInline
+                className="w-full h-auto aspect-video object-cover"
+              />
 
-                  {/* Fragmented Item 3 */}
-                  <div className="p-4 bg-slate-900/80 rounded-xl border border-rose-950 text-right rtl:text-right ltr:text-left space-y-2">
-                    <div className="flex items-center gap-2 text-slate-400 font-bold text-sm font-display">
-                      <Clock className="w-4 h-4 text-rose-400" />
-                      <span>{t('أنظمة قديمة منفصلة', 'Disconnected Legacy Apps')}</span>
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      {t('نظام نقاط بيع لا يتحدث مع مستودع الفروع، ودعم عملاء غير مطلع على المبيعات.', 'POS system does not talk to inventory, leaving support unaware of order statuses.')}
-                    </p>
-                  </div>
+              {/* Progress Bar Line */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-slate-800/80 z-20">
+                <div
+                  className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-100"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+
+              {/* Subtle Floating Player Controls Bar */}
+              <div className="absolute bottom-3 end-3 z-30 flex items-center gap-2 bg-slate-950/85 backdrop-blur-md border border-slate-700/80 px-3 py-1.5 rounded-xl shadow-lg">
+                <button
+                  type="button"
+                  onClick={togglePlay}
+                  aria-label={isPlaying ? 'Pause' : 'Play'}
+                  className="p-1.5 text-slate-300 hover:text-[#38BDF8] transition-colors cursor-pointer"
+                >
+                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 text-[#38BDF8]" />}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={toggleMute}
+                  aria-label={isMuted ? 'Unmute' : 'Mute'}
+                  className="p-1.5 text-slate-300 hover:text-[#38BDF8] transition-colors cursor-pointer"
+                >
+                  {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-[#38BDF8]" />}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={toggleFullscreen}
+                  aria-label="Fullscreen"
+                  className="p-1.5 text-slate-300 hover:text-[#38BDF8] transition-colors cursor-pointer"
+                >
+                  <Maximize2 className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Video Play Badge on Hover */}
+              {!isPlaying && (
+                <button
+                  type="button"
+                  onClick={togglePlay}
+                  className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-slate-900/90 border border-[#38BDF8] flex items-center justify-center text-[#38BDF8] shadow-2xl transition-transform hover:scale-110 cursor-pointer"
+                >
+                  <Play className="w-7 h-7 ms-1 fill-current" />
+                </button>
+              )}
+            </div>
+
+            {/* 3 Unified Benefit Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {/* Unified Item 1 */}
+              <div className="p-5 bg-slate-900/80 rounded-xl border border-cyan-500/20 text-right rtl:text-right ltr:text-left space-y-2.5">
+                <div className="flex items-center gap-2 text-cyan-300 font-bold text-sm font-display">
+                  <CheckCircle className="w-4 h-4 text-emerald-400" />
+                  <span>{t('لوحة تشغيل مركزية موحدة', 'Central Operations Hub')}</span>
                 </div>
+                <p className="text-xs text-slate-300 leading-relaxed font-arabic">
+                  {t('جميع طلبات العملاء وحجوزاتهم تتدفق تلقائياً إلى شاشة موحدة دون الحاجة لتدخل بشري أو إعادة إدخال البيانات يدوياً.', 'All orders, bookings, and customer tickets instantly flow into one queue without duplicate data entry.')}
+                </p>
+              </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-rose-300">
-                  <span>{t('النتيجة: إرهاق الموظفين، شكاوى العملاء، وضياع الأرباح', 'Outcome: Team burnout, customer complaints, and revenue leakage')}</span>
-                  <span className="font-mono text-rose-400 font-bold">-28% Efficiency</span>
+              {/* Unified Item 2 */}
+              <div className="p-5 bg-slate-900/80 rounded-xl border border-cyan-500/20 text-right rtl:text-right ltr:text-left space-y-2.5">
+                <div className="flex items-center gap-2 text-teal-300 font-bold text-sm font-display">
+                  <CheckCircle className="w-4 h-4 text-emerald-400" />
+                  <span>{t('مزامنة المخزون في اللحظة', 'Real-Time Inventory Sync')}</span>
                 </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="unified-mode"
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.25 }}
-                className="bg-slate-950/90 border border-blue-600/50 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-blue-900/20 relative"
-              >
-                <div className="flex items-center justify-between pb-6 mb-6 border-b border-slate-800">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold font-display">
-                      N
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-white font-display">
-                        {t('منصة نوڤيكسا الرقمية الموحدة', 'The Novixa Connected Platform')}
-                      </h3>
-                      <p className="text-xs text-blue-400 font-mono">
-                        {t('مستوى الدقة والسرعة: ممتازة (Sub-second Sync)', 'Operational Accuracy: Sub-second Sync')}
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-xs text-emerald-400 bg-emerald-950 border border-emerald-800 px-3 py-1 rounded-full font-mono">
-                    Unified Platform
-                  </span>
+                <p className="text-xs text-slate-300 leading-relaxed font-arabic">
+                  {t('خصم المنتجات والمكونات فورياً مع كل عملية بيع مع إرسال إشعارات استباقية قبل نفاد أي صنف لمنع تعطل البيع.', 'Items are automatically deducted across branches with proactive restock threshold notifications.')}
+                </p>
+              </div>
+
+              {/* Unified Item 3 */}
+              <div className="p-5 bg-slate-900/80 rounded-xl border border-cyan-500/20 text-right rtl:text-right ltr:text-left space-y-2.5">
+                <div className="flex items-center gap-2 text-cyan-300 font-bold text-sm font-display">
+                  <CheckCircle className="w-4 h-4 text-emerald-400" />
+                  <span>{t('ذكاء تحليلي وقرارات فورية', 'Live Mobile Analytics')}</span>
                 </div>
+                <p className="text-xs text-slate-300 leading-relaxed font-arabic">
+                  {t('اتخاذ قرارات تشغيلية وتسويقية مبنية على أرقام دقيقة ولحظية من هاتفك في أي وقت ومن أي مكان في العالم.', 'Real-time sales curves, margins, and branch performance metrics available on your mobile 24/7.')}
+                </p>
+              </div>
+            </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Unified Item 1 */}
-                  <div className="p-4 bg-slate-900/90 rounded-xl border border-blue-900/50 text-right rtl:text-right ltr:text-left space-y-2">
-                    <div className="flex items-center gap-2 text-blue-400 font-bold text-sm font-display">
-                      <CheckCircle className="w-4 h-4 text-emerald-400" />
-                      <span>{t('لوحة تشغيل مركزية', 'Central Operator Hub')}</span>
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      {t('جميع الطلبات والمبيعات تدخل تلقائيًا إلى شاشة واحدة دونحاجة لتدخل بشري مكرر.', 'All customer orders and bookings automatically flow into one live operational queue.')}
-                    </p>
-                  </div>
+            {/* Bottom Metric Bar */}
+            <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-cyan-300 font-mono">
+              <span className="flex items-center gap-2">
+                <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                <span>{t('النتيجة المباشرة: أتمتة كاملة، سرعة فائقة في التنفيذ، وتوسع تشغيلي آمن', 'Outcome: Automated workflows, instant execution, and sustainable scale')}</span>
+              </span>
+              <span className="font-bold text-emerald-400 bg-emerald-950 px-3 py-1 rounded-md border border-emerald-800">+65% Speed</span>
+            </div>
 
-                  {/* Unified Item 2 */}
-                  <div className="p-4 bg-slate-900/90 rounded-xl border border-blue-900/50 text-right rtl:text-right ltr:text-left space-y-2">
-                    <div className="flex items-center gap-2 text-teal-400 font-bold text-sm font-display">
-                      <CheckCircle className="w-4 h-4 text-emerald-400" />
-                      <span>{t('تخصيص ومزامنة المخزون', 'Real-Time Inventory Sync')}</span>
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      {t('خصم المكونات فورياً مع كل عملية بيع مع إرسال تنبيهات تلقائية لإعادة الطلب.', 'Ingredients or stock deducted automatically with every order, sending restock alerts.')}
-                    </p>
-                  </div>
-
-                  {/* Unified Item 3 */}
-                  <div className="p-4 bg-slate-900/90 rounded-xl border border-blue-900/50 text-right rtl:text-right ltr:text-left space-y-2">
-                    <div className="flex items-center gap-2 text-sky-400 font-bold text-sm font-display">
-                      <CheckCircle className="w-4 h-4 text-emerald-400" />
-                      <span>{t('ذكاء تحليلي مباشر', 'Live Executive Analytics')}</span>
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      {t('اتخاذ قرارات مبنية على بيانات دقيقة ولحظية من جوالك في أي وقت ومن أي مكان.', 'Executive insights and branch metrics delivered live to your phone anytime.')}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-blue-300">
-                  <span>{t('النتيجة: أوتوماتيكية كاملة، سرعة تنفيذ، ونمو أرباح مستدام', 'Outcome: Automated workflows, instant execution, and sustainable scale')}</span>
-                  <span className="font-mono text-emerald-400 font-bold">+65% Speed</span>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          </div>
         </div>
 
       </div>

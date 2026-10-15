@@ -1,282 +1,108 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../../context/LanguageContext';
-import {
-  ArrowLeft,
-  ArrowRight,
-  Zap,
-  Layers,
-  Cpu,
-  Database,
-  Server,
-  GitBranch,
-  LayoutGrid,
-} from 'lucide-react';
+import { ArrowRight, LayoutGrid } from 'lucide-react';
 
 interface HeroSectionProps {
-  /** How many engineering services the catalogue lists, so the figure cannot drift from it. */
-  servicesCount: number;
+  servicesCount?: number;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ servicesCount }) => {
-  const { language, isRtl, t } = useLanguage();
-  const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
-  const [selectedNode, setSelectedNode] = useState<string>('gateway');
-
-  const topologyNodes = [
-    {
-      id: 'gateway',
-      nameAr: '01. بوابة التوزيع السحابي (Edge Gateway)',
-      nameEn: '01. Ingestion Edge Gateway',
-      icon: Server,
-      specAr: 'عزل جغرافي • تشفير TLS 1.3',
-      specEn: 'Geo-routing • TLS 1.3 Termination',
-      latency: '1.2ms',
-      detailAr: 'معالجة وتوزيع كافة الطلبات عبر شبكة الحافة الإقليمية مع حماية مدمجة ضد هجمات الحرمان من الخدمة (DDoS).',
-      detailEn: 'Terminates and filters requests at the regional edge with built-in zero-trust rate limiting.',
-    },
-    {
-      id: 'multitenant',
-      nameAr: '02. محرك البرمجيات المدار (Application Core)',
-      nameEn: '02. Application & Logic Engine',
-      icon: Layers,
-      specAr: 'عزل منطقي تام • سياق ديناميكي',
-      specEn: 'Logical Partitioning • Dynamic Context',
-      latency: '3.4ms',
-      detailAr: 'فصل تام لبيانات وبيئات كل مؤسسة مع تطبيق سياسات الصلاحيات المتقدمة (RBAC) وسجلات التدقيق المالي.',
-      detailEn: 'Strict workspace isolation ensuring zero cross-tenant contamination with auditable RBAC.',
-    },
-    {
-      id: 'queue',
-      nameAr: '03. ناقل الأحداث والأتمتة (Event Mesh & Queue)',
-      nameEn: '03. Event Mesh & Redis Queue',
-      icon: GitBranch,
-      specAr: 'معالجة غير متزامنة • Webhooks',
-      specEn: 'Async Pipelines • Webhook Dispatch',
-      latency: '0.8ms',
-      detailAr: 'معالجة ملايين الأحداث التشغيلية المتزامنة، رسائل الواتساب، وطوابير المهام الخلفية دون أي بطء.',
-      detailEn: 'Processes asynchronous webhooks, WhatsApp alerts, and real-time socket events concurrently.',
-    },
-    {
-      id: 'database',
-      nameAr: '04. قاعدة البيانات المشفرة (PostgreSQL Core)',
-      nameEn: '04. Sharded PostgreSQL Core',
-      icon: Database,
-      specAr: 'تخزين آمن • نسخ احتياطي يومي',
-      specEn: 'Row-Level Security • Daily Snapshots',
-      latency: '2.1ms',
-      detailAr: 'تخزين مشفر وموزع مع أمان على مستوى الصفوف (Row-Level Security) ونسخ احتياطي يومي خارج الموقع.',
-      detailEn: 'Zero-lock sharded storage with Row-Level Security and automated daily encrypted off-site snapshots.',
-    },
-  ];
-
-  const activeNodeInfo = topologyNodes.find((n) => n.id === selectedNode) || topologyNodes[0];
+export const HeroSection: React.FC<HeroSectionProps> = ({ servicesCount: _servicesCount }) => {
+  const { language, t } = useLanguage();
 
   return (
-    <section className="relative pt-28 pb-20 lg:pt-36 lg:pb-28 overflow-hidden bg-slate-950">
-      {/* Crisp Architectural Grid Backdrop */}
-      <div className="absolute inset-0 architectural-grid opacity-70 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-transparent to-slate-950 pointer-events-none" />
+    <section className="relative w-full aspect-auto min-h-[640px] md:min-h-0 md:aspect-[1024/414] overflow-hidden flex items-center bg-[#0B1726]">
+      {/* 1. Full-Width Panoramic Background Image with Exact 1024x414 Proportions */}
+      <div
+        className="absolute inset-0 bg-cover bg-no-repeat bg-[position:left_center] md:bg-center transition-all duration-500"
+        style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
+        role="img"
+        aria-label={t(
+          'بيئة عمل برمجية احترافية مع إطلالة بانورامية على مدينة وميناء عدن عند الغروب',
+          'Professional software workspace overlooking coastal city skyline at sunset'
+        )}
+      />
 
-      {/* Structural Framing Container */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10 border-x border-white/[0.05]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center py-6">
+      {/* 2. Directional Ambient Tint to make text 100% crisp while keeping sunset & city luminous */}
+      <div className="absolute inset-0 bg-gradient-to-l rtl:bg-gradient-to-l ltr:bg-gradient-to-r from-black/50 via-black/25 to-transparent pointer-events-none" />
+
+      {/* Main Structural Framing Container aligned to the reference composition */}
+      <div className="w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-12 relative z-10 pt-16 sm:pt-20 md:pt-14 lg:pt-16 xl:pt-20 pb-6 md:pb-0">
+        <div className="flex justify-start">
           
-          {/* Main Editorial Text Column */}
-          <div className="lg:col-span-7 space-y-7 text-right rtl:text-right ltr:text-left">
+          {/* Editorial Content Block on the right */}
+          <div className="w-full sm:w-[480px] md:w-[460px] lg:w-[520px] xl:w-[580px] space-y-2 sm:space-y-2.5 lg:space-y-3.5 xl:space-y-4 text-right rtl:text-right ltr:text-left">
             
-            {/* Regional & Discipline Badge */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-slate-900/90 border border-white/[0.08] text-blue-400 text-xs font-mono font-medium tracking-wide">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span translate="no">NOVIXA ENGINEERING</span>
-              <span className="text-slate-600">|</span>
-              <span className="text-slate-300 font-arabic">
-                {t('حلول تقنية عملية للأعمال في اليمن والمنطقة', 'Practical business software for Yemen & GCC')}
-              </span>
+            {/* Eyebrow Label */}
+            <div className="text-[#38BDF8] text-[10px] sm:text-[11px] lg:text-xs font-mono font-semibold tracking-[0.2em] uppercase">
+              NOVIXA ENGINEERING
             </div>
 
             {/* Main Display Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-[52px] font-extrabold font-display text-white leading-tight lg:leading-snug tracking-normal">
-              {t('نبني الأنظمة والمنتجات الرقمية', 'We build the software systems & products')} <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-teal-300">
-                {t('التي تجعل أعمالك تعمل بشكل أفضل.', 'that help businesses operate better.')}
+            <h1 className="text-xl sm:text-2xl md:text-[26px] lg:text-[34px] xl:text-[42px] font-extrabold font-display leading-[1.16] tracking-normal text-white">
+              <span>{t('حلول تقنية عملية للأعمال', 'Practical Tech Solutions for Business')}</span>
+              <br />
+              <span className="text-[#38BDF8]">
+                {t('في اليمن والمنطقة', 'in Yemen & the Region')}
               </span>
             </h1>
 
-            {/* Subheadline: Clear Business Value */}
-            <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl font-arabic font-normal">
+            {/* Supporting Heading */}
+            <h2 className="text-xs sm:text-xs md:text-[13px] lg:text-[15px] xl:text-[16.5px] font-bold font-display text-white/95 leading-snug whitespace-pre-line">
               {t(
-                'من تطوير الأنظمة المخصصة إلى الحلول الجاهزة والنشر والاستضافة والصيانة، نحول احتياجات الأعمال إلى برمجيات عملية قابلة للنمو.',
-                'From custom software and reusable business solutions to deployment, hosting, integrations and ongoing maintenance, Novixa turns real business needs into practical software.'
+                'نبني الأنظمة والمنتجات الرقمية\nالتي تجعل أعمالك تعمل بشكل أفضل.',
+                'We build the software systems and digital products\nthat help businesses operate better.'
+              )}
+            </h2>
+
+            {/* Supporting Paragraph */}
+            <p className="text-slate-200 text-[10px] sm:text-[10.5px] md:text-[11px] lg:text-[12px] xl:text-[13px] leading-relaxed font-arabic font-normal max-w-xl whitespace-pre-line">
+              {t(
+                'من تطوير الأنظمة المخصصة إلى الحلول الجاهزة والنشر والاستضافة والصيانة،\nنحول احتياجات الأعمال إلى برمجيات عملية قابلة للنمو.',
+                'From custom software development to turnkey solutions, deployment, hosting and maintenance,\nwe turn business needs into scalable practical software.'
               )}
             </p>
 
-            {/* Action Anchors: Dual CTAs */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            {/* Action Anchors: Dual Pill CTAs */}
+            <div className="pt-1 flex flex-wrap items-center gap-2.5 sm:gap-3">
+              {/* Primary CTA (Cyan Pill on the right with dark text and right arrow) */}
               <Link
                 href={`/${language}/contact`}
-                className="group inline-flex items-center gap-2.5 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-semibold text-sm sm:text-base px-6 py-3.5 rounded-xl shadow-lg shadow-blue-600/20 transition-all duration-150 cursor-pointer"
+                dir="ltr"
+                className="group inline-flex items-center gap-2 bg-[#56CFE1] hover:bg-[#38BDF8] active:bg-[#00B4D8] text-[#0B1726] font-bold text-[11px] sm:text-xs lg:text-[13px] px-5 sm:px-6 lg:px-7 py-2 sm:py-2.5 lg:py-3 rounded-full shadow-lg shadow-[#56CFE1]/25 transition-all duration-150 cursor-pointer"
               >
                 <span>{t('ابدأ مشروعك', 'Start Your Project')}</span>
-                <ArrowIcon className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
+                <ArrowRight className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-[#0B1726] stroke-[2.4] transition-transform duration-150 group-hover:translate-x-0.5" />
               </Link>
 
+              {/* Secondary CTA (Dark Pill on the left with white text and grid icon on the right) */}
               <Link
                 href={`/${language}/solutions`}
-                className="inline-flex items-center gap-2 bg-slate-900/80 hover:bg-slate-800 border border-white/[0.08] hover:border-white/[0.15] text-slate-200 font-medium text-sm sm:text-base px-5 py-3.5 rounded-xl transition-all duration-150 cursor-pointer"
+                dir="ltr"
+                className="inline-flex items-center gap-2 bg-[#0B1726]/80 hover:bg-[#13263B] border border-[#56CFE1]/40 hover:border-[#38BDF8] text-white font-semibold text-[11px] sm:text-xs lg:text-[13px] px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full transition-all duration-150 cursor-pointer"
               >
-                <LayoutGrid className="w-4 h-4 text-blue-400" />
                 <span>{t('استكشف الحلول الجاهزة', 'Explore Ready Solutions')}</span>
+                <LayoutGrid className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-white" />
               </Link>
             </div>
 
-            {/* Two Entry Options for Visitors: Custom vs Ready */}
-            <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-arabic">
+            {/* Additional Custom System Link */}
+            <div className="pt-1.5">
               <Link
                 href={`/${language}/contact`}
-                className="p-3.5 rounded-xl bg-slate-900/50 border border-white/[0.06] hover:border-blue-500/40 transition-colors flex items-start gap-3 group"
+                dir="ltr"
+                className="group inline-flex items-center gap-1.5 text-[11px] sm:text-xs lg:text-[13px] font-bold text-slate-200 hover:text-white transition-colors"
               >
-                <div className="w-8 h-8 rounded-lg bg-blue-950/80 text-blue-400 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                  <Cpu className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="font-bold text-white mb-0.5 flex items-center gap-1.5">
-                    <span>{t('أحتاج بناء نظام مخصص', 'I need something built')}</span>
-                    <ArrowIcon className="w-3 h-3 text-blue-400 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 transition-transform" />
-                  </div>
-                  <div className="text-slate-400 leading-normal">
-                    {t('هندسة معمارية خاصة لنموذج عملك الفريد من الصفر.', 'Custom architecture for proprietary business workflows.')}
-                  </div>
-                </div>
+                <span>{t('أحتاج بناء نظام مخصص', 'I need a custom system built')}</span>
+                <ArrowRight className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-slate-400 group-hover:text-[#38BDF8] group-hover:translate-x-0.5 transition-all" />
               </Link>
-
-              <Link
-                href={`/${language}/solutions`}
-                className="p-3.5 rounded-xl bg-slate-900/50 border border-white/[0.06] hover:border-teal-500/40 transition-colors flex items-start gap-3 group"
-              >
-                <div className="w-8 h-8 rounded-lg bg-teal-950/80 text-teal-400 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-teal-600 group-hover:text-white transition-colors">
-                  <Zap className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="font-bold text-white mb-0.5 flex items-center gap-1.5">
-                    <span>{t('أحتاج حلاً برمجياً جاهزاً', 'I need a ready system')}</span>
-                    <ArrowIcon className="w-3 h-3 text-teal-400 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 transition-transform" />
-                  </div>
-                  <div className="text-slate-400 leading-normal">
-                    {t('أنظمة مجربة للمطاعم، الحجوزات، المخازن، والعقارات جاهزة في 5-14 يوماً.', 'Proven turnkey systems deployed in 5–14 days.')}
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            {/* Verified Architectural Specifications Bar */}
-            <div className="pt-6 border-t border-white/[0.08] grid grid-cols-3 gap-6 text-right rtl:text-right ltr:text-left font-mono">
-              <div className="space-y-1">
-                <div className="text-xl sm:text-2xl font-extrabold font-display text-white">{servicesCount}</div>
-                <div className="text-xs text-slate-300 font-arabic">{t('خدمات هندسية متخصصة', 'Engineering services')}</div>
-              </div>
-              <div className="space-y-1">
-                <div className="text-xl sm:text-2xl font-extrabold font-display text-blue-400">5-14 {t('أيام', 'Days')}</div>
-                <div className="text-xs text-slate-300 font-arabic">{t('إطلاق الحلول الجاهزة', 'Ready Solutions Launch')}</div>
-              </div>
-              <div className="space-y-1">
-                <div className="text-xl sm:text-2xl font-extrabold font-display text-teal-400">100%</div>
-                <div className="text-xs text-slate-300 font-arabic">{t('ملكية الكود والبيانات', 'Full IP & Code Ownership')}</div>
+              <div className="text-[9.5px] sm:text-[10px] lg:text-[11px] text-slate-400 font-arabic mt-0.5">
+                {t('هندسة معمارية خاصة لنموذج عملك الفريد من الصفر.', 'Custom architecture for your unique business model from scratch.')}
               </div>
             </div>
-          </div>
 
-          {/* Interactive Topology & Live Engine Inspector Column */}
-          <div className="lg:col-span-5 relative">
-            <div className="glass-card rounded-2xl p-5 sm:p-6 border border-white/[0.08] bg-slate-900/80 shadow-2xl relative space-y-5">
-              
-              {/* Terminal Window Chrome */}
-              <div className="flex items-center justify-between border-b border-white/[0.06] pb-3 text-xs font-mono">
-                <div className="flex items-center gap-2 text-slate-400">
-                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
-                  <span className="text-[11px] text-slate-400 ms-2">novixa-engine.sys</span>
-                </div>
-                {/* A diagram of how Novixa builds, not a feed from a running system:
-                    the figures in it are indicative, so it says so. */}
-                <div className="flex items-center gap-1 text-[11px] text-blue-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                  <span>{t('مخطط توضيحي', 'ILLUSTRATIVE DIAGRAM')}</span>
-                </div>
-              </div>
-
-              {/* Topology Nodes List */}
-              <div className="space-y-2">
-                <div className="text-xs font-mono text-slate-400 uppercase tracking-wider text-right rtl:text-right ltr:text-left">
-                  {t('معمارية البنية التحتية والتشغيل:', 'Infrastructure & System Topology:')}
-                </div>
-                {topologyNodes.map((node) => {
-                  const isSelected = selectedNode === node.id;
-                  const NodeIcon = node.icon;
-                  return (
-                    <button
-                      key={node.id}
-                      onClick={() => setSelectedNode(node.id)}
-                      className={`w-full p-3 rounded-xl border text-right rtl:text-right ltr:text-left transition-all duration-150 flex items-center justify-between gap-3 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
-                        isSelected
-                          ? 'bg-blue-600/15 border-blue-500/80 text-white shadow-sm'
-                          : 'bg-slate-950/60 border-white/[0.05] text-slate-300 hover:bg-slate-800/60 hover:text-white'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                            isSelected ? 'bg-blue-600 text-white' : 'bg-slate-900 text-blue-400 border border-white/[0.05]'
-                          }`}
-                        >
-                          <NodeIcon className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold font-display">
-                            {node[isRtl ? 'nameAr' : 'nameEn']}
-                          </div>
-                          <div className="text-[11px] text-slate-400 font-mono">
-                            {node[isRtl ? 'specAr' : 'specEn']}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="text-[11px] font-mono font-bold text-teal-400 shrink-0">
-                        {node.latency}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Selected Node Details Box */}
-              <div className="p-3.5 rounded-xl bg-slate-950 border border-white/[0.06] text-right rtl:text-right ltr:text-left space-y-1.5">
-                <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
-                  <span>{t('المواصفات الهندسية للمكون', 'Component Specifications')}</span>
-                </div>
-                <p className="text-xs text-slate-300 font-arabic leading-relaxed">
-                  {activeNodeInfo[isRtl ? 'detailAr' : 'detailEn']}
-                </p>
-              </div>
-
-              {/* Quick Action in Panel */}
-              <div className="pt-1 flex items-center justify-between gap-3">
-                <span className="text-[11px] font-mono text-slate-400">
-                  {t('نشر واستضافة مدارة', 'Managed Deployment')}
-                </span>
-                <Link
-                  href={`/${language}/services`}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  <span>{t('تفاصيل الخدمات الهندسية', 'Explore Services')}</span>
-                  <ArrowIcon className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-
-            </div>
           </div>
 
         </div>
