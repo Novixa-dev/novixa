@@ -10,7 +10,6 @@ import {
   Send,
   CheckCircle2,
   AlertCircle,
-  MessageSquare,
   ShieldCheck,
   ArrowLeft,
   ArrowRight,
@@ -188,24 +187,20 @@ export const ContactView: React.FC = () => {
   };
 
   return (
-    <div className="pt-32 pb-24 bg-slate-950 min-h-screen relative overflow-hidden">
-      {/* Background Architectural Grid Pattern */}
-      <div className="absolute inset-0 architectural-grid opacity-25 pointer-events-none -z-10" />
+    <div className="pt-28 sm:pt-32 pb-20 sm:pb-24 bg-[#F8FAFC] min-h-screen relative overflow-hidden">
+      {/* Background Subtle Ambient Lighting & Grid */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 architectural-grid opacity-10 pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-blue-800 text-blue-300 text-xs font-semibold">
-            <MessageSquare className="w-3.5 h-3.5 text-blue-400" />
-            <span>{t('ابدأ مشروعك أو اطلب استشارة', 'Start Your Project or Request Consultation')}</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight leading-snug">
+          <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {t('دعنا نحول متطلبات أعمالك إلى برمجيات عملية.', 'Let’s turn your operational needs into practical software.')}
           </h1>
 
-          <p className="text-slate-300 text-base sm:text-lg font-arabic leading-relaxed">
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-arabic">
             {t(
               'سواء كنت ترغب في بناء نظام برمجي مخصص، تهيئة حل جاهز (مطاعم، حجوزات، عقارات)، أو إعداد بنية تحتية سحابية، فريقنا مستعد لمساعدتك.',
               'Whether you need custom full-stack software, a turnkey ready-made system, cloud deployment, or ongoing maintenance, our engineering leads are ready.'
@@ -217,32 +212,32 @@ export const ContactView: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Form Column */}
-          <div className="lg:col-span-7 glass-card rounded-2xl p-6 sm:p-10 border border-white/[0.08] bg-slate-900/80 shadow-2xl relative text-right rtl:text-right ltr:text-left">
+          <div className="lg:col-span-7 rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] relative text-right rtl:text-right ltr:text-left">
             {isSuccess ? (
               <div className="py-12 px-4 text-center space-y-5 animate-in fade-in zoom-in duration-300 font-arabic">
-                <div className="w-16 h-16 rounded-full bg-emerald-950/80 border border-emerald-500/50 text-emerald-400 flex items-center justify-center mx-auto shadow-lg shadow-emerald-900/30">
+                <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-bold font-display text-white">
+                  <h2 className="text-2xl font-bold font-display text-slate-900">
                     {t('تم استلام طلبك بنجاح!', 'Your request has been received.')}
                   </h2>
-                  <p className="text-slate-300 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+                  <p className="text-slate-600 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
                     {t(
                       'شكراً لتواصلك معنا. سنراجع تفاصيل مشروعك واحتياجاتك وسيتواصل معك أحد مهندسينا المعماريين.',
                       'Thank you for reaching out. We will review your project details and contact you.'
                     )}
                   </p>
                   {receiptId && (
-                    <p className="text-[11px] font-mono text-slate-400 pt-1">
-                      {t('رقم الطلب:', 'Reference:')} <span className="text-blue-400">#{receiptId}</span>
+                    <p className="text-[11px] font-mono text-slate-500 pt-1">
+                      {t('رقم الطلب:', 'Reference:')} <span className="text-blue-600 font-semibold">#{receiptId}</span>
                     </p>
                   )}
                 </div>
                 <button
                   type="button"
                   onClick={() => setIsSuccess(false)}
-                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-xl transition-colors shadow-md cursor-pointer"
+                  className="inline-flex items-center gap-2 bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl transition-all shadow-sm cursor-pointer"
                 >
                   <span>{t('إرسال طلب أو استفسار آخر', 'Send Another Inquiry')}</span>
                   <ArrowIcon className="w-4 h-4" />
@@ -250,11 +245,11 @@ export const ContactView: React.FC = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate className="space-y-6">
-                <div className="border-b border-slate-800 pb-4 mb-2">
-                  <h2 className="text-xl font-bold font-display text-white">
+                <div className="border-b border-slate-100 pb-4 mb-2">
+                  <h2 className="text-xl font-bold font-display text-slate-900">
                     {t('نموذج طلب مشروع أو استشارة برمجية', 'Project Inquiry & Software Scoping Form')}
                   </h2>
-                  <p className="text-xs text-slate-400 mt-1 font-arabic">
+                  <p className="text-xs text-slate-500 mt-1 font-arabic">
                     {t('املأ التفاصيل أدناه وسيقوم فريقنا الهندسي بمراجعة المتطلبات والتواصل معك.', 'Provide your requirements below and our engineering team will follow up directly.')}
                   </p>
                 </div>
@@ -263,7 +258,7 @@ export const ContactView: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Full Name */}
                   <div className="space-y-1.5">
-                    <label htmlFor="fullName" className="block text-xs font-semibold text-slate-200">
+                    <label htmlFor="fullName" className="block text-xs font-semibold text-slate-700">
                       {t('الاسم الكامل *', 'Full Name *')}
                     </label>
                     <input
@@ -274,12 +269,12 @@ export const ContactView: React.FC = () => {
                       value={formData.fullName}
                       onChange={handleChange}
                       placeholder={isAr ? 'مثال: محمد العمري' : 'e.g. John Smith'}
-                      className={`w-full bg-slate-950 border ${
-                        errors.fullName ? 'border-rose-500' : 'border-slate-800 focus:border-blue-500'
-                      } rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic`}
+                      className={`w-full bg-slate-50 border ${
+                        errors.fullName ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200 focus:border-cyan-500 focus:bg-white'
+                      } rounded-xl px-4 py-2.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all font-arabic`}
                     />
                     {errors.fullName && (
-                      <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                      <p className="text-xs text-rose-500 flex items-center gap-1 mt-1">
                         <AlertCircle className="w-3.5 h-3.5" />
                         <span>{errors.fullName}</span>
                       </p>
@@ -288,7 +283,7 @@ export const ContactView: React.FC = () => {
 
                   {/* Phone / WhatsApp */}
                   <div className="space-y-1.5">
-                    <label htmlFor="phone" className="block text-xs font-semibold text-slate-200">
+                    <label htmlFor="phone" className="block text-xs font-semibold text-slate-700">
                       {t('رقم الهاتف / الواتساب *', 'Phone or WhatsApp *')}
                     </label>
                     <input
@@ -300,12 +295,12 @@ export const ContactView: React.FC = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+967..."
-                      className={`w-full bg-slate-950 border ${
-                        errors.phone ? 'border-rose-500' : 'border-slate-800 focus:border-blue-500'
-                      } rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all`}
+                      className={`w-full bg-slate-50 border ${
+                        errors.phone ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200 focus:border-cyan-500 focus:bg-white'
+                      } rounded-xl px-4 py-2.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all`}
                     />
                     {errors.phone && (
-                      <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                      <p className="text-xs text-rose-500 flex items-center gap-1 mt-1">
                         <AlertCircle className="w-3.5 h-3.5" />
                         <span>{errors.phone}</span>
                       </p>
@@ -317,7 +312,7 @@ export const ContactView: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Email */}
                   <div className="space-y-1.5">
-                    <label htmlFor="email" className="block text-xs font-semibold text-slate-200">
+                    <label htmlFor="email" className="block text-xs font-semibold text-slate-700">
                       {t('البريد الإلكتروني *', 'Email Address *')}
                     </label>
                     <input
@@ -329,12 +324,12 @@ export const ContactView: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="name@company.com"
-                      className={`w-full bg-slate-950 border ${
-                        errors.email ? 'border-rose-500' : 'border-slate-800 focus:border-blue-500'
-                      } rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all`}
+                      className={`w-full bg-slate-50 border ${
+                        errors.email ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200 focus:border-cyan-500 focus:bg-white'
+                      } rounded-xl px-4 py-2.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all`}
                     />
                     {errors.email && (
-                      <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                      <p className="text-xs text-rose-500 flex items-center gap-1 mt-1">
                         <AlertCircle className="w-3.5 h-3.5" />
                         <span>{errors.email}</span>
                       </p>
@@ -343,7 +338,7 @@ export const ContactView: React.FC = () => {
 
                   {/* Company */}
                   <div className="space-y-1.5">
-                    <label htmlFor="company" className="block text-xs font-semibold text-slate-200">
+                    <label htmlFor="company" className="block text-xs font-semibold text-slate-700">
                       {t('اسم الشركة أو المؤسسة', 'Company Name (Optional)')}
                     </label>
                     <input
@@ -353,7 +348,7 @@ export const ContactView: React.FC = () => {
                       value={formData.company}
                       onChange={handleChange}
                       placeholder={isAr ? 'مثال: شركة الأفق للتجارة' : 'e.g. Horizon Trading'}
-                      className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic"
+                      className="w-full bg-slate-50 border border-slate-200 focus:border-cyan-500 focus:bg-white rounded-xl px-4 py-2.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all font-arabic"
                     />
                   </div>
                 </div>
@@ -362,7 +357,7 @@ export const ContactView: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Service Requirement */}
                   <div className="space-y-1.5">
-                    <label htmlFor="serviceNeeded" className="block text-xs font-semibold text-slate-200">
+                    <label htmlFor="serviceNeeded" className="block text-xs font-semibold text-slate-700">
                       {t('ما الخدمة أو الحل المطلوب؟ *', 'What Do You Need? *')}
                     </label>
                     <select
@@ -370,7 +365,7 @@ export const ContactView: React.FC = () => {
                       name="serviceNeeded"
                       value={formData.serviceNeeded}
                       onChange={handleChange}
-                      className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic"
+                      className="w-full bg-slate-50 border border-slate-200 focus:border-cyan-500 focus:bg-white rounded-xl px-4 py-2.5 text-base sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all font-arabic cursor-pointer"
                     >
                       <option value="custom-software">{isAr ? 'تطوير برمجيات مخصصة (Custom Software)' : 'Custom Software Development'}</option>
                       <option value="ready-restaurant">{isAr ? 'حل جاهز: نظام المطاعم والمقاهي' : 'Ready Solution: Restaurant & Cafe'}</option>
@@ -388,7 +383,7 @@ export const ContactView: React.FC = () => {
 
                   {/* Business Type */}
                   <div className="space-y-1.5">
-                    <label htmlFor="businessType" className="block text-xs font-semibold text-slate-200">
+                    <label htmlFor="businessType" className="block text-xs font-semibold text-slate-700">
                       {t('نوع النشاط التجاري', 'Business Vertical')}
                     </label>
                     <input
@@ -398,7 +393,7 @@ export const ContactView: React.FC = () => {
                       value={formData.businessType}
                       onChange={handleChange}
                       placeholder={isAr ? 'مثال: مطاعم، عيادة، تجارة جملة، عقار...' : 'e.g. F&B, Healthcare, Retail, PropTech'}
-                      className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic"
+                      className="w-full bg-slate-50 border border-slate-200 focus:border-cyan-500 focus:bg-white rounded-xl px-4 py-2.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all font-arabic"
                     />
                   </div>
                 </div>
@@ -407,7 +402,7 @@ export const ContactView: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Timeline */}
                   <div className="space-y-1.5">
-                    <label htmlFor="timeline" className="block text-xs font-semibold text-slate-200">
+                    <label htmlFor="timeline" className="block text-xs font-semibold text-slate-700">
                       {t('الجدول الزمني المتوقع للإطلاق', 'Estimated Timeline')}
                     </label>
                     <select
@@ -415,7 +410,7 @@ export const ContactView: React.FC = () => {
                       name="timeline"
                       value={formData.timeline}
                       onChange={handleChange}
-                      className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic"
+                      className="w-full bg-slate-50 border border-slate-200 focus:border-cyan-500 focus:bg-white rounded-xl px-4 py-2.5 text-base sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all font-arabic cursor-pointer"
                     >
                       <option value="asap">{isAr ? 'فوراً (خلال 1 - 2 أسبوع)' : 'Immediately (1–2 weeks)'}</option>
                       <option value="1-month">{isAr ? 'خلال شهر' : 'Within a month'}</option>
@@ -426,7 +421,7 @@ export const ContactView: React.FC = () => {
 
                   {/* Budget */}
                   <div className="space-y-1.5">
-                    <label htmlFor="budgetRange" className="block text-xs font-semibold text-slate-200">
+                    <label htmlFor="budgetRange" className="block text-xs font-semibold text-slate-700">
                       {t('الميزانية التقديرية (اختياري)', 'Estimated Budget (Optional)')}
                     </label>
                     <input
@@ -436,14 +431,14 @@ export const ContactView: React.FC = () => {
                       value={formData.budgetRange}
                       onChange={handleChange}
                       placeholder={isAr ? 'مثال: باقة أساسية، أو ميزانية مخصصة' : 'e.g. Starter tier / Custom quote'}
-                      className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-arabic"
+                      className="w-full bg-slate-50 border border-slate-200 focus:border-cyan-500 focus:bg-white rounded-xl px-4 py-2.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all font-arabic"
                     />
                   </div>
                 </div>
 
                 {/* Message / Details */}
                 <div className="space-y-1.5">
-                  <label htmlFor="message" className="block text-xs font-semibold text-slate-200">
+                  <label htmlFor="message" className="block text-xs font-semibold text-slate-700">
                     {t('تفاصيل المتطلبات أو التحديات التشغيلية *', 'Project Details & Specific Requirements *')}
                   </label>
                   <textarea
@@ -458,12 +453,12 @@ export const ContactView: React.FC = () => {
                         ? 'وضح باختصار فكرة مشروعك، عدد الفروع أو المستخدمين، أو الأنظمة المطلوب التكامل معها...'
                         : 'Describe your core workflows, number of locations/users, or tools to integrate...'
                     }
-                    className={`w-full bg-slate-950 border ${
-                      errors.message ? 'border-rose-500' : 'border-slate-800 focus:border-blue-500'
-                    } rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all resize-none font-arabic`}
+                    className={`w-full bg-slate-50 border ${
+                      errors.message ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200 focus:border-cyan-500 focus:bg-white'
+                    } rounded-xl px-4 py-2.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all resize-none font-arabic`}
                   />
                   {errors.message && (
-                    <p className="text-xs text-rose-400 flex items-center gap-1 mt-1">
+                    <p className="text-xs text-rose-500 flex items-center gap-1 mt-1">
                       <AlertCircle className="w-3.5 h-3.5" />
                       <span>{errors.message}</span>
                     </p>
@@ -487,7 +482,7 @@ export const ContactView: React.FC = () => {
                 {submitError && (
                   <div
                     role="alert"
-                    className="p-3.5 rounded-xl bg-rose-950/70 border border-rose-800 text-rose-200 text-xs leading-relaxed flex items-start gap-2 font-arabic"
+                    className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs leading-relaxed flex items-start gap-2 font-arabic"
                   >
                     <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
                     <span>{submitError}</span>
@@ -498,11 +493,11 @@ export const ContactView: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:bg-blue-900/60 disabled:cursor-not-allowed text-white font-semibold text-sm py-3.5 px-6 rounded-xl shadow-lg shadow-blue-600/30 transition-colors cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] disabled:opacity-50 disabled:cursor-not-allowed text-slate-950 font-bold text-sm py-3.5 px-6 rounded-xl shadow-md shadow-[#38BDF8]/20 transition-all cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <div className="w-4 h-4 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin" />
                       <span>{t('جاري الإرسال...', 'Sending request...')}</span>
                     </>
                   ) : (
@@ -520,43 +515,41 @@ export const ContactView: React.FC = () => {
           <div className="lg:col-span-5 space-y-6 text-right rtl:text-right ltr:text-left">
             
             {/* Quick Contact Card */}
-            <div className="glass-card rounded-2xl p-6 sm:p-8 border border-white/[0.08] bg-slate-900/80 space-y-6">
-              <h2 className="text-lg font-bold font-display text-white border-b border-slate-800 pb-3">
+            <div className="rounded-2xl p-6 sm:p-8 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] space-y-6">
+              <h2 className="text-lg font-bold font-display text-slate-900 border-b border-slate-100 pb-3">
                 {t('قنوات التواصل المباشرة', 'Direct Advisory Channels')}
               </h2>
 
               <ul className="space-y-4 text-sm font-arabic">
                 {/* Email */}
                 <li className="flex items-start gap-3.5">
-                  <div className="w-9 h-9 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-9 h-9 rounded-xl bg-cyan-50 border border-cyan-100 text-cyan-700 flex items-center justify-center shrink-0 mt-0.5">
                     <Mail className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs text-slate-400">{t('البريد الإلكتروني المباشر', 'Direct Email')}</div>
+                    <div className="text-xs text-slate-500">{t('البريد الإلكتروني المباشر', 'Direct Email')}</div>
                     <a
                       href={`mailto:${CONTACT_EMAIL}`}
-                      className="text-white hover:text-blue-400 font-mono text-xs sm:text-sm font-semibold transition-colors"
+                      className="text-slate-900 hover:text-cyan-600 font-mono text-xs sm:text-sm font-semibold transition-colors"
                     >
                       {CONTACT_EMAIL}
                     </a>
                   </div>
                 </li>
 
-                {/* WhatsApp — rendered only when a real number is configured
-                    (NEXT_PUBLIC_WHATSAPP_NUMBER). This previously linked to a
-                    placeholder number, sending visitors to a dead chat. */}
+                {/* WhatsApp */}
                 {WHATSAPP_URL && (
                   <li className="flex items-start gap-3.5">
-                    <div className="w-9 h-9 rounded-xl bg-emerald-950/80 border border-emerald-800/60 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
                       <WhatsAppIcon className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-xs text-slate-400">{t('المراسلة المباشرة عبر الواتساب', 'Direct WhatsApp Channel')}</div>
+                      <div className="text-xs text-slate-500">{t('المراسلة المباشرة عبر الواتساب', 'Direct WhatsApp Channel')}</div>
                       <a
                         href={WHATSAPP_URL}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-emerald-400 hover:text-emerald-300 font-mono text-xs sm:text-sm font-semibold transition-colors inline-flex items-center gap-1 mt-0.5"
+                        className="text-emerald-600 hover:text-emerald-700 font-mono text-xs sm:text-sm font-semibold transition-colors inline-flex items-center gap-1 mt-0.5"
                       >
                         <span>{t('تواصل معنا عبر الواتساب', 'Chat on WhatsApp')}</span>
                         <ArrowIcon className="w-3.5 h-3.5" />
@@ -567,12 +560,12 @@ export const ContactView: React.FC = () => {
 
                 {/* Location */}
                 <li className="flex items-start gap-3.5">
-                  <div className="w-9 h-9 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-9 h-9 rounded-xl bg-cyan-50 border border-cyan-100 text-cyan-700 flex items-center justify-center shrink-0 mt-0.5">
                     <MapPin className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs text-slate-400">{t('النطاق الجغرافي والخدمة', 'Regional Presence')}</div>
-                    <div className="text-white text-xs sm:text-sm font-medium">
+                    <div className="text-xs text-slate-500">{t('النطاق الجغرافي والخدمة', 'Regional Presence')}</div>
+                    <div className="text-slate-800 text-xs sm:text-sm font-medium">
                       {t('اليمن • المملكة العربية السعودية • الخليج العربي', 'Yemen • Saudi Arabia • GCC Region')}
                     </div>
                   </div>
@@ -580,12 +573,12 @@ export const ContactView: React.FC = () => {
 
                 {/* NDA Pledge */}
                 <li className="flex items-start gap-3.5">
-                  <div className="w-9 h-9 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-9 h-9 rounded-xl bg-cyan-50 border border-cyan-100 text-cyan-700 flex items-center justify-center shrink-0 mt-0.5">
                     <Lock className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs text-slate-400">{t('اتفاقية السرية (NDA)', 'Mutual NDA')}</div>
-                    <div className="text-white text-xs sm:text-sm font-medium">
+                    <div className="text-xs text-slate-500">{t('اتفاقية السرية (NDA)', 'Mutual NDA')}</div>
+                    <div className="text-slate-800 text-xs sm:text-sm font-medium">
                       {t('نوقع اتفاقيات سرية متبادلة لحماية فكرة مشروعك وبياناتك.', 'Mutual NDAs signed before code or business disclosure.')}
                     </div>
                   </div>
@@ -594,12 +587,12 @@ export const ContactView: React.FC = () => {
             </div>
 
             {/* Architecture Governance & Sovereignty Banner */}
-            <div className="glass-card rounded-2xl p-6 border border-white/[0.08] bg-slate-900/60 space-y-3 font-arabic">
-              <div className="flex items-center gap-2 text-xs font-mono text-blue-400">
-                <ShieldCheck className="w-4 h-4 text-teal-400" />
+            <div className="rounded-2xl p-6 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] space-y-3 font-arabic">
+              <div className="flex items-center gap-2 text-xs font-mono text-cyan-800 font-semibold">
+                <ShieldCheck className="w-4 h-4 text-cyan-600" />
                 <span>{t('ضمان الجودة والسيادة التقنية', 'Engineering & Data Sovereignty Guarantee')}</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-600 leading-relaxed">
                 {t(
                   'نوڤيكسا تلتزم بالمعايير الإقليمية لسيادة البيانات مع تشفير شامل للأصول البرمجية وتوفير خيارات الاستضافة المدارة المحلية.',
                   'Novixa builds systems adhering to GCC data residency rules, end-to-end cryptographic encryption, and managed regional deployments.'

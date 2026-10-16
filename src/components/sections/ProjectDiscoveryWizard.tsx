@@ -24,7 +24,7 @@ const PROJECT_TYPES: Choice[] = [
   { value: 'saas-product', ar: 'منتج سحابي (SaaS)', en: 'SaaS Product' },
   { value: 'digital-commerce', ar: 'متجر إلكتروني', en: 'Digital Commerce' },
   { value: 'booking-engine', ar: 'نظام حجوزات', en: 'Booking Engine' },
-  { value: 'practical-ai', ar: 'حلول ذكاء اصطناعي', en: 'Practical AI' },
+  { value: 'data-automation', ar: 'أتمتة العمليات وتكامل الـ APIs', en: 'Process Automation & APIs' },
   { value: 'custom-system', ar: 'برمجيات مخصصة', en: 'Custom System' },
 ];
 
@@ -172,23 +172,20 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden" id="start-project">
-      {/* Background Accent glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[500px] bg-blue-600/10 blur-3xl pointer-events-none"></div>
-
+    <section className="py-4 bg-transparent relative" id="start-project">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center space-y-4 mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-xs font-mono font-medium">
+        <div className="text-center space-y-4 mb-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
             <span>{t('ابدأ مشروعك معنا', 'Project Discovery & Architecture Intake')}</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold font-display text-white tracking-tight leading-snug">
+          <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {t('لديك مشكلة تشغيلية تستحق نظامًا أفضل؟', 'Have an operational challenge deserving a modern system?')}
           </h1>
 
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl mx-auto font-arabic">
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto font-arabic">
             {t(
               'أخبرنا بما تريد بناءه، وسنساعدك على تحويل الفكرة أو المشكلة التشغيلية إلى خطة تنفيذية وهندسية واضحة.',
               'Tell us what you need to build, and we will formulate a structured architectural roadmap.'
@@ -197,10 +194,10 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
 
           {/* Progress Indicator */}
           {!submitted && (
-            <div className="flex items-center justify-center gap-3 pt-4 font-mono text-xs text-blue-400">
+            <div className="flex items-center justify-center gap-3 pt-4 font-mono text-xs text-cyan-700 font-semibold">
               <span>{t('الخطوة', 'Step')} 0{step} / 0{totalSteps}</span>
               <div
-                className="w-32 bg-slate-950 rounded-full h-1.5 p-0.5 border border-slate-800"
+                className="w-32 bg-slate-100 rounded-full h-1.5 p-0.5 border border-slate-200"
                 role="progressbar"
                 aria-valuenow={step}
                 aria-valuemin={1}
@@ -208,7 +205,7 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                 aria-label={t('تقدّم نموذج المشروع', 'Project form progress')}
               >
                 <div
-                  className="bg-blue-500 h-full rounded-full transition-all duration-300"
+                  className="bg-cyan-500 h-full rounded-full transition-all duration-300"
                   style={{ width: `${(step / totalSteps) * 100}%` }}
                 ></div>
               </div>
@@ -217,22 +214,22 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
         </div>
 
         {/* Wizard Box */}
-        <div className="glass-card rounded-2xl p-6 sm:p-10 border border-slate-800 bg-slate-900/90 shadow-2xl relative text-right rtl:text-right ltr:text-left">
+        <div className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] relative text-right rtl:text-right ltr:text-left">
           {submitted ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className="text-center py-8 space-y-6"
             >
-              <div className="w-14 h-14 rounded-xl bg-slate-950 border border-slate-800 text-blue-400 flex items-center justify-center mx-auto shadow-sm">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
                 <CheckCircle2 className="w-7 h-7" />
               </div>
 
               <div className="space-y-2">
-                <h2 className="text-2xl font-extrabold font-display text-white">
+                <h2 className="text-2xl font-extrabold font-display text-slate-900">
                   {t('تم استلام تفاصيل مشروعك بنجاح!', 'Your Project Spec Received Successfully!')}
                 </h2>
-                <p className="text-sm text-slate-300 max-w-md mx-auto font-arabic leading-relaxed">
+                <p className="text-sm text-slate-600 max-w-md mx-auto font-arabic leading-relaxed">
                   {t(
                     'شكراً لك يا ' + (formData.name || 'عزيزنا') + '. سيتواصل معك مهندسو نوڤيكسا لمراجعة المخطط الأولي ومناقشة الخطة الهندسية خلال 24 ساعة.',
                     'Thank you ' + (formData.name || 'there') + '. Our engineering leadership will review your specs and reach out within 24 hours.'
@@ -240,19 +237,20 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 max-w-md mx-auto space-y-1 font-mono text-right rtl:text-right ltr:text-left">
-                <div className="text-blue-400 font-bold mb-1">PROPOSAL BRIEF RECEIPT: #{leadReceiptId}</div>
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 max-w-md mx-auto space-y-1 font-mono text-right rtl:text-right ltr:text-left">
+                <div className="text-cyan-800 font-bold mb-1">PROPOSAL BRIEF RECEIPT: #{leadReceiptId}</div>
                 <div>Type: {labelFor(PROJECT_TYPES, formData.projectType)}</div>
                 <div>Industry: {labelFor(INDUSTRY_CHOICES, formData.industry)}</div>
                 <div>Budget: {formData.budgetRange}</div>
               </div>
 
               <button
+                type="button"
                 onClick={() => {
                   setSubmitted(false);
                   setStep(1);
                 }}
-                className="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm transition-all shadow-sm"
+                className="px-5 py-2.5 rounded-xl bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 font-bold text-xs sm:text-sm transition-all shadow-sm cursor-pointer"
               >
                 {t('تقديم طلب آخر', 'Submit Another Discovery')}
               </button>
@@ -267,7 +265,7 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h2 className="text-base sm:text-lg font-bold font-display text-white">
+                  <h2 className="text-base sm:text-lg font-bold font-display text-slate-900">
                     01. {t('ماذا تريد أن نبني لشركتك؟', 'What do you want us to build?')}
                   </h2>
 
@@ -278,10 +276,10 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                         type="button"
                         aria-pressed={formData.projectType === choice.value}
                         onClick={() => setFormData({ ...formData, projectType: choice.value })}
-                        className={`p-3.5 rounded-xl border text-right rtl:text-right ltr:text-left font-medium transition-all ${
+                        className={`p-3.5 rounded-xl border text-right rtl:text-right ltr:text-left font-medium transition-all cursor-pointer ${
                           formData.projectType === choice.value
-                            ? 'bg-blue-600 text-white border-blue-500 font-bold shadow-sm'
-                            : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'
+                            ? 'bg-[#38BDF8] text-slate-950 border-[#38BDF8] font-bold shadow-sm'
+                            : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-white'
                         }`}
                       >
                         {label(choice)}
@@ -298,7 +296,7 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h2 className="text-base sm:text-lg font-bold font-display text-white">
+                  <h2 className="text-base sm:text-lg font-bold font-display text-slate-900">
                     02. {t('ما مجال عمل شركتك؟', 'What is your business sector?')}
                   </h2>
 
@@ -309,10 +307,10 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                         type="button"
                         aria-pressed={formData.industry === choice.value}
                         onClick={() => setFormData({ ...formData, industry: choice.value })}
-                        className={`p-3.5 rounded-xl border text-right rtl:text-right ltr:text-left font-medium transition-all ${
+                        className={`p-3.5 rounded-xl border text-right rtl:text-right ltr:text-left font-medium transition-all cursor-pointer ${
                           formData.industry === choice.value
-                            ? 'bg-blue-600 text-white border-blue-500 font-bold shadow-sm'
-                            : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'
+                            ? 'bg-[#38BDF8] text-slate-950 border-[#38BDF8] font-bold shadow-sm'
+                            : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-white'
                         }`}
                       >
                         {label(choice)}
@@ -329,7 +327,7 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h2 className="text-base sm:text-lg font-bold font-display text-white">
+                  <h2 className="text-base sm:text-lg font-bold font-display text-slate-900">
                     03. {t('ما المشكلة التشغيلية الرئيسية التي تريد حلها؟', 'What primary operational issue are you solving?')}
                   </h2>
 
@@ -340,7 +338,7 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                       placeholder={t('صف المشكلة باختصار (مثلاً: زحام الطلبات في نهاية الأسبوع، تضارب بيانات المستودع، أخطاء الفوترة اليدوية...)', 'Describe your operational bottleneck briefly...')}
                       aria-label={t('وصف المشكلة التشغيلية', 'Operational problem description')}
                       rows={4}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 transition-all font-arabic"
                     ></textarea>
                   </div>
                 </motion.div>
@@ -353,19 +351,19 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-5"
                 >
-                  <h2 className="text-base sm:text-lg font-bold font-display text-white">
+                  <h2 className="text-base sm:text-lg font-bold font-display text-slate-900">
                     04. {t('النظام الحالي ونطاق الميزانية', 'Current Setup & Budget Scope')}
                   </h2>
 
                   <div className="space-y-2">
-                    <label htmlFor="existing-system" className="text-xs text-slate-300 font-semibold block">
+                    <label htmlFor="existing-system" className="text-xs text-slate-700 font-semibold block">
                       {t('هل لديك نظام تشغيلي حالي؟', 'Do you have a current system?')}
                     </label>
                     <select
                       id="existing-system"
                       value={formData.existingSystem}
                       onChange={(e) => setFormData({ ...formData, existingSystem: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs sm:text-sm text-white focus:outline-none focus:border-blue-500"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 transition-all font-arabic cursor-pointer"
                     >
                       {EXISTING_SYSTEMS.map((choice) => (
                         <option key={choice.value} value={choice.value}>
@@ -376,14 +374,14 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="timeline" className="text-xs text-slate-300 font-semibold block">
+                    <label htmlFor="timeline" className="text-xs text-slate-700 font-semibold block">
                       {t('الإطار الزمني المستهدف للإطلاق:', 'Target timeline to launch:')}
                     </label>
                     <select
                       id="timeline"
                       value={formData.timeline}
                       onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs sm:text-sm text-white focus:outline-none focus:border-blue-500"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 transition-all font-arabic cursor-pointer"
                     >
                       {TIMELINES.map((choice) => (
                         <option key={choice.value} value={choice.value}>
@@ -394,7 +392,7 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                   </div>
 
                   <div className="space-y-2">
-                    <span className="text-xs text-slate-300 font-semibold block" id="budget-label">
+                    <span className="text-xs text-slate-700 font-semibold block" id="budget-label">
                       {t('نطاق الميزانية التقديرية للاستثمار:', 'Estimated Budget Range:')}
                     </span>
                     <div className="grid grid-cols-3 gap-2 text-xs" role="group" aria-labelledby="budget-label">
@@ -404,10 +402,10 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                           type="button"
                           aria-pressed={formData.budgetRange === b}
                           onClick={() => setFormData({ ...formData, budgetRange: b })}
-                          className={`py-2.5 px-3 rounded-xl border text-center font-mono font-bold transition-all ${
+                          className={`py-2.5 px-3 rounded-xl border text-center font-mono font-bold transition-all cursor-pointer ${
                             formData.budgetRange === b
-                              ? 'bg-blue-600 text-white border-blue-500'
-                              : 'bg-slate-950 border-slate-800 text-slate-300'
+                              ? 'bg-[#38BDF8] text-slate-950 border-[#38BDF8] shadow-sm'
+                              : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-white'
                           }`}
                         >
                           {b}
@@ -425,11 +423,11 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-4"
                 >
-                  <h2 className="text-base sm:text-lg font-bold font-display text-white">
+                  <h2 className="text-base sm:text-lg font-bold font-display text-slate-900">
                     05. {t('معلومات التواصل لمناقشة المخطط الهندسي', 'Contact Information')}
                   </h2>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <input
                       type="text"
                       required
@@ -438,7 +436,7 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                       aria-label={t('الاسم الكريم', 'Your Name')}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                      className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 transition-all font-arabic"
                     />
                     <input
                       type="text"
@@ -447,7 +445,7 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                       aria-label={t('اسم الشركة أو المنشأة', 'Company Name')}
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                      className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 transition-all font-arabic"
                     />
                     <input
                       type="email"
@@ -458,7 +456,7 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                       aria-label={t('البريد الإلكتروني', 'Corporate Email')}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                      className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 transition-all"
                     />
                     <input
                       type="tel"
@@ -468,7 +466,7 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                       aria-label={t('رقم الجوال / الواتساب', 'Phone / WhatsApp')}
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                      className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 transition-all"
                     />
                   </div>
                 </motion.div>
@@ -491,20 +489,20 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
               {errorMessage && (
                 <div
                   role="alert"
-                  className="p-3 rounded-lg bg-rose-950/80 border border-rose-800 text-rose-200 text-xs font-arabic"
+                  className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-arabic"
                 >
                   {errorMessage}
                 </div>
               )}
 
               {/* Wizard Navigation Buttons */}
-              <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                 {step > 1 ? (
                   <button
                     type="button"
                     onClick={handleBack}
                     disabled={isSubmitting}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-300 transition-all disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-semibold text-slate-700 transition-all cursor-pointer disabled:opacity-50"
                   >
                     <BackArrowIcon className="w-3.5 h-3.5" />
                     <span>{t('السابق', 'Back')}</span>
@@ -517,7 +515,7 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold transition-all shadow-sm"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 text-xs sm:text-sm font-bold transition-all shadow-md shadow-[#38BDF8]/20 cursor-pointer"
                   >
                     <span>{t('الخطوة التالية', 'Next Step')}</span>
                     <ArrowIcon className="w-3.5 h-3.5" />
@@ -526,9 +524,9 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:opacity-50 text-white text-xs sm:text-sm font-semibold transition-all shadow-sm"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] disabled:opacity-50 text-slate-950 text-xs sm:text-sm font-bold transition-all shadow-md shadow-[#38BDF8]/20 cursor-pointer"
                   >
-                    <Send className="w-4 h-4" />
+                    <Send className="w-4 h-4 rtl:rotate-180" />
                     <span>{isSubmitting ? t('جاري الحفظ مع الهندسة...', 'Submitting Brief...') : t('إرسال للمراجعة الهندسية', 'Submit Project Brief')}</span>
                   </button>
                 )}

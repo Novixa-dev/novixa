@@ -8,7 +8,6 @@ import {
   Cpu,
   Building,
   CheckCircle2,
-  Sparkles,
   ArrowUpRight,
 } from 'lucide-react';
 import { requireAdmin } from '@/lib/auth/admin';
@@ -288,7 +287,7 @@ export default async function AdminServicesPage({
 
         {filtered.length === 0 && (
           <div className="rounded-2xl border border-white/[0.08] bg-slate-900/40 p-12 text-center">
-            <Sparkles className="h-8 w-8 text-slate-400 mx-auto mb-3" />
+            <Search className="h-8 w-8 text-slate-400 mx-auto mb-3" />
             <h3 className="text-base font-bold text-white mb-1">
               {t('لم يتم العثور على نتائج مطابقة', 'No matching offerings found')}
             </h3>

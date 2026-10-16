@@ -13,8 +13,6 @@ import { CaseStudiesSection } from '@/components/sections/CaseStudiesSection';
 import { WhyNovixaSection } from '@/components/sections/WhyNovixaSection';
 import { ProcessSection } from '@/components/sections/ProcessSection';
 import { DeploymentHostingSection } from '@/components/sections/DeploymentHostingSection';
-import { MaintenanceSupportSection } from '@/components/sections/MaintenanceSupportSection';
-import { HomeCTASection } from '@/components/sections/HomeCTASection';
 import { Language } from '@/types';
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -51,11 +49,11 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
       
-      {/* 1. Hero: What Novixa is + Value Proposition + Dual CTAs */}
-      <HeroSection servicesCount={servicesCatalog.length} />
-
-      {/* 2. Services Strip: 4 Key Services Horizontal Strip directly under Hero */}
-      <ServicesStrip />
+      {/* 1. Hero & Services Strip: Unified 100vh First Viewport (Above the Fold) */}
+      <div className="relative min-h-screen lg:h-[100dvh] flex flex-col justify-between">
+        <HeroSection servicesCount={servicesCatalog.length} />
+        <ServicesStrip />
+      </div>
 
       {/* 3. About Section: Who Novixa is + Workspace Visual */}
       <HomeAboutSection />
@@ -105,15 +103,6 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         <DeploymentHostingSection lang={lang} />
       </div>
 
-      {/* 11. Maintenance & Support: Continuous SLA, Security Patches, Monitoring */}
-      <div className="defer-offscreen">
-        <MaintenanceSupportSection lang={lang} />
-      </div>
-
-      {/* 12. Final High-Conversion CTA: Start Project OR Explore Ready Solutions */}
-      <div className="defer-offscreen">
-        <HomeCTASection lang={lang} />
-      </div>
     </>
   );
 }

@@ -67,7 +67,7 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
   ]);
 
   return (
-    <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
+    <div className="pt-28 pb-20 bg-[#F8FAFC] min-h-screen text-slate-900">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -76,42 +76,42 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-right rtl:text-right ltr:text-left">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-          <Link href={`/${lang}`} className="hover:text-white">{isAr ? 'الرئيسية' : 'Home'}</Link>
+        <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
+          <Link href={`/${lang}`} className="hover:text-slate-900 transition-colors">{isAr ? 'الرئيسية' : 'Home'}</Link>
           <span>/</span>
-          <Link href={`/${lang}/insights`} className="hover:text-white">{isAr ? 'المعرفة' : 'Insights'}</Link>
+          <Link href={`/${lang}/insights`} className="hover:text-slate-900 transition-colors">{isAr ? 'المعرفة' : 'Insights'}</Link>
           <span>/</span>
-          <span className="text-teal-400">{article.title[isAr ? 'ar' : 'en']}</span>
+          <span className="text-cyan-700 font-medium truncate">{article.title[isAr ? 'ar' : 'en']}</span>
         </div>
 
-        {/* Article Header */}
-        <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-800 bg-slate-900/90 shadow-2xl space-y-6">
-          <div className="flex items-center justify-between flex-wrap gap-3 border-b border-slate-800 pb-4">
-            <span className="px-3 py-1 rounded-full text-xs font-mono bg-teal-950 text-teal-300 border border-teal-800">
+        {/* Article Header Card */}
+        <article className="rounded-2xl p-6 sm:p-10 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] space-y-6">
+          <div className="flex items-center justify-between flex-wrap gap-3 border-b border-slate-100 pb-4">
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-50 border border-cyan-200 text-cyan-800">
               {article.category[isAr ? 'ar' : 'en']}
             </span>
-            <div className="flex items-center gap-4 text-xs font-mono text-slate-400">
-              <span className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" />
+            <div className="flex items-center gap-4 text-xs font-mono text-slate-500">
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-slate-400" />
                 <span>{article.readTime[isAr ? 'ar' : 'en']}</span>
               </span>
               <span>{article.date}</span>
             </div>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl font-extrabold font-display text-white">
+          <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {article.title[isAr ? 'ar' : 'en']}
           </h1>
 
-          <p className="text-slate-300 text-sm sm:text-base italic font-arabic border-r-2 border-teal-500 pr-4 rtl:pr-4 ltr:border-l-2 ltr:pl-4">
+          <p className="text-slate-600 text-sm sm:text-base italic font-arabic border-r-2 border-cyan-500 pr-4 rtl:pr-4 ltr:border-l-2 ltr:pl-4">
             {article.excerpt[isAr ? 'ar' : 'en']}
           </p>
 
-          <div className="space-y-4 pt-4 text-sm text-slate-200 font-arabic leading-relaxed">
+          <div className="space-y-4 pt-2 text-sm sm:text-base text-slate-700 font-arabic leading-relaxed">
             {article.content[isAr ? 'ar' : 'en'].map((p, i) => (
-              <p key={i} className="bg-slate-950/80 p-5 rounded-2xl border border-slate-800/80">
+              <p key={i} className="bg-slate-50/70 p-5 rounded-xl border border-slate-200/80">
                 {p}
               </p>
             ))}
@@ -120,23 +120,23 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
           {/* Architecture Decision Record (ADR) Interactive Card */}
           <AdrSnippetCard slug={slug} isAr={isAr} />
 
-          <div className="pt-6 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
+          <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-500 font-mono">
             <span>{article.author.name[isAr ? 'ar' : 'en']} • {article.author.role[isAr ? 'ar' : 'en']}</span>
             <Link
               href={`/${lang}/start-project`}
-              className="px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold transition-all flex items-center gap-2"
+              className="px-5 py-2.5 rounded-xl bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 font-bold transition-all shadow-md shadow-[#38BDF8]/20 flex items-center gap-2 text-xs sm:text-sm cursor-pointer"
             >
               <span>{isAr ? 'مناقشة أفكار المقال مع مهندس' : 'Discuss Architecture with an Architect'}</span>
               <ArrowIcon className="w-4 h-4" />
             </Link>
           </div>
-        </div>
+        </article>
 
         {/* Back Link */}
-        <div className="pt-4">
+        <div className="pt-2">
           <Link
             href={`/${lang}/insights`}
-            className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
           >
             <ArrowIcon className="w-4 h-4" />
             <span>{isAr ? 'العودة لمكتبة المقالات' : 'Back to Insights Library'}</span>

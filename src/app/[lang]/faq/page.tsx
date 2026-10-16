@@ -48,8 +48,11 @@ export default async function FaqPage({ params }: { params: Promise<{ lang: stri
   const topics = Object.keys(FAQ_TOPICS) as Array<FaqItem['topic']>;
 
   return (
-    <div className="pt-28 pb-20 bg-slate-950 min-h-screen relative overflow-hidden">
-      <div className="absolute inset-0 architectural-grid opacity-20 pointer-events-none -z-10" />
+    <div className="pt-28 sm:pt-32 pb-20 sm:pb-24 bg-[#F8FAFC] min-h-screen relative overflow-hidden">
+      {/* Background Subtle Ambient Lighting & Grid */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 architectural-grid opacity-10 pointer-events-none -z-10" />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
@@ -61,14 +64,14 @@ export default async function FaqPage({ params }: { params: Promise<{ lang: stri
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 text-right rtl:text-right ltr:text-left">
         <header className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-blue-800 text-blue-300 text-xs font-semibold">
-            <HelpCircle className="w-3.5 h-3.5 text-blue-400" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
+            <HelpCircle className="w-3.5 h-3.5 text-cyan-600" />
             <span>{isAr ? 'الأسئلة الشائعة' : 'Frequently asked'}</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white leading-snug">
+          <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {isAr ? 'أسئلة يطرحها كل عميل تقريباً.' : 'What almost every client asks first.'}
           </h1>
-          <p className="text-slate-300 text-base sm:text-lg font-arabic leading-relaxed">
+          <p className="text-slate-600 text-sm sm:text-base font-arabic leading-relaxed">
             {isAr
               ? 'إجابات مباشرة، دون لغة تسويقية. إن لم تجد سؤالك هنا، اسأله مباشرة وسيرد عليك مهندس لا موظف مبيعات.'
               : 'Direct answers, without the marketing register. If your question is not here, ask it — an engineer replies, not a salesperson.'}
@@ -81,32 +84,30 @@ export default async function FaqPage({ params }: { params: Promise<{ lang: stri
 
           return (
             <section key={topic} className="space-y-4">
-              <h2 className="text-sm font-bold font-display uppercase tracking-wider text-blue-400 border-b border-slate-800 pb-2">
+              <h2 className="text-sm font-bold font-display uppercase tracking-wider text-cyan-800 border-b border-slate-200/90 pb-2">
                 {FAQ_TOPICS[topic][locale]}
               </h2>
 
               <div className="space-y-3">
                 {items.map((item) => (
-                  // <details> gives working expand/collapse, in-page find, and
-                  // keyboard support with no JavaScript and no client bundle.
                   <details
                     key={item.id}
                     id={item.id}
-                    className="group glass-card rounded-2xl border border-white/[0.07] overflow-hidden"
+                    className="group rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] overflow-hidden transition-all"
                   >
-                    <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-5 py-4 hover:bg-white/[0.02] transition-colors">
-                      <h3 className="text-sm sm:text-base font-semibold text-white leading-snug">
+                    <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-5 py-4 hover:bg-slate-50/50 transition-colors">
+                      <h3 className="text-sm sm:text-base font-semibold text-slate-900 leading-snug font-display">
                         {item.question[locale]}
                       </h3>
                       <span
                         aria-hidden="true"
-                        className="shrink-0 font-mono text-slate-400 text-lg leading-none transition-transform group-open:rotate-45"
+                        className="shrink-0 font-mono text-cyan-600 font-bold text-lg leading-none transition-transform group-open:rotate-45"
                       >
                         +
                       </span>
                     </summary>
-                    <div className="px-5 pb-5 pt-1 border-t border-white/[0.05]">
-                      <p className="text-sm text-slate-300 leading-relaxed font-arabic">
+                    <div className="px-5 pb-5 pt-2 border-t border-slate-100">
+                      <p className="text-sm text-slate-600 leading-relaxed font-arabic">
                         {item.answer[locale]}
                       </p>
                     </div>
@@ -117,14 +118,14 @@ export default async function FaqPage({ params }: { params: Promise<{ lang: stri
           );
         })}
 
-        <aside className="glass-card rounded-2xl border border-white/[0.08] p-6 sm:p-8 space-y-4">
+        <aside className="rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] p-6 sm:p-8 space-y-4">
           <div className="flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-teal-400" />
-            <h2 className="text-lg font-bold font-display text-white">
+            <MessageSquare className="w-4 h-4 text-cyan-600" />
+            <h2 className="text-lg font-bold font-display text-slate-900">
               {isAr ? 'سؤالك ليس هنا؟' : 'Question not covered?'}
             </h2>
           </div>
-          <p className="text-sm text-slate-300 font-arabic leading-relaxed">
+          <p className="text-sm text-slate-600 font-arabic leading-relaxed">
             {isAr
               ? 'اكتب لنا مشكلتك التشغيلية بالتفصيل الذي تراه مناسباً. نقرأ كل طلب ونرد خلال يوم عمل واحد.'
               : 'Describe your operational problem in whatever detail suits you. We read every request and reply within one business day.'}
@@ -132,13 +133,13 @@ export default async function FaqPage({ params }: { params: Promise<{ lang: stri
           <div className="flex flex-wrap gap-3">
             <Link
               href={`/${lang}/start-project`}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 font-bold text-sm shadow-md shadow-[#38BDF8]/20 transition-all cursor-pointer"
             >
               {isAr ? 'ابدأ مشروعك' : 'Start your project'}
             </Link>
             <Link
               href={`/${lang}/contact`}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-white/[0.08] bg-slate-900/70 hover:bg-slate-800 text-slate-200 font-medium text-sm transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-medium text-sm transition-colors cursor-pointer"
             >
               {isAr ? 'تواصل معنا' : 'Contact us'}
             </Link>

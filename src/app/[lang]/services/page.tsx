@@ -13,8 +13,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       ? 'خدمات هندسة البرمجيات والتشغيل السحابي'
       : 'Software Engineering & Cloud Operations Services',
     description: isAr
-      ? 'استكشف خدمات نوڤيكسا الـ 9: تطوير البرمجيات المخصصة، حلول الأعمال، تطوير المنتجات، تحديث الأنظمة، النشر السحابي، الاستضافة المدارة، الصيانة، الأتمتة، والذكاء الاصطناعي.'
-      : 'Explore Novixa 9 core engineering services: custom software development, turnkey business solutions, legacy modernization, cloud deployment, managed hosting, SLA maintenance, integrations, and practical AI.',
+      ? 'استكشف خدمات نوڤيكسا الـ 8: تطوير البرمجيات المخصصة، حلول الأعمال، تطوير المنتجات، تحديث الأنظمة، النشر السحابي، الاستضافة المدارة، الصيانة، وأتمتة مسارات العمل وتكامل الأنظمة.'
+      : 'Explore Novixa 8 core engineering services: custom software development, turnkey business solutions, legacy modernization, cloud deployment, managed hosting, SLA maintenance, and workflow automation.',
     lang,
     path: 'services',
   });

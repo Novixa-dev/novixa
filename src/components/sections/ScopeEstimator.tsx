@@ -10,7 +10,7 @@ import {
   Layers,
   Clock,
   ShieldCheck,
-  Sparkles,
+  Calculator,
   Server,
   Building,
   RotateCcw,
@@ -210,17 +210,17 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
   return (
     <div className="space-y-8">
       {/* Introduction banner */}
-      <div className="glass-card rounded-2xl border border-white/[0.08] p-5 sm:p-6 bg-slate-900/40">
+      <div className="rounded-2xl border border-slate-200/90 p-5 sm:p-6 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)]">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono font-medium">
-              <Sparkles className="h-3 w-3" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
+              <Calculator className="h-3 w-3 text-cyan-600" aria-hidden="true" />
               <span>{t('حاسبة النطاق والمعمارية', 'Scope & Architecture Estimator')}</span>
             </div>
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-white leading-snug">
+            <h2 className="font-display text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
               {t('قدّر نطاق مشروعك وجدوله الهندسي فورياً', 'Estimate your scope & engineering timeline')}
             </h2>
-            <p className="text-sm text-slate-400 leading-relaxed max-w-2xl">
+            <p className="text-sm text-slate-600 leading-relaxed max-w-2xl font-arabic">
               {t(
                 'اختر نموذج النظام والميزات المطلوبة وسعة التشغيل للحصول على تصور فني للجدول الزمني والمعمارية المقترحة.',
                 'Select your system paradigm, required modules, and user tier for instant architectural guidance.'
@@ -234,7 +234,7 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
               setSelectedModules(['kpi-dash', 'bilingual', 'cloud-hosting']);
               setSelectedScale('mvp');
             }}
-            className="self-start sm:self-center inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.08] bg-slate-900/60 text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="self-start sm:self-center inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
           >
             <RotateCcw className="h-3 w-3" aria-hidden="true" />
             <span>{t('إعادة ضبط', 'Reset')}</span>
@@ -247,8 +247,8 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
         <div className="lg:col-span-7 space-y-6">
           {/* Step 1: System Category */}
           <section className="space-y-3">
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600/30 text-xs font-mono text-blue-400 border border-blue-500/40">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-cyan-50 text-xs font-mono text-cyan-700 border border-cyan-200 font-bold">
                 1
               </span>
               {t('نوع النظام والنموذج الهندسي', 'System Type & Architecture Paradigm')}
@@ -262,32 +262,32 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
                     key={cat.id}
                     type="button"
                     onClick={() => setSelectedCategory(cat.id)}
-                    className={`p-4 rounded-xl text-start transition-all border ${
+                    className={`p-4 rounded-xl text-start transition-all border cursor-pointer ${
                       isSelected
-                        ? 'border-blue-500 bg-blue-600/10 shadow-lg shadow-blue-500/5'
-                        : 'border-white/[0.06] bg-slate-900/50 hover:bg-slate-900 hover:border-white/[0.12]'
+                        ? 'border-cyan-500 bg-cyan-50/50 shadow-sm ring-1 ring-cyan-500/20'
+                        : 'border-slate-200/90 bg-white hover:bg-slate-50 hover:border-slate-300'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <div
                         className={`p-2 rounded-lg ${
-                          isSelected ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400'
+                          isSelected ? 'bg-cyan-600 text-white' : 'bg-slate-100 text-slate-600'
                         }`}
                       >
                         <IconComponent className="h-4 w-4" aria-hidden="true" />
                       </div>
                       <div
                         className={`h-4 w-4 rounded-full border flex items-center justify-center ${
-                          isSelected ? 'border-blue-500 bg-blue-600 text-white' : 'border-slate-700'
+                          isSelected ? 'border-cyan-500 bg-cyan-600 text-white' : 'border-slate-300'
                         }`}
                       >
                         {isSelected && <Check className="h-2.5 w-2.5 stroke-[3]" />}
                       </div>
                     </div>
-                    <div className="font-medium text-sm text-white mb-1">
+                    <div className="font-medium text-sm text-slate-900 mb-1 font-display">
                       {isRtl ? cat.name.ar : cat.name.en}
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed">
+                    <p className="text-xs text-slate-600 leading-relaxed font-arabic">
                       {isRtl ? cat.desc.ar : cat.desc.en}
                     </p>
                   </button>
@@ -298,8 +298,8 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
 
           {/* Step 2: Key Modules */}
           <section className="space-y-3">
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600/30 text-xs font-mono text-blue-400 border border-blue-500/40">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-cyan-50 text-xs font-mono text-cyan-700 border border-cyan-200 font-bold">
                 2
               </span>
               {t('الوحدات البرمجية والوظائف المطلوبة', 'Operational Modules & Capabilities')}
@@ -312,24 +312,24 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
                     key={mod.id}
                     type="button"
                     onClick={() => toggleModule(mod.id)}
-                    className={`p-3 rounded-xl border text-start transition-all flex items-start gap-3 ${
+                    className={`p-3 rounded-xl border text-start transition-all flex items-start gap-3 cursor-pointer ${
                       isChecked
-                        ? 'border-teal-500/60 bg-teal-500/10'
-                        : 'border-white/[0.06] bg-slate-900/40 hover:bg-slate-900'
+                        ? 'border-cyan-400 bg-cyan-50/60 shadow-xs'
+                        : 'border-slate-200/90 bg-white hover:bg-slate-50'
                     }`}
                   >
                     <div
                       className={`mt-0.5 h-4 w-4 shrink-0 rounded border flex items-center justify-center transition-colors ${
-                        isChecked ? 'border-teal-500 bg-teal-500 text-slate-950' : 'border-slate-700 bg-slate-900'
+                        isChecked ? 'border-cyan-600 bg-cyan-600 text-white' : 'border-slate-300 bg-slate-50'
                       }`}
                     >
                       {isChecked && <Check className="h-3 w-3 stroke-[3]" />}
                     </div>
                     <div className="space-y-0.5 min-w-0">
-                      <div className="text-xs font-medium text-white">
+                      <div className="text-xs font-medium text-slate-900 font-display">
                         {isRtl ? mod.label.ar : mod.label.en}
                       </div>
-                      <div className="text-[11px] text-slate-400 truncate">
+                      <div className="text-[11px] text-slate-500 truncate font-arabic">
                         {isRtl ? mod.hint.ar : mod.hint.en}
                       </div>
                     </div>
@@ -341,8 +341,8 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
 
           {/* Step 3: Deployment Scale */}
           <section className="space-y-3">
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600/30 text-xs font-mono text-blue-400 border border-blue-500/40">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-cyan-50 text-xs font-mono text-cyan-700 border border-cyan-200 font-bold">
                 3
               </span>
               {t('سعة التشغيل ومستوى المستخدمين', 'Deployment Scale & User Capacity')}
@@ -355,16 +355,16 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
                     key={tier.id}
                     type="button"
                     onClick={() => setSelectedScale(tier.id)}
-                    className={`p-3 rounded-xl border text-start transition-all ${
+                    className={`p-3 rounded-xl border text-start transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-blue-500 bg-blue-600/10'
-                        : 'border-white/[0.06] bg-slate-900/40 hover:bg-slate-900'
+                        ? 'border-cyan-500 bg-cyan-50/50 ring-1 ring-cyan-500/20'
+                        : 'border-slate-200/90 bg-white hover:bg-slate-50'
                     }`}
                   >
-                    <div className="text-xs font-medium text-white mb-1">
+                    <div className="text-xs font-medium text-slate-900 mb-1 font-display">
                       {isRtl ? tier.name.ar : tier.name.en}
                     </div>
-                    <div className="text-[11px] text-slate-400 leading-normal">
+                    <div className="text-[11px] text-slate-600 leading-normal font-arabic">
                       {isRtl ? tier.capacity.ar : tier.capacity.en}
                     </div>
                   </button>
@@ -376,12 +376,12 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
 
         {/* Right Column: Architectural Guidance & Metrics (5 cols) */}
         <div className="lg:col-span-5 space-y-5">
-          <div className="glass-card rounded-2xl border border-white/[0.1] p-6 space-y-6 bg-slate-900/60 sticky top-24">
-            <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
-              <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
+          <div className="rounded-2xl border border-slate-200/90 p-6 space-y-6 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] sticky top-24">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <span className="text-xs font-mono text-slate-500 uppercase tracking-wider font-semibold">
                 {t('مخرجات التقييم المعماري', 'Architectural Estimate')}
               </span>
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold">
                 <ShieldCheck className="h-3 w-3" aria-hidden="true" />
                 {t('ملكية كود 100%', '100% IP Ownership')}
               </span>
@@ -389,14 +389,14 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
 
             {/* Estimated Timeline */}
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-xs text-slate-400">
-                <Clock className="h-3.5 w-3.5 text-blue-400" aria-hidden="true" />
+              <div className="flex items-center gap-2 text-xs text-slate-500 font-semibold">
+                <Clock className="h-3.5 w-3.5 text-cyan-600" aria-hidden="true" />
                 <span>{t('المدة التقديرية للإطلاق والتسليم', 'Estimated Delivery Timeline')}</span>
               </div>
-              <div className="text-2xl font-display font-bold text-white tracking-tight">
+              <div className="text-2xl font-display font-bold text-slate-900 tracking-tight">
                 {isRtl ? calculation.timelineAr : calculation.timelineEn}
               </div>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-600 font-arabic leading-relaxed">
                 {selectedCategory === 'turnkey'
                   ? t(
                       'نعتمد على حلولنا الجاهزة المهيئة للبدء الفوري بدون إعادة اختراع العجلة.',
@@ -410,37 +410,37 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
             </div>
 
             {/* Recommended Technical Stack */}
-            <div className="space-y-3 pt-4 border-t border-white/[0.08]">
-              <div className="text-xs font-medium text-slate-300">
+            <div className="space-y-3 pt-4 border-t border-slate-100">
+              <div className="text-xs font-semibold text-slate-700 font-arabic">
                 {t('البنية التقنية الموصى بها', 'Recommended Architecture Stack')}
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="p-2.5 rounded-lg bg-slate-950/60 border border-white/[0.05] space-y-0.5">
-                  <div className="text-[11px] text-slate-400">{t('الواجهة والمنطق', 'Frontend & App')}</div>
-                  <div className="font-mono text-white text-xs font-semibold">Next.js 15 App Router</div>
+                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-0.5">
+                  <div className="text-[11px] text-slate-500">{t('الواجهة والمنطق', 'Frontend & App')}</div>
+                  <div className="font-mono text-slate-900 text-xs font-semibold">Next.js 15 App Router</div>
                 </div>
-                <div className="p-2.5 rounded-lg bg-slate-950/60 border border-white/[0.05] space-y-0.5">
-                  <div className="text-[11px] text-slate-400">{t('قاعدة البيانات', 'Database')}</div>
-                  <div className="font-mono text-white text-xs font-semibold">PostgreSQL (Relational)</div>
+                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-0.5">
+                  <div className="text-[11px] text-slate-500">{t('قاعدة البيانات', 'Database')}</div>
+                  <div className="font-mono text-slate-900 text-xs font-semibold">PostgreSQL (Relational)</div>
                 </div>
-                <div className="p-2.5 rounded-lg bg-slate-950/60 border border-white/[0.05] space-y-0.5">
-                  <div className="text-[11px] text-slate-400">{t('البيئة والاستضافة', 'Container / Edge')}</div>
-                  <div className="font-mono text-white text-xs font-semibold">Docker + Cloudflare</div>
+                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-0.5">
+                  <div className="text-[11px] text-slate-500">{t('البيئة والاستضافة', 'Container / Edge')}</div>
+                  <div className="font-mono text-slate-900 text-xs font-semibold">Docker + Cloudflare</div>
                 </div>
-                <div className="p-2.5 rounded-lg bg-slate-950/60 border border-white/[0.05] space-y-0.5">
-                  <div className="text-[11px] text-slate-400">{t('الأمان والتشفير', 'Security')}</div>
-                  <div className="font-mono text-white text-xs font-semibold">Strict CSP & HTTPS</div>
+                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-0.5">
+                  <div className="text-[11px] text-slate-500">{t('الأمان والتشفير', 'Security')}</div>
+                  <div className="font-mono text-slate-900 text-xs font-semibold">Strict CSP & HTTPS</div>
                 </div>
               </div>
             </div>
 
             {/* TCO Advantage Comparison */}
-            <div className="p-3.5 rounded-xl bg-slate-950 border border-white/[0.08] space-y-2">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-teal-400">
-                <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-cyan-800">
+                <CheckCircle2 className="h-3.5 w-3.5 text-cyan-600" aria-hidden="true" />
                 <span>{t('ميزة ملكية الكود مقابل اشتراكات SaaS', 'Ownership vs SaaS Subscriptions')}</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-600 leading-relaxed font-arabic">
                 {t(
                   'أنت تمتلك الكود وقواعد البيانات وحسابات الاستضافة بالكامل. لا رسوم متكررة لكل مقعد أو لكل معاملة، ولا قيود تقنية تمنعك من التوسع.',
                   'You own all source code and data schemas outright. Zero per-seat recurring licensing costs.'
@@ -452,13 +452,13 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
             <button
               type="button"
               onClick={handleApplyToWizard}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 hover:bg-blue-500 transition-colors"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] px-4 py-3 text-sm font-bold text-slate-950 shadow-md shadow-[#38BDF8]/20 transition-all cursor-pointer"
             >
               <span>{t('نقل هذا النطاق لمعالج المشروع', 'Apply Scope to Intake Wizard')}</span>
               <ArrowIcon className="h-4 w-4" aria-hidden="true" />
             </button>
 
-            <p className="text-center text-[11px] text-slate-400">
+            <p className="text-center text-[11px] text-slate-500 font-arabic">
               {t(
                 '* نموذج تقديري توضيحي للاسترشاد المعماري — يتم تحديد النطاق النهائي بدقة مع الفريق الهندسي.',
                 '* Illustrative estimation — final scope is agreed with our engineering team based on your exact specs.'

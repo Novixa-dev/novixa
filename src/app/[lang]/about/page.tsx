@@ -1,5 +1,5 @@
 import React from 'react';
-import { constructMetadata } from '@/lib/metadata';
+import { constructMetadata, generateBreadcrumbJsonLd } from '@/lib/metadata';
 import { AboutView } from '@/components/views/AboutView';
 import { Language } from '@/types';
 
@@ -21,5 +21,20 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function AboutPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang: paramLang } = await params;
   const lang: Language = paramLang === 'en' ? 'en' : 'ar';
-  return <AboutView lang={lang} />;
+  const isAr = lang === 'ar';
+
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: isAr ? 'الرئيسية' : 'Home', url: `/${lang}` },
+    { name: isAr ? 'عن نوڤيكسا' : 'About Us', url: `/${lang}/about` },
+  ]);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <AboutView lang={lang} />
+    </>
+  );
 }

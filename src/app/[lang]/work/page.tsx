@@ -1,6 +1,7 @@
 import React from 'react';
-import { constructMetadata } from '@/lib/metadata';
+import { constructMetadata, generateBreadcrumbJsonLd, generateItemListJsonLd } from '@/lib/metadata';
 import { WorkView } from '@/components/views/WorkView';
+import { caseStudiesCatalog } from '@/lib/content';
 import { Language } from '@/types';
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -21,5 +22,32 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function WorkPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang: paramLang } = await params;
   const lang: Language = paramLang === 'en' ? 'en' : 'ar';
-  return <WorkView lang={lang} />;
+  const isAr = lang === 'ar';
+
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: isAr ? 'الرئيسية' : 'Home', url: `/${lang}` },
+    { name: isAr ? 'الأعمال المختارة' : 'Selected Work', url: `/${lang}/work` },
+  ]);
+
+  const itemListJsonLd = generateItemListJsonLd(
+    caseStudiesCatalog.map((c) => ({
+      name: c.title[isAr ? 'ar' : 'en'],
+      url: `/${lang}/work/${c.id}`,
+    })),
+    isAr ? 'أعمال ودراسات نوڤيكسا المعمارية' : 'Novixa Architectural Case Studies'
+  );
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
+      <WorkView lang={lang} />
+    </>
+  );
 }

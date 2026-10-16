@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { createTranslator } from '@/lib/i18n';
 import type { Language } from '@/types';
-import { ArrowLeft, ArrowRight, Sparkles, LayoutGrid, Clock, ShieldCheck, MessageSquare } from 'lucide-react';
+import { ArrowLeft, ArrowRight, LayoutGrid, Clock, ShieldCheck, MessageSquare } from 'lucide-react';
 
 export const HomeCTASection = ({ lang }: { lang: Language }) => {
   const { language, isRtl, t } = createTranslator(lang);
@@ -19,12 +19,12 @@ export const HomeCTASection = ({ lang }: { lang: Language }) => {
           
           {/* Subtle Top Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-800/70 text-cyan-300 text-xs font-semibold shadow-inner">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
             <span>{t('شراكة تقنية موثوقة للأعمال', 'Practical Software Partnership')}</span>
           </div>
 
           {/* Heading */}
-          <h2 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight leading-snug max-w-3xl mx-auto">
+          <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-white tracking-tight leading-snug max-w-3xl mx-auto">
             {t('جاهز لبناء نظامك البرمجي أو إطلاق حلك الجاهز؟', 'Ready to engineer your custom software or launch a ready solution?')}
           </h2>
 

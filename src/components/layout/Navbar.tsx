@@ -15,7 +15,6 @@ import {
   Linkedin,
   Github,
   Twitter,
-  Activity,
 } from 'lucide-react';
 import { SystemStatusDialog } from './SystemStatusDialog';
 
@@ -56,12 +55,24 @@ export const Navbar: React.FC = () => {
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }));
   };
 
+  const cleanPath = (pathname || '').replace(/\/+$/, '');
+  const isHomePage = cleanPath === `/${language}` || cleanPath === '/ar' || cleanPath === '/en' || cleanPath === '';
+
   return (
     <header
+      style={
+        !isHomePage
+          ? { backgroundColor: 'oklab(0.201944 -0.00921407 -0.0336143 / 0.95)' }
+          : undefined
+      }
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-[#0B1726]/90 backdrop-blur-md border-b border-white/[0.08] py-2.5 shadow-lg shadow-black/40'
-          : 'bg-[#0B1726]/40 backdrop-blur-sm border-b border-white/[0.05] py-3'
+        isHomePage
+          ? scrolled
+            ? 'bg-[#0B1726]/95 backdrop-blur-xl border-b border-white/[0.08] py-3.5 sm:py-4 shadow-xl shadow-black/40'
+            : 'bg-[#0B1726]/60 backdrop-blur-md border-b border-white/[0.06] py-5 sm:py-6'
+          : scrolled
+          ? 'backdrop-blur-xl border-b border-white/[0.08] py-3.5 sm:py-4 shadow-xl shadow-black/40'
+          : 'backdrop-blur-xl border-b border-white/[0.08] py-4 sm:py-5 shadow-lg shadow-black/20'
       }`}
     >
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -70,11 +81,11 @@ export const Navbar: React.FC = () => {
           <Link
             href={`/${language}`}
             dir="ltr"
-            className="flex items-center gap-2.5 focus:outline-none select-none group"
+            className="flex items-center gap-3 focus:outline-none select-none group"
             onClick={() => setMobileMenuOpen(false)}
           >
             {/* 3D Folded Ribbon N Logo */}
-            <div className="w-8 h-8 sm:w-9 sm:h-9 relative flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 lg:w-11 lg:h-11 relative flex items-center justify-center shrink-0">
               <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
                 <defs>
                   <linearGradient id="ribbonLeft" x1="0" y1="0" x2="0" y2="1">
@@ -96,10 +107,10 @@ export const Navbar: React.FC = () => {
               </svg>
             </div>
             <div className="flex flex-col text-left leading-none">
-              <span translate="no" className="font-display font-extrabold text-white text-base sm:text-lg tracking-wider">
+              <span translate="no" className="font-display font-black text-white text-lg sm:text-xl lg:text-2xl tracking-wider">
                 NOVIXA
               </span>
-              <span translate="no" className="text-[8px] sm:text-[9px] font-mono text-slate-300 tracking-[0.25em] font-medium uppercase mt-0.5">
+              <span translate="no" className="text-[9px] sm:text-[10px] lg:text-[11px] font-mono text-cyan-300/80 tracking-[0.25em] font-bold uppercase mt-1">
                 ENGINEERING
               </span>
             </div>
@@ -108,7 +119,7 @@ export const Navbar: React.FC = () => {
           {/* Center Navigation Links */}
           <nav
             aria-label={t('القائمة الرئيسية', 'Main Navigation')}
-            className="hidden lg:flex items-center gap-3.5 xl:gap-6 2xl:gap-8"
+            className="hidden lg:flex items-center gap-5 xl:gap-7 2xl:gap-9"
           >
             {MAIN_NAV_ITEMS.map((item) => {
               const itemPath = `/${language}${item.slug ? `/${item.slug}` : ''}`;
@@ -120,15 +131,15 @@ export const Navbar: React.FC = () => {
                 <Link
                   key={item.key}
                   href={itemPath}
-                  className={`relative text-xs xl:text-[13px] font-medium transition-colors duration-150 py-1 ${
+                  className={`relative text-sm xl:text-[15.5px] font-semibold transition-all duration-150 py-1.5 ${
                     isActive
-                      ? 'text-white font-semibold'
-                      : 'text-slate-200/90 hover:text-white'
+                      ? 'text-white'
+                      : 'text-slate-300 hover:text-white'
                   }`}
                 >
                   <span>{t(item.labelAr, item.labelEn)}</span>
                   {isActive && (
-                    <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-8 h-[2.5px] bg-gradient-to-r from-[#38BDF8] via-[#818CF8] to-[#C084FC] rounded-full shadow-[0_0_8px_#38BDF8]" />
+                    <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-9 h-[3px] bg-gradient-to-r from-[#38BDF8] via-[#818CF8] to-[#C084FC] rounded-full shadow-[0_0_10px_#38BDF8]" />
                   )}
                 </Link>
               );
@@ -136,14 +147,13 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Left Actions: Language + CTA Pill Button */}
-          <div className="hidden lg:flex items-center gap-3 xl:gap-4">
+          <div className="hidden lg:flex items-center gap-3.5 xl:gap-5">
             {/* Primary CTA: Cyan Pill */}
             <Link
               href={`/${language}/contact`}
-              dir="ltr"
-              className="relative group inline-flex items-center gap-2 bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-white text-xs xl:text-[13px] font-bold px-4 xl:px-5 py-2 xl:py-2.5 rounded-full shadow-md shadow-[#38BDF8]/20 transition-all duration-150"
+              className="relative group inline-flex items-center gap-2 bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 text-sm xl:text-[14.5px] font-bold px-5 xl:px-6 py-2.5 xl:py-3 rounded-full shadow-lg shadow-[#38BDF8]/25 transition-all duration-150 cursor-pointer"
             >
-              <ArrowRight className="w-3.5 h-3.5 text-white stroke-[2.2]" />
+              <ArrowIcon className="w-4 h-4 text-slate-950 stroke-[2.4] transition-transform rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1" />
               <span>{t('ابدأ مشروعك', 'Start Your Project')}</span>
             </Link>
 
@@ -151,12 +161,12 @@ export const Navbar: React.FC = () => {
             <button
               onClick={toggleLanguage}
               dir="ltr"
-              className="flex items-center gap-1.5 text-xs text-slate-200 hover:text-white font-medium transition-colors cursor-pointer py-1"
+              className="flex items-center gap-2 text-sm xl:text-[14.5px] text-slate-200 hover:text-white font-semibold transition-colors cursor-pointer py-1.5 px-3 rounded-lg hover:bg-white/5 border border-transparent hover:border-white/10"
               title={isRtl ? 'Switch to English' : 'التحويل للعربية'}
               aria-label={isRtl ? 'Switch to English' : 'التحويل للعربية'}
             >
               <span>{language === 'ar' ? 'EN' : 'عربي'}</span>
-              <Globe className="w-3.5 h-3.5 text-slate-200" />
+              <Globe className="w-4 h-4 text-slate-300" />
             </button>
           </div>
 
@@ -193,70 +203,105 @@ export const Navbar: React.FC = () => {
       {mobileMenuOpen && (
         <div
           id="mobile-nav-drawer"
-          className="xl:hidden fixed inset-x-0 top-[65px] bg-[#0B1726]/98 backdrop-blur-xl border-b border-white/10 p-4 shadow-2xl transition-all duration-300"
+          className="lg:hidden fixed inset-x-0 top-[65px] max-h-[calc(100dvh-70px)] overflow-y-auto bg-[#0B1726]/98 backdrop-blur-2xl border-b border-cyan-500/20 p-5 shadow-2xl transition-all duration-300 z-50 animate-in fade-in slide-in-from-top-2"
         >
-          <div className="flex flex-col gap-1.5">
-            {MAIN_NAV_ITEMS.map((item) => {
-              const itemPath = `/${language}${item.slug ? `/${item.slug}` : ''}`;
-              const isActive = pathname === itemPath;
-              return (
-                <Link
-                  key={item.key}
-                  href={itemPath}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`text-right rtl:text-right ltr:text-left px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                    isActive
-                      ? 'bg-[#35C8F2]/15 text-[#35C8F2] border border-[#35C8F2]/25 font-semibold'
-                      : 'text-[#C1D0DE] hover:bg-[#13263B] hover:text-white'
-                  }`}
+          <div className="flex flex-col gap-2">
+            {/* Quick Header inside drawer with language & search */}
+            <div className="flex items-center justify-between pb-3 mb-1 border-b border-white/10 text-xs">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={toggleLanguage}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#13263B] border border-white/10 text-cyan-300 font-bold text-xs"
                 >
-                  {t(item.labelAr, item.labelEn)}
-                </Link>
-              );
-            })}
-
-            {/* Mobile Social Links */}
-            <div className="pt-3 border-t border-white/10 flex items-center justify-center gap-3">
-              {SOCIAL_LINKS.map((social) => {
-                const Icon = socialIconMap[social.iconName] || Globe;
-                return (
-                  <a
-                    key={social.id}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2.5 rounded-lg bg-[#13263B] border border-white/10 text-[#C1D0DE] hover:text-white hover:bg-[#1c3654] transition-colors"
-                    aria-label={`Novixa on ${social.name}`}
-                  >
-                    <Icon className="w-4 h-4" />
-                  </a>
-                );
-              })}
+                  <Globe className="w-3.5 h-3.5" />
+                  <span>{language === 'ar' ? 'English (EN)' : 'العربية (AR)'}</span>
+                </button>
+              </div>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  triggerCommandMenu();
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#13263B] border border-white/10 text-slate-300 text-xs"
+              >
+                <Search className="w-3.5 h-3.5 text-cyan-400" />
+                <span>{t('بحث سريع', 'Quick Search')}</span>
+              </button>
             </div>
 
-            {/* Mobile system status trigger */}
-            <div className="pt-2 border-t border-white/10">
+            {/* Nav links */}
+            <nav className="flex flex-col gap-1">
+              {MAIN_NAV_ITEMS.map((item) => {
+                const itemPath = `/${language}${item.slug ? `/${item.slug}` : ''}`;
+                const isActive = pathname === itemPath || (item.slug === '' && (pathname === `/${language}` || pathname === `/${language}/`));
+                return (
+                  <Link
+                    key={item.key}
+                    href={itemPath}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center justify-between text-right rtl:text-right ltr:text-left px-4 py-3 rounded-xl text-sm font-semibold transition-all min-h-[44px] ${
+                      isActive
+                        ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-bold'
+                        : 'text-slate-200 hover:bg-[#13263B] hover:text-white'
+                    }`}
+                  >
+                    <span>{t(item.labelAr, item.labelEn)}</span>
+                    <ArrowIcon className={`w-3.5 h-3.5 transition-transform ${isActive ? 'text-cyan-400 rtl:-translate-x-1 ltr:translate-x-1' : 'text-slate-500'}`} />
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Mobile CTAs */}
+            <div className="pt-3 border-t border-white/10 space-y-2.5">
+              <Link
+                href={`/${language}/contact`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 font-extrabold py-3 px-5 rounded-xl shadow-lg shadow-[#38BDF8]/25 text-sm min-h-[46px]"
+              >
+                <span className="text-[#0B1726]">{t('ابدأ مشروعك الآن', 'Start Your Project Now')}</span>
+                <ArrowIcon className="w-4 h-4 text-[#0B1726] stroke-[2.5]" />
+              </Link>
+
+              <Link
+                href={`/${language}/start-project`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 bg-[#13263B] hover:bg-[#1c3654] border border-white/10 text-slate-200 font-semibold py-2.5 px-4 rounded-xl text-xs min-h-[42px]"
+              >
+                <span>{t('حاسبة النطاق وتكلفة النظام', 'Scope & Architecture Estimator')}</span>
+              </Link>
+            </div>
+
+            {/* Mobile system status trigger & Socials */}
+            <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-3">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setTelemetryOpen(true);
                 }}
-                className="w-full flex items-center gap-2 p-2.5 rounded-lg bg-[#13263B] border border-white/10 text-xs text-[#C1D0DE] hover:text-white"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#13263B] border border-white/10 text-xs text-slate-300 hover:text-white"
               >
-                <Activity className="w-4 h-4 text-[#35C8F2]" aria-hidden="true" />
-                <span>{t('حالة النظام', 'System status')}</span>
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>{t('حالة الأنظمة: 100% مستقر', 'System Status: Operational')}</span>
               </button>
-            </div>
 
-            <div className="pt-2">
-              <Link
-                href={`/${language}/contact`}
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 bg-[#35C8F2] hover:bg-[#20b8e6] text-[#0B1726] font-bold py-2.5 px-4 rounded-xl shadow-md shadow-[#35C8F2]/20"
-              >
-                <span>{t('ابدأ مشروعك الآن', 'Start Your Project Now')}</span>
-                <ArrowIcon className="w-4 h-4 text-[#0B1726]" />
-              </Link>
+              <div className="flex items-center gap-2">
+                {SOCIAL_LINKS.map((social) => {
+                  const Icon = socialIconMap[social.iconName] || Globe;
+                  return (
+                    <a
+                      key={social.id}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-lg bg-[#13263B] border border-white/10 text-slate-300 hover:text-white hover:bg-[#1c3654] transition-colors"
+                      aria-label={`Novixa on ${social.name}`}
+                    >
+                      <Icon className="w-3.5 h-3.5" />
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

@@ -133,7 +133,7 @@ export default function OpengraphImage() {
           <div style={{ display: 'flex', gap: 24, color: '#94A3B8', fontSize: 15, fontWeight: 500 }}>
             <span>• Multi-Tenant Cloud SaaS</span>
             <span>• Distributed Systems</span>
-            <span>• Applied AI &amp; Automation</span>
+            <span>• Cloud Infrastructure &amp; Automation</span>
           </div>
           <div style={{ color: '#38BDF8', fontSize: 16, fontWeight: 700, letterSpacing: '0.02em' }}>
             {new URL(getSiteUrl()).host}

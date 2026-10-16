@@ -58,77 +58,79 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ lan
   ]);
 
   return (
-    <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
+    <div className="pt-28 sm:pt-32 pb-20 sm:pb-24 bg-[#F8FAFC] min-h-screen relative overflow-hidden">
+      {/* Background Subtle Ambient Lighting & Grid */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 architectural-grid opacity-10 pointer-events-none -z-10" />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-          <Link href={`/${lang}`} className="hover:text-white">{isAr ? 'الرئيسية' : 'Home'}</Link>
+        <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
+          <Link href={`/${lang}`} className="hover:text-slate-900 transition-colors">{isAr ? 'الرئيسية' : 'Home'}</Link>
           <span>/</span>
-          <Link href={`/${lang}/work`} className="hover:text-white">{isAr ? 'أعمالنا' : 'Work'}</Link>
+          <Link href={`/${lang}/work`} className="hover:text-slate-900 transition-colors">{isAr ? 'أعمالنا' : 'Work'}</Link>
           <span>/</span>
-          <span className="text-teal-400">{workItem.title[isAr ? 'ar' : 'en']}</span>
+          <span className="text-cyan-800 font-semibold">{workItem.title[isAr ? 'ar' : 'en']}</span>
         </div>
 
         {/* Article/Detail Card */}
-        <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-800 bg-slate-900/90 shadow-2xl space-y-8">
-          <div className="space-y-4 border-b border-slate-800 pb-6">
+        <div className="rounded-2xl sm:rounded-3xl p-8 sm:p-12 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] space-y-8">
+          <div className="space-y-4 border-b border-slate-100 pb-6">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-xs font-mono bg-blue-950 text-blue-300 border border-blue-800">
+              <span className="px-3 py-1 rounded-full text-xs font-mono bg-cyan-50 text-cyan-800 border border-cyan-200 font-semibold">
                 {workItem.industry[isAr ? 'ar' : 'en']}
               </span>
-              <span className="px-2.5 py-0.5 rounded text-xs font-mono bg-slate-950 text-teal-300 border border-teal-800">
+              <span className="px-2.5 py-0.5 rounded text-xs font-mono bg-slate-100 text-slate-700 border border-slate-200 font-semibold">
                 {workItem.caseStudyTypeLabel[isAr ? 'ar' : 'en']}
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-extrabold font-display text-white">
+            <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
               {workItem.title[isAr ? 'ar' : 'en']}
             </h1>
 
-            <div className="text-xs font-mono text-slate-400">
+            <div className="text-xs font-mono text-slate-500">
               Location: {workItem.location[isAr ? 'ar' : 'en']}
             </div>
           </div>
 
-          {/* Metrics — modelled, not measured. See the note in
-              CaseStudiesSection: the figures need the marker, not just the
-              card, because that is where the eye lands. */}
-          <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wide">
+          {/* Metrics */}
+          <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wide font-semibold">
             {isAr
               ? 'أرقام توضيحية تصف السيناريو المعماري، وليست نتائج عميل مقاسة'
               : 'Modelled figures describing the architectural scenario — not measured client results'}
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {workItem.metrics.map((m, i) => (
-              <div key={i} className="p-4 bg-slate-950 rounded-2xl border border-slate-800">
-                <div className="text-2xl font-bold font-display text-teal-400">{m.value}</div>
-                <div className="text-xs text-slate-300 font-arabic">{m.label[isAr ? 'ar' : 'en']}</div>
+              <div key={i} className="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                <div className="text-2xl font-bold font-display text-cyan-600">{m.value}</div>
+                <div className="text-xs text-slate-600 font-arabic">{m.label[isAr ? 'ar' : 'en']}</div>
               </div>
             ))}
           </div>
 
           {/* Body Sections */}
-          <div className="space-y-6 text-sm text-slate-200 font-arabic leading-relaxed">
+          <div className="space-y-6 text-sm text-slate-600 font-arabic leading-relaxed">
             <div>
-              <h2 className="text-base font-bold text-white font-display mb-2">{isAr ? 'التحدي التشغيلي والمعماري:' : 'Operational & Architecture Challenge:'}</h2>
+              <h2 className="text-base font-bold text-slate-900 font-display mb-2">{isAr ? 'التحدي التشغيلي والمعماري:' : 'Operational & Architecture Challenge:'}</h2>
               <p>{workItem.challenge[isAr ? 'ar' : 'en']}</p>
             </div>
 
             <div>
-              <h2 className="text-base font-bold text-white font-display mb-2">{isAr ? 'الاستراتيجية البرمجية:' : 'Engineering Strategy:'}</h2>
+              <h2 className="text-base font-bold text-slate-900 font-display mb-2">{isAr ? 'الاستراتيجية البرمجية:' : 'Engineering Strategy:'}</h2>
               <p>{workItem.strategy[isAr ? 'ar' : 'en']}</p>
             </div>
 
             <div>
-              <h2 className="text-base font-bold text-white font-display mb-2">{isAr ? 'الميزات والحلول المنفذة:' : 'Delivered Architectural Features:'}</h2>
-              <ul className="space-y-2 text-xs sm:text-sm text-slate-300 font-arabic">
+              <h2 className="text-base font-bold text-slate-900 font-display mb-2">{isAr ? 'الميزات والحلول المنفذة:' : 'Delivered Architectural Features:'}</h2>
+              <ul className="space-y-2 text-xs sm:text-sm text-slate-600 font-arabic">
                 {workItem.features[isAr ? 'ar' : 'en'].map((f, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-cyan-600 shrink-0 mt-0.5" />
                     <span>{f}</span>
                   </li>
                 ))}
@@ -136,20 +138,20 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ lan
             </div>
 
             {workItem.quote && (
-              <div className="p-5 rounded-2xl bg-slate-950 border border-blue-900/50 space-y-2">
-                <Quote className="w-6 h-6 text-blue-400 opacity-60" />
-                <p className="italic text-slate-100">{workItem.quote.text[isAr ? 'ar' : 'en']}</p>
-                <div className="text-xs text-blue-400 font-bold font-mono">
+              <div className="p-5 rounded-2xl bg-cyan-50/60 border border-cyan-200/80 space-y-2">
+                <Quote className="w-6 h-6 text-cyan-600 opacity-60" />
+                <p className="italic text-slate-800">{workItem.quote.text[isAr ? 'ar' : 'en']}</p>
+                <div className="text-xs text-cyan-800 font-bold font-mono">
                   — {workItem.quote.author} ({workItem.quote.role[isAr ? 'ar' : 'en']})
                 </div>
               </div>
             )}
           </div>
 
-          <div className="pt-6 border-t border-slate-800 flex justify-between items-center">
+          <div className="pt-6 border-t border-slate-100 flex justify-between items-center">
             <Link
               href={`/${lang}/start-project`}
-              className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2"
+              className="px-6 py-3 rounded-xl bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 font-bold text-xs sm:text-sm shadow-md shadow-[#38BDF8]/20 transition-all flex items-center gap-2 cursor-pointer"
             >
               <span>{isAr ? 'طلب بناء نظام مشابه' : 'Build Similar System'}</span>
               <ArrowIcon className="w-4 h-4" />
@@ -161,7 +163,7 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ lan
         <div className="pt-4">
           <Link
             href={`/${lang}/work`}
-            className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-cyan-700 transition-colors"
           >
             <ArrowIcon className="w-4 h-4" />
             <span>{isAr ? 'العودة لجميع الأعمال' : 'Back to Selected Work'}</span>

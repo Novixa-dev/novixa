@@ -2,17 +2,16 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { createTranslator } from '@/lib/i18n';
 import type { Language } from '@/types';
 import { CASE_STUDIES } from '../../content/data';
 import {
-  Briefcase,
   ArrowLeft,
   ArrowRight,
   Cpu,
   Layers,
   AlertTriangle,
-  Sparkles,
   CheckCircle2,
   Terminal,
   Quote,
@@ -21,6 +20,30 @@ import {
   Zap,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+
+const CASE_STUDY_IMAGES: Record<string, { src: string; altAr: string; altEn: string; badgeAr: string; badgeEn: string }> = {
+  'black-spider': {
+    src: '/images/casestudies/gaming-arena.png',
+    altAr: 'واجهة تشغيل صالة بلاك سبايدر للألعاب وإدارة أجهزة اللعب',
+    altEn: 'Black Spider Gaming Arena Stations & Lounge OS Interface',
+    badgeAr: 'محاكاة حية لنظام التشغيل وقفل المحطات المؤتمت',
+    badgeEn: 'Live Station Automation & Lounge OS Mockup',
+  },
+  'aura-medical': {
+    src: '/images/casestudies/polyclinic-ehr.png',
+    altAr: 'شاشة السجل الطبي المشفر ومنصة عيادات أورا الطبية',
+    altEn: 'Aura Medical Encrypted Clinical EHR & Intake Platform',
+    badgeAr: 'واجهة السجل الطبي والملف الموحد المشفر',
+    badgeEn: 'Encrypted Clinical EHR & Patient Intake Interface',
+  },
+  'nexus-logistics': {
+    src: '/images/casestudies/logistics-hub.png',
+    altAr: 'غرفة تحكم التوزيع اللوجستي وتتبع الأسطول المباشر',
+    altEn: 'Nexus Logistics Fleet Radar & Live Order Dispatch Interface',
+    badgeAr: 'غرفة قيادة وتوزيع الشحنات وإرساليات المستودعات',
+    badgeEn: 'Fleet Tracking & Live Warehouse Dispatch Console',
+  },
+};
 
 interface CaseStudiesSectionProps {
   lang: Language;
@@ -127,28 +150,18 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
         {showHeader && (
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
             <div className="space-y-4 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-medium shadow-sm">
-                <Briefcase className="w-3.5 h-3.5 text-cyan-600" />
-                <span>{t('أعمالنا ونماذجنا المعمارية الحية • الهندسة بلمسة بشرية', 'Selected Engineering Case Studies • Human-Centric Systems')}</span>
-              </div>
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+              <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
                 {t('كيف نتعامل مع المشاكل التشغيلية المعقدة.', 'How we engineer solutions for real operational hurdles.')}
               </h2>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-arabic">
-                {t(
-                  'خلف كل معمارية برمجية نبنيها إنسان يعمل: موظف كاشير تحت ضغط ساعة الذروة، موظفة استقبال في عيادة، أو سائق في زحام الطريق. نستمع للمعاناة الميدانية أولاً، ثم نبني الكود الذي يعيد الاستقرار والهدوء للعمليات اليومية.',
-                  'Behind every architecture we engineer are real frontline humans: cashiers under peak-hour rush, clinic receptionists, and field delivery drivers. We dissect human operational friction first, then engineer the code that restores control and ease.'
-                )}
-              </p>
             </div>
 
             <div className="shrink-0">
               <Link
                 href={`/${language}/work`}
-                className="inline-flex items-center gap-2 text-[#38BDF8] hover:text-cyan-400 font-semibold text-sm transition-colors group"
+                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
               >
-                <span className="text-[#38BDF8]">{t('عرض جميع الأعمال المختارة', 'Explore All Selected Work')}</span>
-                <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-[#38BDF8]" />
+                <span>{t('عرض جميع الأعمال المختارة', 'Explore All Selected Work')}</span>
+                <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
               </Link>
             </div>
           </div>
@@ -261,7 +274,7 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                       : 'text-slate-400 hover:text-slate-200'
                   }`}
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-[#38BDF8]" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#38BDF8]" />
                   <span className={viewMode === 'resolution' ? 'text-[#38BDF8]' : ''}>
                     {t('الحل المعماري وراحة العمليات', 'Engineering Resolution')}
                   </span>
@@ -301,7 +314,7 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                     className="p-5 sm:p-6 rounded-2xl bg-cyan-50/80 border border-cyan-200/90 text-cyan-950 space-y-2.5 font-arabic"
                   >
                     <div className="flex items-center gap-2 text-cyan-900 font-bold text-sm font-display">
-                      <Sparkles className="w-4 h-4 text-cyan-600 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-cyan-600 shrink-0" />
                       <span>{t('راحة العمليات بعد بناء المنظومة البرمجية الموحدة:', 'Frontline Peace of Mind After Novixa Software:')}</span>
                     </div>
                     <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
@@ -324,6 +337,32 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                   {t(activeCase.solution.ar, activeCase.solution.en)}
                 </p>
               </div>
+
+              {/* High-Fidelity System Interface Mockup Image */}
+              {CASE_STUDY_IMAGES[activeCase.id] && (
+                <div className="rounded-2xl p-2.5 sm:p-4 bg-slate-950 border border-slate-800 shadow-xl overflow-hidden group">
+                  <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-800/80 px-2 flex-wrap gap-2 text-xs font-mono">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#38BDF8] animate-pulse" />
+                      <span className="text-slate-200 font-bold">
+                        {t(CASE_STUDY_IMAGES[activeCase.id].badgeAr, CASE_STUDY_IMAGES[activeCase.id].badgeEn)}
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-[#38BDF8] bg-cyan-950/80 border border-cyan-800 px-2.5 py-0.5 rounded font-bold">
+                      Live Operations Mockup
+                    </span>
+                  </div>
+                  <div className="relative rounded-xl overflow-hidden border border-slate-800/90 bg-[#060D1A]">
+                    <Image
+                      src={CASE_STUDY_IMAGES[activeCase.id].src}
+                      alt={t(CASE_STUDY_IMAGES[activeCase.id].altAr, CASE_STUDY_IMAGES[activeCase.id].altEn)}
+                      width={960}
+                      height={600}
+                      className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.01]"
+                    />
+                  </div>
+                </div>
+              )}
 
               {/* The Human Touch: Architect's Field Note Callout */}
               <div className="p-6 sm:p-7 rounded-2xl bg-slate-950 text-white border border-slate-800 relative overflow-hidden shadow-lg">

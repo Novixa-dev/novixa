@@ -18,18 +18,22 @@ export const StartProjectView: React.FC = () => {
   };
 
   return (
-    <div className="bg-slate-950 min-h-screen pt-28 pb-20">
+    <div className="pt-28 sm:pt-32 pb-20 sm:pb-24 bg-[#F8FAFC] min-h-screen relative overflow-hidden">
+      {/* Background Subtle Ambient Lighting & Grid */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 architectural-grid opacity-10 pointer-events-none -z-10" />
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* View Switcher Tabs */}
         <div className="mb-8 flex justify-center">
-          <div className="inline-flex rounded-xl bg-slate-900/90 p-1 border border-white/[0.08] shadow-lg">
+          <div className="inline-flex rounded-xl bg-white p-1 border border-slate-200 shadow-sm">
             <button
               type="button"
               onClick={() => setActiveTab('wizard')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'wizard'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#38BDF8] text-slate-950 font-bold shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <Compass className="h-3.5 w-3.5" aria-hidden="true" />
@@ -38,10 +42,10 @@ export const StartProjectView: React.FC = () => {
             <button
               type="button"
               onClick={() => setActiveTab('estimator')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'estimator'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-[#38BDF8] text-slate-950 font-bold shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <Calculator className="h-3.5 w-3.5" aria-hidden="true" />

@@ -23,8 +23,9 @@ export interface ServiceItem {
   deliverables: { ar: string[]; en: string[] };
   businessValue: { ar: string; en: string };
   iconName: string;
-  category: 'engineering' | 'modernization' | 'infrastructure' | 'operations' | 'ai';
+  category: 'engineering' | 'modernization' | 'infrastructure' | 'operations';
   categoryBadge: { ar: string; en: string };
+  image?: string;
 }
 
 export interface ReadySolution {

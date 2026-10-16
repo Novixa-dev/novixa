@@ -88,6 +88,7 @@ export const SERVICES: ServiceItem[] = [
     iconName: 'Code2',
     category: 'engineering',
     categoryBadge: { ar: 'هندسة مخصصة', en: 'Custom Engineering' },
+    image: '/images/services/srv-custom-software.jpg',
   },
   {
     id: 'business-solutions',
@@ -131,6 +132,7 @@ export const SERVICES: ServiceItem[] = [
     iconName: 'LayoutGrid',
     category: 'engineering',
     categoryBadge: { ar: 'حلول سريعة الإطلاق', en: 'Fast Turnaround' },
+    image: '/images/services/srv-business-solutions.jpg',
   },
   {
     id: 'product-development',
@@ -174,6 +176,7 @@ export const SERVICES: ServiceItem[] = [
     iconName: 'Layers',
     category: 'engineering',
     categoryBadge: { ar: 'هندسة منتجات', en: 'Product Engineering' },
+    image: '/images/services/srv-product-development.jpg',
   },
   {
     id: 'system-modernization',
@@ -217,6 +220,7 @@ export const SERVICES: ServiceItem[] = [
     iconName: 'RefreshCw',
     category: 'modernization',
     categoryBadge: { ar: 'تحديث وترقية', en: 'Modernization' },
+    image: '/images/services/srv-legacy-modernization.jpg',
   },
   {
     id: 'deployment-infrastructure',
@@ -264,6 +268,7 @@ export const SERVICES: ServiceItem[] = [
     iconName: 'Server',
     category: 'infrastructure',
     categoryBadge: { ar: 'بنية تحتية ونشر', en: 'Core Infrastructure' },
+    image: '/images/services/srv-cloud-deployment.jpg',
   },
   {
     id: 'managed-hosting',
@@ -307,6 +312,7 @@ export const SERVICES: ServiceItem[] = [
     iconName: 'CloudCheck',
     category: 'infrastructure',
     categoryBadge: { ar: 'استضافة مدارة', en: 'Managed Hosting' },
+    image: '/images/services/srv-managed-hosting.jpg',
   },
   {
     id: 'maintenance-support',
@@ -350,6 +356,7 @@ export const SERVICES: ServiceItem[] = [
     iconName: 'ShieldAlert',
     category: 'operations',
     categoryBadge: { ar: 'دعم وصيانة', en: 'Continuous SLA' },
+    image: '/images/services/srv-system-maintenance.jpg',
   },
   {
     id: 'automation-integrations',
@@ -393,49 +400,7 @@ export const SERVICES: ServiceItem[] = [
     iconName: 'Workflow',
     category: 'operations',
     categoryBadge: { ar: 'أتمتة وتكامل', en: 'Workflow Automation' },
-  },
-  {
-    id: 'ai-solutions',
-    slug: 'ai-solutions',
-    title: { ar: 'حلول الذكاء الاصطناعي التطبيقي', en: 'Practical AI & Intelligence' },
-    subtitle: {
-      ar: 'دمج نماذج الذكاء الاصطناعي لاستخراج البيانات من المستندات وأتمتة خدمة العملاء',
-      en: 'Applied AI integration for business automation, document parsing, and RAG',
-    },
-    description: {
-      ar: 'نقدم الذكاء الاصطناعي كقدرة هندسية عملية لحل مشاكل تجارية حقيقية، بعيداً عن البهرجة التسويقية: استخراج البيانات من العقود والفواتير، المساعدات الذكية المدربة على بيانات شركتك، وتصنيف المهام تلقائياً.',
-      en: 'We implement AI as a disciplined engineering capability to solve concrete operational problems: parsing invoices, domain-specific RAG assistants trained on company docs, and smart ticket routing.',
-    },
-    scopeTitle: { ar: 'الحلول العملية التي نبنيها:', en: 'Applied AI Scope:' },
-    capabilities: {
-      ar: [
-        'مساعدات ذكية مدربة على مستندات وسياسات شركتك (Custom RAG Systems)',
-        'استخراج البيانات التلقائي من الفواتير والعقود (Document Intelligence & OCR)',
-        'تصنيف وفرز المحادثات والتذاكر التشغيلية آلياً (Smart Ticket Routing)',
-        'تحليل انطباعات وتقييمات العملاء والموظفين (Sentiment & Pulse Analytics)',
-        'محركات البحث الذكي في قواعد البيانات الضخمة (Semantic Vector Search)',
-        'حماية سرية البيانات وعزل النماذج داخل بيئتك السحابية',
-      ],
-      en: [
-        'Enterprise RAG Assistants Trained on Proprietary Internal Docs',
-        'Automated Invoice, Receipt & Contract Document Parsing',
-        'Intelligent Customer Request & Operational Ticket Classification',
-        'Employee Feedback & Customer Sentiment Analytics',
-        'Semantic Vector Search Across Massive Knowledge Bases',
-        'Private & Secure Model Inference with Zero Data Leakage',
-      ],
-    },
-    deliverables: {
-      ar: ['نموذج ذكاء اصطناعي مدمج في نظامك', 'واجهة استخدام بسيطة للموظفين', 'ضمان كامل لخصوصية البيانات', 'توثيق وتدريب للفريق'],
-      en: ['Embedded Production AI Pipeline', 'Intuitive Staff UI Interface', 'Strict Data Privacy Architecture', 'Team Training & Runbook'],
-    },
-    businessValue: {
-      ar: 'تسريع معالجة المعاملات بنسبة تصل إلى 80% مع دقة فائقة.',
-      en: 'Accelerating routine document and query processing by up to 80%.',
-    },
-    iconName: 'Sparkles',
-    category: 'ai',
-    categoryBadge: { ar: 'ذكاء اصطناعي عملي', en: 'Practical AI' },
+    image: '/images/services/srv-workflow-automation.jpg',
   },
 ];
 
@@ -1132,18 +1097,18 @@ export const PRODUCTS: Product[] = [
     },
     businessValue: {
       ar: 'اكتشاف التحديات التشغيلية قبل تحولها لأزمات ورفع ولاء وإنتاجية الفرق.',
-      en: 'Proactive detection of operational bottlenecks with AI classification.',
+      en: 'Proactive detection of operational bottlenecks with automated analytics.',
     },
     features: {
       ar: [
         'جمع الآراء والحلول بسرية تامة أو بهوية معلنة مع حماية الهوية',
-        'تصنيف الملاحظات بالذكاء الاصطناعي (تشغيلي، بيئة عمل، مقترحات نمو)',
+        'تصنيف الملاحظات آلياً (تشغيلي، بيئة عمل، مقترحات نمو)',
         'لوحة قيادة للإدارة مع مؤشر صحة بيئة العمل (Pulse Score)',
         'نظام التصويت والتعليقات التفاعلية ومتابعة حالة معالجة المشكلات',
       ],
       en: [
         'Anonymized & attributed employee feedback channels',
-        'AI classification of topics (Operations, Culture, Growth Ideas)',
+        'Automated classification of topics (Operations, Culture, Growth Ideas)',
         'Executive Pulse Score dashboard and sentiment trends',
         'Internal upvoting and priority resolution tracking',
       ],
@@ -1221,20 +1186,6 @@ export const SOLUTIONS: SolutionCategory[] = [
     businessImpact: { ar: 'القضاء على تداخل المواعيد وتقليل نسبة عدم الحضور بـ 80%', en: '80% drop in no-shows and complete schedule clarity' },
     iconName: 'CalendarCheck',
     badge: { ar: 'أتمتة التشغيل', en: 'Automated Flow' },
-  },
-  {
-    id: 'ai',
-    slug: 'ai-solutions',
-    title: { ar: 'حلول الذكاء الاصطناعي التطبيقي', en: 'Practical AI Solutions' },
-    subtitle: { ar: 'دمج نماذج الذكاء الاصطناعي لأتمتة خدمة العملاء واستخراج البيانات', en: 'Applied AI integration for business automation and document intelligence' },
-    description: { ar: 'نطوع الذكاء الاصطناعي لخدمة أهداف عملك الحقيقية: المساعدات الذكية، تحليل المستندات تلقائياً، والتنبؤ بالطلب بناءً على البيانات.', en: 'We integrate production-ready AI models directly into your business logic to process documents, answer customer queries, and surface insights.' },
-    features: {
-      ar: ['مساعدات ذكية مُدربة على بيانات شركتك (RAG)', 'استخراج البيانات الآلي من الفواتير والعقود', 'تحليل انطباعات الموظفين والعملاء تلقائياً', 'تصنيف المراسلات والمهام الذكي'],
-      en: ['Custom RAG assistants trained on company docs', 'Automated invoice & document extraction', 'Sentiment analytics for feedback loops', 'Smart ticket classification & routing'],
-    },
-    businessImpact: { ar: 'توفير مئات الساعات التشغيلية شهرياً في المهام المكررة', en: 'Saves hundreds of manual hours every month' },
-    iconName: 'Sparkles',
-    badge: { ar: 'قيمة عملية', en: 'Practical AI' },
   },
   {
     id: 'custom',
@@ -1467,7 +1418,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     features: {
       ar: [
         'خريطة تتبع مباشرة للسيارات والمنتجات',
-        'توزيع المهام اللوجستية بالذكاء الاصطناعي',
+        'توزيع المهام اللوجستية آلياً وخوارزميات المسارات',
         'رابط تتبع مباشر للعميل برقم الشحنة',
       ],
       en: [

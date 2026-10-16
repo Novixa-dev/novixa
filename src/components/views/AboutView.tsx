@@ -55,21 +55,19 @@ export const AboutView = ({ lang }: { lang: Language }) => {
   ];
 
   return (
-    <div className="pt-32 pb-24 bg-slate-950 min-h-screen space-y-16 relative overflow-hidden">
-      {/* Background Architectural Grid */}
-      <div className="absolute inset-0 architectural-grid opacity-25 pointer-events-none -z-10" />
+    <div className="pt-28 sm:pt-32 pb-20 sm:pb-24 bg-[#F8FAFC] min-h-screen space-y-16 relative overflow-hidden">
+      {/* Background Subtle Ambient Lighting & Grid */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 architectural-grid opacity-10 pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
         
         {/* Page Hero */}
         <div className="space-y-4 text-right rtl:text-right ltr:text-left max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-950 border border-blue-800 text-blue-300 text-xs font-semibold">
-            <span>{t('عن نوڤيكسا ومسار النمو', 'About Novixa & Methodology')}</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight leading-snug">
+          <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {t('شركة هندسة برمجيات ومنتجات رقمية تصنع الفارق.', 'A software engineering company built for real business impact.')}
           </h1>
-          <p className="text-slate-300 text-base sm:text-lg font-arabic leading-relaxed">
+          <p className="text-slate-600 text-sm sm:text-base md:text-lg font-arabic leading-relaxed">
             {t(
               'نوڤيكسا ليست وكالة تصميم عامة ولا متجر قوالب. نحن شركة هندسة برمجيات تجمع بين البرمجيات المخصصة، والحلول الجاهزة سريعة الإطلاق، والنشر السحابي المدار لدعم نمو الأعمال في اليمن والخليج والمنطقة.',
               'Novixa is a software engineering and digital products firm. We bridge the gap between custom bespoke software, productized turnkey solutions, and managed cloud infrastructure for ambitious companies across Yemen, the GCC, and beyond.'
@@ -80,10 +78,10 @@ export const AboutView = ({ lang }: { lang: Language }) => {
         {/* Growth Sequence Roadmap */}
         <div className="space-y-6">
           <div className="text-right rtl:text-right ltr:text-left space-y-2">
-            <span className="text-xs font-mono text-blue-400 uppercase tracking-wider block">
+            <span className="text-xs font-mono text-cyan-700 uppercase tracking-wider block font-bold">
               {t('خارطة ومنهجية النمو المؤسسي', 'Novixa Strategic Growth Sequence')}
             </span>
-            <h2 className="text-2xl font-bold font-display text-white">
+            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
               {t('مسار بناء القيمة وتطوير القدرات الهندسية:', 'Our Capability Progression Framework:')}
             </h2>
           </div>
@@ -92,16 +90,16 @@ export const AboutView = ({ lang }: { lang: Language }) => {
             {growthStages.map((stg, idx) => (
               <div
                 key={idx}
-                className="glass-card rounded-2xl p-6 border border-white/[0.08] bg-slate-900/60 space-y-3 relative group hover:border-blue-500/40 transition-colors"
+                className="rounded-2xl p-6 border border-slate-200/90 bg-white shadow-sm space-y-3 relative group hover:border-cyan-400 hover:shadow-md transition-all"
               >
                 <div className="flex items-center justify-between">
-                  <div className="w-8 h-8 rounded-lg bg-blue-950 border border-blue-800 text-blue-400 flex items-center justify-center font-bold text-xs font-mono">
+                  <div className="w-8 h-8 rounded-lg bg-cyan-50 border border-cyan-200 text-cyan-700 flex items-center justify-center font-bold text-xs font-mono">
                     {stg.number}
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400">STAGE {stg.number}</span>
+                  <span className="text-[10px] font-mono text-slate-500 font-semibold">STAGE {stg.number}</span>
                 </div>
-                <h3 className="text-base font-bold font-display text-white">{t(stg.titleAr, stg.titleEn)}</h3>
-                <p className="text-xs text-slate-300 font-arabic leading-relaxed">{t(stg.descAr, stg.descEn)}</p>
+                <h3 className="text-base font-bold font-display text-slate-900">{t(stg.titleAr, stg.titleEn)}</h3>
+                <p className="text-xs text-slate-600 font-arabic leading-relaxed">{t(stg.descAr, stg.descEn)}</p>
               </div>
             ))}
           </div>
@@ -112,67 +110,67 @@ export const AboutView = ({ lang }: { lang: Language }) => {
 
         {/* Core Values Grid */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold font-display text-white text-right rtl:text-right ltr:text-left">
+          <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 tracking-tight leading-snug text-right rtl:text-right ltr:text-left">
             {t('قيمنا الهندسية الراسخة:', 'Our Core Engineering Values:')}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 text-right rtl:text-right ltr:text-left">
             {values.map((v, idx) => (
-              <div key={idx} className="glass-card rounded-2xl p-6 border border-slate-800 space-y-3">
-                <div className="w-8 h-8 rounded-lg bg-blue-950 border border-blue-800 text-blue-400 flex items-center justify-center font-bold text-xs font-mono">
+              <div key={idx} className="rounded-2xl p-6 border border-slate-200/90 bg-white shadow-sm space-y-3">
+                <div className="w-8 h-8 rounded-lg bg-cyan-50 border border-cyan-200 text-cyan-700 flex items-center justify-center font-bold text-xs font-mono">
                   0{idx + 1}
                 </div>
-                <h3 className="text-base font-bold font-display text-white">{t(v.titleAr, v.titleEn)}</h3>
-                <p className="text-xs text-slate-300 font-arabic leading-relaxed">{t(v.descAr, v.descEn)}</p>
+                <h3 className="text-base font-bold font-display text-slate-900">{t(v.titleAr, v.titleEn)}</h3>
+                <p className="text-xs text-slate-600 font-arabic leading-relaxed">{t(v.descAr, v.descEn)}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Regional Focus & Data Sovereignty */}
-        <div className="glass-card rounded-3xl p-8 border border-slate-800/80 bg-slate-900/60 space-y-6 text-right rtl:text-right ltr:text-left">
+        <div className="rounded-3xl p-8 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] space-y-6 text-right rtl:text-right ltr:text-left">
           <div className="space-y-2">
-            <span className="text-xs font-mono text-teal-400 uppercase block tracking-wider">
+            <span className="text-xs font-mono text-cyan-700 uppercase block tracking-wider font-bold">
               {t('الحوكمة والأمان وسيادة البيانات', 'Governance & Data Sovereignty')}
             </span>
-            <h2 className="text-xl sm:text-2xl font-bold font-display text-white">
+            <h2 className="text-xl sm:text-2xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
               {t('كيف نتعامل مع الأمان وملكية البيانات لشركائنا في اليمن والخليج؟', 'How we approach security and data ownership for our regional partners')}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
-            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
-              <span className="text-xs font-bold text-white block">
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+              <span className="text-xs font-bold text-slate-900 block">
                 {t('استضافة نختارها معك', 'Hosting chosen with you')}
               </span>
-              <p className="text-xs text-slate-300 font-arabic leading-relaxed">
+              <p className="text-xs text-slate-600 font-arabic leading-relaxed">
                 {t('نحدد مع العميل مكان الاستضافة ونوثّق أين تُخزَّن بياناته.', 'We choose the hosting location with the client and document where their data is stored.')}
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
-              <span className="text-xs font-bold text-white block">
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+              <span className="text-xs font-bold text-slate-900 block">
                 {t('حماية الملكية الفكرية (NDA)', 'Mutual NDA & Code IP')}
               </span>
-              <p className="text-xs text-slate-300 font-arabic leading-relaxed">
+              <p className="text-xs text-slate-600 font-arabic leading-relaxed">
                 {t('اتفاقيات عدم إفصاح صارمة وضمان التملّك الحصري للأصل البرمجي والشيفرة وقواعد البيانات لشركتك.', 'Binding NDAs ensuring full ownership of software assets, schemas, and source code.')}
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
-              <span className="text-xs font-bold text-white block">
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+              <span className="text-xs font-bold text-slate-900 block">
                 {t('اتصالات مشفّرة', 'Encrypted connections')}
               </span>
-              <p className="text-xs text-slate-300 font-arabic leading-relaxed">
+              <p className="text-xs text-slate-600 font-arabic leading-relaxed">
                 {t('نقدّم المواقع عبر HTTPS مع HSTS، ونبقي قاعدة البيانات خارج الإنترنت العام.', 'We serve sites over HTTPS with HSTS and keep the database off the public internet.')}
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
-              <span className="text-xs font-bold text-white block">
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+              <span className="text-xs font-bold text-slate-900 block">
                 {t('الصيانة والدعم', 'Maintenance & support')}
               </span>
-              <p className="text-xs text-slate-300 font-arabic leading-relaxed">
+              <p className="text-xs text-slate-600 font-arabic leading-relaxed">
                 {t('عقود صيانة تشمل النسخ الاحتياطي والمتابعة والدعم الهندسي، وتُحدَّد شروطها مع كل عميل.', 'Maintenance contracts covering backups, follow-up and engineering support, with terms agreed per client.')}
               </p>
             </div>
@@ -183,7 +181,7 @@ export const AboutView = ({ lang }: { lang: Language }) => {
         <div className="pt-4 text-center">
           <Link
             href={`/${language}/contact`}
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm px-7 py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all"
+            className="inline-flex items-center gap-2 bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 font-bold text-xs sm:text-sm px-7 py-3.5 rounded-xl shadow-lg shadow-[#38BDF8]/20 transition-all cursor-pointer"
           >
             <span>{t('ابدأ مشروعك مع نوڤيكسا', 'Start Your Project with Novixa')}</span>
             <ArrowIcon className="w-4 h-4" />

@@ -6,7 +6,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { SOLUTIONS, PRODUCTS, INDUSTRIES, INSIGHTS } from '../../content/data';
 import { servicesCatalog } from '../../lib/content';
 import { 
-  Search, X, Layers, Sparkles, Building, BookOpen, 
+  Search, X, Layers, Building, BookOpen, 
   Briefcase, ArrowLeft, ArrowRight, CornerDownLeft, Shield 
 } from 'lucide-react';
 
@@ -175,7 +175,7 @@ export const CommandMenu: React.FC = () => {
                   className="p-2.5 rounded-xl bg-slate-950/60 hover:bg-slate-800 border border-slate-800/80 text-right rtl:text-right ltr:text-left flex items-center justify-between text-slate-300 hover:text-white transition-colors"
                 >
                   <span className="flex items-center gap-2">
-                    <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+                    <Layers className="w-3.5 h-3.5 text-teal-400" />
                     <span>{t('المنتجات الرقمية', 'Products')}</span>
                   </span>
                   <ArrowIcon className="w-3 h-3 text-slate-500" />
@@ -242,7 +242,7 @@ export const CommandMenu: React.FC = () => {
           {productsMatches.length > 0 && (
             <div className="space-y-2">
               <div className="text-[11px] font-mono uppercase tracking-wider text-teal-400 px-2 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5" />
+                <Layers className="w-3.5 h-3.5" />
                 <span>{t('المنتجات السحابية (SaaS)', 'Digital Products')}</span>
               </div>
               <div className="space-y-1">
@@ -362,7 +362,7 @@ export const CommandMenu: React.FC = () => {
             <div className="p-8 text-center text-slate-400 space-y-2">
               <div className="text-sm font-semibold">{t('لم يتم العثور على نتائج مطابقة', 'No matching results found')}</div>
               <div className="text-xs text-slate-400 font-arabic">
-                {t('جرب البحث بكلمات أخرى مثل "مطاعم"، "SaaS"، "حجز"، أو "ذكاء اصطناعي"', 'Try searching for terms like "restaurants", "SaaS", "booking", or "AI"')}
+                {t('جرب البحث بكلمات أخرى مثل "مطاعم"، "SaaS"، "حجز"، أو "سحابي"', 'Try searching for terms like "restaurants", "SaaS", "booking", or "cloud"')}
               </div>
             </div>
           )}

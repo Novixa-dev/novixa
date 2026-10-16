@@ -44,21 +44,21 @@ const ADR_BLUEPRINTS: Record<string, { code: string; titleAr: string; titleEn: s
     concurrency: 10,000+ RPS
     p99_latency: < 25ms`,
   },
-  'practical-ai': {
-    titleAr: 'وثيقة القرار المعماري (ADR-003): بنية استرجاع وتضمين المستندات (RAG) دون تسريب البيانات',
-    titleEn: 'Architecture Decision Record (ADR-003): Privacy-Preserving Applied RAG Pipeline',
+  'api-orchestration': {
+    titleAr: 'وثيقة القرار المعماري (ADR-003): بنية تدفق ومعالجة الأحداث (Event-Driven) وتكامل الأنظمة',
+    titleEn: 'Architecture Decision Record (ADR-003): Distributed Event-Driven & Stream Integration Pipeline',
     status: 'EXAMPLE / ILLUSTRATIVE',
     code: `architecture_decision_record:
   id: ADR-003
   status: Accepted
-  rag_pipeline:
-    ingestion: Chunking with Recursive Character Split (500 tokens)
-    embedding: text-embedding-3-small (Vector Dimension: 1536)
-    vector_store: PostgreSQL with pgvector (HNSW Indexing)
-  security_bounds:
-    pii_redaction: Automated Pre-Inference Masking
-    retention: Zero Cloud Model Training Agreement
-    latency: Streaming Edge Response < 400ms`,
+  event_streaming:
+    broker: High-Throughput Event Broker (Zero Data Loss)
+    serialization: Protocol Buffers / Strongly-Typed Schemas
+    consumer_groups: Auto-Scaling Background Workers
+  resilience_bounds:
+    dead_letter_queue: Automated Error Routing & Retries
+    idempotency_key: Header Deduplication
+    p99_delivery_latency: < 15ms`,
   },
 };
 

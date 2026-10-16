@@ -9,7 +9,7 @@ import {
   UtensilsCrossed,
   Calendar,
   Gamepad2,
-  Sparkles,
+  Layers,
   Building2,
   ArrowLeft,
   ArrowRight,
@@ -23,7 +23,26 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Calendar,
   Gamepad2,
   Building2,
-  Sparkles,
+  Layers,
+};
+
+const productVisualBadges: Record<string, { ar: string; en: string }> = {
+  aqar: {
+    ar: 'منظومة إدارة الأصول والاستثمار العقاري',
+    en: 'PropTech & Real Estate Operations',
+  },
+  restaurant: {
+    ar: 'تشغيل المطاعم ونقاط البيع السحابية KDS',
+    en: 'Cloud POS & Kitchen Display System',
+  },
+  booking: {
+    ar: 'محرك الجدولة والدفع وتأكيد المواعيد',
+    en: 'Automated Booking & Deposit Engine',
+  },
+  pulse: {
+    ar: 'تحليلات نبض المؤسسة ومؤشرات الأداء B2B',
+    en: 'Enterprise Sentiment & KPI Intelligence',
+  },
 };
 
 export const ProductsSection = ({ lang }: { lang: Language }) => {
@@ -56,34 +75,24 @@ export const ProductsSection = ({ lang }: { lang: Language }) => {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-600" />
-              <span>{t('منتجات وأنظمة نوڤيكسا الرقمية المستقلة', 'Novixa Proprietary Products')}</span>
-            </div>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+            <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
               {t('منتجات رقمية نبنيها لتصبح أصولاً تشغيلية.', 'Digital products engineered as scalable operational assets.')}
             </h2>
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-arabic">
-              {t(
-                'منصات سحابية متخصصة تم بناؤها واختبارها لحل مشاكل قطاعية حقيقية، مصنفة بشفافية تامة حسب حالة الجاهزية وإمكانية طلب العرض الحي.',
-                'Enterprise multi-tenant platforms engineered for domain precision, labeled with absolute transparency regarding live deployment status and demo access.'
-              )}
-            </p>
           </div>
 
           <Link
             href={`/${language}/products`}
-            className="inline-flex items-center gap-2 text-[#38BDF8] hover:text-cyan-400 font-semibold text-sm transition-colors group"
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
           >
-            <span className="text-[#38BDF8]">{t('عرض كافة المنتجات والمنصات', 'View All Products & Systems')}</span>
-            <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-[#38BDF8]" />
+            <span>{t('عرض كافة المنتجات والمنصات', 'View All Products & Systems')}</span>
+            <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
           </Link>
         </div>
 
         {/* Alternating Products Showcase List ("صور وبجنبها كتابه وتعكس") */}
         <div className="space-y-12">
           {PRODUCTS.map((prod, idx) => {
-            const IconComp = iconMap[prod.iconName] || Sparkles;
+            const IconComp = iconMap[prod.iconName] || Layers;
             const isEven = idx % 2 === 0;
             return (
               <div
@@ -171,14 +180,30 @@ export const ProductsSection = ({ lang }: { lang: Language }) => {
 
                   {/* Visual Image Showcase Column */}
                   <div className={`lg:col-span-6 xl:col-span-7 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-                    <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-xl group/img bg-slate-950">
+                    <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-xl group/img bg-slate-950 aspect-[16/10]">
                       <Image
-                        src={`/images/products/${prod.id}-dashboard.png`}
+                        src={`/images/products/${prod.id}-preview.jpg`}
                         alt={prod.name[isRtl ? 'ar' : 'en']}
-                        width={900}
-                        height={560}
-                        className="w-full h-auto object-cover transform group-hover/img:scale-[1.02] transition-transform duration-500"
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 55vw"
+                        className="object-cover transform group-hover/img:scale-105 transition-transform duration-700 ease-out"
+                        priority={idx === 0}
                       />
+                      {/* Subtle Vignette Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent pointer-events-none" />
+
+                      {/* Floating Category Tag */}
+                      <div className="absolute bottom-4 start-4 end-4 flex items-center justify-between gap-3 pointer-events-none">
+                        <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/85 backdrop-blur-md border border-cyan-500/30 text-cyan-300 text-xs font-mono font-semibold shadow-lg">
+                          <IconComp className="w-3.5 h-3.5 text-cyan-400" />
+                          <span>{productVisualBadges[prod.id]?.[isRtl ? 'ar' : 'en'] || prod.category[isRtl ? 'ar' : 'en']}</span>
+                        </span>
+
+                        <span className="hidden sm:inline-flex items-center text-[11px] font-mono text-emerald-300 bg-emerald-950/90 border border-emerald-800/80 px-2.5 py-1 rounded-lg backdrop-blur-sm shadow-md">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse me-1.5" />
+                          {prod.statusLabel[isRtl ? 'ar' : 'en']}
+                        </span>
+                      </div>
                     </div>
                   </div>
 

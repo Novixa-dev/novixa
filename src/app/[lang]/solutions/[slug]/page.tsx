@@ -87,8 +87,11 @@ export default async function SolutionDetailPage({
   const related = readySolutionsCatalog.filter((s) => s.id !== solution.id).slice(0, 3);
 
   return (
-    <div className="pt-28 pb-20 bg-slate-950 min-h-screen relative overflow-hidden">
-      <div className="absolute inset-0 architectural-grid opacity-20 pointer-events-none -z-10" />
+    <div className="pt-28 sm:pt-32 pb-20 sm:pb-24 bg-[#F8FAFC] min-h-screen relative overflow-hidden">
+      {/* Background Subtle Ambient Lighting & Grid */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 architectural-grid opacity-10 pointer-events-none -z-10" />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
@@ -100,43 +103,43 @@ export default async function SolutionDetailPage({
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
         <nav aria-label={isAr ? 'مسار التنقل' : 'Breadcrumb'}>
-          <ol className="flex items-center gap-2 text-xs text-slate-400 font-mono flex-wrap">
+          <ol className="flex items-center gap-2 text-xs text-slate-500 font-mono flex-wrap">
             <li>
-              <Link href={`/${lang}`} className="hover:text-white transition-colors">
+              <Link href={`/${lang}`} className="hover:text-slate-900 transition-colors">
                 {isAr ? 'الرئيسية' : 'Home'}
               </Link>
             </li>
             <li aria-hidden="true">/</li>
             <li>
-              <Link href={`/${lang}/solutions`} className="hover:text-white transition-colors">
+              <Link href={`/${lang}/solutions`} className="hover:text-slate-900 transition-colors">
                 {isAr ? 'الحلول الجاهزة' : 'Solutions'}
               </Link>
             </li>
             <li aria-hidden="true">/</li>
-            <li className="text-blue-400">{solution.name[locale]}</li>
+            <li className="text-cyan-800 font-semibold">{solution.name[locale]}</li>
           </ol>
         </nav>
 
-        <article className="glass-card rounded-3xl p-6 sm:p-10 border border-white/[0.08] bg-slate-900/90 shadow-2xl space-y-8">
-          <header className="space-y-4 border-b border-slate-800 pb-6">
+        <article className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] space-y-8">
+          <header className="space-y-4 border-b border-slate-100 pb-6">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-teal-950/80 border border-teal-800/70 text-teal-400 flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-cyan-50 border border-cyan-100 text-cyan-700 flex items-center justify-center shrink-0">
                 <Icon className="w-5 h-5" />
               </div>
               <div className="space-y-2 min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-teal-950 border border-teal-800 text-teal-300 text-xs font-mono">
+                  <span className="px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-semibold">
                     {solution.category[locale]}
                   </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950 border border-blue-800 text-blue-300 text-xs font-mono">
-                    <Clock className="w-3 h-3" />
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-mono font-semibold">
+                    <Clock className="w-3 h-3 text-cyan-600" />
                     {solution.deliveryTimelineBadge[locale]}
                   </span>
                 </div>
-                <h1 className="text-3xl sm:text-4xl font-extrabold font-display text-white leading-snug">
+                <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
                   {solution.name[locale]}
                 </h1>
-                <p className="text-sm text-teal-300 font-arabic font-medium">
+                <p className="text-sm text-cyan-700 font-arabic font-medium">
                   {solution.tagline[locale]}
                 </p>
               </div>
@@ -144,44 +147,44 @@ export default async function SolutionDetailPage({
           </header>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <section className="p-5 rounded-2xl bg-rose-950/20 border border-rose-900/40 space-y-2">
-              <h2 className="flex items-center gap-2 font-mono text-rose-400 font-bold text-xs uppercase tracking-wider">
+            <section className="p-5 rounded-2xl bg-rose-50/70 border border-rose-200/80 space-y-2">
+              <h2 className="flex items-center gap-2 font-mono text-rose-700 font-bold text-xs uppercase tracking-wider">
                 <AlertTriangle className="w-3.5 h-3.5" />
                 {isAr ? 'المشكلة التي يحلها' : 'The problem it solves'}
               </h2>
-              <p className="text-sm text-slate-300 leading-relaxed font-arabic">
+              <p className="text-sm text-slate-700 leading-relaxed font-arabic">
                 {solution.problem[locale]}
               </p>
             </section>
 
-            <section className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
-              <h2 className="flex items-center gap-2 font-mono text-blue-400 font-bold text-xs uppercase tracking-wider">
+            <section className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <h2 className="flex items-center gap-2 font-mono text-cyan-800 font-bold text-xs uppercase tracking-wider">
                 <Users className="w-3.5 h-3.5" />
                 {isAr ? 'لمن هذا النظام' : 'Who it is for'}
               </h2>
-              <p className="text-sm text-slate-300 leading-relaxed font-arabic">
+              <p className="text-sm text-slate-700 leading-relaxed font-arabic">
                 {solution.targetAudience[locale]}
               </p>
             </section>
           </div>
 
           <section className="space-y-3">
-            <h2 className="text-sm font-bold text-white font-display uppercase tracking-wider">
+            <h2 className="text-sm font-bold text-slate-900 font-display uppercase tracking-wider">
               {isAr ? 'كيف يعمل النظام' : 'How the system works'}
             </h2>
-            <p className="text-base text-slate-200 leading-relaxed font-arabic">
+            <p className="text-base text-slate-600 leading-relaxed font-arabic">
               {solution.solutionSummary[locale]}
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-sm font-bold text-white font-display uppercase tracking-wider">
+            <h2 className="text-sm font-bold text-slate-900 font-display uppercase tracking-wider">
               {isAr ? 'الميزات المتضمنة' : 'What is included'}
             </h2>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm text-slate-300 font-arabic">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm text-slate-600 font-arabic">
               {solution.features[locale].map((feature, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-cyan-600 shrink-0 mt-0.5" />
                   <span className="leading-relaxed">{feature}</span>
                 </li>
               ))}
@@ -189,15 +192,12 @@ export default async function SolutionDetailPage({
           </section>
 
           {solution.packages && solution.packages.length > 0 && (
-            <section className="space-y-4 pt-2 border-t border-slate-800">
+            <section className="space-y-4 pt-2 border-t border-slate-100">
               <div className="space-y-1">
-                <h2 className="text-sm font-bold text-white font-display uppercase tracking-wider">
+                <h2 className="text-sm font-bold text-slate-900 font-display uppercase tracking-wider">
                   {isAr ? 'باقات التهيئة والإطلاق' : 'Configuration tiers'}
                 </h2>
-                {/* Scope, not price. Novixa does not publish figures, so the
-                    tiers describe what each includes and the conversation
-                    settles the number. */}
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500 font-arabic">
                   {isAr
                     ? 'الباقات تصف نطاق التهيئة والتسليم. السعر النهائي يُحدد بعد جلسة نطاق قصيرة.'
                     : 'Tiers describe delivery scope. The final figure is agreed after a short scoping session.'}
@@ -208,41 +208,41 @@ export default async function SolutionDetailPage({
                 {solution.packages.map((tier) => (
                   <div
                     key={tier.id}
-                    className={`rounded-2xl p-5 space-y-3 border ${
+                    className={`rounded-2xl p-5 space-y-3 border transition-all ${
                       tier.isPopular
-                        ? 'border-blue-500/60 bg-blue-950/20'
-                        : 'border-white/[0.07] bg-slate-950'
+                        ? 'border-cyan-500/60 bg-cyan-50/30 shadow-sm ring-1 ring-cyan-500/20'
+                        : 'border-slate-200/90 bg-white shadow-xs'
                     }`}
                   >
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between gap-2">
-                        <h3 className="text-sm font-bold text-white font-display">
+                        <h3 className="text-sm font-bold text-slate-900 font-display">
                           {tier.name[locale]}
                         </h3>
                         {tier.isPopular && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-600 text-white text-[10px] font-semibold">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#38BDF8] text-slate-950 text-[10px] font-bold shadow-xs">
                             <Star className="w-2.5 h-2.5" />
                             {isAr ? 'الأكثر طلباً' : 'Most chosen'}
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] text-slate-400 leading-relaxed">
+                      <p className="text-[11px] text-slate-600 leading-relaxed font-arabic">
                         {tier.tagline[locale]}
                       </p>
-                      <p className="text-[11px] font-mono text-blue-300">{tier.priceBadge[locale]}</p>
+                      <p className="text-[11px] font-mono text-cyan-700 font-semibold">{tier.priceBadge[locale]}</p>
                     </div>
 
-                    <ul className="space-y-1.5 text-xs text-slate-300 font-arabic border-t border-slate-800 pt-3">
+                    <ul className="space-y-1.5 text-xs text-slate-600 font-arabic border-t border-slate-100 pt-3">
                       {tier.features[locale].map((feature, i) => (
                         <li key={i} className="flex items-start gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-teal-400 shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-3.5 h-3.5 text-cyan-600 shrink-0 mt-0.5" />
                           <span className="leading-relaxed">{feature}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <p className="text-[11px] text-slate-400 border-t border-slate-800 pt-2.5">
-                      <span className="text-slate-300 font-semibold">
+                    <p className="text-[11px] text-slate-500 border-t border-slate-100 pt-2.5 font-arabic">
+                      <span className="text-slate-800 font-semibold">
                         {isAr ? 'مناسبة لـ: ' : 'Suits: '}
                       </span>
                       {tier.idealFor[locale]}
@@ -253,26 +253,26 @@ export default async function SolutionDetailPage({
             </section>
           )}
 
-          <section className="p-5 rounded-2xl bg-teal-950/20 border border-teal-900/40 space-y-2">
-            <h2 className="font-mono text-teal-400 font-bold text-xs uppercase tracking-wider">
+          <section className="p-5 rounded-2xl bg-cyan-50/70 border border-cyan-200/80 space-y-2">
+            <h2 className="font-mono text-cyan-800 font-bold text-xs uppercase tracking-wider">
               {isAr ? 'الأثر التشغيلي المتوقع' : 'Expected operational impact'}
             </h2>
-            <p className="text-sm text-slate-200 leading-relaxed font-arabic">
+            <p className="text-sm text-slate-700 leading-relaxed font-arabic">
               {solution.businessImpact[locale]}
             </p>
           </section>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-800">
+          <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-100">
             <Link
               href={`/${lang}/start-project?solution=${solution.slug}`}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-lg shadow-blue-600/25 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 font-bold text-sm shadow-md shadow-[#38BDF8]/20 transition-all cursor-pointer"
             >
               <span>{isAr ? 'اطلب تهيئة هذا النظام' : 'Request this system'}</span>
               <ArrowIcon className="w-4 h-4" />
             </Link>
             <Link
               href={`/${lang}/dashboard`}
-              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl border border-white/[0.08] bg-slate-900/70 hover:bg-slate-800 text-slate-200 font-medium text-sm transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-medium text-sm transition-colors cursor-pointer"
             >
               <span>{isAr ? 'شاهد لوحة التشغيل' : 'See the console'}</span>
             </Link>
@@ -281,7 +281,7 @@ export default async function SolutionDetailPage({
 
         {related.length > 0 && (
           <section className="space-y-4">
-            <h2 className="text-sm font-bold text-white font-display uppercase tracking-wider">
+            <h2 className="text-sm font-bold text-slate-900 font-display uppercase tracking-wider">
               {isAr ? 'حلول جاهزة أخرى' : 'Other ready solutions'}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -291,16 +291,16 @@ export default async function SolutionDetailPage({
                   <Link
                     key={item.id}
                     href={`/${lang}/solutions/${item.slug}`}
-                    className="glass-card glass-card-hover rounded-2xl p-5 border border-white/[0.07] space-y-2.5"
+                    className="rounded-2xl p-5 border border-slate-200/90 bg-white shadow-xs hover:shadow-md hover:border-cyan-500/40 space-y-2.5 group transition-all"
                   >
-                    <RelatedIcon className="w-4 h-4 text-teal-400" />
-                    <h3 className="text-sm font-bold text-white font-display leading-snug">
+                    <RelatedIcon className="w-4 h-4 text-cyan-600" />
+                    <h3 className="text-sm font-bold text-slate-900 font-display leading-snug group-hover:text-cyan-700 transition-colors">
                       {item.name[locale]}
                     </h3>
-                    <p className="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-3">
                       {item.tagline[locale]}
                     </p>
-                    <p className="text-[11px] font-mono text-blue-300">
+                    <p className="text-[11px] font-mono text-cyan-700 font-semibold">
                       {item.deliveryDays[locale]}
                     </p>
                   </Link>

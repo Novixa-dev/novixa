@@ -58,72 +58,72 @@ export default async function IndustryDetailPage({ params }: { params: Promise<{
   ]);
 
   return (
-    <div className="pt-28 pb-20 bg-slate-950 min-h-screen">
+    <div className="pt-28 pb-20 bg-[#F8FAFC] min-h-screen text-slate-900">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-right rtl:text-right ltr:text-left">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-          <Link href={`/${lang}`} className="hover:text-white">{isAr ? 'الرئيسية' : 'Home'}</Link>
+        <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
+          <Link href={`/${lang}`} className="hover:text-slate-900 transition-colors">{isAr ? 'الرئيسية' : 'Home'}</Link>
           <span>/</span>
-          <Link href={`/${lang}/industries`} className="hover:text-white">{isAr ? 'القطاعات' : 'Industries'}</Link>
+          <Link href={`/${lang}/industries`} className="hover:text-slate-900 transition-colors">{isAr ? 'القطاعات' : 'Industries'}</Link>
           <span>/</span>
-          <span className="text-teal-400">{industry.name[isAr ? 'ar' : 'en']}</span>
+          <span className="text-cyan-700 font-medium truncate">{industry.name[isAr ? 'ar' : 'en']}</span>
         </div>
 
         {/* Industry Card */}
-        <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-800 bg-slate-900/90 shadow-2xl space-y-8">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-b border-slate-800 pb-6">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-teal-300 text-xs font-mono">
-                <Building className="w-3.5 h-3.5" />
+        <div className="rounded-2xl p-6 sm:p-10 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] space-y-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-b border-slate-100 pb-6">
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold">
+                <Building className="w-3.5 h-3.5 text-cyan-700" />
                 <span>{isAr ? 'حلول القطاع المخصصة' : 'Domain Solution'}</span>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-extrabold font-display text-white">
+              <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
                 {industry.name[isAr ? 'ar' : 'en']}
               </h1>
             </div>
 
             <Link
               href={`/${lang}/start-project`}
-              className="px-6 py-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs sm:text-sm shadow-lg shadow-teal-600/30 transition-all flex items-center gap-2"
+              className="px-6 py-3 rounded-xl bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 font-bold text-xs sm:text-sm shadow-md shadow-[#38BDF8]/20 transition-all flex items-center gap-2 shrink-0 cursor-pointer"
             >
               <span>{isAr ? 'تخصيص حل لقطاعك' : 'Build for Your Industry'}</span>
               <ArrowIcon className="w-4 h-4" />
             </Link>
           </div>
 
-          <p className="text-slate-200 text-base sm:text-lg leading-relaxed font-arabic">
+          <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-arabic">
             {industry.description[isAr ? 'ar' : 'en']}
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-            <div className="p-5 rounded-xl bg-slate-950 border border-rose-950 space-y-3">
-              <div className="flex items-center gap-2 text-rose-400 font-bold text-xs uppercase tracking-wider font-mono">
-                <AlertCircle className="w-4 h-4" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            <div className="p-6 rounded-xl bg-rose-50/50 border border-rose-200/80 space-y-3">
+              <div className="flex items-center gap-2 text-rose-700 font-bold text-xs uppercase tracking-wider font-mono">
+                <AlertCircle className="w-4 h-4 text-rose-600" />
                 <span>{isAr ? 'التحديات التشغيلية:' : 'Industry Challenges:'}</span>
               </div>
-              <ul className="space-y-2 text-xs text-slate-300">
+              <ul className="space-y-2.5 text-xs sm:text-sm text-slate-700">
                 {industry.challenges[isAr ? 'ar' : 'en'].map((c, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mt-2 shrink-0"></span>
                     <span>{c}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="p-5 rounded-xl bg-slate-950 border border-teal-950 space-y-3">
-              <div className="flex items-center gap-2 text-teal-400 font-bold text-xs uppercase tracking-wider font-mono">
-                <CheckCircle2 className="w-4 h-4" />
+            <div className="p-6 rounded-xl bg-cyan-50/50 border border-cyan-200/80 space-y-3">
+              <div className="flex items-center gap-2 text-cyan-800 font-bold text-xs uppercase tracking-wider font-mono">
+                <CheckCircle2 className="w-4 h-4 text-cyan-600" />
                 <span>{isAr ? 'أنظمة نوڤيكسا المقدمة:' : 'Novixa Modules:'}</span>
               </div>
-              <ul className="space-y-2 text-xs text-slate-200">
+              <ul className="space-y-2.5 text-xs sm:text-sm text-slate-700">
                 {industry.solutions[isAr ? 'ar' : 'en'].map((s, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-cyan-600 shrink-0 mt-0.5" />
                     <span>{s}</span>
                   </li>
                 ))}
@@ -133,10 +133,10 @@ export default async function IndustryDetailPage({ params }: { params: Promise<{
         </div>
 
         {/* Back Link */}
-        <div className="pt-4">
+        <div className="pt-2">
           <Link
             href={`/${lang}/industries`}
-            className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
           >
             <ArrowIcon className="w-4 h-4" />
             <span>{isAr ? 'العودة لجميع القطاعات' : 'Back to All Industries'}</span>

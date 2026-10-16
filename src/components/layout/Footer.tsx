@@ -122,11 +122,6 @@ export const Footer: React.FC = () => {
                     {t('الأتمتة وتكامل الـ APIs والواتساب', 'Automation & WhatsApp Integrations')}
                   </Link>
                 </li>
-                <li>
-                  <Link href={`/${language}/services`} className="hover:text-blue-400 transition-colors text-slate-300">
-                    {t('حلول الذكاء الاصطناعي التطبيقي', 'Practical AI Solutions')}
-                  </Link>
-                </li>
               </ul>
             </nav>
           </div>

@@ -76,11 +76,50 @@ export function constructMetadata({
   };
   const handle = twitterHandle();
 
+  const keywords =
+    lang === 'ar'
+      ? [
+          'نوڤيكسا',
+          'شركة برمجة',
+          'هندسة البرمجيات',
+          'تطوير برمجيات مخصصة',
+          'حلول برمجية جاهزة',
+          'نظام إدارة المطاعم',
+          'نظام حجز مواعيد',
+          'نظام إدارة العيادات',
+          'نظام عقارات',
+          'استضافة سحابية مدارة',
+          'تطوير منصات SaaS',
+          'برمجة اليمن',
+          'برمجة الخليج والسعودية',
+          'تكامل الأنظمة البرمجية',
+          'صيانة ودعم فني SLA',
+        ]
+      : [
+          'Novixa',
+          'Software Engineering Firm',
+          'Custom Software Development',
+          'Turnkey Business Solutions',
+          'Restaurant POS and KDS',
+          'Appointment Booking Software',
+          'Clinic Management System',
+          'Real Estate SaaS Platform',
+          'Managed Cloud Hosting',
+          'Legacy System Modernization',
+          'Enterprise Architecture Middle East',
+          'GCC Software Company',
+        ];
+
   return {
+    metadataBase: new URL(baseUrl),
     title,
     description,
+    keywords,
     applicationName: 'Novixa',
     category: 'technology',
+    authors: [{ name: 'Novixa Engineering Core', url: baseUrl }],
+    creator: 'Novixa',
+    publisher: 'Novixa',
     alternates: {
       canonical: canonicalUrl,
       languages: {
@@ -151,7 +190,7 @@ export function generateOrganizationJsonLd() {
       'Booking Engines',
       'Real-time Logistics Control',
       'B2B SaaS Engineering',
-      'Practical AI & RAG Solutions',
+      'Automated Data & Workflow Pipelines',
     ],
     contactPoint: {
       '@type': 'ContactPoint',
@@ -170,12 +209,20 @@ export function generateWebSiteJsonLd() {
     '@type': 'WebSite',
     '@id': `${baseUrl}/#website`,
     name: 'Novixa',
-    alternateName: 'نوڤيكسا للبرمجيات',
+    alternateName: ['نوڤيكسا', 'نوڤيكسا للبرمجيات', 'Novixa Engineering'],
     url: baseUrl,
     inLanguage: ['ar', 'en'],
     // Ties the site to the organization node above, so the two are read as one
     // entity rather than two unrelated things with the same name.
     publisher: { '@id': `${baseUrl}/#organization` },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${baseUrl}/ar/solutions?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
   };
 }
 

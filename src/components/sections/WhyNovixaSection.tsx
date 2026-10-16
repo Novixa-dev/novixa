@@ -1,7 +1,8 @@
 import React from 'react';
+import Image from 'next/image';
 import { createTranslator } from '@/lib/i18n';
 import type { Language } from '@/types';
-import { Target, Compass, Layers, ShieldCheck, HeartHandshake, Code2, CheckCircle2, GitBranch, Sparkles } from 'lucide-react';
+import { Target, Compass, Layers, ShieldCheck, HeartHandshake, Code2, CheckCircle2, GitBranch } from 'lucide-react';
 
 export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
   const { t } = createTranslator(lang);
@@ -67,12 +68,7 @@ export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-600" />
-            <span>{t('الفارق الجوهري في نوڤيكسا', 'The Engineering Discipline')}</span>
-          </div>
-
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+          <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {t('لماذا تختار نوڤيكسا لشراكتك التقنية؟', 'Why enterprises partner with Novixa.')}
           </h2>
 
@@ -82,6 +78,83 @@ export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
               'We are not a body-shopping agency. We are product engineers invested in turning your operational vision into a robust technical asset.'
             )}
           </p>
+        </div>
+
+        {/* Enterprise Technical Partnership Visual Showcase */}
+        <div className="rounded-3xl border border-slate-200/90 bg-white p-5 sm:p-8 shadow-[0_12px_40px_-10px_rgba(15,23,42,0.06)] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-right rtl:text-right ltr:text-left">
+          
+          {/* Images Grid (Handshake & Corporate Architecture) */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-md group h-64 sm:h-72">
+              <Image
+                src="/images/partnerships/partnership-handshake.jpg"
+                alt={t('شراكة أعمال تقنية موثوقة ومستدامة', 'Enterprise Technology Partnership & Handshake')}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent flex items-end p-4">
+                <span className="text-xs font-display font-bold text-white bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700/80">
+                  {t('عقود شراكة استراتيجية ملزمة', 'Strategic Partnership Agreements')}
+                </span>
+              </div>
+            </div>
+
+            <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-md group h-64 sm:h-72">
+              <Image
+                src="/images/partnerships/corporate-architecture.jpg"
+                alt={t('بنية معمارية مؤسسية قابلة للتوسع', 'Corporate Enterprise Architecture')}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 35vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent flex items-end p-4">
+                <span className="text-xs font-display font-bold text-white bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700/80">
+                  {t('بنية برمجية معمارية للمؤسسات والشركات', 'Enterprise Architecture Scale')}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right 5 Cols: Partnership Values */}
+          <div className="lg:col-span-5 space-y-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-semibold">
+              <HeartHandshake className="w-3.5 h-3.5 text-cyan-600" />
+              <span>{t('نموذج الشراكة الهندسية المستدامة', 'Sustainable Engineering Alliance')}</span>
+            </div>
+
+            <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 leading-snug">
+              {t(
+                'علاقة عمل قائمة على الوضوح والالتزام الصارم بنجاح منظومتك.',
+                'A technical relationship built on absolute clarity, trust, and shared outcomes.'
+              )}
+            </h3>
+
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-arabic">
+              {t(
+                'ندرك أن اختيار شريك برمجيات ليس مجرد صفقة شراء، بل استثمار استراتيجي يمس عصب عملياتك اليومية. نلتزم بحماية مصالح شركتك من خلال تسليم الملكية الكاملة للكود ومرافقة فريقك ميدانياً.',
+                'Selecting a software partner is a strategic foundation for your business growth. We protect your company\'s operational sovereignty with 100% IP code ownership and continuous SLA support.'
+              )}
+            </p>
+
+            <div className="pt-2 space-y-2.5 font-arabic text-xs sm:text-sm text-slate-700">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="font-semibold">{t('اتفاقيات مستوى خدمة (SLA) ملزمة لحماية الجاهزية', 'Enforceable SLA contracts with guaranteed response times')}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="font-semibold">{t('فريق هندسي متخصص يرافق نمو وتوسع أعمالك', 'Dedicated senior engineers accompanying your business expansion')}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="font-semibold">{t('شفافية تامة في المستودعات وتوثيق معماري كامل', 'Direct Git repository access and transparent architecture specs')}</span>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         {/* Differentiators Grid */}

@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useLanguage } from '../../context/LanguageContext';
 import { PROCESS_STEPS } from '../../content/data';
 import {
-  GitCommit,
   ShieldCheck,
   CheckCircle2,
   FileText,
@@ -28,12 +28,7 @@ export const ProcessSection: React.FC = () => {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
-            <GitCommit className="w-3.5 h-3.5 text-cyan-600" />
-            <span>{t('منهجية العمل والوضوح', 'Engineering & Delivery Lifecycle')}</span>
-          </div>
-
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+          <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {t('من فهم التحدي إلى الإطلاق المستقر والمساندة.', 'From operational problem to live, stable release.')}
           </h2>
 
@@ -124,20 +119,33 @@ export const ProcessSection: React.FC = () => {
             </div>
 
             {/* Right 4 Cols: Discipline and Signoff Guarantee */}
-            <div className="lg:col-span-4 bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm space-y-4 text-center">
-              <div className="w-12 h-12 rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-700 flex items-center justify-center mx-auto shadow-sm">
-                <ShieldCheck className="w-6 h-6" />
+            <div className="lg:col-span-4 bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/90 shadow-sm space-y-4 text-center">
+              <div className="relative rounded-xl overflow-hidden h-36 border border-slate-200/90 shadow-sm group">
+                <Image
+                  src="/images/partnerships/enterprise-collaboration.jpg"
+                  alt={t('تعاون هندسي مستمر مع الشركاء وفرق العمل', 'Direct Engineering Collaboration with Partners')}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 30vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent to-transparent flex items-end p-2.5">
+                  <span className="text-[10px] font-mono text-cyan-300 bg-slate-950/80 px-2.5 py-0.5 rounded border border-cyan-800">
+                    Live Engineering Sprints
+                  </span>
+                </div>
               </div>
+
               <div className="space-y-1.5 font-arabic">
-                <h4 className="text-sm font-bold text-slate-900 font-display">
-                  {t('ضمان الشفافية والانضباط', 'Transparent Milestone Delivery')}
+                <h4 className="text-sm font-bold text-slate-900 font-display flex items-center justify-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-cyan-600" />
+                  <span>{t('ضمان الشفافية والانضباط', 'Transparent Milestone Delivery')}</span>
                 </h4>
                 <p className="text-xs text-slate-500 leading-relaxed font-medium">
                   {t('تقارير إنجاز منتظمة وعروض حية للمرحلة قبل الانتقال للمرحلة التالية دون أي مفاجآت.', 'Regular demo reviews and written approvals before moving to subsequent stages.')}
                 </p>
               </div>
 
-              <div className="pt-2">
+              <div className="pt-1">
                 <span className="inline-flex items-center gap-1 text-[11px] font-mono text-cyan-800 bg-cyan-50 px-3 py-1 rounded-md border border-cyan-200 font-medium">
                   <Clock className="w-3 h-3 text-cyan-600" />
                   <span>Verified Sprint Delivery</span>

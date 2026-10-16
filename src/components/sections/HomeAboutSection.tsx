@@ -45,7 +45,7 @@ export const HomeAboutSection: React.FC = () => {
             </div>
 
             {/* Display Heading */}
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold font-display text-[#0B1726] tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-[#0B1726] tracking-tight leading-snug">
               {t('نوڤيكسا', 'Novixa')}
             </h2>
 

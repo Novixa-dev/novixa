@@ -64,25 +64,25 @@ export default async function LegalPage({
   );
 
   return (
-    <div className="pt-28 pb-20 bg-slate-950 min-h-screen relative overflow-hidden">
+    <div className="pt-28 pb-20 bg-[#F8FAFC] min-h-screen text-slate-900 relative overflow-hidden">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
-        <header className="space-y-4 border-b border-slate-800 pb-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono">
-            <Icon className="w-3.5 h-3.5 text-blue-400" />
+        <header className="space-y-4 border-b border-slate-200/80 pb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold">
+            <Icon className="w-3.5 h-3.5 text-cyan-700" />
             <span>{isAr ? 'وثائق قانونية' : 'Legal'}</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold font-display text-white leading-snug">
+          <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {doc.title[locale]}
           </h1>
-          <p className="text-slate-300 text-base font-arabic leading-relaxed">
+          <p className="text-slate-600 text-base font-arabic leading-relaxed">
             {doc.description[locale]}
           </p>
-          <p className="text-xs font-mono text-slate-400">
+          <p className="text-xs font-mono text-slate-500">
             {isAr ? 'آخر تحديث: ' : 'Last updated: '}
             <time dateTime={doc.updated}>{updatedLabel}</time>
           </p>
@@ -91,12 +91,12 @@ export default async function LegalPage({
         <div className="space-y-8">
           {doc.sections.map((section, i) => (
             <section key={i} className="space-y-3">
-              <h2 className="text-lg font-bold font-display text-white">
+              <h2 className="text-lg font-bold font-display text-slate-900">
                 {section.heading[locale]}
               </h2>
               <div className="space-y-3">
                 {section.body[locale].map((paragraph, j) => (
-                  <p key={j} className="text-sm text-slate-300 leading-relaxed font-arabic">
+                  <p key={j} className="text-sm sm:text-base text-slate-600 leading-relaxed font-arabic">
                     {paragraph}
                   </p>
                 ))}
@@ -105,15 +105,15 @@ export default async function LegalPage({
           ))}
         </div>
 
-        <aside className="glass-card rounded-2xl border border-white/[0.07] p-5 space-y-2">
-          <h2 className="text-sm font-bold text-white font-display">
+        <aside className="rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] p-6 space-y-2">
+          <h2 className="text-sm font-bold text-slate-900 font-display">
             {isAr ? 'أسئلة حول هذه الصفحة' : 'Questions about this page'}
           </h2>
-          <p className="text-sm text-slate-300 leading-relaxed font-arabic">
+          <p className="text-sm text-slate-600 leading-relaxed font-arabic">
             {isAr ? 'راسلنا على ' : 'Write to '}
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              className="text-blue-400 hover:text-blue-300 font-mono transition-colors"
+              className="text-blue-600 hover:text-blue-700 font-mono transition-colors font-semibold"
             >
               {CONTACT_EMAIL}
             </a>
@@ -123,17 +123,17 @@ export default async function LegalPage({
           </p>
         </aside>
 
-        <nav className="flex flex-wrap gap-4 pt-4 border-t border-slate-800 text-xs">
+        <nav className="flex flex-wrap gap-4 pt-4 border-t border-slate-200/80 text-xs">
           {LEGAL_DOCUMENTS.filter((other) => other.slug !== doc.slug).map((other) => (
             <Link
               key={other.slug}
               href={`/${lang}/legal/${other.slug}`}
-              className="text-slate-400 hover:text-white transition-colors"
+              className="text-slate-500 hover:text-slate-900 transition-colors"
             >
               {other.title[locale]}
             </Link>
           ))}
-          <Link href={`/${lang}`} className="text-slate-400 hover:text-white transition-colors">
+          <Link href={`/${lang}`} className="text-slate-500 hover:text-slate-900 transition-colors">
             {isAr ? 'العودة للرئيسية' : 'Back to home'}
           </Link>
         </nav>

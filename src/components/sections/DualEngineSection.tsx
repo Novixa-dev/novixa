@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   ArrowLeft,
   ArrowRight,
-  Layers,
   Database,
   Cpu,
   Server,
@@ -25,11 +24,7 @@ export const DualEngineSection = ({ lang }: { lang: Language }) => {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
-            <Layers className="w-3.5 h-3.5 text-cyan-600" />
-            <span>{t('نموذج العمل والحلول في نوڤيكسا', 'Novixa Dual Delivery Model')}</span>
-          </div>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+          <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {t('مساران متكاملان لتحويل متطلباتك إلى برمجيات تعمل.', 'Two complementary engines to power your business software.')}
           </h2>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-arabic max-w-2xl mx-auto">
@@ -50,7 +45,7 @@ export const DualEngineSection = ({ lang }: { lang: Language }) => {
               {/* Image at Top */}
               <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden shadow-sm border border-slate-100 group-hover:scale-[1.01] transition-transform duration-300">
                 <Image
-                  src="/images/custom-engineering.jpg"
+                  src="/images/services/custom-software-hero.jpg"
                   alt={t('هندسة برمجية مخصصة', 'Custom Bespoke Software Engineering')}
                   fill
                   className="object-cover"
@@ -193,15 +188,15 @@ export const DualEngineSection = ({ lang }: { lang: Language }) => {
                 <div className="grid grid-cols-3 gap-2 text-center text-[10px]">
                   <div className="p-2 rounded bg-white border border-slate-200 text-slate-700 shadow-2xs">
                     <span className="text-teal-600 block font-bold mb-0.5">01</span>
-                    <span>اختيار الحل</span>
+                    <span>{t('اختيار الحل', 'Select Solution')}</span>
                   </div>
                   <div className="p-2 rounded bg-teal-50/80 border border-teal-200 text-teal-800">
                     <span className="text-teal-600 block font-bold mb-0.5">02</span>
-                    <span>تخصيص الهوية</span>
+                    <span>{t('تخصيص الهوية', 'Customize Brand')}</span>
                   </div>
                   <div className="p-2 rounded bg-white border border-slate-200 text-slate-700 shadow-2xs">
                     <span className="text-teal-600 block font-bold mb-0.5">03</span>
-                    <span>الإطلاق المباشر</span>
+                    <span>{t('الإطلاق المباشر', 'Go Live')}</span>
                   </div>
                 </div>
 
