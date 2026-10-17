@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { createTranslator } from '@/lib/i18n';
 import type { Language } from '@/types';
+import { Reveal, RevealCard } from '@/components/ui/Reveal';
 import {
   CheckCircle2,
   ArrowLeft,
@@ -23,7 +24,7 @@ export const DualEngineSection = ({ lang }: { lang: Language }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-14">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
+        <Reveal direction="up" className="text-center max-w-3xl mx-auto space-y-4">
           <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {t('مساران متكاملان لتحويل متطلباتك إلى برمجيات تعمل.', 'Two complementary engines to power your business software.')}
           </h2>
@@ -33,13 +34,13 @@ export const DualEngineSection = ({ lang }: { lang: Language }) => {
               'Whether you need custom full-stack engineering tailored to proprietary workflows, or proven productized software foundations launched in days, Novixa delivers with architectural rigor.'
             )}
           </p>
-        </div>
+        </Reveal>
 
         {/* Dual Cards Comparison */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
           
           {/* Card 1: Custom Engineering (المسار الأول: هندسة مخصصة) */}
-          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-cyan-400/50 transition-all duration-300 flex flex-col justify-between space-y-6 relative group">
+          <RevealCard delay={0.05} className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-cyan-400/50 transition-all duration-300 flex flex-col justify-between space-y-6 relative group">
             <div className="space-y-6 text-right rtl:text-right ltr:text-left">
               
               {/* Image at Top */}
@@ -141,10 +142,10 @@ export const DualEngineSection = ({ lang }: { lang: Language }) => {
                 <ArrowIcon className="w-4 h-4 text-[#38BDF8]" />
               </Link>
             </div>
-          </div>
+          </RevealCard>
 
           {/* Card 2: Ready-Made Productized Solutions (المسار الثاني: حلول جاهزة سريعة) */}
-          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-teal-400/50 transition-all duration-300 flex flex-col justify-between space-y-6 relative group">
+          <RevealCard delay={0.15} className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-teal-400/50 transition-all duration-300 flex flex-col justify-between space-y-6 relative group">
             <div className="space-y-6 text-right rtl:text-right ltr:text-left">
               
               {/* Image at Top */}
@@ -246,7 +247,7 @@ export const DualEngineSection = ({ lang }: { lang: Language }) => {
                 <ArrowIcon className="w-4 h-4 text-[#38BDF8]" />
               </Link>
             </div>
-          </div>
+          </RevealCard>
 
         </div>
 

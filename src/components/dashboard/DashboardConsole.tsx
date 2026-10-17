@@ -232,10 +232,10 @@ export const DashboardConsole: React.FC = () => {
           Stated before the numbers, not in a footnote under them: every
           figure on this page is generated to show the shape of the console,
           and none of it is a client result. */}
-      <div className="flex items-start gap-3 rounded-2xl border border-amber-500/25 bg-amber-950/25 p-4">
-        <FlaskConical className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-        <div className="text-xs leading-relaxed text-amber-100/90 text-right rtl:text-right ltr:text-left">
-          <strong className="font-bold text-amber-200">
+      <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50/90 p-4 shadow-sm">
+        <FlaskConical className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+        <div className="text-xs leading-relaxed text-amber-900 text-right rtl:text-right ltr:text-left">
+          <strong className="font-bold text-amber-950">
             {t('بيانات توضيحية — عرض تفاعلي.', 'Illustrative data — interactive demo.')}
           </strong>{' '}
           {t(
@@ -269,15 +269,20 @@ export const DashboardConsole: React.FC = () => {
               tabIndex={isActive ? 0 : -1}
               onKeyDown={(event) => onTabKeyDown(event, index)}
               onClick={() => setActiveModuleId(module.id)}
-              className={`inline-flex items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-medium transition-colors ${
+              className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-semibold transition-all cursor-pointer ${
                 isActive
-                  ? 'border-blue-500/70 bg-blue-600/15 text-white font-semibold'
-                  : 'border-white/[0.07] bg-slate-900/60 text-slate-300 hover:bg-slate-800/70 hover:text-white'
+                  ? 'border-slate-900 bg-slate-900 text-white shadow-md'
+                  : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-950 hover:border-slate-300 shadow-xs'
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-blue-400' : 'text-slate-400'}`} />
-              <span>{module.label[language]}</span>
-              <span className="font-mono text-[10px] text-slate-400" translate="no">
+              <Icon className={`w-4 h-4 ${isActive ? 'text-[#38BDF8]' : 'text-slate-400'}`} />
+              <span className="font-display">{module.label[language]}</span>
+              <span
+                className={`font-mono text-[10px] px-1.5 py-0.5 rounded ${
+                  isActive ? 'bg-slate-800 text-cyan-300 font-bold' : 'bg-slate-100 text-slate-500'
+                }`}
+                translate="no"
+              >
                 {module.product.replace('Novixa ', '')}
               </span>
             </button>
@@ -290,7 +295,7 @@ export const DashboardConsole: React.FC = () => {
         <div
           role="group"
           aria-label={t('نافذة البيانات', 'Data window')}
-          className="inline-flex rounded-xl border border-white/[0.07] bg-slate-900/60 p-1"
+          className="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-xs"
         >
           {TREND_WINDOWS.map((days) => {
             const isActive = days === windowDays;
@@ -300,10 +305,10 @@ export const DashboardConsole: React.FC = () => {
                 type="button"
                 aria-pressed={isActive}
                 onClick={() => setWindowDays(days)}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium tabular-nums transition-colors ${
+                className={`rounded-lg px-3.5 py-1.5 text-xs font-bold tabular-nums transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-blue-600/20 text-white font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/[0.04]'
+                    ? 'bg-slate-900 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-950 hover:bg-slate-100'
                 }`}
               >
                 {t(`${days} يوماً`, `${days} days`)}
@@ -315,10 +320,10 @@ export const DashboardConsole: React.FC = () => {
         <button
           type="button"
           onClick={downloadCsv}
-          className="inline-flex items-center gap-2 rounded-xl border border-white/[0.07] bg-slate-900/60 px-3.5 py-2 text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/70 transition-colors"
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:text-slate-950 hover:bg-slate-50 hover:border-slate-300 shadow-xs transition-all cursor-pointer"
         >
-          <Download className="w-3.5 h-3.5" aria-hidden="true" />
-          {t('تنزيل البيانات (CSV)', 'Download data (CSV)')}
+          <Download className="w-3.5 h-3.5 text-slate-500" aria-hidden="true" />
+          <span>{t('تنزيل البيانات (CSV)', 'Download data (CSV)')}</span>
         </button>
       </div>
 

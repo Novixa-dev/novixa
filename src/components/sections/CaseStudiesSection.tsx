@@ -20,14 +20,15 @@ import {
   Zap,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Reveal, RevealGroup, RevealItem } from '@/components/ui/Reveal';
 
 const CASE_STUDY_IMAGES: Record<string, { src: string; altAr: string; altEn: string; badgeAr: string; badgeEn: string }> = {
   'black-spider': {
     src: '/images/casestudies/gaming-arena.png',
-    altAr: 'واجهة تشغيل صالة بلاك سبايدر للألعاب وإدارة أجهزة اللعب',
-    altEn: 'Black Spider Gaming Arena Stations & Lounge OS Interface',
-    badgeAr: 'محاكاة حية لنظام التشغيل وقفل المحطات المؤتمت',
-    badgeEn: 'Live Station Automation & Lounge OS Mockup',
+    altAr: 'صالة بلاك سبايدر للألعاب الإلكترونية ومحطات التشغيل المؤتمتة ومنطقة الكافيه',
+    altEn: 'Black Spider E-Sports Gaming Arena & Automated Battle Stations Lounge',
+    badgeAr: 'بيئة تشغيل صالة بلاك سبايدر ومحطات الألعاب المؤتمتة',
+    badgeEn: 'Black Spider Gaming Arena & Automated Battle Stations',
   },
   'aura-medical': {
     src: '/images/casestudies/polyclinic-ehr.png',
@@ -148,81 +149,84 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
         
         {/* Section Header */}
         {showHeader && (
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
-            <div className="space-y-4 max-w-2xl">
-              <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
-                {t('كيف نتعامل مع المشاكل التشغيلية المعقدة.', 'How we engineer solutions for real operational hurdles.')}
-              </h2>
-            </div>
+          <Reveal direction="up">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
+              <div className="space-y-4 max-w-2xl">
+                <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+                  {t('كيف نتعامل مع المشاكل التشغيلية المعقدة.', 'How we engineer solutions for real operational hurdles.')}
+                </h2>
+              </div>
 
-            <div className="shrink-0">
-              <Link
-                href={`/${language}/work`}
-                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
-              >
-                <span>{t('عرض جميع الأعمال المختارة', 'Explore All Selected Work')}</span>
-                <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
-              </Link>
+              <div className="shrink-0">
+                <Link
+                  href={`/${language}/work`}
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
+                >
+                  <span>{t('عرض جميع الأعمال المختارة', 'Explore All Selected Work')}</span>
+                  <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
+                </Link>
+              </div>
             </div>
-          </div>
+          </Reveal>
         )}
 
         {/* 1. Interactive Scenario Switcher Bar (3 Pillars) */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <RevealGroup stagger={0.05} className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {CASE_STUDIES.map((cs, idx) => {
             const isActive = cs.id === activeId;
             return (
-              <button
-                key={cs.id}
-                type="button"
-                onClick={() => setActiveId(cs.id)}
-                className={`p-4 rounded-2xl border text-right rtl:text-right ltr:text-left transition-all duration-200 cursor-pointer flex flex-col justify-between gap-3 ${
-                  isActive
-                    ? 'bg-slate-900 border-[#38BDF8] text-white shadow-xl shadow-cyan-950/20 ring-1 ring-[#38BDF8]'
-                    : 'bg-white border-slate-200/90 text-slate-700 hover:border-cyan-300 hover:bg-slate-50/80 shadow-sm'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <span className={`text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-md ${
-                    isActive ? 'bg-[#38BDF8]/20 text-[#38BDF8] border border-[#38BDF8]/40' : 'bg-slate-100 text-slate-700'
-                  }`}>
-                    ARCH-0{idx + 1}
-                  </span>
-                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${
-                    isActive ? 'bg-cyan-950 text-cyan-300 border border-cyan-800' : 'bg-slate-50 text-slate-500 border border-slate-200'
-                  }`}>
-                    {cs.caseStudyTypeLabel[isRtl ? 'ar' : 'en']}
-                  </span>
-                </div>
+              <RevealItem key={cs.id} hoverLift={true}>
+                <button
+                  type="button"
+                  onClick={() => setActiveId(cs.id)}
+                  className={`w-full h-full p-4 rounded-2xl border text-right rtl:text-right ltr:text-left transition-all duration-200 cursor-pointer flex flex-col justify-between gap-3 ${
+                    isActive
+                      ? 'bg-slate-900 border-[#38BDF8] text-white shadow-xl shadow-cyan-950/20 ring-1 ring-[#38BDF8]'
+                      : 'bg-white border-slate-200/90 text-slate-700 hover:border-cyan-300 hover:bg-slate-50/80 shadow-sm'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className={`text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-md ${
+                      isActive ? 'bg-[#38BDF8]/20 text-[#38BDF8] border border-[#38BDF8]/40' : 'bg-slate-100 text-slate-700'
+                    }`}>
+                      ARCH-0{idx + 1}
+                    </span>
+                    <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${
+                      isActive ? 'bg-cyan-950 text-cyan-300 border border-cyan-800' : 'bg-slate-50 text-slate-500 border border-slate-200'
+                    }`}>
+                      {cs.caseStudyTypeLabel[isRtl ? 'ar' : 'en']}
+                    </span>
+                  </div>
 
-                <div>
-                  <h3 className={`text-sm sm:text-base font-bold font-display leading-snug line-clamp-1 ${
-                    isActive ? 'text-[#38BDF8]' : 'text-slate-900'
-                  }`}>
-                    {cs.client}
-                  </h3>
-                  <p className={`text-xs mt-0.5 font-arabic truncate ${
-                    isActive ? 'text-slate-300' : 'text-slate-500'
-                  }`}>
-                    {cs.industry[isRtl ? 'ar' : 'en']}
-                  </p>
-                </div>
+                  <div>
+                    <h3 className={`text-sm sm:text-base font-bold font-display leading-snug line-clamp-1 ${
+                      isActive ? 'text-[#38BDF8]' : 'text-slate-900'
+                    }`}>
+                      {cs.client}
+                    </h3>
+                    <p className={`text-xs mt-0.5 font-arabic truncate ${
+                      isActive ? 'text-slate-300' : 'text-slate-500'
+                    }`}>
+                      {cs.industry[isRtl ? 'ar' : 'en']}
+                    </p>
+                  </div>
 
-                <div className="pt-2 border-t border-slate-100/10 flex items-center justify-between text-[11px]">
-                  <span className={`font-mono flex items-center gap-1.5 ${
-                    isActive ? 'text-cyan-300' : 'text-cyan-700'
-                  }`}>
-                    <Zap className="w-3 h-3" />
-                    <span>{t(cs.metrics[0]?.value + ' ' + cs.metrics[0]?.label[isRtl ? 'ar' : 'en'], cs.metrics[0]?.value + ' ' + cs.metrics[0]?.label.en)}</span>
-                  </span>
-                  {isActive && (
-                    <span className="w-2 h-2 rounded-full bg-[#38BDF8] animate-pulse" />
-                  )}
-                </div>
-              </button>
+                  <div className="pt-2 border-t border-slate-100/10 flex items-center justify-between text-[11px]">
+                    <span className={`font-mono flex items-center gap-1.5 ${
+                      isActive ? 'text-cyan-300' : 'text-cyan-700'
+                    }`}>
+                      <Zap className="w-3 h-3" />
+                      <span>{t(cs.metrics[0]?.value + ' ' + cs.metrics[0]?.label[isRtl ? 'ar' : 'en'], cs.metrics[0]?.value + ' ' + cs.metrics[0]?.label.en)}</span>
+                    </span>
+                    {isActive && (
+                      <span className="w-2 h-2 rounded-full bg-[#38BDF8] animate-pulse" />
+                    )}
+                  </div>
+                </button>
+              </RevealItem>
             );
           })}
-        </div>
+        </RevealGroup>
 
         {/* 2. Interactive Showcase Card with Human Touch & Architectural Depth */}
         <AnimatePresence mode="wait">
@@ -349,7 +353,7 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                       </span>
                     </div>
                     <span className="text-[11px] text-[#38BDF8] bg-cyan-950/80 border border-cyan-800 px-2.5 py-0.5 rounded font-bold">
-                      Live Operations Mockup
+                      {t('بيئة تشغيل ميدانية حية', 'Live Operations Environment')}
                     </span>
                   </div>
                   <div className="relative rounded-xl overflow-hidden border border-slate-800/90 bg-[#060D1A]">

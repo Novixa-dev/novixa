@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   Terminal,
 } from 'lucide-react';
+import { Reveal, RevealCard, HoverLift } from '@/components/ui/Reveal';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Activity,
@@ -73,21 +74,23 @@ export const ProductsSection = ({ lang }: { lang: Language }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-14">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
-          <div className="space-y-4 max-w-2xl">
-            <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
-              {t('منتجات رقمية نبنيها لتصبح أصولاً تشغيلية.', 'Digital products engineered as scalable operational assets.')}
-            </h2>
-          </div>
+        <Reveal direction="up">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
+            <div className="space-y-4 max-w-2xl">
+              <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+                {t('منتجات رقمية نبنيها لتصبح أصولاً تشغيلية.', 'Digital products engineered as scalable operational assets.')}
+              </h2>
+            </div>
 
-          <Link
-            href={`/${language}/products`}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
-          >
-            <span>{t('عرض كافة المنتجات والمنصات', 'View All Products & Systems')}</span>
-            <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
-          </Link>
-        </div>
+            <Link
+              href={`/${language}/products`}
+              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
+            >
+              <span>{t('عرض كافة المنتجات والمنصات', 'View All Products & Systems')}</span>
+              <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
+            </Link>
+          </div>
+        </Reveal>
 
         {/* Alternating Products Showcase List ("صور وبجنبها كتابه وتعكس") */}
         <div className="space-y-12">
@@ -95,8 +98,9 @@ export const ProductsSection = ({ lang }: { lang: Language }) => {
             const IconComp = iconMap[prod.iconName] || Layers;
             const isEven = idx % 2 === 0;
             return (
-              <div
+              <RevealCard
                 key={prod.id}
+                delay={idx * 0.08}
                 className="rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/5 transition-all duration-300"
               >
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center text-right rtl:text-right ltr:text-left">
@@ -167,13 +171,15 @@ export const ProductsSection = ({ lang }: { lang: Language }) => {
                         <span>{prod.id === 'aqar' ? 'PropTech OS' : prod.id === 'pulse' ? 'Enterprise SaaS' : 'Business Platform'}</span>
                       </span>
 
-                      <Link
-                        href={`/${language}/products/${prod.id}`}
-                        className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#38BDF8] bg-slate-900 hover:bg-slate-800 border border-[#38BDF8]/40 hover:border-[#38BDF8] px-5 py-2.5 rounded-xl transition-all shadow-md shadow-cyan-950/20 cursor-pointer"
-                      >
-                        <span className="text-[#38BDF8]">{t('عرض تفاصيل المنتج والعرض التجريبي', 'Product Details & Demo')}</span>
-                        <ArrowIcon className="w-4 h-4 text-[#38BDF8]" />
-                      </Link>
+                      <HoverLift scale={1.03}>
+                        <Link
+                          href={`/${language}/products/${prod.id}`}
+                          className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#38BDF8] bg-slate-900 hover:bg-slate-800 border border-[#38BDF8]/40 hover:border-[#38BDF8] px-5 py-2.5 rounded-xl transition-all shadow-md shadow-cyan-950/20 cursor-pointer"
+                        >
+                          <span className="text-[#38BDF8]">{t('عرض تفاصيل المنتج والعرض التجريبي', 'Product Details & Demo')}</span>
+                          <ArrowIcon className="w-4 h-4 text-[#38BDF8]" />
+                        </Link>
+                      </HoverLift>
                     </div>
 
                   </div>
@@ -208,7 +214,7 @@ export const ProductsSection = ({ lang }: { lang: Language }) => {
                   </div>
 
                 </div>
-              </div>
+              </RevealCard>
             );
           })}
         </div>

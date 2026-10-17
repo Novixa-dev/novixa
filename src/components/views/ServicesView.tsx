@@ -18,7 +18,6 @@ import {
   ArrowRight,
   CheckCircle2,
   ShieldCheck,
-  HelpCircle,
 } from 'lucide-react';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -212,32 +211,6 @@ export const ServicesView: React.FC = () => {
             );
           })}
         </div>
-
-        {/* Custom Engineering Process Box */}
-        <div className="rounded-2xl sm:rounded-3xl p-8 border border-slate-200/90 bg-white shadow-lg shadow-slate-900/5 text-center space-y-4 max-w-4xl mx-auto">
-          <div className="w-12 h-12 rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-600 flex items-center justify-center mx-auto shadow-sm">
-            <HelpCircle className="w-6 h-6" />
-          </div>
-          <h2 className="text-xl sm:text-2xl font-bold font-display text-slate-900">
-            {t('غير متأكد أي خدمة هي الأنسب لاحتياج شركتك؟', 'Not sure which service fits your exact need?')}
-          </h2>
-          <p className="text-slate-600 text-sm font-arabic max-w-xl mx-auto leading-relaxed">
-            {t(
-              'مهندسونا مستعدون لعقد جلسة استكشاف فنية مدتها 30 دقيقة لدراسة مشكلتك التشغيلية وتقديم توصية معمارية واضحة ومجدية.',
-              'Our senior engineers can jump on a 30-minute scoping consultation to audit your operational challenges and suggest the optimal architecture.'
-            )}
-          </p>
-          <div className="pt-2">
-            <Link
-              href={`/${language}/contact`}
-              className="inline-flex items-center gap-2 bg-[#38BDF8] hover:bg-[#0EA5E9] active:bg-[#0284C7] text-slate-950 font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg shadow-[#38BDF8]/20 transition-all cursor-pointer"
-            >
-              <span>{t('تحدث مع مستشار تقني الآن', 'Schedule an Engineering Consultation')}</span>
-              <ArrowIcon className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-
       </div>
     </div>
   );

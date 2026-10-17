@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { createTranslator } from '@/lib/i18n';
 import type { Language } from '@/types';
 import { Target, Compass, Layers, ShieldCheck, HeartHandshake, Code2, CheckCircle2, GitBranch } from 'lucide-react';
+import { Reveal, RevealCard, RevealGroup } from '@/components/ui/Reveal';
 
 export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
   const { t } = createTranslator(lang);
@@ -67,21 +68,23 @@ export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-14">
         
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
-            {t('لماذا تختار نوڤيكسا لشراكتك التقنية؟', 'Why enterprises partner with Novixa.')}
-          </h2>
+        <Reveal direction="up">
+          <div className="text-center max-w-3xl mx-auto space-y-4">
+            <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+              {t('لماذا تختار نوڤيكسا لشراكتك التقنية؟', 'Why enterprises partner with Novixa.')}
+            </h2>
 
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-arabic max-w-2xl mx-auto">
-            {t(
-              'لسنا مجرد شركة برمجة تبيع ساعات عمل غير محددة. نحن شريك هندسي متكامل يتبنى أهداف أعمالك ويحولها إلى أصول برمجية وتشغيلية تخدم نموك المستدام.',
-              'We are not a body-shopping agency. We are product engineers invested in turning your operational vision into a robust technical asset.'
-            )}
-          </p>
-        </div>
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-arabic max-w-2xl mx-auto">
+              {t(
+                'لسنا مجرد شركة برمجة تبيع ساعات عمل غير محددة. نحن شريك هندسي متكامل يتبنى أهداف أعمالك ويحولها إلى أصول برمجية وتشغيلية تخدم نموك المستدام.',
+                'We are not a body-shopping agency. We are product engineers invested in turning your operational vision into a robust technical asset.'
+              )}
+            </p>
+          </div>
+        </Reveal>
 
         {/* Enterprise Technical Partnership Visual Showcase */}
-        <div className="rounded-3xl border border-slate-200/90 bg-white p-5 sm:p-8 shadow-[0_12px_40px_-10px_rgba(15,23,42,0.06)] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-right rtl:text-right ltr:text-left">
+        <RevealCard delay={0.06} className="rounded-3xl border border-slate-200/90 bg-white p-5 sm:p-8 shadow-[0_12px_40px_-10px_rgba(15,23,42,0.06)] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-right rtl:text-right ltr:text-left">
           
           {/* Images Grid (Handshake & Corporate Architecture) */}
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -155,15 +158,16 @@ export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
             </div>
           </div>
 
-        </div>
+        </RevealCard>
 
         {/* Differentiators Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <RevealGroup stagger={0.04} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {differentiators.map((diff, idx) => {
             const IconComp = diff.icon;
             return (
-              <div
+              <RevealCard
                 key={idx}
+                delay={idx * 0.04}
                 className="rounded-2xl p-6 sm:p-7 border border-slate-200/90 bg-white shadow-[0_4px_20px_-4px_rgba(15,23,42,0.05)] text-right rtl:text-right ltr:text-left space-y-4 relative group hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/5 transition-all duration-300"
               >
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -187,13 +191,13 @@ export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
                   <CheckCircle2 className="w-3.5 h-3.5 text-cyan-600" />
                   <span>{t('معيار هندسي ثابت في نوڤيكسا', 'Novixa Engineering Standard')}</span>
                 </div>
-              </div>
+              </RevealCard>
             );
           })}
-        </div>
+        </RevealGroup>
 
         {/* Code Ownership & Engineering Guarantee Banner */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200/90 flex flex-col sm:flex-row items-center justify-between gap-6 text-right rtl:text-right ltr:text-left shadow-[0_4px_25px_-5px_rgba(15,23,42,0.05)]">
+        <RevealCard delay={0.08} className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200/90 flex flex-col sm:flex-row items-center justify-between gap-6 text-right rtl:text-right ltr:text-left shadow-[0_4px_25px_-5px_rgba(15,23,42,0.05)]">
           <div className="space-y-1.5">
             <div className="text-sm sm:text-base font-bold text-slate-900 font-display flex items-center gap-2">
               <GitBranch className="w-4 h-4 text-cyan-600" />
@@ -211,7 +215,7 @@ export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
             <span>100% Client IP Rights</span>
           </div>
-        </div>
+        </RevealCard>
 
       </div>
     </section>

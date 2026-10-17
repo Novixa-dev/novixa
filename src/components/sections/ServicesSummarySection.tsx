@@ -24,6 +24,7 @@ import {
   Users,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Reveal, RevealGroup, RevealItem } from '@/components/ui/Reveal';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Code2,
@@ -94,50 +95,53 @@ export const ServicesSummarySection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
-          <div className="space-y-4 max-w-2xl">
-            <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
-              {t('خدمات برمجية شاملة', 'Comprehensive Software Services')}
-            </h2>
-          </div>
+        <Reveal direction="up">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
+            <div className="space-y-4 max-w-2xl">
+              <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+                {t('خدمات برمجية شاملة', 'Comprehensive Software Services')}
+              </h2>
+            </div>
 
-          <div className="shrink-0">
-            <Link
-              href={`/${language}/services`}
-              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
-            >
-              <span>{t('عرض تفاصيل كافة الخدمات الـ 8', 'View All 8 Services & Details')}</span>
-              <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
-            </Link>
+            <div className="shrink-0">
+              <Link
+                href={`/${language}/services`}
+                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
+              >
+                <span>{t('عرض تفاصيل كافة الخدمات الـ 8', 'View All 8 Services & Details')}</span>
+                <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
+              </Link>
+            </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* 8 Services Interactive Navigation Buttons */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+        <RevealGroup stagger={0.03} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
           {SERVICES.map((srv) => {
             const SrvIcon = iconMap[srv.iconName] || Code2;
             const isActive = srv.id === activeServiceId;
             return (
-              <button
-                key={srv.id}
-                onClick={() => setActiveServiceId(srv.id)}
-                className={`p-3.5 rounded-xl border text-right rtl:text-right ltr:text-left transition-all duration-200 flex flex-col gap-2.5 cursor-pointer ${
-                  isActive
-                    ? 'bg-slate-900 border-[#38BDF8] text-[#38BDF8] font-bold shadow-lg shadow-cyan-900/20'
-                    : 'bg-white border-slate-200/90 text-slate-700 hover:bg-slate-50 hover:text-[#38BDF8] hover:border-cyan-300 shadow-sm'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <SrvIcon className={`w-4 h-4 ${isActive ? 'text-[#38BDF8]' : 'text-cyan-600'}`} />
-                  {isActive && <span className="w-2 h-2 rounded-full bg-[#38BDF8] animate-pulse" />}
-                </div>
-                <span className="font-display text-xs leading-snug line-clamp-2">
-                  {t(srv.title.ar, srv.title.en)}
-                </span>
-              </button>
+              <RevealItem key={srv.id} hoverLift={true}>
+                <button
+                  onClick={() => setActiveServiceId(srv.id)}
+                  className={`w-full h-full p-3.5 rounded-xl border text-right rtl:text-right ltr:text-left transition-all duration-200 flex flex-col gap-2.5 cursor-pointer ${
+                    isActive
+                      ? 'bg-slate-900 border-[#38BDF8] text-[#38BDF8] font-bold shadow-lg shadow-cyan-900/20'
+                      : 'bg-white border-slate-200/90 text-slate-700 hover:bg-slate-50 hover:text-[#38BDF8] hover:border-cyan-300 shadow-sm'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <SrvIcon className={`w-4 h-4 ${isActive ? 'text-[#38BDF8]' : 'text-cyan-600'}`} />
+                    {isActive && <span className="w-2 h-2 rounded-full bg-[#38BDF8] animate-pulse" />}
+                  </div>
+                  <span className="font-display text-xs leading-snug line-clamp-2">
+                    {t(srv.title.ar, srv.title.en)}
+                  </span>
+                </button>
+              </RevealItem>
             );
           })}
-        </div>
+        </RevealGroup>
 
         {/* Active Service Showcase Detail Card */}
         <AnimatePresence mode="wait">

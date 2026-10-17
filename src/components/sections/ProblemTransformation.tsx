@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { Reveal } from '../ui/Reveal';
 
 export const ProblemTransformation: React.FC = () => {
   const { t } = useLanguage();
@@ -67,7 +68,7 @@ export const ProblemTransformation: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-14">
+        <Reveal direction="up" className="text-center max-w-3xl mx-auto space-y-4 mb-14">
           <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {t('تحول نموذج العمل والعمليات البرمجية', 'Operational Transformation & Unified Systems')}
           </h2>
@@ -78,11 +79,11 @@ export const ProblemTransformation: React.FC = () => {
               'Relying on fragmented chats, manual spreadsheets, and disconnected tools drains your team\'s focus. Watch below how Novixa\'s unified engine synchronizes business operations in real-time with sub-second latency.'
             )}
           </p>
-        </div>
+        </Reveal>
 
         {/* Video Player */}
-        <div className="max-w-5xl mx-auto">
-          <div className="relative rounded-3xl overflow-hidden border border-slate-800/80 bg-[#060D1A] shadow-2xl">
+        <Reveal direction="scale" delay={0.1} className="max-w-5xl mx-auto">
+          <div className="relative rounded-3xl overflow-hidden border border-slate-800/80 bg-[#060D1A] shadow-2xl transition-all duration-300 hover:shadow-cyan-500/10 hover:border-slate-700">
             <video
               ref={videoRef}
               src="https://assets.mixkit.co/videos/23282/23282-720.mp4"
@@ -99,7 +100,7 @@ export const ProblemTransformation: React.FC = () => {
               <source src="/videos/unified-engine.mp4" type="video/mp4" />
             </video>
           </div>
-        </div>
+        </Reveal>
 
       </div>
     </section>

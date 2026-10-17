@@ -19,22 +19,22 @@ import { motion, type Variants } from 'motion/react';
  * make a page feel restless.
  */
 
-type Direction = 'up' | 'down' | 'start' | 'end' | 'none';
+type Direction = 'up' | 'down' | 'start' | 'end' | 'scale' | 'none';
 
-const OFFSET = 16;
+const OFFSET = 20;
 
-function offsetFor(direction: Direction): { x?: number; y?: number } {
+function offsetFor(direction: Direction): { x?: number; y?: number; scale?: number } {
   switch (direction) {
     case 'up':
       return { y: OFFSET };
     case 'down':
       return { y: -OFFSET };
-    // `start`/`end` are logical: the caller does not need to know the
-    // document direction, matching the RTL-safe conventions used elsewhere.
     case 'start':
       return { x: OFFSET };
     case 'end':
       return { x: -OFFSET };
+    case 'scale':
+      return { scale: 0.95 };
     default:
       return {};
   }
@@ -47,6 +47,7 @@ export interface RevealProps {
   direction?: Direction;
   /** Seconds to wait before starting — for staggering siblings. */
   delay?: number;
+  duration?: number;
   as?: 'div' | 'section' | 'li' | 'article';
 }
 
@@ -55,6 +56,7 @@ export const Reveal: React.FC<RevealProps> = ({
   className,
   direction = 'up',
   delay = 0,
+  duration = 0.45,
   as = 'div',
 }) => {
   const offset = offsetFor(direction);
@@ -65,11 +67,10 @@ export const Reveal: React.FC<RevealProps> = ({
       opacity: 1,
       x: 0,
       y: 0,
+      scale: 1,
       transition: {
-        duration: 0.4,
+        duration,
         delay,
-        // Decelerating curve: quick to start, settles softly. Matches the
-        // 150–200ms interaction transitions used on buttons and cards.
         ease: [0.16, 1, 0.3, 1],
       },
     },
@@ -82,9 +83,7 @@ export const Reveal: React.FC<RevealProps> = ({
       className={className}
       initial="hidden"
       whileInView="visible"
-      // `margin` starts the animation slightly before the element scrolls in,
-      // so it has finished by the time it is properly in view.
-      viewport={{ once: true, amount: 0.15, margin: '0px 0px -80px 0px' }}
+      viewport={{ once: true, amount: 0.08, margin: '0px 0px -40px 0px' }}
       variants={variants}
     >
       {children}
@@ -94,25 +93,22 @@ export const Reveal: React.FC<RevealProps> = ({
 
 /**
  * Staggers direct children of a list or grid.
- *
- * Kept separate from `Reveal` because staggering needs the parent to own the
- * timing; nesting `Reveal` per item with hand-computed delays is what produced
- * the inconsistent cascades this replaces.
  */
 export const RevealGroup: React.FC<{
   children: React.ReactNode;
   className?: string;
-  /** Seconds between each child. Keep small — 0.06 reads as one motion. */
+  /** Seconds between each child. Keep small — 0.08 reads as a fluid cascade. */
   stagger?: number;
-}> = ({ children, className, stagger = 0.06 }) => (
+  delay?: number;
+}> = ({ children, className, stagger = 0.08, delay = 0 }) => (
   <motion.div
     className={className}
     initial="hidden"
     whileInView="visible"
-    viewport={{ once: true, amount: 0.1, margin: '0px 0px -80px 0px' }}
+    viewport={{ once: true, amount: 0.08, margin: '0px 0px -40px 0px' }}
     variants={{
       hidden: {},
-      visible: { transition: { staggerChildren: stagger } },
+      visible: { transition: { staggerChildren: stagger, delayChildren: delay } },
     }}
   >
     {children}
@@ -120,16 +116,69 @@ export const RevealGroup: React.FC<{
 );
 
 /** A child of `RevealGroup`. Inherits the parent's stagger timing. */
-export const RevealItem: React.FC<{ children: React.ReactNode; className?: string }> = ({
-  children,
-  className,
-}) => (
+export const RevealItem: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  hoverLift?: boolean;
+}> = ({ children, className, hoverLift = false }) => (
   <motion.div
     className={className}
     variants={{
       hidden: { opacity: 0, y: OFFSET },
-      visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+      },
     }}
+    {...(hoverLift
+      ? {
+          whileHover: { y: -4, transition: { duration: 0.2, ease: 'easeOut' } },
+          whileTap: { scale: 0.99 },
+        }
+      : {})}
+  >
+    {children}
+  </motion.div>
+);
+
+/** A card wrapper that combines in-view entry and subtle hover response. */
+export const RevealCard: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}> = ({ children, className, delay = 0 }) => (
+  <motion.div
+    className={className}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.08, margin: '0px 0px -40px 0px' }}
+    variants={{
+      hidden: { opacity: 0, y: OFFSET },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] },
+      },
+    }}
+    whileHover={{ y: -4, transition: { duration: 0.2, ease: 'easeOut' } }}
+    whileTap={{ scale: 0.99 }}
+  >
+    {children}
+  </motion.div>
+);
+
+/** Smooth micro-interaction for buttons and interactive items. */
+export const HoverLift: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  lift?: number;
+  scale?: number;
+}> = ({ children, className, lift = -3, scale = 1 }) => (
+  <motion.div
+    className={className}
+    whileHover={{ y: lift, scale, transition: { duration: 0.18, ease: 'easeOut' } }}
+    whileTap={{ scale: 0.985 }}
   >
     {children}
   </motion.div>

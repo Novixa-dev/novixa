@@ -11,6 +11,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Reveal, RevealGroup, RevealItem, RevealCard } from '@/components/ui/Reveal';
 
 export const ProcessSection: React.FC = () => {
   const { t } = useLanguage();
@@ -27,54 +28,58 @@ export const ProcessSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
-            {t('من فهم التحدي إلى الإطلاق المستقر والمساندة.', 'From operational problem to live, stable release.')}
-          </h2>
+        <Reveal direction="up">
+          <div className="text-center max-w-3xl mx-auto space-y-4">
+            <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+              {t('من فهم التحدي إلى الإطلاق المستقر والمساندة.', 'From operational problem to live, stable release.')}
+            </h2>
 
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-arabic max-w-2xl mx-auto">
-            {t(
-              'دورة تنفيذ منظمة وشفافة تضمن وضوح النطاق، دقة المواعيد، وخلو النظام من المفاجآت أو الديون التقنية.',
-              'A structured 6-stage engineering lifecycle designed for absolute transparency, punctual milestones, and zero project drift.'
-            )}
-          </p>
-        </div>
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-arabic max-w-2xl mx-auto">
+              {t(
+                'دورة تنفيذ منظمة وشفافة تضمن وضوح النطاق، دقة المواعيد، وخلو النظام من المفاجآت أو الديون التقنية.',
+                'A structured 6-stage engineering lifecycle designed for absolute transparency, punctual milestones, and zero project drift.'
+              )}
+            </p>
+          </div>
+        </Reveal>
 
         {/* Process Steps Connected Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <RevealGroup stagger={0.03} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {PROCESS_STEPS.map((step, idx) => {
             const isActive = idx === activeStepIndex;
             return (
-              <button
-                key={step.number}
-                onClick={() => setActiveStepIndex(idx)}
-                className={`p-3.5 rounded-xl border text-center transition-all duration-200 cursor-pointer shadow-sm ${
-                  isActive
-                    ? 'bg-slate-900 border-[#38BDF8] text-[#38BDF8] font-bold shadow-md shadow-cyan-950/20'
-                    : 'bg-white border-slate-200/90 text-slate-700 hover:text-[#38BDF8] hover:bg-slate-50 hover:border-cyan-300'
-                }`}
-              >
-                <div className={`text-[11px] font-mono tracking-wider mb-1 font-bold ${isActive ? 'text-[#38BDF8]' : 'text-cyan-700'}`}>
-                  STAGE {step.number}
-                </div>
-                <div className={`font-display text-xs truncate font-medium ${isActive ? 'text-[#38BDF8]' : ''}`}>
-                  {t(step.title.ar, step.title.en)}
-                </div>
-              </button>
+              <RevealItem key={step.number} hoverLift={true}>
+                <button
+                  onClick={() => setActiveStepIndex(idx)}
+                  className={`w-full h-full p-3.5 rounded-xl border text-center transition-all duration-200 cursor-pointer shadow-sm ${
+                    isActive
+                      ? 'bg-slate-900 border-[#38BDF8] text-[#38BDF8] font-bold shadow-md shadow-cyan-950/20'
+                      : 'bg-white border-slate-200/90 text-slate-700 hover:text-[#38BDF8] hover:bg-slate-50 hover:border-cyan-300'
+                  }`}
+                >
+                  <div className={`text-[11px] font-mono tracking-wider mb-1 font-bold ${isActive ? 'text-[#38BDF8]' : 'text-cyan-700'}`}>
+                    STAGE {step.number}
+                  </div>
+                  <div className={`font-display text-xs truncate font-medium ${isActive ? 'text-[#38BDF8]' : ''}`}>
+                    {t(step.title.ar, step.title.en)}
+                  </div>
+                </button>
+              </RevealItem>
             );
           })}
-        </div>
+        </RevealGroup>
 
         {/* Selected Step Detail Panel */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeStep.number}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.15 }}
-            className="rounded-2xl p-6 sm:p-10 border border-slate-200/90 bg-slate-50/70 shadow-[0_10px_30px_-5px_rgba(15,23,42,0.05)] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
-          >
+        <RevealCard delay={0.08}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeStep.number}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.15 }}
+              className="rounded-2xl p-6 sm:p-10 border border-slate-200/90 bg-slate-50/70 shadow-[0_10px_30px_-5px_rgba(15,23,42,0.05)] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
+            >
             {/* Left 8 Cols: Title, Description, Deliverable cards */}
             <div className="lg:col-span-8 space-y-6 text-right rtl:text-right ltr:text-left">
               <div className="flex items-center gap-4">
@@ -154,6 +159,7 @@ export const ProcessSection: React.FC = () => {
             </div>
           </motion.div>
         </AnimatePresence>
+      </RevealCard>
 
       </div>
     </section>

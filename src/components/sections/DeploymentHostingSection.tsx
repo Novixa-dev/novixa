@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   Globe,
 } from 'lucide-react';
+import { Reveal, RevealCard, RevealGroup, HoverLift } from '@/components/ui/Reveal';
 
 export const DeploymentHostingSection = ({ lang }: { lang: Language }) => {
   const { language, isRtl, t } = createTranslator(lang);
@@ -93,26 +94,28 @@ export const DeploymentHostingSection = ({ lang }: { lang: Language }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
-          <div className="space-y-4 max-w-2xl">
-            <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
-              {t('برمجياتك، منشورة ومدارة باحترافية واستقرار.', 'Your software, deployed and maintained professionally.')}
-            </h2>
-          </div>
+        <Reveal direction="up">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
+            <div className="space-y-4 max-w-2xl">
+              <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+                {t('برمجياتك، منشورة ومدارة باحترافية واستقرار.', 'Your software, deployed and maintained professionally.')}
+              </h2>
+            </div>
 
-          <div className="shrink-0">
-            <Link
-              href={`/${language}/services`}
-              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
-            >
-              <span>{t('استكشف خدمات النشر والبنية التحتية', 'Explore Infrastructure Services')}</span>
-              <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
-            </Link>
+            <div className="shrink-0">
+              <Link
+                href={`/${language}/services`}
+                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
+              >
+                <span>{t('استكشف خدمات النشر والبنية التحتية', 'Explore Infrastructure Services')}</span>
+                <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
+              </Link>
+            </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* Cloud Operations Architectural Topology Showcase Image */}
-        <div className="rounded-3xl p-3 sm:p-5 bg-slate-950 border border-slate-800 shadow-2xl relative group overflow-hidden">
+        <RevealCard delay={0.06} className="rounded-3xl p-3 sm:p-5 bg-slate-950 border border-slate-800 shadow-2xl relative group overflow-hidden">
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800/80 px-2 flex-wrap gap-2 text-xs font-mono">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -149,50 +152,53 @@ export const DeploymentHostingSection = ({ lang }: { lang: Language }) => {
               </div>
             </div>
           </div>
-        </div>
+        </RevealCard>
 
         {/* Live Cloud Infrastructure Telemetry Bar (High-Contrast Tech Slate) */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl grid grid-cols-2 md:grid-cols-4 gap-4 text-center font-mono">
-          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
-            <div className="flex items-center justify-center gap-1.5 text-slate-400 text-xs mb-1">
-              <Globe className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Cloud Edge</span>
+        <Reveal direction="up" delay={0.06}>
+          <div className="p-4 sm:p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl grid grid-cols-2 md:grid-cols-4 gap-4 text-center font-mono">
+            <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+              <div className="flex items-center justify-center gap-1.5 text-slate-400 text-xs mb-1">
+                <Globe className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Cloud Edge</span>
+              </div>
+              <div className="text-sm font-bold text-white">Yemen & GCC Region</div>
             </div>
-            <div className="text-sm font-bold text-white">Yemen & GCC Region</div>
-          </div>
 
-          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
-            <div className="flex items-center justify-center gap-1.5 text-slate-400 text-xs mb-1">
-              <Activity className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Target Uptime</span>
+            <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+              <div className="flex items-center justify-center gap-1.5 text-slate-400 text-xs mb-1">
+                <Activity className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Target Uptime</span>
+              </div>
+              <div className="text-sm font-bold text-emerald-400">99.9% Monitored</div>
             </div>
-            <div className="text-sm font-bold text-emerald-400">99.9% Monitored</div>
-          </div>
 
-          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
-            <div className="flex items-center justify-center gap-1.5 text-slate-400 text-xs mb-1">
-              <Lock className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Encryption</span>
+            <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+              <div className="flex items-center justify-center gap-1.5 text-slate-400 text-xs mb-1">
+                <Lock className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Encryption</span>
+              </div>
+              <div className="text-sm font-bold text-white">TLS 1.3 Strict</div>
             </div>
-            <div className="text-sm font-bold text-white">TLS 1.3 Strict</div>
-          </div>
 
-          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
-            <div className="flex items-center justify-center gap-1.5 text-slate-400 text-xs mb-1">
-              <HardDrive className="w-3.5 h-3.5 text-teal-400" />
-              <span>Backups</span>
+            <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+              <div className="flex items-center justify-center gap-1.5 text-slate-400 text-xs mb-1">
+                <HardDrive className="w-3.5 h-3.5 text-teal-400" />
+                <span>Backups</span>
+              </div>
+              <div className="text-sm font-bold text-teal-300">Daily Encrypted</div>
             </div>
-            <div className="text-sm font-bold text-teal-300">Daily Encrypted</div>
           </div>
-        </div>
+        </Reveal>
 
         {/* 6 Infrastructure Pillars Grid with Real Internet Photos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <RevealGroup stagger={0.04} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {infrastructurePillars.map((pillar, idx) => {
             const Icon = pillar.icon;
             return (
-              <div
+              <RevealCard
                 key={idx}
+                delay={idx * 0.04}
                 className="rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_20px_-4px_rgba(15,23,42,0.06)] hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10 transition-all duration-300 flex flex-col overflow-hidden group text-right rtl:text-right ltr:text-left"
               >
                 {/* Photo Header */}
@@ -247,13 +253,13 @@ export const DeploymentHostingSection = ({ lang }: { lang: Language }) => {
                     <span className="text-[11px] text-slate-400 font-mono">Novixa Ops</span>
                   </div>
                 </div>
-              </div>
+              </RevealCard>
             );
           })}
-        </div>
+        </RevealGroup>
 
         {/* Dedicated Isolated Hosting Architecture Statement Bar */}
-        <div className="rounded-2xl p-6 sm:p-8 border border-slate-200/90 bg-white flex flex-col sm:flex-row items-center justify-between gap-6 text-right rtl:text-right ltr:text-left shadow-md">
+        <RevealCard delay={0.08} className="rounded-2xl p-6 sm:p-8 border border-slate-200/90 bg-white flex flex-col sm:flex-row items-center justify-between gap-6 text-right rtl:text-right ltr:text-left shadow-md">
           <div className="space-y-1.5">
             <div className="text-sm sm:text-base font-bold text-slate-900 font-display flex items-center gap-2">
               <CloudCheck className="w-5 h-5 text-cyan-600" />
@@ -267,14 +273,16 @@ export const DeploymentHostingSection = ({ lang }: { lang: Language }) => {
             </p>
           </div>
 
-          <Link
-            href={`/${language}/contact`}
-            className="shrink-0 inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 border border-[#38BDF8]/40 hover:border-[#38BDF8] text-[#38BDF8] font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl shadow-md transition-all cursor-pointer"
-          >
-            <span className="text-[#38BDF8]">{t('طلب تهيئة خادم واستضافة', 'Request Server & Hosting Setup')}</span>
-            <ArrowIcon className="w-4 h-4 text-[#38BDF8]" />
-          </Link>
-        </div>
+          <HoverLift scale={1.03}>
+            <Link
+              href={`/${language}/contact`}
+              className="shrink-0 inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 border border-[#38BDF8]/40 hover:border-[#38BDF8] text-[#38BDF8] font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl shadow-md transition-all cursor-pointer"
+            >
+              <span className="text-[#38BDF8]">{t('طلب تهيئة خادم واستضافة', 'Request Server & Hosting Setup')}</span>
+              <ArrowIcon className="w-4 h-4 text-[#38BDF8]" />
+            </Link>
+          </HoverLift>
+        </RevealCard>
 
       </div>
     </section>

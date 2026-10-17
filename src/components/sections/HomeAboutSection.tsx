@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { useLanguage } from '../../context/LanguageContext';
 import { Users, Award, Rocket } from 'lucide-react';
 
+import { Reveal, RevealGroup, RevealItem } from '../ui/Reveal';
+
 export const HomeAboutSection: React.FC = () => {
   const { t } = useLanguage();
 
@@ -38,7 +40,7 @@ export const HomeAboutSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
           {/* 1. Text Content Column (In RTL, this renders on the RIGHT) */}
-          <div className="lg:col-span-6 xl:col-span-7 space-y-4 sm:space-y-5 text-right rtl:text-right ltr:text-left">
+          <Reveal direction="start" className="lg:col-span-6 xl:col-span-7 space-y-4 sm:space-y-5 text-right rtl:text-right ltr:text-left">
             {/* Eyebrow */}
             <div className="text-[#35C8F2] text-xs sm:text-sm font-bold font-arabic">
               {t('من نحن', 'About Us')}
@@ -59,12 +61,13 @@ export const HomeAboutSection: React.FC = () => {
 
             {/* Stats Row with 3 Columns separated by thin vertical dividers */}
             <div className="pt-4 sm:pt-6">
-              <div className="grid grid-cols-3 divide-x rtl:divide-x-reverse divide-slate-200/80">
+              <RevealGroup className="grid grid-cols-3 divide-x rtl:divide-x-reverse divide-slate-200/80" stagger={0.08}>
                 {stats.map((stat) => {
                   const Icon = stat.icon;
                   return (
-                    <div
+                    <RevealItem
                       key={stat.id}
+                      hoverLift={true}
                       className="px-2 sm:px-4 py-1 flex items-center justify-start gap-2.5 sm:gap-3 text-right rtl:text-right ltr:text-left"
                     >
                       {/* Icon in subtle blue rounded square */}
@@ -81,15 +84,15 @@ export const HomeAboutSection: React.FC = () => {
                           {t(stat.labelAr, stat.labelEn)}
                         </div>
                       </div>
-                    </div>
+                    </RevealItem>
                   );
                 })}
-              </div>
+              </RevealGroup>
             </div>
-          </div>
+          </Reveal>
 
           {/* 2. Rectangular Workspace Image Column (In RTL, this renders on the LEFT) */}
-          <div className="lg:col-span-6 xl:col-span-5">
+          <Reveal direction="scale" delay={0.1} className="lg:col-span-6 xl:col-span-5">
             <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-lg shadow-slate-900/5 group">
               <div className="relative aspect-[4/3] w-full bg-slate-100">
                 <Image
@@ -102,7 +105,7 @@ export const HomeAboutSection: React.FC = () => {
                 />
               </div>
             </div>
-          </div>
+          </Reveal>
 
         </div>
       </div>

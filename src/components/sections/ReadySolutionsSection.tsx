@@ -26,6 +26,8 @@ import {
   Check,
   Quote,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Reveal, RevealCard, RevealGroup, RevealItem } from '@/components/ui/Reveal';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   UtensilsCrossed,
@@ -288,56 +290,68 @@ export const ReadySolutionsSection = ({ lang: _lang }: { lang?: Language }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12 sm:space-y-16">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
-          <div className="space-y-4 max-w-3xl">
-            <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
-              {t('أنظمة تشغيل مجربة ومكتملة الميزات.', 'Proven software foundations, ready to deploy.')}
-            </h2>
-          </div>
+        <Reveal direction="up">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
+            <div className="space-y-4 max-w-3xl">
+              <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
+                {t('أنظمة تشغيل مجربة ومكتملة الميزات.', 'Proven software foundations, ready to deploy.')}
+              </h2>
+            </div>
 
-          <div className="shrink-0">
-            <Link
-              href={`/${language}/solutions`}
-              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
-            >
-              <span>{t('استكشف كتالوج الحلول بالكامل والباقات', 'Explore All Ready Solutions & Tiers')}</span>
-              <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
-            </Link>
+            <div className="shrink-0">
+              <Link
+                href={`/${language}/solutions`}
+                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group"
+              >
+                <span>{t('استكشف كتالوج الحلول بالكامل والباقات', 'Explore All Ready Solutions & Tiers')}</span>
+                <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 text-blue-600" />
+              </Link>
+            </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* 1. Horizontal Interactive Solution Navigator (Pill Switcher) */}
-        <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none text-right rtl:text-right ltr:text-left">
-          {READY_SOLUTIONS.map((sol) => {
-            const IconCmp = iconMap[sol.iconName] || Zap;
-            const isSelected = sol.id === activeId;
-            return (
-              <button
-                key={sol.id}
-                type="button"
-                onClick={() => setActiveId(sol.id)}
-                className={`shrink-0 flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer border ${
-                  isSelected
-                    ? 'bg-slate-900 border-[#38BDF8] text-white shadow-lg shadow-cyan-950/20 ring-1 ring-[#38BDF8]'
-                    : 'bg-white border-slate-200/90 text-slate-700 hover:border-cyan-300 hover:bg-slate-50'
-                }`}
-              >
-                <IconCmp className={`w-4 h-4 ${isSelected ? 'text-[#38BDF8]' : 'text-slate-500'}`} />
-                <span className={isSelected ? 'text-white' : 'text-slate-800'}>
-                  {t(sol.name.ar, sol.name.en)}
-                </span>
-                <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md ${
-                  isSelected ? 'bg-cyan-950 text-cyan-300 border border-cyan-800' : 'bg-slate-100 text-slate-500'
-                }`}>
-                  {t(sol.deliveryDays.ar, sol.deliveryDays.en)}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+        <Reveal direction="up" delay={0.05}>
+          <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none text-right rtl:text-right ltr:text-left">
+            {READY_SOLUTIONS.map((sol) => {
+              const IconCmp = iconMap[sol.iconName] || Zap;
+              const isSelected = sol.id === activeId;
+              return (
+                <button
+                  key={sol.id}
+                  type="button"
+                  onClick={() => setActiveId(sol.id)}
+                  className={`shrink-0 flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer border ${
+                    isSelected
+                      ? 'bg-slate-900 border-[#38BDF8] text-white shadow-lg shadow-cyan-950/20 ring-1 ring-[#38BDF8]'
+                      : 'bg-white border-slate-200/90 text-slate-700 hover:border-cyan-300 hover:bg-slate-50'
+                  }`}
+                >
+                  <IconCmp className={`w-4 h-4 ${isSelected ? 'text-[#38BDF8]' : 'text-slate-500'}`} />
+                  <span className={isSelected ? 'text-white' : 'text-slate-800'}>
+                    {t(sol.name.ar, sol.name.en)}
+                  </span>
+                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md ${
+                    isSelected ? 'bg-cyan-950 text-cyan-300 border border-cyan-800' : 'bg-slate-100 text-slate-500'
+                  }`}>
+                    {t(sol.deliveryDays.ar, sol.deliveryDays.en)}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </Reveal>
 
         {/* 2. Main Interactive Showcase Stage (The Featured System) */}
-        <div className="rounded-3xl border border-slate-200/90 bg-white shadow-[0_12px_40px_-10px_rgba(15,23,42,0.08)] overflow-hidden text-right rtl:text-right ltr:text-left">
+        <RevealCard delay={0.08} className="rounded-3xl border border-slate-200/90 bg-white shadow-[0_12px_40px_-10px_rgba(15,23,42,0.08)] overflow-hidden text-right rtl:text-right ltr:text-left">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeSolution.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.18 }}
+            >
           
           {/* Header Bar of the Active System */}
           <div className="p-6 sm:p-8 bg-slate-900 text-white border-b border-slate-800 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
@@ -502,10 +516,12 @@ export const ReadySolutionsSection = ({ lang: _lang }: { lang?: Language }) => {
             </div>
 
           </div>
-        </div>
+            </motion.div>
+          </AnimatePresence>
+        </RevealCard>
 
         {/* 3. The Novixa Human Onboarding Protocol (How we deliver in 5-14 days) */}
-        <div className="rounded-3xl p-6 sm:p-8 lg:p-10 bg-slate-900 text-white border border-slate-800 relative overflow-hidden space-y-8 text-right rtl:text-right ltr:text-left">
+        <RevealCard delay={0.06} className="rounded-3xl p-6 sm:p-8 lg:p-10 bg-slate-900 text-white border border-slate-800 relative overflow-hidden space-y-8 text-right rtl:text-right ltr:text-left">
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 text-xs font-mono font-semibold">
               <Laptop className="w-3.5 h-3.5 text-[#38BDF8]" />
@@ -596,71 +612,74 @@ export const ReadySolutionsSection = ({ lang: _lang }: { lang?: Language }) => {
               <ArrowIcon className="w-3.5 h-3.5 text-[#38BDF8] transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
             </Link>
           </div>
-        </div>
+        </RevealCard>
 
         {/* 4. Complete Catalog Quick Cards (Browse all 8 ready foundations) */}
         <div className="space-y-6 text-right rtl:text-right ltr:text-left">
-          <div className="flex items-center justify-between">
-            <h3 className="text-base sm:text-lg font-bold font-display text-slate-900">
-              {t('تصفح بقية الحلول الجاهزة المتاحة للطلب الفوري', 'Explore Other Ready Business Systems')}
-            </h3>
-            <span className="text-xs font-mono text-slate-500">
-              {READY_SOLUTIONS.length} {t('حلول مكتملة', 'Foundations')}
-            </span>
-          </div>
+          <Reveal direction="up">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base sm:text-lg font-bold font-display text-slate-900">
+                {t('تصفح بقية الحلول الجاهزة المتاحة للطلب الفوري', 'Explore Other Ready Business Systems')}
+              </h3>
+              <span className="text-xs font-mono text-slate-500">
+                {READY_SOLUTIONS.length} {t('حلول مكتملة', 'Foundations')}
+              </span>
+            </div>
+          </Reveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <RevealGroup stagger={0.03} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {READY_SOLUTIONS.map((sol) => {
               const IconCmp = iconMap[sol.iconName] || Zap;
               const isCurrent = sol.id === activeId;
               return (
-                <div
-                  key={sol.id}
-                  onClick={() => setActiveId(sol.id)}
-                  className={`p-5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between gap-4 ${
-                    isCurrent
-                      ? 'bg-slate-900 border-[#38BDF8] text-white shadow-xl shadow-cyan-950/20 ring-1 ring-[#38BDF8]'
-                      : 'bg-white border-slate-200/90 text-slate-800 hover:border-cyan-300 hover:shadow-md'
-                  }`}
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
-                        isCurrent ? 'bg-cyan-950 border border-cyan-800 text-[#38BDF8]' : 'bg-slate-100 text-slate-700'
-                      }`}>
-                        <IconCmp className="w-4 h-4" />
+                <RevealItem key={sol.id} hoverLift={true}>
+                  <div
+                    onClick={() => setActiveId(sol.id)}
+                    className={`w-full h-full p-5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between gap-4 ${
+                      isCurrent
+                        ? 'bg-slate-900 border-[#38BDF8] text-white shadow-xl shadow-cyan-950/20 ring-1 ring-[#38BDF8]'
+                        : 'bg-white border-slate-200/90 text-slate-800 hover:border-cyan-300 hover:shadow-md'
+                    }`}
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                          isCurrent ? 'bg-cyan-950 border border-cyan-800 text-[#38BDF8]' : 'bg-slate-100 text-slate-700'
+                        }`}>
+                          <IconCmp className="w-4 h-4" />
+                        </div>
+                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md font-semibold ${
+                          isCurrent ? 'bg-cyan-950 text-cyan-300 border border-cyan-800' : 'bg-slate-100 text-slate-600'
+                        }`}>
+                          {t(sol.deliveryDays.ar, sol.deliveryDays.en)}
+                        </span>
                       </div>
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md font-semibold ${
-                        isCurrent ? 'bg-cyan-950 text-cyan-300 border border-cyan-800' : 'bg-slate-100 text-slate-600'
-                      }`}>
-                        {t(sol.deliveryDays.ar, sol.deliveryDays.en)}
-                      </span>
+
+                      <div>
+                        <h4 className={`text-sm font-bold font-display line-clamp-1 ${
+                          isCurrent ? 'text-white' : 'text-slate-900'
+                        }`}>
+                          {t(sol.name.ar, sol.name.en)}
+                        </h4>
+                        <p className={`text-xs mt-1 font-arabic line-clamp-2 ${
+                          isCurrent ? 'text-slate-300' : 'text-slate-500'
+                        }`}>
+                          {t(sol.tagline.ar, sol.tagline.en)}
+                        </p>
+                      </div>
                     </div>
 
-                    <div>
-                      <h4 className={`text-sm font-bold font-display line-clamp-1 ${
-                        isCurrent ? 'text-white' : 'text-slate-900'
-                      }`}>
-                        {t(sol.name.ar, sol.name.en)}
-                      </h4>
-                      <p className={`text-xs mt-1 font-arabic line-clamp-2 ${
-                        isCurrent ? 'text-slate-300' : 'text-slate-500'
-                      }`}>
-                        {t(sol.tagline.ar, sol.tagline.en)}
-                      </p>
+                    <div className={`pt-3 border-t flex items-center justify-between text-xs font-semibold ${
+                      isCurrent ? 'border-slate-800 text-[#38BDF8]' : 'border-slate-100 text-cyan-700'
+                    }`}>
+                      <span>{isCurrent ? t('معروض حالياً في المنصة ↑', 'Currently Active ↑') : t('معاينة النظام والواقع', 'Inspect Solution')}</span>
+                      <ArrowIcon className={`w-3.5 h-3.5 ${isCurrent ? 'text-[#38BDF8]' : 'text-cyan-700'}`} />
                     </div>
                   </div>
-
-                  <div className={`pt-3 border-t flex items-center justify-between text-xs font-semibold ${
-                    isCurrent ? 'border-slate-800 text-[#38BDF8]' : 'border-slate-100 text-cyan-700'
-                  }`}>
-                    <span>{isCurrent ? t('معروض حالياً في المنصة ↑', 'Currently Active ↑') : t('معاينة النظام والواقع', 'Inspect Solution')}</span>
-                    <ArrowIcon className={`w-3.5 h-3.5 ${isCurrent ? 'text-[#38BDF8]' : 'text-cyan-700'}`} />
-                  </div>
-                </div>
+                </RevealItem>
               );
             })}
-          </div>
+          </RevealGroup>
         </div>
 
       </div>
