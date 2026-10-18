@@ -1,15 +1,6 @@
 import type { NextConfig } from 'next';
-import path from 'path';
 
 const nextConfig: NextConfig = {
-  webpack: (config) => {
-    config.resolve = config.resolve || {};
-    config.resolve.alias = {
-      ...(config.resolve.alias || {}),
-      'lucide-react': path.resolve(__dirname, 'src/components/ui/fontawesome-adapter.tsx'),
-    };
-    return config;
-  },
   distDir: 'dist',
   /**
    * Container builds emit a standalone server; Vercel and local builds do not.

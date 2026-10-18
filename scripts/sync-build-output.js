@@ -51,6 +51,22 @@ function syncOutput() {
     }
   }
 
+  // Ensure vendor-chunks is mirrored in server/chunks for webpack runtime compatibility
+  for (const base of [distDir, nextDir]) {
+    const vc = path.join(base, 'server', 'vendor-chunks');
+    const chunksDir = path.join(base, 'server', 'chunks');
+    const chunksVc = path.join(chunksDir, 'vendor-chunks');
+    if (fs.existsSync(vc) && fs.existsSync(chunksDir) && !fs.existsSync(chunksVc)) {
+      try {
+        fs.symlinkSync('../vendor-chunks', chunksVc, 'junction');
+      } catch (_) {
+        try {
+          fs.cpSync(vc, chunksVc, { recursive: true });
+        } catch (__) {}
+      }
+    }
+  }
+
   console.log('[sync-build-output] Verified build outputs are present.');
 }
 
