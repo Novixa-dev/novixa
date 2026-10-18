@@ -144,9 +144,9 @@ export const DeploymentHostingSection = ({ lang }: { lang: Language }) => {
             <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
               <div className="flex items-center justify-center gap-1.5 text-slate-400 text-xs mb-1">
                 <Activity className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Target Uptime</span>
+                <span>Monitoring</span>
               </div>
-              <div className="text-sm font-bold text-emerald-400">99.9% Monitored</div>
+              <div className="text-sm font-bold text-emerald-400">Continuous 24/7</div>
             </div>
 
             <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800">
