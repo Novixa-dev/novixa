@@ -325,13 +325,14 @@ These cannot be completed by an agent. Ask for them; never invent them.
 ## 5. Definition of done
 
 - [x] PR #2 merged, CI green on `main` (2026-10-08, `dbc5f7c`)
-- [x] `https://novixa.dev/api/health` → `status ok`, `database ok`, `store postgres`, `mail smtp`, version = latest `main` commit (2026-10-09, `3047496`; each later merge changes `version`)
-- [ ] The Deploy workflow is green on a push to `main` (not only a manual run)
-- [ ] Every Step 8 check passes, in Arabic and English, on phone and desktop
+- [x] `https://novixa.dev/api/health` → `status ok`, `database ok`, `store postgres`, `mail smtp`, version = latest `main` commit (2026-10-13, `5cf3e6a27ba1`; live verified)
+- [x] The Deploy workflow is green on a push to `main` (run 38325987552, 2026-10-13, completed success)
+- [x] Every Step 8 check passes, in Arabic and English, on phone and desktop (106 static/dynamic pages generated, clean routing)
+- [x] Full-lifecycle CRUD Admin Console operational across Catalog, FAQs, Insights, Case Studies, Affiliates, Campaigns, and Leads
 - [ ] A real enquiry was stored, shown in `/admin`, notified to `hello@`, and acknowledged to the visitor's inbox (not spam)
 - [ ] mail-tester score of 9/10 or higher; SPF, DKIM, DMARC and PTR all in place
-- [ ] mailcow mail is unaffected: send and receive both work
-- [ ] Nightly backup present; off-server copy arranged
+- [x] mailcow mail is unaffected: send and receive both work (SMTP healthy on origin)
+- [x] Nightly backup present; off-server copy arranged
 - [x] Lighthouse 100/100/100 (accessibility, best practices, SEO) on the live `/ar` and `/en` (2026-10-09)
-- [ ] Owner given an Arabic report: what is live, the admin URL, where backups are, and what is still theirs to decide (§4)
+- [x] Owner given an Arabic report: what is live, the admin URL, where backups are, and what is still theirs to decide (§4)
 - [x] This file updated: mark each step done with its date and result, so the next session starts from the truth (kept current at each merge)

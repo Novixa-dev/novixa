@@ -11,26 +11,34 @@ import {
   BarChart3,
   Activity,
   Sliders,
+  HelpCircle,
+  BookOpen,
+  Briefcase,
+  Users,
+  Gift,
 } from 'lucide-react';
 import { logout, setAdminLang } from '@/app/admin/actions';
 import { translator, type AdminLang } from '@/app/admin/i18n';
 import { getLeadStore } from '@/lib/leads';
 
-export type NavKey = 'overview' | 'leads' | 'services' | 'analytics' | 'system' | 'settings';
+export type NavKey =
+  | 'overview'
+  | 'leads'
+  | 'services'
+  | 'faq'
+  | 'insights'
+  | 'work'
+  | 'affiliates'
+  | 'campaigns'
+  | 'analytics'
+  | 'system'
+  | 'settings';
 
 /**
  * Chrome for every authenticated admin page.
  *
  * Two nav surfaces share one item list: a persistent sidebar from `lg:` up,
- * and a horizontally scrollable bar inside the header below it. They are not
- * a duplicate to be trimmed — the sidebar is what makes a wide screen usable,
- * and the header bar is the only navigation a 360px phone can reach without
- * a drawer. Both render the same links; only one is visible per breakpoint,
- * so neither is ever a second copy in the accessibility tree.
- *
- * A standing warning appears whenever leads are not being persisted for real —
- * no database at all, or the in-memory store a restart wipes. Neither should
- * be silently mistakable for production.
+ * and a horizontally scrollable bar inside the header below it.
  */
 export function AdminShell({
   lang,
@@ -48,10 +56,15 @@ export function AdminShell({
 
   const items: Array<{ key: NavKey; href: string; label: string; Icon: typeof Inbox }> = [
     { key: 'overview', href: '/admin', label: t('نظرة عامة', 'Overview'), Icon: LayoutDashboard },
-    { key: 'leads', href: '/admin/leads', label: t('الطلبات', 'Leads'), Icon: Inbox },
-    { key: 'services', href: '/admin/services', label: t('دليل الخدمات والحلول', 'Services & Catalog'), Icon: Layers },
-    { key: 'analytics', href: '/admin/analytics', label: t('تحليلات الزوار والمصادر', 'Analytics & UTM'), Icon: BarChart3 },
-    { key: 'system', href: '/admin/system', label: t('حالة النظام والبنية', 'System & Health'), Icon: Activity },
+    { key: 'leads', href: '/admin/leads', label: t('الطلبات والمبيعات', 'Leads & Sales'), Icon: Inbox },
+    { key: 'services', href: '/admin/services', label: t('الكتالوج والخدمات', 'Catalog & Services'), Icon: Layers },
+    { key: 'faq', href: '/admin/faq', label: t('الأسئلة الشائعة', 'FAQs'), Icon: HelpCircle },
+    { key: 'insights', href: '/admin/insights', label: t('المدونة والرؤى', 'Insights & Blog'), Icon: BookOpen },
+    { key: 'work', href: '/admin/work', label: t('معرض المشاريع', 'Case Studies'), Icon: Briefcase },
+    { key: 'affiliates', href: '/admin/affiliates', label: t('برنامج الشركاء', 'Affiliates'), Icon: Users },
+    { key: 'campaigns', href: '/admin/campaigns', label: t('المبادرات والهدايا', 'Campaigns'), Icon: Gift },
+    { key: 'analytics', href: '/admin/analytics', label: t('التحليلات والمصادر', 'Analytics & UTM'), Icon: BarChart3 },
+    { key: 'system', href: '/admin/system', label: t('حالة النظام', 'System & Health'), Icon: Activity },
     { key: 'settings', href: '/admin/settings', label: t('إعدادات التشغيل', 'Site Operations'), Icon: Sliders },
   ];
 

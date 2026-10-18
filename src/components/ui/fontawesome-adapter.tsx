@@ -110,6 +110,12 @@ import {
   FaXmark,
   FaCircleXmark,
   FaBolt,
+  FaWandMagicSparkles,
+  FaGift,
+  FaUserPlus,
+  FaPercent,
+  FaPenToSquare,
+  FaDollarSign,
 } from 'react-icons/fa6';
 
 export interface LucideProps extends React.SVGProps<SVGSVGElement> {
@@ -260,3 +266,10 @@ export const Wrench = createFaIcon(FaWrench);
 export const X = createFaIcon(FaXmark);
 export const XCircle = createFaIcon(FaCircleXmark);
 export const Zap = createFaIcon(FaBolt);
+export const Handshake = createFaIcon(FaHandshake);
+export const Sparkles = createFaIcon(FaWandMagicSparkles);
+export const Gift = createFaIcon(FaGift);
+export const UserPlus = createFaIcon(FaUserPlus);
+export const Percent = createFaIcon(FaPercent);
+export const Edit2 = createFaIcon(FaPenToSquare);
+export const DollarSign = createFaIcon(FaDollarSign);

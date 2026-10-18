@@ -140,6 +140,14 @@ export class MemoryLeadStore implements LeadStore {
     return updated;
   }
 
+  async updateDetails(id: string, details: Partial<LeadInput>): Promise<Lead | null> {
+    const updated = this.update(id, details as Partial<Lead>);
+    if (updated) {
+      await this.logActivity(id, 'Admin', 'details_updated', 'Lead contact and project details updated');
+    }
+    return updated;
+  }
+
   async logActivity(leadId: string, author: string, action: string, details?: string): Promise<LeadActivity> {
     const activity: LeadActivity = {
       id: randomUUID(),

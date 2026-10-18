@@ -9,9 +9,17 @@ import {
   TrendingUp,
   Trophy,
   Calendar,
+  Layers,
+  HelpCircle,
+  BookOpen,
+  Briefcase,
+  Handshake,
+  HeartHandshake,
+  ArrowUpRight,
 } from 'lucide-react';
 import { requireAdmin } from '@/lib/auth/admin';
 import { getLeadStore, LEAD_PRIORITIES, LEAD_SOURCES, LEAD_STATUSES } from '@/lib/leads';
+import { getContentStore } from '@/lib/content-store';
 import { getMailer } from '@/lib/mail';
 import { AdminShell } from '@/components/admin/AdminShell';
 import { BarList, DailyChart, KpiTile } from '@/components/admin/charts';
@@ -31,9 +39,21 @@ export default async function AdminOverviewPage() {
   const lang = await getAdminLang();
   const t = translator(lang);
   const store = getLeadStore();
-  const [stats, recent, health] = store
-    ? await Promise.all([store.stats(), store.list({ limit: 6, offset: 0 }), store.health()])
-    : [null, null, { ok: false, detail: t('غير مضبوطة', 'not configured') }];
+  const contentStore = getContentStore();
+
+  const [stats, recent, health, catalogItems, faqs, insights, caseStudies, partners, campaigns] =
+    await Promise.all([
+      store ? store.stats() : Promise.resolve(null),
+      store ? store.list({ limit: 6, offset: 0 }) : Promise.resolve(null),
+      store ? store.health() : Promise.resolve({ ok: false, detail: t('غير مضبوطة', 'not configured') }),
+      contentStore.listCatalog(),
+      contentStore.listFaqs(),
+      contentStore.listInsights(),
+      contentStore.listCaseStudies(),
+      contentStore.listPartners(),
+      contentStore.listCampaigns(),
+    ]);
+
   const mailer = getMailer();
   const build = process.env.NEXT_PUBLIC_BUILD_SHA || process.env.BUILD_SHA || '';
 
@@ -103,6 +123,116 @@ export default async function AdminOverviewPage() {
               }))}
             />
           </div>
+
+          <section className="glass-card rounded-2xl border border-white/[0.08] p-5">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <div>
+                <h2 className="font-display text-sm font-bold text-white leading-snug">
+                  {t('مركز إدارة العمليات والمحتوى', 'Operations & Content Command Hub')}
+                </h2>
+                <p className="mt-0.5 text-xs text-slate-400">
+                  {t('إدارة شاملة لكتالوج المنتجات والخدمات والمحتوى والشركاء', 'Complete management for products, services, content & partners')}
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+              <Link
+                href="/admin/services"
+                className="group flex flex-col justify-between rounded-xl border border-white/[0.05] bg-white/[0.02] p-3 transition hover:border-blue-500/30 hover:bg-blue-500/[0.04]"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20">
+                    <Layers className="h-4 w-4" />
+                  </div>
+                  <ArrowUpRight className="h-3.5 w-3.5 text-slate-500 transition group-hover:text-blue-300 rtl:rotate-90" />
+                </div>
+                <div className="mt-3">
+                  <span className="text-lg font-bold text-white tabular-nums">{catalogItems.length}</span>
+                  <div className="text-xs text-slate-400">{t('الخدمات والمنتجات', 'Catalog')}</div>
+                </div>
+              </Link>
+
+              <Link
+                href="/admin/work"
+                className="group flex flex-col justify-between rounded-xl border border-white/[0.05] bg-white/[0.02] p-3 transition hover:border-teal-500/30 hover:bg-teal-500/[0.04]"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-400 group-hover:bg-teal-500/20">
+                    <Briefcase className="h-4 w-4" />
+                  </div>
+                  <ArrowUpRight className="h-3.5 w-3.5 text-slate-500 transition group-hover:text-teal-300 rtl:rotate-90" />
+                </div>
+                <div className="mt-3">
+                  <span className="text-lg font-bold text-white tabular-nums">{caseStudies.length}</span>
+                  <div className="text-xs text-slate-400">{t('دراسات الحالة', 'Case Studies')}</div>
+                </div>
+              </Link>
+
+              <Link
+                href="/admin/insights"
+                className="group flex flex-col justify-between rounded-xl border border-white/[0.05] bg-white/[0.02] p-3 transition hover:border-blue-500/30 hover:bg-blue-500/[0.04]"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20">
+                    <BookOpen className="h-4 w-4" />
+                  </div>
+                  <ArrowUpRight className="h-3.5 w-3.5 text-slate-500 transition group-hover:text-blue-300 rtl:rotate-90" />
+                </div>
+                <div className="mt-3">
+                  <span className="text-lg font-bold text-white tabular-nums">{insights.length}</span>
+                  <div className="text-xs text-slate-400">{t('الرؤى الهندسية', 'Insights')}</div>
+                </div>
+              </Link>
+
+              <Link
+                href="/admin/faq"
+                className="group flex flex-col justify-between rounded-xl border border-white/[0.05] bg-white/[0.02] p-3 transition hover:border-teal-500/30 hover:bg-teal-500/[0.04]"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-400 group-hover:bg-teal-500/20">
+                    <HelpCircle className="h-4 w-4" />
+                  </div>
+                  <ArrowUpRight className="h-3.5 w-3.5 text-slate-500 transition group-hover:text-teal-300 rtl:rotate-90" />
+                </div>
+                <div className="mt-3">
+                  <span className="text-lg font-bold text-white tabular-nums">{faqs.length}</span>
+                  <div className="text-xs text-slate-400">{t('الأسئلة الشائعة', 'FAQs')}</div>
+                </div>
+              </Link>
+
+              <Link
+                href="/admin/affiliates"
+                className="group flex flex-col justify-between rounded-xl border border-white/[0.05] bg-white/[0.02] p-3 transition hover:border-blue-500/30 hover:bg-blue-500/[0.04]"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20">
+                    <Handshake className="h-4 w-4" />
+                  </div>
+                  <ArrowUpRight className="h-3.5 w-3.5 text-slate-500 transition group-hover:text-blue-300 rtl:rotate-90" />
+                </div>
+                <div className="mt-3">
+                  <span className="text-lg font-bold text-white tabular-nums">{partners.length}</span>
+                  <div className="text-xs text-slate-400">{t('الوسطاء والشركاء', 'Affiliates')}</div>
+                </div>
+              </Link>
+
+              <Link
+                href="/admin/campaigns"
+                className="group flex flex-col justify-between rounded-xl border border-white/[0.05] bg-white/[0.02] p-3 transition hover:border-teal-500/30 hover:bg-teal-500/[0.04]"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-400 group-hover:bg-teal-500/20">
+                    <HeartHandshake className="h-4 w-4" />
+                  </div>
+                  <ArrowUpRight className="h-3.5 w-3.5 text-slate-500 transition group-hover:text-teal-300 rtl:rotate-90" />
+                </div>
+                <div className="mt-3">
+                  <span className="text-lg font-bold text-white tabular-nums">{campaigns.length}</span>
+                  <div className="text-xs text-slate-400">{t('مبادرات العطاء', 'Initiatives')}</div>
+                </div>
+              </Link>
+            </div>
+          </section>
 
           <section className="glass-card rounded-2xl border border-white/[0.08] p-5">
             <div className="mb-4 flex items-center justify-between gap-3">

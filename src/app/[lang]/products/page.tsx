@@ -10,10 +10,10 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const isAr = lang === 'ar';
 
   return constructMetadata({
-    title: isAr ? 'كتالوج المنتجات البرمجية الرقمية' : 'Digital Product Catalog (SaaS)',
+    title: isAr ? 'كتالوج المنتجات والمنصات البرمجية' : 'Digital Software Products & Platforms',
     description: isAr
-      ? 'اكتشف منصات نوڤيكسا الرقمية: Novixa Pulse لنبض التشغيل وتحليل الأداء، Novixa Restaurant لكيو آر نقاط البيع والمطبخ، وNovixa Booking.'
-      : 'Explore Novixa SaaS products: Novixa Pulse for operational analytics, Novixa Restaurant POS/KDS, and Novixa Booking Engine.',
+      ? 'استكشف منصات نوڤيكسا البرمجية: منصة إدارة العقارات Novixa Aqar، منصة إدارة البطولات الرياضية مهاجم Muhajim، أنظمة نقاط البيع للمطاعم، وأنظمة الحجز والجدولة.'
+      : 'Explore Novixa digital products: Novixa Aqar PropTech engine, Muhajim sports platform, restaurant POS/KDS, booking & scheduling hubs, and operational intelligence.',
     lang,
     path: 'products',
   });

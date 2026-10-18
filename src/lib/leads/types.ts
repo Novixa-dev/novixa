@@ -12,8 +12,9 @@
 export const LEAD_STATUSES = ['new', 'contacted', 'qualified', 'proposal', 'won', 'lost', 'spam'] as const;
 export type LeadStatus = (typeof LEAD_STATUSES)[number];
 
-export const LEAD_SOURCES = ['contact', 'start-project'] as const;
+export const LEAD_SOURCES = ['contact', 'start-project', 'manual'] as const;
 export type LeadSource = (typeof LEAD_SOURCES)[number];
+
 
 export const LEAD_PRIORITIES = ['urgent', 'high', 'medium', 'low'] as const;
 export type LeadPriority = (typeof LEAD_PRIORITIES)[number];
@@ -119,6 +120,7 @@ export interface LeadStore {
   updateAssignee(id: string, assignee: string | null): Promise<Lead | null>;
   updateTags(id: string, tags: string[]): Promise<Lead | null>;
   updateNotes(id: string, notes: string): Promise<Lead | null>;
+  updateDetails(id: string, details: Partial<LeadInput>): Promise<Lead | null>;
   logActivity(leadId: string, author: string, action: string, details?: string): Promise<LeadActivity>;
   getActivities(leadId: string): Promise<LeadActivity[]>;
   markDelivered(id: string, delivered: boolean): Promise<void>;

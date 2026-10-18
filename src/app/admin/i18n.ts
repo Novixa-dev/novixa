@@ -40,6 +40,7 @@ export const PRIORITY_LABELS: Record<LeadPriority, { ar: string; en: string }> =
 export const SOURCE_LABELS: Record<LeadSource, { ar: string; en: string }> = {
   contact: { ar: 'نموذج التواصل', en: 'Contact form' },
   'start-project': { ar: 'ابدأ مشروعك', en: 'Start a project' },
+  manual: { ar: 'تسجيل يدوي', en: 'Manual Entry' },
 };
 
 export function formatDateTime(date: Date, lang: AdminLang): string {
