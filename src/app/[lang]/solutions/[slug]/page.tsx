@@ -13,7 +13,6 @@ import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
-  Clock,
   Star,
   Users,
 } from 'lucide-react';
@@ -127,15 +126,6 @@ export default async function SolutionDetailPage({
                 <Icon className="w-5 h-5" />
               </div>
               <div className="space-y-2 min-w-0">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-semibold">
-                    {solution.category[locale]}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-mono font-semibold">
-                    <Clock className="w-3 h-3 text-cyan-600" />
-                    {solution.deliveryTimelineBadge[locale]}
-                  </span>
-                </div>
                 <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
                   {solution.name[locale]}
                 </h1>

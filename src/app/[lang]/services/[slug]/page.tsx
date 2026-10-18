@@ -122,9 +122,6 @@ export default async function ServiceDetailPage({
                 <Icon className="w-5 h-5" />
               </div>
               <div className="space-y-2 min-w-0">
-                <span className="inline-block px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-semibold">
-                  {service.categoryBadge[locale]}
-                </span>
                 <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
                   {service.title[locale]}
                 </h1>

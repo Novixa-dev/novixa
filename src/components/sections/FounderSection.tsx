@@ -2,7 +2,7 @@ import React from 'react';
 import { createTranslator } from '@/lib/i18n';
 import type { Language } from '@/types';
 import { FOUNDER_INFO } from '../../content/data';
-import { Quote, Terminal } from 'lucide-react';
+import { Quote } from 'lucide-react';
 
 export const FounderSection = ({ lang }: { lang: Language }) => {
   const { t } = createTranslator(lang);
@@ -15,10 +15,6 @@ export const FounderSection = ({ lang }: { lang: Language }) => {
           
           {/* Founder Quote & Philosophy */}
           <div className="lg:col-span-8 space-y-5 text-right rtl:text-right ltr:text-left">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-semibold shadow-sm">
-              <Terminal className="w-3.5 h-3.5 text-cyan-600" />
-              <span>{t('رؤية نوڤيكسا الهندسية', 'Novixa Engineering Mandate')}</span>
-            </div>
 
             <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
               {t('وراء نوڤيكسا فكرة هندسية واضحة.', 'Behind Novixa is a clear engineering mandate.')}

@@ -87,9 +87,6 @@ export const AdrSnippetCard: React.FC<AdrSnippetCardProps> = ({ slug, isAr }) =>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-800/80 text-emerald-400 text-[10px] font-mono">
-            {adr.status}
-          </span>
           <button
             onClick={handleCopy}
             className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 hover:text-white transition-colors cursor-pointer"

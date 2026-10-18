@@ -14,9 +14,6 @@ export const IndustriesView = ({ lang }: { lang: Language }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 mb-12">
         <div className="space-y-4 text-right rtl:text-right ltr:text-left max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
-            <span>{t('تخصصات القطاعات التجارية', 'Vertical Industry Solutions')}</span>
-          </div>
           <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {t('خبرة هندسية موجهة لقطاعك بالتحديد.', 'Domain-Specific Engineering Built for Your Industry.')}
           </h1>

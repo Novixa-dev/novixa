@@ -5,65 +5,15 @@ import { createTranslator } from '@/lib/i18n';
 import type { Language } from '@/types';
 import { PRODUCTS } from '../../content/data';
 import {
-  Activity,
-  UtensilsCrossed,
-  Calendar,
-  Gamepad2,
-  Layers,
-  Building2,
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
-  Terminal,
 } from 'lucide-react';
 import { Reveal, RevealCard, HoverLift } from '@/components/ui/Reveal';
-
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Activity,
-  UtensilsCrossed,
-  Calendar,
-  Gamepad2,
-  Building2,
-  Layers,
-};
-
-const productVisualBadges: Record<string, { ar: string; en: string }> = {
-  aqar: {
-    ar: 'منظومة إدارة الأصول والاستثمار العقاري',
-    en: 'PropTech & Real Estate Operations',
-  },
-  restaurant: {
-    ar: 'تشغيل المطاعم ونقاط البيع السحابية KDS',
-    en: 'Cloud POS & Kitchen Display System',
-  },
-  booking: {
-    ar: 'محرك الجدولة والدفع وتأكيد المواعيد',
-    en: 'Automated Booking & Deposit Engine',
-  },
-  pulse: {
-    ar: 'تحليلات نبض المؤسسة ومؤشرات الأداء B2B',
-    en: 'Enterprise Sentiment & KPI Intelligence',
-  },
-};
 
 export const ProductsSection = ({ lang }: { lang: Language }) => {
   const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
-
-  const getStatusBadgeClass = (status: string) => {
-    switch (status) {
-      case 'LIVE':
-      case 'Available':
-        return 'bg-emerald-50 border-emerald-200 text-emerald-800 font-semibold';
-      case 'DEMO':
-      case 'Early Access':
-        return 'bg-cyan-50 border-cyan-200 text-cyan-800 font-semibold';
-      case 'IN DEVELOPMENT':
-        return 'bg-amber-50 border-amber-200 text-amber-800 font-semibold';
-      default:
-        return 'bg-slate-100 border-slate-200 text-slate-700';
-    }
-  };
 
   return (
     <section className="py-20 lg:py-28 bg-[#F8FAFC] relative overflow-hidden border-t border-slate-200/80">
@@ -95,7 +45,6 @@ export const ProductsSection = ({ lang }: { lang: Language }) => {
         {/* Alternating Products Showcase List ("صور وبجنبها كتابه وتعكس") */}
         <div className="space-y-12">
           {PRODUCTS.map((prod, idx) => {
-            const IconComp = iconMap[prod.iconName] || Layers;
             const isEven = idx % 2 === 0;
             return (
               <RevealCard
@@ -108,17 +57,6 @@ export const ProductsSection = ({ lang }: { lang: Language }) => {
                   {/* Text / Info Column */}
                   <div className={`lg:col-span-6 xl:col-span-5 space-y-6 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                     
-                    {/* Header badge & status */}
-                    <div className="flex items-center justify-between flex-wrap gap-3">
-                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-semibold">
-                        <IconComp className="w-4 h-4 text-cyan-600" />
-                        <span>{prod.category[isRtl ? 'ar' : 'en']}</span>
-                      </div>
-                      
-                      <span className={`px-3 py-1 rounded-full text-[11px] font-mono border ${getStatusBadgeClass(prod.status)}`}>
-                        {prod.statusLabel[isRtl ? 'ar' : 'en']}
-                      </span>
-                    </div>
 
                     {/* Product Name & Title */}
                     <div className="space-y-2">
@@ -164,12 +102,8 @@ export const ProductsSection = ({ lang }: { lang: Language }) => {
                       </div>
                     )}
 
-                    {/* Bottom CTA & Subtitle */}
-                    <div className="pt-2 flex flex-wrap items-center justify-between gap-4">
-                      <span className="text-xs text-slate-500 font-mono flex items-center gap-1.5 font-medium">
-                        <Terminal className="w-3.5 h-3.5 text-cyan-600" />
-                        <span>{prod.id === 'aqar' ? 'PropTech OS' : prod.id === 'pulse' ? 'Enterprise SaaS' : 'Business Platform'}</span>
-                      </span>
+                    {/* Bottom CTA */}
+                    <div className="pt-2 flex flex-wrap items-center justify-end">
 
                       <HoverLift scale={1.03}>
                         <Link
@@ -198,18 +132,7 @@ export const ProductsSection = ({ lang }: { lang: Language }) => {
                       {/* Subtle Vignette Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent pointer-events-none" />
 
-                      {/* Floating Category Tag */}
-                      <div className="absolute bottom-4 start-4 end-4 flex items-center justify-between gap-3 pointer-events-none">
-                        <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/85 backdrop-blur-md border border-cyan-500/30 text-cyan-300 text-xs font-mono font-semibold shadow-lg">
-                          <IconComp className="w-3.5 h-3.5 text-cyan-400" />
-                          <span>{productVisualBadges[prod.id]?.[isRtl ? 'ar' : 'en'] || prod.category[isRtl ? 'ar' : 'en']}</span>
-                        </span>
 
-                        <span className="hidden sm:inline-flex items-center text-[11px] font-mono text-emerald-300 bg-emerald-950/90 border border-emerald-800/80 px-2.5 py-1 rounded-lg backdrop-blur-sm shadow-md">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse me-1.5" />
-                          {prod.statusLabel[isRtl ? 'ar' : 'en']}
-                        </span>
-                      </div>
                     </div>
                   </div>
 

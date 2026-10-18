@@ -80,15 +80,6 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ lan
         {/* Article/Detail Card */}
         <div className="rounded-2xl sm:rounded-3xl p-8 sm:p-12 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] space-y-8">
           <div className="space-y-4 border-b border-slate-100 pb-6">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-xs font-mono bg-cyan-50 text-cyan-800 border border-cyan-200 font-semibold">
-                {workItem.industry[isAr ? 'ar' : 'en']}
-              </span>
-              <span className="px-2.5 py-0.5 rounded text-xs font-mono bg-slate-100 text-slate-700 border border-slate-200 font-semibold">
-                {workItem.caseStudyTypeLabel[isAr ? 'ar' : 'en']}
-              </span>
-            </div>
-
             <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
               {workItem.title[isAr ? 'ar' : 'en']}
             </h1>

@@ -116,17 +116,6 @@ export const DeploymentHostingSection = ({ lang }: { lang: Language }) => {
 
         {/* Cloud Operations Architectural Topology Showcase Image */}
         <RevealCard delay={0.06} className="rounded-3xl p-3 sm:p-5 bg-slate-950 border border-slate-800 shadow-2xl relative group overflow-hidden">
-          <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800/80 px-2 flex-wrap gap-2 text-xs font-mono">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-slate-300 font-bold">{t('مخطط المعمارية السحابية والتشغيل المدار • Novixa Cloud Ops', 'Cloud Architecture & Managed Operations Cockpit')}</span>
-            </div>
-            <div className="flex items-center gap-2 text-slate-400">
-              <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-cyan-300">Anycast Edge</span>
-              <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-emerald-400">PostgreSQL HA</span>
-              <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300">Isolated VPC</span>
-            </div>
-          </div>
           <div className="relative rounded-2xl overflow-hidden border border-slate-800 bg-[#060D1A] group aspect-[16/9] sm:aspect-[21/9]">
             <Image
               src="/images/infrastructure/cloud-datacenter-corridor.jpg"
@@ -138,19 +127,6 @@ export const DeploymentHostingSection = ({ lang }: { lang: Language }) => {
             />
             {/* Dark vignette overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent pointer-events-none" />
-
-            {/* Floating Live Telemetry Badges */}
-            <div className="absolute bottom-4 start-4 end-4 z-20 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2 bg-slate-950/90 backdrop-blur-md border border-cyan-500/40 px-3.5 py-1.5 rounded-xl shadow-lg text-xs font-mono text-cyan-300">
-                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-                <span>{t('مراكز بيانات سحابية متقدمة • عزل كامل للموارد 100%', 'Tier-IV Cloud Facility • 100% Resource Isolation')}</span>
-              </div>
-              <div className="hidden sm:flex items-center gap-2 bg-slate-950/90 backdrop-blur-md border border-slate-700 px-3.5 py-1.5 rounded-xl shadow-lg text-xs font-mono text-emerald-400">
-                <span>Anycast Edge Routing</span>
-                <span className="text-slate-400">•</span>
-                <span>&lt; 25ms Latency</span>
-              </div>
-            </div>
           </div>
         </RevealCard>
 
@@ -220,17 +196,6 @@ export const DeploymentHostingSection = ({ lang }: { lang: Language }) => {
                   {/* Technical Badge */}
                   <div className="absolute top-3.5 end-3.5 z-10 px-2.5 py-1 rounded-lg bg-slate-950/80 backdrop-blur-md border border-slate-700/80 text-[11px] font-mono font-medium text-slate-300">
                     {pillar[isRtl ? 'tagAr' : 'tagEn']}
-                  </div>
-
-                  {/* Floating Status Indicator on Image bottom */}
-                  <div className="absolute bottom-3 start-3.5 end-3.5 z-10 flex items-center justify-between text-[11px] font-mono text-emerald-300">
-                    <span className="flex items-center gap-1.5 bg-slate-950/80 backdrop-blur-sm px-2 py-0.5 rounded border border-emerald-500/30">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      {t('بيئة سحابية معزولة', 'Isolated Cloud VPC')}
-                    </span>
-                    <span className="text-slate-300 font-mono text-[10px] bg-slate-900/70 px-2 py-0.5 rounded border border-slate-800">
-                      {t('مؤمنة 100%', '100% Secured')}
-                    </span>
                   </div>
                 </div>
 

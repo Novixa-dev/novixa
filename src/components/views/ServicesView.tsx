@@ -124,9 +124,6 @@ export const ServicesView: React.FC = () => {
                     <div className="absolute top-3.5 start-3.5 z-10 w-9 h-9 rounded-xl bg-white/90 backdrop-blur-md border border-slate-200 text-cyan-700 flex items-center justify-center shadow-md">
                       <Icon className="w-4 h-4 text-cyan-600" />
                     </div>
-                    <div className="absolute top-3.5 end-3.5 z-10 px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-white/90 backdrop-blur-md border border-slate-200 text-cyan-800 shadow-sm">
-                      {t(service.categoryBadge.ar, service.categoryBadge.en)}
-                    </div>
                   </div>
                 )}
 
@@ -138,9 +135,6 @@ export const ServicesView: React.FC = () => {
                         <div className="w-12 h-12 rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-700 flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm">
                           <Icon className="w-6 h-6" />
                         </div>
-                        <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-cyan-50 border border-cyan-200 text-cyan-800">
-                          {t(service.categoryBadge.ar, service.categoryBadge.en)}
-                        </span>
                       </div>
                     )}
 
@@ -159,11 +153,6 @@ export const ServicesView: React.FC = () => {
                       </p>
                     </div>
 
-                    {/* Detailed Description */}
-                    <p className="text-xs sm:text-sm text-slate-600 font-arabic leading-relaxed">
-                      {t(service.description.ar, service.description.en)}
-                    </p>
-
                     {/* Capabilities */}
                     <div className="space-y-2 pt-2">
                       <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider block font-semibold">
@@ -177,16 +166,6 @@ export const ServicesView: React.FC = () => {
                           </li>
                         ))}
                       </ul>
-                    </div>
-
-                    {/* Deliverables */}
-                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1.5 font-arabic text-xs">
-                      <span className="text-[11px] font-mono text-cyan-700 block font-bold">
-                        {t('التسليمات المضمونة:', 'Deliverables:')}
-                      </span>
-                      <div className="text-slate-600 text-[11px]">
-                        {service.deliverables[isRtl ? 'ar' : 'en'].join(' • ')}
-                      </div>
                     </div>
                   </div>
 

@@ -32,10 +32,10 @@ const CASE_STUDY_IMAGES: Record<string, { src: string; altAr: string; altEn: str
   },
   'aura-medical': {
     src: '/images/casestudies/polyclinic-ehr.png',
-    altAr: 'شاشة السجل الطبي المشفر ومنصة عيادات أورا الطبية',
-    altEn: 'Aura Medical Encrypted Clinical EHR & Intake Platform',
-    badgeAr: 'واجهة السجل الطبي والملف الموحد المشفر',
-    badgeEn: 'Encrypted Clinical EHR & Patient Intake Interface',
+    altAr: 'بيئة تشغيل عيادات أورا ومنظومة السجل الطبي المشفر وحجز المواعيد',
+    altEn: 'Aura Medical Luxury Polyclinic Operations Suite & Encrypted EHR Platform',
+    badgeAr: 'بيئة تشغيل عيادات أورا ومنظومة السجل الطبي المشفر',
+    badgeEn: 'Aura Medical Polyclinic & Encrypted Clinical EHR',
   },
   'nexus-logistics': {
     src: '/images/casestudies/logistics-hub.png',
@@ -345,17 +345,6 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
               {/* High-Fidelity System Interface Mockup Image */}
               {CASE_STUDY_IMAGES[activeCase.id] && (
                 <div className="rounded-2xl p-2.5 sm:p-4 bg-slate-950 border border-slate-800 shadow-xl overflow-hidden group">
-                  <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-800/80 px-2 flex-wrap gap-2 text-xs font-mono">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#38BDF8] animate-pulse" />
-                      <span className="text-slate-200 font-bold">
-                        {t(CASE_STUDY_IMAGES[activeCase.id].badgeAr, CASE_STUDY_IMAGES[activeCase.id].badgeEn)}
-                      </span>
-                    </div>
-                    <span className="text-[11px] text-[#38BDF8] bg-cyan-950/80 border border-cyan-800 px-2.5 py-0.5 rounded font-bold">
-                      {t('بيئة تشغيل ميدانية حية', 'Live Operations Environment')}
-                    </span>
-                  </div>
                   <div className="relative rounded-xl overflow-hidden border border-slate-800/90 bg-[#060D1A]">
                     <Image
                       src={CASE_STUDY_IMAGES[activeCase.id].src}
@@ -379,9 +368,6 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                       <Terminal className="w-4 h-4 text-[#38BDF8]" />
                       <span>{t('ملاحظة المهندس المعماري الميدانية (Architect’s Field Note)', 'Lead Architect’s Field Note')}</span>
                     </div>
-                    <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded border border-emerald-800">
-                      Human-Centric Engineering
-                    </span>
                   </div>
                   <p className="text-xs sm:text-sm text-slate-300 font-arabic leading-relaxed italic">
                     {t('«', '"')}

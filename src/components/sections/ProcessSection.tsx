@@ -8,7 +8,6 @@ import {
   ShieldCheck,
   CheckCircle2,
   FileText,
-  Clock,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Reveal, RevealGroup, RevealItem, RevealCard } from '@/components/ui/Reveal';
@@ -148,13 +147,6 @@ export const ProcessSection: React.FC = () => {
                 <p className="text-xs text-slate-500 leading-relaxed font-medium">
                   {t('تقارير إنجاز منتظمة وعروض حية للمرحلة قبل الانتقال للمرحلة التالية دون أي مفاجآت.', 'Regular demo reviews and written approvals before moving to subsequent stages.')}
                 </p>
-              </div>
-
-              <div className="pt-1">
-                <span className="inline-flex items-center gap-1 text-[11px] font-mono text-cyan-800 bg-cyan-50 px-3 py-1 rounded-md border border-cyan-200 font-medium">
-                  <Clock className="w-3 h-3 text-cyan-600" />
-                  <span>Verified Sprint Delivery</span>
-                </span>
               </div>
             </div>
           </motion.div>

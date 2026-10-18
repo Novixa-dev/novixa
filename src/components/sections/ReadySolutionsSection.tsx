@@ -22,7 +22,6 @@ import {
   AlertTriangle,
   UserCheck,
   Headphones,
-  Laptop,
   Check,
   Quote,
 } from 'lucide-react';
@@ -360,18 +359,6 @@ export const ReadySolutionsSection = ({ lang: _lang }: { lang?: Language }) => {
                 <ActiveIcon className="w-6 h-6 stroke-[2]" />
               </div>
               <div className="space-y-1.5">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-[11px] font-mono text-[#38BDF8] bg-cyan-950/80 px-2.5 py-0.5 rounded-md border border-cyan-800 font-bold">
-                    {activeHuman.tagCode}
-                  </span>
-                  <span className="text-xs text-slate-400 font-mono">
-                    {t(activeSolution.category.ar, activeSolution.category.en)}
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800 font-semibold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>{t('متاح للتهيئة الفورية', 'Ready for Setup')}</span>
-                  </span>
-                </div>
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-display text-white">
                   {t(activeSolution.name.ar, activeSolution.name.en)}
                 </h3>
@@ -456,9 +443,6 @@ export const ReadySolutionsSection = ({ lang: _lang }: { lang?: Language }) => {
                     <Headphones className="w-3.5 h-3.5 text-[#38BDF8]" />
                     <span>{t(activeHuman.operatorRole.ar, activeHuman.operatorRole.en)}</span>
                   </span>
-                  <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800 font-semibold">
-                    {t('تجربة تشغيل حقيقية', 'Verified Operations')}
-                  </span>
                 </div>
 
                 <p className="text-xs sm:text-sm lg:text-base text-slate-200 font-arabic italic leading-relaxed">
@@ -523,10 +507,6 @@ export const ReadySolutionsSection = ({ lang: _lang }: { lang?: Language }) => {
         {/* 3. The Novixa Human Onboarding Protocol (How we deliver in 5-14 days) */}
         <RevealCard delay={0.06} className="rounded-3xl p-6 sm:p-8 lg:p-10 bg-slate-900 text-white border border-slate-800 relative overflow-hidden space-y-8 text-right rtl:text-right ltr:text-left">
           <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 text-xs font-mono font-semibold">
-              <Laptop className="w-3.5 h-3.5 text-[#38BDF8]" />
-              <span>{t('بروتوكول التسليم والمرافقة البشرية', 'The Human Onboarding Protocol')}</span>
-            </div>
             <h3 className="text-xl sm:text-2xl font-bold font-display text-white">
               {t('كيف نحوّل الحل الجاهز إلى نظام يعمل في منشأتك خلال 5 إلى 14 يوماً؟', 'How we turn a turnkey solution into your live operations within 5–14 days?')}
             </h3>

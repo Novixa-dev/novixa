@@ -9,8 +9,6 @@ import {
   Cpu,
   Layers,
   Clock,
-  ShieldCheck,
-  Calculator,
   Server,
   Building,
   RotateCcw,
@@ -213,10 +211,6 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
       <div className="rounded-2xl border border-slate-200/90 p-5 sm:p-6 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)]">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
-              <Calculator className="h-3 w-3 text-cyan-600" aria-hidden="true" />
-              <span>{t('حاسبة النطاق والمعمارية', 'Scope & Architecture Estimator')}</span>
-            </div>
             <h2 className="font-display text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
               {t('قدّر نطاق مشروعك وجدوله الهندسي فورياً', 'Estimate your scope & engineering timeline')}
             </h2>
@@ -380,10 +374,6 @@ export const ScopeEstimator: React.FC<ScopeEstimatorProps> = ({ onSelectScope })
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
               <span className="text-xs font-mono text-slate-500 uppercase tracking-wider font-semibold">
                 {t('مخرجات التقييم المعماري', 'Architectural Estimate')}
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold">
-                <ShieldCheck className="h-3 w-3" aria-hidden="true" />
-                {t('ملكية كود 100%', '100% IP Ownership')}
               </span>
             </div>
 

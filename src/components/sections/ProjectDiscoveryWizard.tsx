@@ -177,9 +177,6 @@ export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({ 
         
         {/* Section Header */}
         <div className="text-center space-y-4 mb-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
-            <span>{t('ابدأ مشروعك معنا', 'Project Discovery & Architecture Intake')}</span>
-          </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {t('لديك مشكلة تشغيلية تستحق نظامًا أفضل؟', 'Have an operational challenge deserving a modern system?')}

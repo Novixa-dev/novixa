@@ -123,11 +123,6 @@ export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
 
           {/* Right 5 Cols: Partnership Values */}
           <div className="lg:col-span-5 space-y-5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-semibold">
-              <HeartHandshake className="w-3.5 h-3.5 text-cyan-600" />
-              <span>{t('نموذج الشراكة الهندسية المستدامة', 'Sustainable Engineering Alliance')}</span>
-            </div>
-
             <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 leading-snug">
               {t(
                 'علاقة عمل قائمة على الوضوح والالتزام الصارم بنجاح منظومتك.',
@@ -174,7 +169,7 @@ export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
                   <div className="w-10 h-10 rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-700 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
                     <IconComp className="w-5 h-5" />
                   </div>
-                  <span className="text-sm font-mono font-bold text-cyan-800 bg-cyan-50 border border-cyan-200 px-2.5 py-0.5 rounded-lg">
+                  <span className="text-sm font-mono font-bold text-slate-400">
                     {diff.num}
                   </span>
                 </div>
@@ -209,11 +204,6 @@ export const WhyNovixaSection = ({ lang }: { lang: Language }) => {
                 'We deliver complete Git repositories to your private organization with full deployment runbooks and zero vendor lock-in.'
               )}
             </p>
-          </div>
-
-          <div className="shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-mono font-medium">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            <span>100% Client IP Rights</span>
           </div>
         </RevealCard>
 

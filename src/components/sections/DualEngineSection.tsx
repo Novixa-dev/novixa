@@ -9,10 +9,8 @@ import {
   ArrowLeft,
   ArrowRight,
   Database,
-  Cpu,
   Server,
   GitBranch,
-  Clock,
 } from 'lucide-react';
 
 export const DualEngineSection = ({ lang }: { lang: Language }) => {
@@ -52,9 +50,6 @@ export const DualEngineSection = ({ lang }: { lang: Language }) => {
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-                <div className="absolute top-3 right-3 rtl:right-3 ltr:left-3 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-slate-900/90 text-white backdrop-blur-md border border-white/20">
-                  {t('المسار 01 • هندسة مخصصة من الصفر', 'Path 01 • Custom Bespoke Engineering')}
-                </div>
               </div>
 
               {/* Title & Description */}
@@ -72,14 +67,6 @@ export const DualEngineSection = ({ lang }: { lang: Language }) => {
 
               {/* Architecture Blueprint Mini Box */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3 font-mono text-xs">
-                <div className="flex items-center justify-between text-slate-600 border-b border-slate-200 pb-2">
-                  <div className="flex items-center gap-1.5 text-blue-700 font-bold">
-                    <Cpu className="w-3.5 h-3.5" />
-                    <span className="text-[11px]">Custom Architecture Blueprint</span>
-                  </div>
-                  <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">100% Bespoke</span>
-                </div>
-                
                 {/* Visual Pipeline Nodes */}
                 <div className="grid grid-cols-3 gap-2 text-center text-[10px]">
                   <div className="p-2 rounded bg-white border border-slate-200 text-slate-700 shadow-2xs">
@@ -157,9 +144,6 @@ export const DualEngineSection = ({ lang }: { lang: Language }) => {
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-                <div className="absolute top-3 right-3 rtl:right-3 ltr:left-3 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-teal-950/90 text-teal-200 backdrop-blur-md border border-teal-500/30">
-                  {t('المسار 02 • إطلاق سريع ومجرب (5–14 يوماً)', 'Path 02 • Turnkey Ready Software (5–14 Days)')}
-                </div>
               </div>
 
               {/* Title & Description */}
@@ -177,14 +161,6 @@ export const DualEngineSection = ({ lang }: { lang: Language }) => {
 
               {/* Turnkey Fast Launch Pipeline */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3 font-mono text-xs">
-                <div className="flex items-center justify-between text-slate-600 border-b border-slate-200 pb-2">
-                  <div className="flex items-center gap-1.5 text-teal-700 font-bold">
-                    <Clock className="w-3.5 h-3.5" />
-                    <span className="text-[11px]">Fast Deployment Pipeline</span>
-                  </div>
-                  <span className="text-[10px] text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">5-14 Days</span>
-                </div>
-                
                 {/* Visual Pipeline Nodes */}
                 <div className="grid grid-cols-3 gap-2 text-center text-[10px]">
                   <div className="p-2 rounded bg-white border border-slate-200 text-slate-700 shadow-2xs">

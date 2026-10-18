@@ -76,10 +76,6 @@ export const MaintenanceSupportSection = ({ lang }: { lang: Language }) => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-right rtl:text-right ltr:text-left">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
-              <ShieldAlert className="w-3.5 h-3.5 text-cyan-600" />
-              <span>{t('الصيانة والدعم الفني المستمر (SLA)', 'Maintenance & Ongoing SLA Support')}</span>
-            </div>
             <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
               {t('شراكة هندسية مستمرة لحماية استثمارك البرمجي.', 'Continuous engineering care to protect your tech investment.')}
             </h2>
@@ -117,26 +113,10 @@ export const MaintenanceSupportSection = ({ lang }: { lang: Language }) => {
               </div>
             </div>
           </div>
-
-          <div className="shrink-0 flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-mono font-medium">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Target Response: &lt; 2h SLA</span>
-          </div>
         </div>
 
         {/* Engineering Maintenance & SLA Operations Cockpit Visual Image */}
         <div className="rounded-3xl p-3 sm:p-5 bg-slate-950 border border-slate-800 shadow-2xl relative group overflow-hidden">
-          <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800/80 px-2 flex-wrap gap-2 text-xs font-mono">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-slate-300 font-bold">{t('لوحة تحكم الصيانة الهندسية وتتبع البلاغات • Novixa SLA Command', 'Engineering Maintenance & SLA Command Cockpit')}</span>
-            </div>
-            <div className="flex items-center gap-2 text-slate-400">
-              <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-emerald-400">14m MTTA</span>
-              <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-cyan-300">0 Critical Regressions</span>
-              <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300">Direct WhatsApp Dev Bridge</span>
-            </div>
-          </div>
           <div className="relative rounded-2xl overflow-hidden border border-slate-800 bg-[#060D1A] group">
             <Image
               src="/images/maintenance-cockpit.png"

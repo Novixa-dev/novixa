@@ -72,20 +72,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     { name: product.name[isAr ? 'ar' : 'en'], url: `/${lang}/products/${product.id}` },
   ]);
 
-  const getStatusBadgeClass = (status: string) => {
-    switch (status) {
-      case 'LIVE':
-      case 'Available':
-        return 'bg-emerald-50 border-emerald-200 text-emerald-700 font-semibold';
-      case 'DEMO':
-      case 'Early Access':
-        return 'bg-blue-50 border-blue-200 text-blue-700 font-semibold';
-      case 'IN DEVELOPMENT':
-        return 'bg-amber-50 border-amber-200 text-amber-700 font-semibold';
-      default:
-        return 'bg-slate-100 border-slate-200 text-slate-600 font-semibold';
-    }
-  };
 
   return (
     <div className="pt-28 sm:pt-32 pb-20 sm:pb-24 bg-[#F8FAFC] min-h-screen relative overflow-hidden">
@@ -117,14 +103,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           {/* Header Bar */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-b border-slate-100 pb-6">
             <div className="space-y-2">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-semibold">
-                  {product.category[isAr ? 'ar' : 'en']}
-                </span>
-                <span className={`px-3 py-1 rounded-full text-xs font-mono border ${getStatusBadgeClass(product.status)}`}>
-                  {product.statusLabel[isAr ? 'ar' : 'en']}
-                </span>
-              </div>
               <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
                 {product.name[isAr ? 'ar' : 'en']}
               </h1>

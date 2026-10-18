@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { createTranslator } from '@/lib/i18n';
 import type { Language } from '@/types';
 import { INSIGHTS } from '../../content/data';
-import { BookOpen, ArrowLeft, ArrowRight, Clock } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Clock } from 'lucide-react';
 
 interface InsightsSectionProps {
   lang: Language;
@@ -33,10 +33,6 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
         {showHeader && (
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 text-right rtl:text-right ltr:text-left">
             <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-semibold shadow-sm">
-                <BookOpen className="w-3.5 h-3.5 text-cyan-600" />
-                <span>{t('من مختبر نوڤيكسا', 'Novixa Engineering & Insights Lab')}</span>
-              </div>
               <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
                 {t('معرفة هندسية ورؤى في تقنية الأعمال.', 'Engineering insights for modern enterprise.')}
               </h2>

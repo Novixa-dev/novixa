@@ -2,9 +2,9 @@ import React from 'react';
 import { constructMetadata, generateBreadcrumbJsonLd } from '@/lib/metadata';
 import { TeamCard } from '@/components/TeamCard';
 import { ENGINEERING_DISCIPLINES, GOVERNANCE_STANDARDS } from '@/data/team';
-import { Language } from '@/types';
 import Link from 'next/link';
-import { Shield, ArrowLeft, ArrowRight, Layers, CheckCircle2, GitBranch } from 'lucide-react';
+import { Language } from '@/types';
+import { Shield, ArrowLeft, ArrowRight, CheckCircle2, GitBranch } from 'lucide-react';
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   const { lang: paramLang } = await params;
@@ -47,11 +47,6 @@ export default async function TeamPage({ params }: { params: Promise<{ lang: str
         
         {/* Page Hero Header */}
         <div className="text-center max-w-3xl mx-auto space-y-5">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
-            <Layers className="w-3.5 h-3.5 text-cyan-600" />
-            <span>{isAr ? 'المنهجية والتخصصات الهندسية' : 'Engineering Disciplines & Delivery Model'}</span>
-          </div>
-
           <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {isAr
               ? 'معايير هندسية صارمة لبناء أنظمة تعتمد عليها المؤسسات.'
@@ -63,14 +58,6 @@ export default async function TeamPage({ params }: { params: Promise<{ lang: str
               ? 'نعمل في نوڤيكسا بنموذج الفرق الهندسية المخصصة (Dedicated Pods) التي تجمع بين هندسة النظم الموزعة، أمان السحابة، وهندسة خطوط البيانات وتكاملها لتحقيق أعلى درجات الاستقرار.'
               : 'Novixa deploys specialized engineering pods uniting distributed architecture, cloud infrastructure security, and data pipeline engineering to achieve enterprise-grade resilience.'}
           </p>
-
-          <div className="pt-1">
-            <span className="inline-block text-[11px] font-mono uppercase tracking-wider text-slate-600 bg-white border border-slate-200 px-3 py-1 rounded-full shadow-xs">
-              {isAr
-                ? 'فرق هندسية متخصصة • نعمل بنموذج الفرق المخصصة'
-                : 'Specialised engineering teams • Dedicated-pod model'}
-            </span>
-          </div>
         </div>
 
         {/* Disciplines Section: 2 cols on lg, 1 col on mobile */}
@@ -117,9 +104,6 @@ export default async function TeamPage({ params }: { params: Promise<{ lang: str
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xl font-bold font-mono text-cyan-600">{std.step}</span>
-                    <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-semibold">
-                      {std.metric}
-                    </span>
                   </div>
                   <h3 className="text-sm font-bold font-display text-slate-900 leading-snug">
                     {isAr ? std.titleAr : std.titleEn}

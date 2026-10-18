@@ -6,7 +6,7 @@ import {
   generateFaqJsonLd,
 } from '@/lib/metadata';
 import { FAQ_ITEMS, FAQ_TOPICS, type FaqItem } from '@/content/faq';
-import { HelpCircle, MessageSquare } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 import { Language } from '@/types';
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -64,10 +64,6 @@ export default async function FaqPage({ params }: { params: Promise<{ lang: stri
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 text-right rtl:text-right ltr:text-left">
         <header className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
-            <HelpCircle className="w-3.5 h-3.5 text-cyan-600" />
-            <span>{isAr ? 'الأسئلة الشائعة' : 'Frequently asked'}</span>
-          </div>
           <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {isAr ? 'أسئلة يطرحها كل عميل تقريباً.' : 'What almost every client asks first.'}
           </h1>

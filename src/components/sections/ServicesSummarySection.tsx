@@ -84,7 +84,6 @@ export const ServicesSummarySection: React.FC = () => {
 
   const [activeServiceId, setActiveServiceId] = useState<string>(SERVICES[0].id);
   const activeService = SERVICES.find((s) => s.id === activeServiceId) || SERVICES[0];
-  const ActiveIcon = iconMap[activeService.iconName] || Code2;
 
   return (
     <section className="py-20 lg:py-28 bg-[#F8FAFC] relative overflow-hidden border-t border-slate-200/80">
@@ -165,37 +164,11 @@ export const ServicesSummarySection: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent pointer-events-none" />
 
-              {/* Category Pill on Image Top */}
-              <div className="absolute top-3.5 start-3.5 z-10 flex items-center gap-2 bg-slate-950/85 backdrop-blur-md border border-cyan-500/40 px-3.5 py-1.5 rounded-xl shadow-lg text-xs font-mono text-cyan-300">
-                <ActiveIcon className="w-4 h-4 text-cyan-400" />
-                <span>{t(activeService.categoryBadge.ar, activeService.categoryBadge.en)}</span>
-              </div>
 
-              {/* Floating Engineering Badges on Bottom */}
-              <div className="absolute bottom-3.5 start-3.5 end-3.5 z-10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-                <div className="flex items-center gap-2 bg-slate-950/85 backdrop-blur-md border border-slate-700/80 px-3 py-1.5 rounded-xl text-slate-200 shadow-md">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>{t('معمارية سحابية مخصصة • كود نظيف Type-Safe', 'Custom Cloud Architecture • Type-Safe')}</span>
-                </div>
-                <div className="hidden sm:flex items-center gap-2 bg-slate-950/85 backdrop-blur-md border border-slate-700/80 px-3 py-1.5 rounded-xl text-cyan-300 shadow-md">
-                  <span>{t('ملكية كاملة للكود والمصدر 100%', '100% Full IP & Source Ownership')}</span>
-                </div>
-              </div>
             </div>
 
             {/* Left Column: Scope, Description & Capabilities */}
             <div className="lg:col-span-8 space-y-6">
-              <div className="flex items-center justify-between flex-wrap gap-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-medium">
-                  <ActiveIcon className="w-4 h-4 text-cyan-600" />
-                  <span>{t(activeService.categoryBadge.ar, activeService.categoryBadge.en)}</span>
-                </div>
-                <span className="text-xs font-mono text-emerald-700 flex items-center gap-1.5 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  {t('ضمان جودة وتنفيذ متقن', 'Engineered to Production Standard')}
-                </span>
-              </div>
-
               <div className="space-y-2">
                 <h3 className="text-xl sm:text-3xl font-bold font-display text-slate-900">
                   {t(activeService.title.ar, activeService.title.en)}

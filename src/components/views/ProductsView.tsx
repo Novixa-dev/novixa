@@ -30,20 +30,6 @@ export const ProductsView = ({ lang }: { lang: Language }) => {
   const { language, isRtl, t } = createTranslator(lang);
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
-  const getStatusBadgeClass = (status: string) => {
-    switch (status) {
-      case 'LIVE':
-      case 'Available':
-        return 'bg-emerald-50 border-emerald-200 text-emerald-800 font-semibold';
-      case 'DEMO':
-      case 'Early Access':
-        return 'bg-cyan-50 border-cyan-200 text-cyan-800 font-semibold';
-      case 'IN DEVELOPMENT':
-        return 'bg-amber-50 border-amber-200 text-amber-800 font-semibold';
-      default:
-        return 'bg-slate-100 border-slate-200 text-slate-700 font-semibold';
-    }
-  };
 
   return (
     <div className="pt-28 sm:pt-32 pb-20 sm:pb-24 bg-[#F8FAFC] min-h-screen relative overflow-hidden">
@@ -95,9 +81,6 @@ export const ProductsView = ({ lang }: { lang: Language }) => {
                       </div>
                     </div>
 
-                    <span className={`px-3 py-1 rounded-full text-xs font-mono font-semibold border ${getStatusBadgeClass(prod.status)}`}>
-                      {prod.statusLabel[isRtl ? 'ar' : 'en']}
-                    </span>
                   </div>
 
                   <p className="text-sm sm:text-base text-slate-600 font-arabic leading-relaxed">

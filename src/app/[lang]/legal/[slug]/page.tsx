@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import { constructMetadata, generateBreadcrumbJsonLd } from '@/lib/metadata';
 import { LEGAL_DOCUMENTS, getLegalDocument } from '@/content/legal';
 import { CONTACT_EMAIL } from '@/lib/contact-channels';
-import { FileText, ScrollText } from 'lucide-react';
 import { Language } from '@/types';
 
 export function generateStaticParams() {
@@ -51,7 +50,6 @@ export default async function LegalPage({
   if (!doc) notFound();
 
   const locale = isAr ? 'ar' : 'en';
-  const Icon = doc.slug === 'privacy' ? FileText : ScrollText;
 
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
     { name: isAr ? 'الرئيسية' : 'Home', url: `/${lang}` },
@@ -72,10 +70,6 @@ export default async function LegalPage({
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-right rtl:text-right ltr:text-left">
         <header className="space-y-4 border-b border-slate-200/80 pb-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold">
-            <Icon className="w-3.5 h-3.5 text-cyan-700" />
-            <span>{isAr ? 'وثائق قانونية' : 'Legal'}</span>
-          </div>
           <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {doc.title[locale]}
           </h1>

@@ -31,8 +31,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ servicesCount: _servic
         style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
         role="img"
         aria-label={t(
-          'بانوراما معمارية ذكية على الواجهة البحرية مع أبراج تقنية مضيئة ومسارات بيانات متصلة',
-          'Smart city waterfront panorama with illuminated tech towers and digital data highways'
+          'بيئة عمل برمجية احترافية وشاشة تطوير مع إطلالة بانورامية ساحرة على ميناء وجبال عدن عند الغروب',
+          'Professional software engineering workspace overlooking a panoramic sunset view of Aden harbor and mountains'
         )}
       />
 
@@ -54,11 +54,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ servicesCount: _servic
             className="w-full sm:w-[480px] md:w-[460px] lg:w-[520px] xl:w-[580px] space-y-3 sm:space-y-3.5 lg:space-y-4 text-right rtl:text-right ltr:text-left"
           >
             
-            {/* Eyebrow Label */}
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#38BDF8]/10 border border-[#38BDF8]/20 text-[#38BDF8] text-[11px] sm:text-xs font-mono font-semibold tracking-[0.15em] uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8] animate-pulse" />
-              <span>NOVIXA ENGINEERING</span>
-            </motion.div>
 
             {/* Main Display Headline */}
             <motion.h1 variants={itemVariants} className="text-2xl sm:text-3xl md:text-[28px] lg:text-[36px] xl:text-[42px] font-extrabold font-display leading-[1.2] tracking-normal text-white">

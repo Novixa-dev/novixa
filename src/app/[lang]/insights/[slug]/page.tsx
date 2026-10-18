@@ -88,10 +88,7 @@ export default async function InsightDetailPage({ params }: { params: Promise<{ 
 
         {/* Article Header Card */}
         <article className="rounded-2xl p-6 sm:p-10 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] space-y-6">
-          <div className="flex items-center justify-between flex-wrap gap-3 border-b border-slate-100 pb-4">
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-50 border border-cyan-200 text-cyan-800">
-              {article.category[isAr ? 'ar' : 'en']}
-            </span>
+          <div className="flex items-center justify-end flex-wrap gap-3 border-b border-slate-100 pb-4">
             <div className="flex items-center gap-4 text-xs font-mono text-slate-500">
               <span className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-slate-400" />

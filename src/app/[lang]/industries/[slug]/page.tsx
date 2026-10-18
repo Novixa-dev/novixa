@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getIndustryBySlug, industriesCatalog } from '@/lib/content';
 import { constructMetadata, generateBreadcrumbJsonLd } from '@/lib/metadata';
-import { CheckCircle2, AlertCircle, ArrowLeft, ArrowRight, Building } from 'lucide-react';
+import { CheckCircle2, AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Language } from '@/types';
 
 export function generateStaticParams() {
@@ -77,10 +77,6 @@ export default async function IndustryDetailPage({ params }: { params: Promise<{
         <div className="rounded-2xl p-6 sm:p-10 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] space-y-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-b border-slate-100 pb-6">
             <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold">
-                <Building className="w-3.5 h-3.5 text-cyan-700" />
-                <span>{isAr ? 'حلول القطاع المخصصة' : 'Domain Solution'}</span>
-              </div>
               <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
                 {industry.name[isAr ? 'ar' : 'en']}
               </h1>

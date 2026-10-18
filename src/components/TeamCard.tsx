@@ -26,7 +26,6 @@ export const TeamCard: React.FC<TeamCardProps> = ({ discipline, index = 0 }) => 
 
   const IconComponent = iconMap[discipline.icon] || Server;
   const title = isAr ? discipline.titleAr : discipline.titleEn;
-  const badge = isAr ? discipline.badgeAr : discipline.badgeEn;
   const description = isAr ? discipline.descriptionAr : discipline.descriptionEn;
   const deliverables = isAr ? discipline.keyDeliverablesAr : discipline.keyDeliverablesEn;
 
@@ -39,14 +38,11 @@ export const TeamCard: React.FC<TeamCardProps> = ({ discipline, index = 0 }) => 
       className="group rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-slate-200/90 bg-white shadow-[0_4px_25px_-4px_rgba(15,23,42,0.05)] hover:border-cyan-500/40 transition-colors duration-300 flex flex-col justify-between relative overflow-hidden text-right rtl:text-right ltr:text-left"
     >
       <div className="space-y-5">
-        {/* Header with Icon & Category Badge */}
+        {/* Header with Icon */}
         <div className="flex items-center justify-between">
           <div className="w-12 h-12 rounded-xl bg-cyan-50 border border-cyan-100 text-cyan-700 flex items-center justify-center">
             <IconComponent className="w-6 h-6" />
           </div>
-          <span className="text-[11px] font-mono text-cyan-800 bg-cyan-50 border border-cyan-200 px-3 py-1 rounded-full font-semibold">
-            {badge}
-          </span>
         </div>
 
         {/* Title */}

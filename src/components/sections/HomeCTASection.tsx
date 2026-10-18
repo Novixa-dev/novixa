@@ -17,11 +17,6 @@ export const HomeCTASection = ({ lang }: { lang: Language }) => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="rounded-3xl p-8 sm:p-14 border border-cyan-500/30 bg-gradient-to-b from-slate-900/95 to-[#0B1726] text-center space-y-8 shadow-2xl shadow-cyan-950/50 relative">
           
-          {/* Subtle Top Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-800/70 text-cyan-300 text-xs font-semibold shadow-inner">
-            <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
-            <span>{t('شراكة تقنية موثوقة للأعمال', 'Practical Software Partnership')}</span>
-          </div>
 
           {/* Heading */}
           <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-white tracking-tight leading-snug max-w-3xl mx-auto">

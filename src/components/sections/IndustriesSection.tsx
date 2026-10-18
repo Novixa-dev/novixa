@@ -56,10 +56,6 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({ showHeader
         {/* Section Header */}
         {showHeader && (
           <div className="text-center max-w-3xl mx-auto space-y-4 mb-14">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold shadow-sm">
-              <Building className="w-3.5 h-3.5 text-cyan-600" />
-              <span>{t('تخصصات القطاعات', 'Industry Vertical Expertise')}</span>
-            </div>
 
             <h2 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
               {t('نبني حلولًا تفهم طبيعة عملك.', 'We engineer solutions that understand your domain.')}

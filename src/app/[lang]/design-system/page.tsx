@@ -14,7 +14,7 @@ import {
   VERIFICATION_FACTS,
   type Rule,
 } from '@/content/design-system';
-import { Ruler, Palette, Type, Layers, Languages, Accessibility, CheckCircle2 } from 'lucide-react';
+import { Palette, Type, Layers, Languages, Accessibility, CheckCircle2 } from 'lucide-react';
 import { Language } from '@/types';
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -90,10 +90,6 @@ export default async function DesignSystemPage({
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 text-right rtl:text-right ltr:text-left">
         <header className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-semibold">
-            <Ruler className="w-3.5 h-3.5 text-cyan-700" aria-hidden="true" />
-            <span>{isAr ? 'نظام التصميم' : 'Design system'}</span>
-          </div>
           <h1 className="text-2xl sm:text-4xl lg:text-4xl font-extrabold font-display text-slate-900 tracking-tight leading-snug">
             {isAr
               ? 'القواعد التي بُني بها هذا الموقع، لا القواعد التي نقول إننا نتبعها.'
