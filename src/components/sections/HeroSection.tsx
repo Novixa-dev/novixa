@@ -59,7 +59,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ servicesCount: _servic
             <motion.h1 variants={itemVariants} className="text-2xl sm:text-3xl md:text-[28px] lg:text-[36px] xl:text-[42px] font-extrabold font-display leading-[1.2] tracking-normal text-white">
               <span>{t('حلول تقنية عملية للأعمال', 'Practical Tech Solutions for Business')}</span>
               <br />
-              <span className="text-[#38BDF8]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38BDF8] via-[#38BDF8] to-cyan-300">
                 {t('في اليمن والمنطقة', 'in Yemen & the Region')}
               </span>
             </motion.h1>

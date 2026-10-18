@@ -199,11 +199,16 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
                   </div>
 
                   <div>
-                    <h3 className={`text-sm sm:text-base font-bold font-display leading-snug line-clamp-1 ${
+                    <CardTitle className={`text-sm sm:text-base font-bold font-display leading-snug line-clamp-1 ${
                       isActive ? 'text-[#38BDF8]' : 'text-slate-900'
                     }`}>
-                      {cs.client}
-                    </h3>
+                      {isRtl ? (
+                        cs.id === 'black-spider' ? 'صالة بلاك سبايدر (Black Spider)' :
+                        cs.id === 'aura-medical' ? 'عيادات أورا (Aura Medical)' :
+                        cs.id === 'nexus-logistics' ? 'نكسس للخدمات اللوجستية (Nexus Logistics)' :
+                        cs.client
+                      ) : cs.client}
+                    </CardTitle>
                     <p className={`text-xs mt-0.5 font-arabic truncate ${
                       isActive ? 'text-slate-300' : 'text-slate-500'
                     }`}>

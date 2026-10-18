@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Globe,
   Search,
+  Activity,
   Linkedin,
   Github,
   Twitter,
@@ -148,6 +149,18 @@ export const Navbar: React.FC = () => {
 
           {/* Left Actions: Language + CTA Pill Button */}
           <div className="hidden lg:flex items-center gap-3.5 xl:gap-5">
+            {/* System status (opens a live check of /api/health) */}
+            <button
+              onClick={() => setTelemetryOpen(true)}
+              className="hidden 2xl:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900/60 hover:bg-slate-800/80 border border-white/[0.07] hover:border-[#38BDF8]/40 text-xs text-slate-300 transition-all cursor-pointer"
+              title={t('عرض حالة النظام الحيّة', 'View live system status')}
+              aria-haspopup="dialog"
+              aria-expanded={telemetryOpen}
+            >
+              <Activity className="w-3.5 h-3.5 text-[#38BDF8]" aria-hidden="true" />
+              <span>{t('حالة النظام', 'System status')}</span>
+            </button>
+
             {/* Primary CTA: Cyan Pill */}
             <Link
               href={`/${language}/contact`}
@@ -281,8 +294,8 @@ export const Navbar: React.FC = () => {
                 }}
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#13263B] border border-white/10 text-xs text-slate-300 hover:text-white"
               >
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span>{t('حالة الأنظمة: 100% مستقر', 'System Status: Operational')}</span>
+                <Activity className="w-3.5 h-3.5 text-[#38BDF8]" aria-hidden="true" />
+                <span>{t('حالة النظام', 'System status')}</span>
               </button>
 
               <div className="flex items-center gap-2">
