@@ -21,9 +21,7 @@ import {
   Zap,
   AlertTriangle,
   UserCheck,
-  Headphones,
   Check,
-  Quote,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Reveal, RevealCard, RevealGroup, RevealItem } from '@/components/ui/Reveal';
@@ -44,9 +42,6 @@ interface SolutionHumanMeta {
   beneficiaryRole: { ar: string; en: string };
   humanFriction: { ar: string; en: string };
   humanEase: { ar: string; en: string };
-  operatorQuote: { ar: string; en: string };
-  operatorRole: { ar: string; en: string };
-  highlightMetric: { value: string; label: { ar: string; en: string } };
   tagCode: string;
 }
 
@@ -64,18 +59,6 @@ const HUMAN_META_MAP: Record<string, SolutionHumanMeta> = {
       ar: 'تصل طلبات الطاولات والـ QR لشاشات المطبخ فوراً بترتيب الورود، الكاشير يتحكم بالمخزون، والعمل يجري بهدوء تام.',
       en: 'Table and QR orders route instantly to kitchen displays by exact arrival time, the cashier stays in control, and the floor operates in total calm.',
     },
-    operatorQuote: {
-      ar: '«ساعات الذروة في المساء كانت كابوساً يومياً بالنسبة لنا. بعد تشغيل شاشات المطبخ ونقاط البيع السحابية، اختفى التوتر والارتباك تماماً، وأصبح كل طلب يخرج بدقة وسرعة قياسية.»',
-      en: '"Evening dinner rushes used to be our daily nightmare. Since deploying the KDS and cloud POS, the yelling stopped and every ticket comes out with military precision."',
-    },
-    operatorRole: {
-      ar: 'صوت من الميدان • إدارة العمليات والضيافة',
-      en: 'Frontline Voice • Hospitality Operations',
-    },
-    highlightMetric: {
-      value: '-50%',
-      label: { ar: 'وقت انتظار الزبائن في ساعات الذروة', en: 'Customer peak-rush wait time' },
-    },
     tagCode: 'SOL-RES',
   },
   'booking-solution': {
@@ -90,18 +73,6 @@ const HUMAN_META_MAP: Record<string, SolutionHumanMeta> = {
     humanEase: {
       ar: 'بوابة حجز تفاعلية تتيح للعميل اختيار وقته ودفع العربون، مع تذكير آلي بالواتساب يضمن امتلاء الجدول بالكامل.',
       en: 'Self-serve booking portal with deposit lock and automatic WhatsApp reminders keeping practitioner calendars 100% full.',
-    },
-    operatorQuote: {
-      ar: '«كنا نخسر آلاف الساعات شهرياً في متابعة المواعيد بالهاتف. الآن العميل يحجز وقته ويدفع العربون بنفسه، ونسبة التخلف عن الحضور انخفضت إلى شبه الصفر.»',
-      en: '"We used to waste dozens of hours calling patients. Now clients pick their time and lock in deposits themselves, cutting no-shows to near zero."',
-    },
-    operatorRole: {
-      ar: 'صوت من الميدان • قسم الاستقبال والمواعيد',
-      en: 'Frontline Voice • Reception & Scheduling Lead',
-    },
-    highlightMetric: {
-      value: '80%',
-      label: { ar: 'انخفاض في نسبة التخلف عن المواعيد (No-Show)', en: 'Drop in appointment no-shows' },
     },
     tagCode: 'SOL-BOOK',
   },
@@ -118,18 +89,6 @@ const HUMAN_META_MAP: Record<string, SolutionHumanMeta> = {
       ar: 'لوحة صفقات بصرية تعرض مسار كل عميل من الاستفسار إلى العقد، مع تنبيهات متابعة آلية وعروض أسعار فورية بـ PDF.',
       en: 'Visual deal pipeline showing every prospect from inquiry to contract, with automated follow-up triggers and 1-click PDF quotations.',
     },
-    operatorQuote: {
-      ar: '«عندما كان يغادر أي مندوب كان يأخذ تاريخ عملائه معه. اليوم لدينا سجل مؤسسي دائم لكل مكالمة وعرض، ونعرف بالضبط أين تقف كل صفقة في كل لحظة.»',
-      en: '"When a sales rep left, our customer history left with them. Today we have an institutional record of every deal and know exactly where our pipeline stands."',
-    },
-    operatorRole: {
-      ar: 'صوت من الميدان • إدارة المبيعات والتطوير التجاري',
-      en: 'Frontline Voice • Commercial Sales Lead',
-    },
-    highlightMetric: {
-      value: '+35%',
-      label: { ar: 'زيادة في معدل إغلاق الصفقات وتحويل الفرص', en: 'Increase in deal win rates' },
-    },
     tagCode: 'SOL-CRM',
   },
   'inventory-solution': {
@@ -144,18 +103,6 @@ const HUMAN_META_MAP: Record<string, SolutionHumanMeta> = {
     humanEase: {
       ar: 'مزامنة لحظية عبر الباركود، طلبات تحويل رقمية تتطلب موافقة المستلم، وتنبيهات مبكرة قبل وصول الكميات للحد الأدنى.',
       en: 'Real-time barcode scanning, digital transfer requests requiring dual-party signoff, and proactive replenishment warnings.',
-    },
-    operatorQuote: {
-      ar: '«كان الجرد نهاية كل شهر كابوساً يستمر لثلاثة أيام من الحسابات اليدوية المرهقة. الآن بمسحة باركود واحدة نعرف رصيد كل فرع بالقطعة وتطابقت دفاترنا 100%.»',
-      en: '"Month-end stocktakes used to take three sleepless days of manual counting. Now with barcode verification, our branch balances match physical inventory down to the unit."',
-    },
-    operatorRole: {
-      ar: 'صوت من الميدان • سلاسل الإمداد والمستودعات',
-      en: 'Frontline Voice • Warehouse & Logistics Supervisor',
-    },
-    highlightMetric: {
-      value: '95%',
-      label: { ar: 'القضاء على عجز وفروقات الجرد الدورية', en: 'Elimination of stock reconciliation errors' },
     },
     tagCode: 'SOL-INV',
   },
@@ -172,18 +119,6 @@ const HUMAN_META_MAP: Record<string, SolutionHumanMeta> = {
       ar: 'ملف طبي إلكتروني موحد يفتحه الطبيب بثوانٍ، كتابة وصفات إلكترونية واضحة، وإرسال تنبيهات المراجعة للواتساب.',
       en: 'Unified EHR opened in seconds, clear digital e-prescriptions, and automated WhatsApp follow-up schedules sent straight to the patient.',
     },
-    operatorQuote: {
-      ar: '«راحة الطبيب في أن يجد التاريخ المرضي والفحوصات مرتبة أمامه بضغطة زر لا تقدر بثمن. توقفنا عن إضاعة وقت المرضى في صالة الانتظار وتفرغنا للرعاية الفعلية.»',
-      en: '"Having a patients complete medical history and lab trends at your fingertips in seconds transforms the entire consultation. Waiting times vanished."',
-    },
-    operatorRole: {
-      ar: 'صوت من الميدان • الكادر الطبي والإداري',
-      en: 'Frontline Voice • Clinic Medical Director',
-    },
-    highlightMetric: {
-      value: '60%',
-      label: { ar: 'تسريع دورة فحص المريض وإصدار الوصفات', en: 'Faster patient intake and prescription speed' },
-    },
     tagCode: 'SOL-MED',
   },
   'property-solution': {
@@ -198,18 +133,6 @@ const HUMAN_META_MAP: Record<string, SolutionHumanMeta> = {
     humanEase: {
       ar: 'تنبيهات استحقاق آلية للمستأجرين، بوابة طلبات صيانة رقمية موثقة، وبوابة خاصة للوسطاء مع خريطة الوحدات الشاغرة.',
       en: 'Automated rent due reminders, logged maintenance ticket workflow, and a dedicated broker portal with live unit map availability.',
-    },
-    operatorQuote: {
-      ar: '«إدارة 120 شقة ومحل تجاري بالإكسل كانت تسبب ضياع إيجارات ومشاكل صيانة لا تنتهي. اليوم نتحكم في المحفظة بالكامل بنقرة واحدة ونسبة التحصيل ارتفعت بشكل ملحوظ.»',
-      en: '"Managing 120 residential and retail units on spreadsheets was a constant nightmare. Today our entire portfolio is on autopilot and collections jumped 40%."',
-    },
-    operatorRole: {
-      ar: 'صوت من الميدان • إدارة المحافظ والأملاك',
-      en: 'Frontline Voice • Real Estate Portfolio Manager',
-    },
-    highlightMetric: {
-      value: '+40%',
-      label: { ar: 'تحسن في دقة وسرعة تحصيل الإيجارات في موعدها', en: 'On-time rent collection rate boost' },
     },
     tagCode: 'SOL-PROP',
   },
@@ -226,18 +149,6 @@ const HUMAN_META_MAP: Record<string, SolutionHumanMeta> = {
       ar: 'تسجيل إلكتروني للدورات، إشعار فوري لولي الأمر عند الغياب، إصدار جماعي للشهادات المعتمدة بـ QR، وتتبع مالي دقيق.',
       en: 'Online course enrollment, instant absence alerts to parents, 1-click batch certificate issuing with QR verification, and clear ledger.',
     },
-    operatorQuote: {
-      ar: '«كنا نقضي أسابيع كاملة في نهاية كل دورة تدريبية لتجهيز الشهادات وتدقيق الرسوم. النظام وفر علينا مئات الساعات وأعطى مركزنا واجهة احترافية يثق بها الطلاب.»',
-      en: '"We used to spend weeks at the end of every term checking tuition balances and printing certificates. The system saved hundreds of hours."',
-    },
-    operatorRole: {
-      ar: 'صوت من الميدان • الإدارة الأكاديمية والتدريب',
-      en: 'Frontline Voice • Academy Operations Coordinator',
-    },
-    highlightMetric: {
-      value: '70%',
-      label: { ar: 'توفير في ساعات العمل الإداري والتسجيل اليدوي', en: 'Reduction in manual administrative work' },
-    },
     tagCode: 'SOL-EDU',
   },
   'operations-solution': {
@@ -252,18 +163,6 @@ const HUMAN_META_MAP: Record<string, SolutionHumanMeta> = {
     humanEase: {
       ar: 'دورة موافقات رقمية بمراحل محددة وزمن إنجاز واضح، لوحة تحكم تعرض مؤشرات الفروع الحية، وسجل تدقيق لكل إجراء.',
       en: 'Structured approval ladder with clear SLA countdowns, live multi-branch health radar, and transparent audit logs for all decisions.',
-    },
-    operatorQuote: {
-      ar: '«قبل نوڤيكسا كانت الموافقات تستغرق 5 أيام وتضيع في البريد. اليوم تتم الموافقة على طلبات الصرف الميدانية في أقل من 30 دقيقة والجميع يخضع لمؤشرات إنجاز واضحة.»',
-      en: '"Approvals used to take 5 days and vanish in inboxes. Today field requests clear in under 30 minutes with full accountability."',
-    },
-    operatorRole: {
-      ar: 'صوت من الميدان • الإدارة التنفيذية والعمليات',
-      en: 'Frontline Voice • Chief Operating Officer',
-    },
-    highlightMetric: {
-      value: '30 min',
-      label: { ar: 'متوسط زمن اعتماد الطلبات التشغيلية بدل 5 أيام', en: 'Average approval turnaround vs 5 days' },
     },
     tagCode: 'SOL-OPS',
   },
@@ -368,7 +267,7 @@ export const ReadySolutionsSection = ({ lang: _lang }: { lang?: Language }) => {
               </div>
             </div>
 
-            {/* Quick Timing & Metric Badge */}
+            {/* Quick Timing Badge */}
             <div className="flex items-center gap-3 shrink-0 w-full lg:w-auto justify-between lg:justify-end border-t lg:border-t-0 border-slate-800 pt-4 lg:pt-0">
               <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-right rtl:text-right ltr:text-left">
                 <div className="text-[10px] font-mono text-slate-400 flex items-center gap-1">
@@ -377,15 +276,6 @@ export const ReadySolutionsSection = ({ lang: _lang }: { lang?: Language }) => {
                 </div>
                 <div className="text-sm font-bold text-white font-mono mt-0.5">
                   {t(activeSolution.deliveryDays.ar, activeSolution.deliveryDays.en)}
-                </div>
-              </div>
-
-              <div className="p-3 rounded-xl bg-cyan-950/50 border border-cyan-800/80 text-right rtl:text-right ltr:text-left">
-                <div className="text-[10px] font-mono text-cyan-300">
-                  {t('الأثر التشغيلي المحقق', 'Operational Impact')}
-                </div>
-                <div className="text-sm font-bold text-[#38BDF8] font-mono mt-0.5">
-                  {activeHuman.highlightMetric.value}
                 </div>
               </div>
             </div>
@@ -431,27 +321,7 @@ export const ReadySolutionsSection = ({ lang: _lang }: { lang?: Language }) => {
               </div>
             </div>
 
-            {/* 2. Frontline Operator Voice (Human Quote) */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-slate-950 text-white border border-slate-800 relative overflow-hidden shadow-lg">
-              <div className="absolute top-3 left-4 opacity-10 pointer-events-none">
-                <Quote className="w-20 h-20 text-cyan-400" />
-              </div>
-              
-              <div className="relative z-10 space-y-3">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <span className="text-[11px] font-mono text-cyan-300 flex items-center gap-1.5 font-semibold">
-                    <Headphones className="w-3.5 h-3.5 text-[#38BDF8]" />
-                    <span>{t(activeHuman.operatorRole.ar, activeHuman.operatorRole.en)}</span>
-                  </span>
-                </div>
-
-                <p className="text-xs sm:text-sm lg:text-base text-slate-200 font-arabic italic leading-relaxed">
-                  {t(activeHuman.operatorQuote.ar, activeHuman.operatorQuote.en)}
-                </p>
-              </div>
-            </div>
-
-            {/* 3. Core System Capabilities Grid (4 Columns) */}
+            {/* 2. Core System Capabilities Grid (4 Columns) */}
             <div className="space-y-4">
               <div className="text-xs font-mono text-slate-700 font-bold uppercase tracking-wider">
                 {t('أهم القدرات والميزات الجاهزة في النظام:', 'Core Operational Capabilities Included:')}

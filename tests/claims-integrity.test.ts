@@ -35,6 +35,9 @@ const FORBIDDEN: Array<{ claim: string; pattern: RegExp }> = [
   { claim: 'a team location we cannot show', pattern: /GCC-Based Engineering|مقره الخليج/ },
   { claim: 'a regional compliance or data-sovereignty promise', pattern: /Sovereign Cloud|سيادة البيانات والاستضافة|full compliance with local regulatory/i },
   { claim: 'an encryption-at-rest or zero-trust claim', pattern: /AES-256|Zero-trust architecture/i },
+  { claim: 'a client, project or years-of-experience count', pattern: /عميل راض|Satisfied Clients|مشروع ناجح|Successful Projects|سنوات من الخبرة|Years Experience/ },
+  { claim: 'an unattributed customer quote', pattern: /صوت من الميدان|Frontline Voice/ },
+  { claim: 'an "achieved impact" figure with no client behind it', pattern: /الأثر التشغيلي المحقق/ },
 ];
 
 describe('visitor-facing source makes no unverifiable claims', () => {
