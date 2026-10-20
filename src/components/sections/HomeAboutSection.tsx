@@ -3,34 +3,37 @@
 import React from 'react';
 import Image from 'next/image';
 import { useLanguage } from '../../context/LanguageContext';
-import { Users, Award, Rocket } from 'lucide-react';
+import { Layers, Languages, MapPin } from 'lucide-react';
+import { READY_SOLUTIONS } from '../../content/data';
 
 import { Reveal, RevealGroup, RevealItem } from '../ui/Reveal';
 
 export const HomeAboutSection: React.FC = () => {
   const { t } = useLanguage();
 
+  // Facts a visitor can check on this site. Client, project and years-of-experience
+  // counts were removed because none of them is documented (see AGENTS.md).
   const stats = [
     {
-      id: 'clients',
-      value: '+10',
-      labelAr: 'عميل راضٍ',
-      labelEn: 'Satisfied Clients',
-      icon: Users,
+      id: 'solutions',
+      value: String(READY_SOLUTIONS.length),
+      labelAr: 'حلول جاهزة قابلة للتخصيص',
+      labelEn: 'Ready-to-customize solutions',
+      icon: Layers,
     },
     {
-      id: 'projects',
-      value: '+50',
-      labelAr: 'مشروع ناجح',
-      labelEn: 'Successful Projects',
-      icon: Award,
+      id: 'languages',
+      value: 'AR · EN',
+      labelAr: 'واجهات عربية وإنجليزية',
+      labelEn: 'Arabic & English interfaces',
+      icon: Languages,
     },
     {
-      id: 'experience',
-      value: '+5',
-      labelAr: 'سنوات من الخبرة',
-      labelEn: 'Years Experience',
-      icon: Rocket,
+      id: 'base',
+      value: t('المكلا', 'Mukalla'),
+      labelAr: 'مقرّنا في حضرموت، اليمن',
+      labelEn: 'Based in Hadramout, Yemen',
+      icon: MapPin,
     },
   ];
 
